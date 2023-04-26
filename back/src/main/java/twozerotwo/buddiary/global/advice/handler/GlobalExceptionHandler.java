@@ -8,12 +8,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import bunsan.returnz.global.advice.enums.ErrorResponse;
-import bunsan.returnz.global.advice.exception.BadRequestException;
-import bunsan.returnz.global.advice.exception.ConflictException;
-import bunsan.returnz.global.advice.exception.ForbiddenException;
-import bunsan.returnz.global.advice.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.global.advice.enums.ErrorResponse;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
+import twozerotwo.buddiary.global.advice.exception.ConflictException;
+import twozerotwo.buddiary.global.advice.exception.ForbiddenException;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 
 @RestControllerAdvice
 @Slf4j
