@@ -1,4 +1,4 @@
-package towzerotow.buddiary.persistence.entity;
+package twozerotwo.buddiary.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
