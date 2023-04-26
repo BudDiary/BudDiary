@@ -1,4 +1,4 @@
-import { MemberStateType, MemberLoginType } from '@/types/member';
+import { MemberStateType, MemberLoginType } from '../../types/member';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 상태에서 사용할 멤버 데이터 타입 정의

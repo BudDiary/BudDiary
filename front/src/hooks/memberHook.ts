@@ -1,8 +1,8 @@
-import { MemberLoginType } from '@/types/member';
+import { MemberLoginType } from '../types/member';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store/modules';
-import { loginAction, logoutAction } from '@/store/modules/member';
+import { RootState } from '../store/modules';
+import { loginAction, logoutAction } from '../store/modules/member';
 
 export default function useMember() {
   const { isLoggedIn, memberData } = useSelector((state: RootState) => state.member);

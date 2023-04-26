@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import useMember from '@/hooks/memberHook';
+import useMember from './hooks/memberHook';
 import './App.css';
 
-import Home from '@/pages/home/home.component';
+import Home from './pages/home/home.component';
 // import NotFound from '@/pages/NotFound';
 
 const router = createBrowserRouter([
