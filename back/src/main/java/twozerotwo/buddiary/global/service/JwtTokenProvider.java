@@ -1,14 +1,22 @@
 package twozerotwo.buddiary.global.service;
 
 import java.security.Key;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -57,5 +65,42 @@ public class JwtTokenProvider {
 			.accessToken(accessToken)
 			.refreshToken(refreshToken)
 			.build();
+	}
+
+	/**
+	 * token 으로 부터 Authentication 을 가져오는 메소드
+	 * @param accessToken
+	 * @return
+	 */
+	public Authentication getAuthentication(String accessToken){
+		// 토큰으로부터 claims 추출
+		Claims claims = parseClaims(accessToken);
+		if(claims.get("auth") == null){
+			// 테스트 필요;
+			throw new RuntimeException("권한 정보가 없는 토큰입니다");
+		}
+		// 토큰 클래임에서 'auth' 정보 가져오기
+		Collection<? extends GrantedAuthority> authorities =
+			Arrays.stream(claims.get("auth").toString().split(","))
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
+		UserDetails principal = new User(claims.getSubject(), "", authorities);
+		//credentials 를 빈문자열을 주는이유?
+		//UsernamePasswordAuthenticationToken 형태의 Authentication 객체 반환
+		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+	}
+
+	/**
+	 * 토큰파싱해 Claims 를 반환하는 함수
+	 * @param accessToken
+	 * @return
+	 */
+	public Claims parseClaims(String accessToken){
+		try{
+			// jws 를 사용하는 이유는 서명이 있다 == jws , 평문이다 jwt 이기 때문에
+			return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+		}catch (ExpiredJwtException err){
+			return err.getClaims();
+		}
 	}
 }
