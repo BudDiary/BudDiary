@@ -1,4 +1,4 @@
-package c202.buddiary;
+package towzerotow.buddiary;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
