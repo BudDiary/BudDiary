@@ -46,7 +46,7 @@ public class Member implements UserDetails {
     };
 
     @Builder.Default
-    private boolean accountVisible = true;
+    private boolean accountNonLocked = true;
     @Builder.Default
     private boolean enabled = true;
     @Builder.Default
@@ -64,12 +64,12 @@ public class Member implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return this.accountNotExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.isAccountNonLocked();
+        return this.accountNonLocked;
     }
 
     @Override
