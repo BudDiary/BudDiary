@@ -1,4 +1,4 @@
-package c202.buddiary.persistence.entity;
+package twozerotwo.buddiary.persistence.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,7 +52,11 @@ public class Member implements UserDetails {
     @Builder.Default
     private boolean accountNotExpired = true;
 
+    @OneToMany(mappedBy = "member")
+    private List<MemberGroup> memberGroups = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Notification> notifications = new ArrayList<>();
 
 
     //implements methods

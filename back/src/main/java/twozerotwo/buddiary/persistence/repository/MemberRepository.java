@@ -1,6 +1,6 @@
-package c202.buddiary.persistence.repository;
+package twozerotwo.buddiary.persistence.repository;
 
-import c202.buddiary.persistence.entity.Member;
+import twozerotwo.buddiary.persistence.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {

@@ -1,4 +1,4 @@
-package c202.buddiary.global.auth.config;
+package twozerotwo.buddiary.global.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
