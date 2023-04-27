@@ -2,9 +2,7 @@ package twozerotwo.buddiary.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -12,10 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Member implements UserDetails {
+public class Member {
 	@Id
 	@Column(name = "MEMBER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,29 +54,5 @@ public class Member implements UserDetails {
 	private boolean accountNotExpired = true;
 
 	//implements methods
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// 권한 부여
-		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-	}
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return this.accountNotExpired;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return this.accountNonLocked;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return this.enabled;
-	}
 }
