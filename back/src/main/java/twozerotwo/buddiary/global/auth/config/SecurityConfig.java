@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.RequiredArgsConstructor;
 import twozerotwo.buddiary.global.service.JwtTokenProvider;
+import twozerotwo.buddiary.global.service.KakaoOauthService;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +20,7 @@ import twozerotwo.buddiary.global.service.JwtTokenProvider;
 public class SecurityConfig {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final JwtExceptionFilter jwtExceptionFilter;
+	private final KakaoOauthService kakaoOauthService;
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
@@ -27,24 +29,25 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http.httpBasic()
-			.disable()
+		return http.httpBasic().disable()
+			.formLogin().disable()
 			.cors()
 			.and()
-			.csrf()
-			.disable()
-			.headers()
-			.frameOptions()
-			.sameOrigin()
+			.csrf().disable()
+			.headers().frameOptions().sameOrigin()
 			.and()
+
 			.authorizeRequests()
 			.antMatchers("/api/members/sighup", "/api/members/login")
 			.permitAll()
 			.anyRequest()
 			.permitAll()
 			.and()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+
+			.oauth2Login()
 			.and()
 			.addFilterBefore(new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(jwtExceptionFilter, JwtFilter.class)
