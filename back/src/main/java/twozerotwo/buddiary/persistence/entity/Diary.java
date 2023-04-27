@@ -28,7 +28,7 @@ public class Diary {
 
 	@Column(nullable = false, length = 1000)
 	private String text;
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String photoPath;
 	@Builder.Default
 	private LocalDateTime writeDate = LocalDateTime.now();
