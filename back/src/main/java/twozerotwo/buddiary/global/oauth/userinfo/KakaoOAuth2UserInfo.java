@@ -35,7 +35,6 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 		if (response == null) {
 			return null;
 		}
-
 		return (String)response.get("profile_image");
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.global.oauth.userinfo.KakaoOAuth2UserInfo;
 import twozerotwo.buddiary.global.oauth.userinfo.OAuth2UserInfo;
@@ -15,6 +16,7 @@ import twozerotwo.buddiary.persistence.entity.Member;
  * 데이터를 가지고 있는 dto
  */
 @Getter
+@Slf4j
 public class OAuthAttributes {
 	private String nameAttributeKey;// 오어스 로그인 진행시 키가 되는 필드값 , PK 와 같은 의미
 	private OAuth2UserInfo oauth2UserInfo;// 소셜 타입별 로그인 유지 정보
@@ -57,9 +59,20 @@ public class OAuthAttributes {
 			.build();
 	}
 
-	public Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
-		return Member.builder()
+	// TODO: 2023-04-27 추후 사업자 등록하면 추가 정보 넣어서 주어야합니다.
 
+	/**
+	 * 이후에 CustomOAuth2UserService에서 DB에 저장할 내 서비스 Member
+	 * OAuth2UserInfo의 정보를 사용하여 빌더로 빌드 후 반환합니다.
+	 *
+	 * @param socialType
+	 * @param oauth2UserInfo
+	 * @return
+	 */
+	public Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
+		log.info("member 로 변환 중 정보를 출력합니다." + oauth2UserInfo.getNickname());
+		return Member.builder()
+			.oauth2Id(oauth2UserInfo.getId())
 			.build();
 	}
 }
