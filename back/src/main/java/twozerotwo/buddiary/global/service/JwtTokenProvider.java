@@ -17,10 +17,13 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.auth.dto.TokenInfo;
@@ -43,7 +46,8 @@ public class JwtTokenProvider {
 	// 유정 정보 를 가져와 토큰을  at rt 만드는 메소드
 	public TokenInfo generateToken(Authentication authentication) {
 		long now = (new Date()).getTime();
-		String authorities = authentication.getAuthorities().stream()
+		String authorities = authentication.getAuthorities()
+			.stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
 		Member member = memberRepository.findByUsername(authentication.getName())
@@ -61,10 +65,7 @@ public class JwtTokenProvider {
 			.setExpiration(accessTokenExpiresIn)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
-		return TokenInfo.builder()
-			.accessToken(accessToken)
-			.refreshToken(refreshToken)
-			.build();
+		return TokenInfo.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 	}
 
 	/**
@@ -72,18 +73,17 @@ public class JwtTokenProvider {
 	 * @param accessToken
 	 * @return
 	 */
-	public Authentication getAuthentication(String accessToken){
+	public Authentication getAuthentication(String accessToken) {
 		// 토큰으로부터 claims 추출
 		Claims claims = parseClaims(accessToken);
-		if(claims.get("auth") == null){
+		if (claims.get("auth") == null) {
 			// 테스트 필요;
 			throw new RuntimeException("권한 정보가 없는 토큰입니다");
 		}
 		// 토큰 클래임에서 'auth' 정보 가져오기
-		Collection<? extends GrantedAuthority> authorities =
-			Arrays.stream(claims.get("auth").toString().split(","))
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
+		Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
+			.map(SimpleGrantedAuthority::new)
+			.collect(Collectors.toList());
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
 		//credentials 를 빈문자열을 주는이유?
 		//UsernamePasswordAuthenticationToken 형태의 Authentication 객체 반환
@@ -95,12 +95,29 @@ public class JwtTokenProvider {
 	 * @param accessToken
 	 * @return
 	 */
-	public Claims parseClaims(String accessToken){
-		try{
+	public Claims parseClaims(String accessToken) {
+		try {
 			// jws 를 사용하는 이유는 서명이 있다 == jws , 평문이다 jwt 이기 때문에
 			return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-		}catch (ExpiredJwtException err){
+		} catch (ExpiredJwtException err) {
 			return err.getClaims();
+		}
+	}
+
+	public boolean validationToken(String token) {
+		try {
+			//
+			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+			return true;
+
+		} catch (ExpiredJwtException expiredErr) {
+			throw new JwtException("토큰 기한 만료됨");
+		} catch (UnsupportedJwtException unsupportedJwtErr) {
+			throw new JwtException("토큰 형태가 맞지 않습니다.");
+		} catch (SignatureException signatureErr) {
+			throw new JwtException("시그니쳐가 알맞지 않습니다.");
+		} catch (IllegalArgumentException argueErr) {
+			throw new JwtException("인자가 올바르지 않습니다.");
 		}
 	}
 }

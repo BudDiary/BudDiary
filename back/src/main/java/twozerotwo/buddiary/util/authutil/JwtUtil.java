@@ -10,7 +10,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
-
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
@@ -23,6 +22,7 @@ public class JwtUtil {
 	private String secretKey;
 	@Autowired
 	private MemberRepository repository;
+
 	public Member getMemberFromToken(String accessToken) {
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		Key key = Keys.hmacShaKeyFor(keyBytes);
