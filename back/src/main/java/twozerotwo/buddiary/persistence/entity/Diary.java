@@ -25,6 +25,7 @@ public class Diary {
 	@Column(name = "DIARY_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Column(nullable = false, length = 1000)
 	private String text;
 	@Column(nullable = false)
@@ -37,7 +38,7 @@ public class Diary {
 	private Member writer;
 
 	@ManyToOne
-	@JoinColumn(name = "GRUOP_ID")
+	@JoinColumn(name = "CLUB_ID")
 	@Builder.Default
-	private Group group = null;
+	private Club club = null;
 }

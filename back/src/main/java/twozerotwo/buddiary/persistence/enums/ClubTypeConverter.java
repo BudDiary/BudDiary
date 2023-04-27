@@ -4,9 +4,9 @@ import java.util.stream.Stream;
 
 import javax.persistence.AttributeConverter;
 
-public class GroupTypeConverter implements AttributeConverter<GroupType, String> {
+public class ClubTypeConverter implements AttributeConverter<ClubType, String> {
 	@Override
-	public String convertToDatabaseColumn(GroupType type) {
+	public String convertToDatabaseColumn(ClubType type) {
 		if (type == null) {
 			return null;
 		}
@@ -14,11 +14,11 @@ public class GroupTypeConverter implements AttributeConverter<GroupType, String>
 	}
 
 	@Override
-	public GroupType convertToEntityAttribute(String code) {
+	public ClubType convertToEntityAttribute(String code) {
 		if (code == null) {
 			return null;
 		}
-		return Stream.of(GroupType.values())
+		return Stream.of(ClubType.values())
 			.filter(c -> c.getCode().equals(code))
 			.findFirst()
 			.orElseThrow(IllegalArgumentException::new);

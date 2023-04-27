@@ -2,14 +2,14 @@ package twozerotwo.buddiary.persistence.enums;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 
-public enum GroupType {
+public enum ClubType {
 	DOUBLE("DOUBLE"),
 	PLURAL("PLURAL"),
 	@JsonEnumDefaultValue
 	UNKNOWN("UNKNOWN");
 	private final String code;
 
-	GroupType(String code) {
+	ClubType(String code) {
 		this.code = code;
 	}
 

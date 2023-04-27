@@ -64,12 +64,12 @@ public class Member implements UserDetails {
 	private boolean accountNotExpired = true;
 
 	@OneToMany(mappedBy = "member")
-	private Set<MemberGroup> memberGroups = new HashSet<>();
+	private Set<MemberClub> memberClubs = new HashSet<>();
 
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notification> notifications = new ArrayList<>();
 
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Diary> diaries = new ArrayList<>();
 
 	//implements methods

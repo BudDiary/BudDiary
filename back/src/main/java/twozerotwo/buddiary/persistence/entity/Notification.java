@@ -28,7 +28,7 @@ public class Notification {
 	private Long id;
 	@Builder.Default
 	@Convert(converter = NoticeTypeConverter.class)
-	private NoticeType type = NoticeType.GROUP_WRITE;
+	private NoticeType type = NoticeType.CLUB_WRITE;
 
 	@Builder.Default
 	private Boolean isChecked = false;

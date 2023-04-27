@@ -16,29 +16,29 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import twozerotwo.buddiary.persistence.enums.GroupType;
-import twozerotwo.buddiary.persistence.enums.GroupTypeConverter;
+import twozerotwo.buddiary.persistence.enums.ClubType;
+import twozerotwo.buddiary.persistence.enums.ClubTypeConverter;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Group {
+public class Club {
 	@Id
-	@Column(name = "GROUP_ID")
+	@Column(name = "CLUB_ID")
 	@NotBlank
 	private String uuid;
 
 	@Column(nullable = false)
 	private String name;
 	@Builder.Default
-	@Convert(converter = GroupTypeConverter.class)
-	private GroupType type = GroupType.PLURAL;
+	@Convert(converter = ClubTypeConverter.class)
+	private ClubType type = ClubType.PLURAL;
 	@Builder.Default
 	private LocalDateTime createDate = LocalDateTime.now();
 
-	@OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
-	private Set<MemberGroup> groupMembers = new HashSet<>();
+	@OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+	private Set<MemberClub> groupMembers = new HashSet<>();
 
 }

@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -19,10 +18,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class MemberGroup {
+public class MemberClub {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "MEMBER_GROUP_ID")
+	@Column(name = "MEMBER_CLUB_ID")
 	private Long id;
 
 	@ManyToOne
@@ -30,8 +29,8 @@ public class MemberGroup {
 	private Member member;
 
 	@ManyToOne
-	@JoinColumn(name = "GROUP_ID")
-	private Group group;
+	@JoinColumn(name = "CLUB_ID")
+	private Club club;
 
 
 }
