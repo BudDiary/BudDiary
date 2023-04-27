@@ -11,8 +11,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-import twozerotwo.buddiary.global.service.JwtTokenProvider;
-import twozerotwo.buddiary.global.service.KakaoOauthService;
+import twozerotwo.buddiary.global.auth.service.JwtTokenProvider;
+import twozerotwo.buddiary.global.service.CustomOauthUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +20,7 @@ import twozerotwo.buddiary.global.service.KakaoOauthService;
 public class SecurityConfig {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final JwtExceptionFilter jwtExceptionFilter;
-	private final KakaoOauthService kakaoOauthService;
+	private final CustomOauthUserService customOauthUserService;
 
 	@Bean
 	PasswordEncoder passwordEncoder() {

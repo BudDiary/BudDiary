@@ -1,4 +1,4 @@
-package twozerotwo.buddiary.global.auth.dto;
+package twozerotwo.buddiary.global.oauth.dto;
 
 public enum SocialType {
 	KAKKO, NAVER, KAKAO, GOOGLE

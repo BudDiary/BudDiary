@@ -1,4 +1,4 @@
-package twozerotwo.buddiary.global.auth.userinfo;
+package twozerotwo.buddiary.global.oauth.userinfo;
 
 import java.util.Map;
 

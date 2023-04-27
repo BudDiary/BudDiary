@@ -16,7 +16,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.global.service.JwtTokenProvider;
+import twozerotwo.buddiary.global.auth.service.JwtTokenProvider;
 
 @Component
 @Slf4j
@@ -27,6 +27,7 @@ public class JwtFilter extends GenericFilterBean {
 
 	/**
 	 * jwt 필터 입력받은 토큰 유효성을 검사
+	 *
 	 * @param request
 	 * @param response
 	 * @throws ServletException

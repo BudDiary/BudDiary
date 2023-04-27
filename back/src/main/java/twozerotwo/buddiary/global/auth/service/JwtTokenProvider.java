@@ -1,4 +1,4 @@
-package twozerotwo.buddiary.global.service;
+package twozerotwo.buddiary.global.auth.service;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -70,6 +70,7 @@ public class JwtTokenProvider {
 
 	/**
 	 * token 으로 부터 Authentication 을 가져오는 메소드
+	 *
 	 * @param accessToken
 	 * @return
 	 */
@@ -92,6 +93,7 @@ public class JwtTokenProvider {
 
 	/**
 	 * 토큰파싱해 Claims 를 반환하는 함수
+	 *
 	 * @param accessToken
 	 * @return
 	 */

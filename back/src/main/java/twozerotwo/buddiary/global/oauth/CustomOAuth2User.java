@@ -1,4 +1,4 @@
-package twozerotwo.buddiary.global.auth.userinfo;
+package twozerotwo.buddiary.global.oauth;
 
 import java.util.Collection;
 import java.util.Map;
@@ -8,6 +8,11 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
 import lombok.Getter;
 
+/**
+ * 어떤 유저가 우리 서비스 입장하는지 모르니
+ * oauth  로그인시 임의의 이메일을 생성해
+ * access 토튼을 발급 받아서 회원 식별용으로 access 토큰을 사요합니다 추후
+ */
 @Getter
 public class CustomOAuth2User extends DefaultOAuth2User {
 	private String email;

@@ -1,11 +1,13 @@
-package twozerotwo.buddiary.global.auth.dto;
+package twozerotwo.buddiary.global.oauth;
 
 import java.util.Map;
 
 import lombok.Builder;
 import lombok.Getter;
-import twozerotwo.buddiary.global.auth.userinfo.KakaoOAuth2UserInfo;
-import twozerotwo.buddiary.global.auth.userinfo.OAuth2UserInfo;
+import twozerotwo.buddiary.global.oauth.dto.SocialType;
+import twozerotwo.buddiary.global.oauth.userinfo.KakaoOAuth2UserInfo;
+import twozerotwo.buddiary.global.oauth.userinfo.OAuth2UserInfo;
+import twozerotwo.buddiary.persistence.entity.Member;
 
 /**
  * 여러 소셜 확장가능한 설계
@@ -52,6 +54,12 @@ public class OAuthAttributes {
 		return OAuthAttributes.builder()
 			.nameAttributeKey(userNameAttributeName)
 			.oauth2UserInfo(new KakaoOAuth2UserInfo(attributes))
+			.build();
+	}
+
+	public Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
+		return Member.builder()
+
 			.build();
 	}
 }
