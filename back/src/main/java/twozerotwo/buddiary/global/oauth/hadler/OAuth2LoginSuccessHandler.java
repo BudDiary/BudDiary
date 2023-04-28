@@ -2,7 +2,6 @@ package twozerotwo.buddiary.global.oauth.hadler;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +12,9 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.global.jwt.service.JwtService;
 import twozerotwo.buddiary.global.oauth.CustomOAuth2User;
+import twozerotwo.buddiary.persistence.enums.Role;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Slf4j
@@ -21,6 +22,12 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private final MemberRepository memberRepository;
+	private final JwtService jwtService;
+
+	private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
+	private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
+	private static final String USERNAME_CLAIM = "username";
+	private static final String BEARER = "Bearer ";
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -28,6 +35,17 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		log.info("OAuth 성공");
 		try {
 			CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+			if (oAuth2User.getRole() == Role.GUEST) {
+				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
+				// Cookie accessCookie = new Cookie(ACCESS_TOKEN_SUBJECT, accessToken);
+				// 회원은 아니니 리프래쉬는 주지 않는다. 그냥 주지 말까? 가입하면 토큰주는걸로 할까
+				// jwtService.sendAccessAndRefreshToken(response, accessToken, null);
+				response.sendRedirect("oauth2/sign-up");
+
+			} else {
+				// 이미 가입한 회원이면 토큰 생성해준다.
+				loginSuccess(response, oAuth2User);
+			}
 
 		} catch (Exception err) {
 			throw err;
@@ -35,9 +53,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	}
 
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-		Authentication authentication) throws IOException, ServletException {
-		AuthenticationSuccessHandler.super.onAuthenticationSuccess(request, response, chain, authentication);
+	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) {
+		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
+		String refreshToken = jwtService.createRefreshToken();
+		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+		jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
+
 	}
+
 }

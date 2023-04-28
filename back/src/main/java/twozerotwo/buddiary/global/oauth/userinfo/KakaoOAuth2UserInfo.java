@@ -2,39 +2,43 @@ package twozerotwo.buddiary.global.oauth.userinfo;
 
 import java.util.Map;
 
+/**
+ * OAuth2UserInfo 상속받은 구현체
+ * 각타입별로 존재할예정
+ * 카카오 json 에 맞춰서 제공
+ */
 public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
+
 	public KakaoOAuth2UserInfo(Map<String, Object> attributes) {
 		super(attributes);
 	}
 
 	@Override
 	public String getId() {
-		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
-
-		if (response == null) {
-			return null;
-		}
-		return (String)response.get("id");
+		return String.valueOf(attributes.get("id"));
 	}
 
 	@Override
 	public String getNickname() {
-		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
+		Map<String, Object> account = (Map<String, Object>)attributes.get("kakao_account");
+		Map<String, Object> profile = (Map<String, Object>)account.get("profile");
 
-		if (response == null) {
+		if (account == null || profile == null) {
 			return null;
 		}
 
-		return (String)response.get("nickname");
+		return (String)profile.get("nickname");
 	}
 
 	@Override
 	public String getImageUrl() {
-		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
+		Map<String, Object> account = (Map<String, Object>)attributes.get("kakao_account");
+		Map<String, Object> profile = (Map<String, Object>)account.get("profile");
 
-		if (response == null) {
+		if (account == null || profile == null) {
 			return null;
 		}
-		return (String)response.get("profile_image");
+
+		return (String)profile.get("thumbnail_image_url");
 	}
 }

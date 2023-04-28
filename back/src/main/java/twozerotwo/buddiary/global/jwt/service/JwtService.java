@@ -96,7 +96,7 @@ public class JwtService {
 		cookie.setMaxAge(1000000000);
 
 		response.addCookie(cookie);
-		log.info("재발급된 Access Token : {}", accessToken);
+		log.info("발급된 Access Token : {}", accessToken);
 	}
 
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
@@ -110,7 +110,7 @@ public class JwtService {
 		cookie.setPath("/");
 		cookie.setMaxAge(1000000000);
 		response.addCookie(cookie);
-		log.info("재발급된 Access Token : {}", refreshToken);
+		log.info("발급된 refreshToken  : {}", refreshToken);
 
 	}
 

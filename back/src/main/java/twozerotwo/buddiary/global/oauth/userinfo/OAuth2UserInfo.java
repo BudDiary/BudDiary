@@ -2,6 +2,11 @@ package twozerotwo.buddiary.global.oauth.userinfo;
 
 import java.util.Map;
 
+/**
+ * 소셜 타입별로 유저 정보를 가지는 추상클래스
+ * 상속시켜서 사용할예정
+ * 맵타입으로 받아오는 시큐리티 특성 반영
+ */
 public abstract class OAuth2UserInfo {
 	protected Map<String, Object> attributes; // 상속받은 클래스에서만 사용가능하게 프로텍티드
 
