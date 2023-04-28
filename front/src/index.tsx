@@ -1,27 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import store from './store/store';
-import { Provider } from 'react-redux';
-import { persistStore } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
 
+import reportWebVitals from "./reportWebVitals";
+import store from "./store/store";
+import { Provider } from "react-redux";
 
-const persistor = persistStore(store);
+import NotFoundPage from "./pages/notfound/NotFoundPage";
+import WritePage from "./pages/write/WritePage";
+import GroupDetailPage from "./pages/groupdetail/GroupDetailPage";
+import GroupPage from "./pages/group/GroupPage";
+import SurveyPage from "./pages/survey/SurveyPage";
+import HomePage from "./pages/home/HomePage";
+import MypagePage from "./pages/mypage/MypagePage";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    ),
+    errorElement: <NotFoundPage />,
+    children: [
+      { path: "/main", element: <HomePage /> },
+      { path: "/survey", element: <SurveyPage /> },
+      { path: "/group", element: <GroupPage /> },
+      { path: "/group/:id", element: <GroupDetailPage /> },
+      { path: "/write", element: <WritePage /> },
+      { path: "/mypage", element: <MypagePage /> },
+    ],
+  },
+]);
+
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
-root.render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>,
-);
+root.render(<RouterProvider router={router} />);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
