@@ -72,6 +72,10 @@ public class Member implements UserDetails {
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Diary> diaries = new ArrayList<>();
 
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<UnusedSticker> stickers = new ArrayList<>();
+
+
 	//implements methods
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

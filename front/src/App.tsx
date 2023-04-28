@@ -9,6 +9,7 @@ import GroupPage from "./pages/group/GroupPage";
 import SurveyPage from "./pages/survey/SurveyPage";
 import HomePage from "./pages/home/HomePage";
 import MypagePage from "./pages/mypage/MypagePage";
+import NavBar from "./components/navbar/NavBar";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ export default function App() {
   const { isLoggedIn } = useMember();
   return (
     <div className="App">
+      <NavBar />
       <div className={isLoggedIn ? "page" : "login"}>
         <RouterProvider router={router} />
       </div>
