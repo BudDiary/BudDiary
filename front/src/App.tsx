@@ -31,7 +31,9 @@ export default function App() {
     <div className="App">
       <NavBar />
       <div className={isLoggedIn ? "page" : "login"}>
+        <div className="max-w-[1152px] mx-auto">
         <RouterProvider router={router} />
+        </div>
       </div>
     </div>
   );
