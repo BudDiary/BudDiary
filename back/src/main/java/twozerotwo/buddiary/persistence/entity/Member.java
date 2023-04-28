@@ -2,14 +2,24 @@ package twozerotwo.buddiary.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +31,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Member {
+public class Member implements UserDetails {
 	@Id
 	@Column(name = "MEMBER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +63,39 @@ public class Member {
 	@Builder.Default
 	private boolean accountNotExpired = true;
 
-	//implements methods
+	@OneToMany(mappedBy = "member")
+	private Set<MemberClub> memberClubs = new HashSet<>();
 
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Notification> notifications = new ArrayList<>();
+
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Diary> diaries = new ArrayList<>();
+
+	//implements methods
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// 권한 부여
+		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return this.accountNotExpired;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return this.accountNonLocked;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.enabled;
+	}
 }
