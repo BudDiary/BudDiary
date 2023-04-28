@@ -14,7 +14,7 @@ module.exports = {
       },
     },
     fontFamily: {
-      berry: ["Goryeong Strawberry"],
+      berry: ["GoryeongStrawberry"],
     },
   },
   variants: {
