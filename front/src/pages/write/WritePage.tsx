@@ -13,7 +13,8 @@ export default function WritePage() {
   const [originFiles, setOriginFiles] = useState<File[]>([]);
   return (
     <>
-        <SubNavContainer>write</SubNavContainer>
+      <SubNavContainer>write</SubNavContainer>
+      <PageContainer>
         <Addpicture
           setTab={setTab}
           originFiles={originFiles}
@@ -21,6 +22,7 @@ export default function WritePage() {
           />
           <Pictures originFiles={originFiles} />
           <Content setContent={setContent} />
-          </>
+      </PageContainer>
+    </>
   );
 }

@@ -4,10 +4,12 @@ interface Props {
 }
 export default function Content({ setContent }: Props) {
   return (
-    <textarea
-      rows={10}
-      placeholder=''
-      onChange={(e) => setContent(e.target.value)}
-    />
+    <div className='bg-green-700'>
+      <textarea
+        rows={10}
+        placeholder=''
+        onChange={(e) => setContent(e.target.value)}
+      />
+    </div>
   );
 }

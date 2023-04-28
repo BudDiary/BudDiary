@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import { Link } from "react-router-dom";
 
 export const NavbarContainer = styled.div`
-  ${tw`bg-bud-yellow`}
+  ${tw`bg-bud-white`}
   position: fixed;
   top: 0;
   left: 0;
