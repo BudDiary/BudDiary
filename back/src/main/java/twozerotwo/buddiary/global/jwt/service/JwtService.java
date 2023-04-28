@@ -35,12 +35,6 @@ public class JwtService {
 	@Value("${jwt.refresh.expiration}")
 	private Long refreshTokenExpirationPeriod;
 
-	@Value("${jwt.access.header}")
-	private String accessHeader;
-
-	@Value("${jwt.refresh.header}")
-	private String refreshHeader;
-
 	/**
 	 * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"으로 설정
 	 * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)' 형식
@@ -52,6 +46,7 @@ public class JwtService {
 
 	/**
 	 * AccessToken 생성 메소드
+	 * 오늘 날자기준 access 토큰 생성
 	 */
 	public String createAccessToken(String username) {
 		Date now = new Date();
