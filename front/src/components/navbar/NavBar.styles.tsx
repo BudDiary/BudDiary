@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export const NavbarContainer = styled.div`
   ${tw`bg-bud-yellow`}
@@ -9,6 +9,7 @@ export const NavbarContainer = styled.div`
   left: 0;
   right: 0;
   height: 42px;
+  z-index: 7;
 `;
 
 export const NavbarBox = styled.div`
@@ -19,7 +20,6 @@ export const NavbarBox = styled.div`
 export const LogoContainer = styled(Link)`
   ${tw`flex font-berry text-3xl my-auto ml-4`}
 `;
-
 export const LogoBlue = styled.div`
   ${tw`text-bud-blue`}
 `;
