@@ -3,12 +3,17 @@ import tw from "twin.macro";
 // import { Link} from 'react-router-dom';
 
 export const NavbarContainer = styled.div`
-  ${tw`flex bg-bud-yellow justify-between md:px-[20%] sm:px-[10%] px-[20px]`}
+  ${tw`bg-bud-yellow`}
+  height: 56px;
+`;
+
+export const NavbarBox = styled.div`
+  ${tw`flex max-w-[1152px] mx-auto justify-between`}
   height: 56px;
 `;
 
 export const LogoContainer = styled.div`
-  ${tw`flex font-berry text-4xl my-auto`}
+  ${tw`flex font-berry text-4xl my-auto ml-4`}
 `;
 
 export const LogoBlue = styled.div`
@@ -31,6 +36,6 @@ export const ProfileItem = styled.button`
   height: 30px;
 `;
 
-export const MobileMenu = styled.div`
-  ${tw`my-auto text-2xl visible sm:invisible`}
+export const MobileMenu = styled.button`
+  ${tw`my-auto mr-4 text-2xl visible sm:hidden`}
 `;
