@@ -1,9 +1,11 @@
 package twozerotwo.buddiary.global.service;
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.global.oauth.CustomOAuth2User;
 import twozerotwo.buddiary.global.oauth.OAuthAttributes;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.entity.Member;
@@ -50,14 +53,10 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 		Map<String, Object> attributes = oAuth2User.getAttributes();
 		OAuthAttributes extractAttributes = OAuthAttributes.of(socialType, userNameAttributeName, attributes);
 		Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
-		// return new CustomOAuth2User(
-		// 	Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
-		// 	attributes,
-		// 	extractAttributes.getNameAttributeKey(),
-		// 	createdUser.getEmail(),
-		// 	createdUser.getRole()
-		// );
-		return null;
+		return new CustomOAuth2User(
+			Collections.singleton(new SimpleGrantedAuthority("USER")),
+			attributes, extractAttributes.getNameAttributeKey(), createdUser.getUsername(), "USER"
+		);
 	}
 
 	private SocialType getSocialType(String registrationId) {
