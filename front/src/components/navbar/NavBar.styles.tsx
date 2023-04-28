@@ -4,6 +4,10 @@ import tw from "twin.macro";
 
 export const NavbarContainer = styled.div`
   ${tw`bg-bud-yellow`}
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 56px;
 `;
 
