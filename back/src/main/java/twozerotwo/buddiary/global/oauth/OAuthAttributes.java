@@ -18,8 +18,11 @@ import twozerotwo.buddiary.persistence.entity.Member;
 @Getter
 @Slf4j
 public class OAuthAttributes {
-	private String nameAttributeKey;// 오어스 로그인 진행시 키가 되는 필드값 , PK 와 같은 의미
-	private OAuth2UserInfo oauth2UserInfo;// 소셜 타입별 로그인 유지 정보
+	// 오어스 로그인 진행시 키가 되는 필드값 , PK 와 같은 의미
+	private String nameAttributeKey;
+	// 소셜 타입별 로그인 유지 정보
+
+	private OAuth2UserInfo oauth2UserInfo;
 
 	@Builder
 	public OAuthAttributes(String nameAttributeKey, OAuth2UserInfo oauth2UserInfo) {

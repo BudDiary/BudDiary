@@ -7,7 +7,8 @@ public abstract class OAuth2UserInfo {
 
 	public OAuth2UserInfo(Map<String, Object> attributes) {
 		this.attributes = attributes;
-	}//생성자 파라미터로 attributes 주입받아서 각 소셧타입별 유정 정보 클래스가 소셜 타입에 맞는 attributes 를 주입받아 가져가도록 함
+	}
+	//생성자 파라미터로 attributes 주입받아서 각 소셧타입별 유정 정보 클래스가 소셜 타입에 맞는 attributes 를 주입받아 가져가도록 함
 
 	public abstract String getId();
 

@@ -20,7 +20,6 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
- 
 	private final MemberRepository memberRepository;
 
 	@Override

@@ -32,7 +32,8 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 		new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD); // "/login" + POST로 온 요청에 매칭된다.
 
 	public CustomJsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper) {
-		super(DEFAULT_LOGIN_REQUEST_URL);// jwt 필터가  설정한 "login" + POST로 온 요청을 처리하기 위해 설정
+		// jwt 필터가  설정한 "login" + POST로 온 요청을 처리하기 위해 설정
+		super(DEFAULT_LOGIN_REQUEST_URL);
 		this.objectMapper = objectMapper;
 	}
 
@@ -62,12 +63,13 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 			throw new AuthenticationServiceException(
 				"Authentication Content-Type not supported: " + request.getContentType());
 		}
+		//principal 과 credentials 전달
 		String messageBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
 		Map<String, String> usernamePasswordMap = objectMapper.readValue(messageBody, Map.class);
 		String username = usernamePasswordMap.get(USERNAME_KEY);
 		String password = usernamePasswordMap.get(PASSWORD_KEY);
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,
-			password);//principal 과 credentials 전달
+			password);
 
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
