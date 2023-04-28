@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.global.auth.service.JwtTokenProvider;
+import twozerotwo.buddiary.global.oauth.CustomOAuth2User;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
-	private final JwtTokenProvider jwtTokenProvider;
+ 
 	private final MemberRepository memberRepository;
 
 	@Override
@@ -28,6 +28,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		Authentication authentication) throws IOException, ServletException {
 		log.info("OAuth 성공");
 		try {
+			CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 
 		} catch (Exception err) {
 			throw err;

@@ -2,36 +2,35 @@ package twozerotwo.buddiary.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.global.oauth.dto.SocialType;
+import twozerotwo.buddiary.persistence.enums.Role;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Member implements UserDetails {
+public class Member {
 	@Id
 	@Column(name = "MEMBER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +47,11 @@ public class Member implements UserDetails {
 	@Builder.Default
 	private LocalDateTime enrollDate = LocalDateTime.now();
 
-	@ElementCollection
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	//민우 요청사항 추가 설문조사
 	@Builder.Default
-	private List<String> roles = new ArrayList<>() {
-		{
-			add("USER");
-		}
-	};
-
+	private boolean checkPreference = false;
 	@Builder.Default
 	private boolean accountNonLocked = true;
 	@Builder.Default
@@ -72,30 +68,49 @@ public class Member implements UserDetails {
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Diary> diaries = new ArrayList<>();
 
-	//implements methods
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// 권한 부여
-		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	@Enumerated(EnumType.STRING)
+	private SocialType socialType; // KAKAO, NAVER, GOOGLE
+	@Builder.Default
+	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
+	private String refreshToken;
+
+	public void authorizeUser() {
+		this.role = Role.USER;
 	}
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return this.accountNotExpired;
+	// 비밀번호 암호화 메소드
+	public void passwordEncode(PasswordEncoder passwordEncoder) {
+		this.password = passwordEncoder.encode(this.password);
 	}
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return this.accountNonLocked;
+	public void updateRefreshToken(String updateRefreshToken) {
+		this.refreshToken = updateRefreshToken;
 	}
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return this.enabled;
-	}
+	// //implements methods
+	// @Override
+	// public Collection<? extends GrantedAuthority> getAuthorities() {
+	// 	// 권한 부여
+	// 	return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	// }
+	//
+	// @Override
+	// public boolean isAccountNonExpired() {
+	// 	return this.accountNotExpired;
+	// }
+	//
+	// @Override
+	// public boolean isAccountNonLocked() {
+	// 	return this.accountNonLocked;
+	// }
+	//
+	// @Override
+	// public boolean isCredentialsNonExpired() {
+	// 	return false;
+	// }
+	//
+	// @Override
+	// public boolean isEnabled() {
+	// 	return this.enabled;
+	// }
 }

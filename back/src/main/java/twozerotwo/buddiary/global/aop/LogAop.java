@@ -12,13 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @Component
 public class LogAop {
-	@Before("execution(* twozerotwo.buddiary..*(..)) && !execution(* twozerotwo.buddiary.global.auth..*(..))")
+	@Before("execution(* twozerotwo.buddiary..*(..)) && !execution(* twozerotwo.buddiary.global.jwt..*(..))")
 	public void before(JoinPoint joinPoint) {
 		log.info("[log] {} -> {} 실행", joinPoint.getSignature().getDeclaringType().getSimpleName(),
 			joinPoint.getSignature().getName());
 	}
 
-	@After("execution(* twozerotwo.buddiary..*(..)) && !execution(* twozerotwo.buddiary.global.auth..*(..))")
+	@After("execution(* twozerotwo.buddiary..*(..)) && !execution(* twozerotwo.buddiary.global.jwt..*(..))")
 	public void after(JoinPoint joinPoint) {
 		log.info("[log] {} -> {} 종료", joinPoint.getSignature().getDeclaringType().getSimpleName(),
 			joinPoint.getSignature().getName());

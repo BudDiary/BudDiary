@@ -1,4 +1,4 @@
-package twozerotwo.buddiary.global.service;
+package twozerotwo.buddiary.global.oauth.service;
 
 import java.util.Collections;
 import java.util.Map;
@@ -26,7 +26,7 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 @RequiredArgsConstructor
 public class CustomOauthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	private final MemberRepository memberRepository;
-	private static final String KAKAO = "kakao";
+	private static final String KAKAO = "KAKAO";
 
 	/**
 	 * DefaultOAuth2UserService 생성하고 loadUser(userRequest) 를 통해 DefaultOAuth2User 객체를 생성, 반환
