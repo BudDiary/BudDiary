@@ -1,4 +1,4 @@
-package twozerotwo.buddiary.global.oauth.config;
+package twozerotwo.buddiary.global.oauth.hadler;
 
 import java.io.IOException;
 
