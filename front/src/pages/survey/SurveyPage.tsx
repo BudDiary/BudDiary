@@ -65,7 +65,7 @@ export default function SurveyPage() {
 
       <br />
       {currentSentenceIndex === 7 ? (
-        <button>완료</button>
+        <button>완료!</button>
       ): (
         <button onClick={outputNextSentence}>다음</button>
       )}
