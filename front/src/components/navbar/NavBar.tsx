@@ -11,12 +11,17 @@ import {
   NavbarBox,
 } from "./NavBar.styles";
 import { RxHamburgerMenu } from "react-icons/rx";
+import MobileSidebar from "./MobileSidebar";
+import { useState } from "react";
 
 export default function NavBar() {
+  const [sideBarState, setSidebarState] = useState(false);
   const showSidebar = () => {
-    alert("사이드바 보여줄거여");
+    setSidebarState(true)
   };
   return (
+    <div>
+      {sideBarState === true ? <MobileSidebar /> : null}
     <NavbarContainer>
       <NavbarBox>
         <LogoContainer>
@@ -35,5 +40,6 @@ export default function NavBar() {
         </MobileMenu>
       </NavbarBox>
     </NavbarContainer>
+    </div>
   );
 }
