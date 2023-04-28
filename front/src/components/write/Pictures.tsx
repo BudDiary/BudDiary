@@ -11,6 +11,7 @@ interface Props {
 
 export default function Pictures({ originFiles }: Props) {
   return (
+    <>
     <Swiper
     pagination={{
       type: 'fraction',
@@ -18,12 +19,13 @@ export default function Pictures({ originFiles }: Props) {
     navigation={true}
     modules={[Pagination, Navigation]}
     
-  >
+    >
     {originFiles.map((file, index) => (
       <SwiperSlide key={index}>
         <img src={URL.createObjectURL(file)} alt={'사진'} />
       </SwiperSlide>
     ))}
   </Swiper>
+    </>
   );
 }
