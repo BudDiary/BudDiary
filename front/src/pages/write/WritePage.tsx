@@ -16,7 +16,6 @@ export default function WritePage() {
           originFiles={originFiles}
           setOriginFiles={setOriginFiles}
         />
-        
           <Pictures originFiles={originFiles} />
           <Content setContent={setContent} />
         
