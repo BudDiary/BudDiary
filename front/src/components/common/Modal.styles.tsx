@@ -18,3 +18,4 @@ export const ModalContainer = styled.div`
   ${tw`bg-white h-[75%] w-[320px] sm:w-[50%] rounded-xl border-2 p-10`}
 `;
 
+

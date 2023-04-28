@@ -2,7 +2,11 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const MyPageContainer = styled.div`
-    ${tw`grid grid-cols-1 h-[calc(100%-56px)] sm:grid-cols-2 sm:grid-rows-2 gap-4 bg-red-200`}
+    height: 100vh;
+    ${tw`grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-4 bg-red-200`}
+`
+export const SubNavContainer = styled.div`
+    ${tw`bg-orange-700 sm:h-[180px] h-0 text-center sm:pt-16 text-3xl`}
 `
 
 export const MyProfileInfoContainer = styled.div`

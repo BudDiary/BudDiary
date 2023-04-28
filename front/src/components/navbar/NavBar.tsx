@@ -24,13 +24,13 @@ export default function NavBar() {
       {sideBarState === true ? <MobileSidebar /> : null}
     <NavbarContainer>
       <NavbarBox>
-        <LogoContainer>
+        <LogoContainer to='/'>
           <LogoBlue>Bud</LogoBlue>
           <LogoGreen>:D</LogoGreen>
           <LogoBlue>iary</LogoBlue>
         </LogoContainer>
-        <MenuItem>그룹일기</MenuItem>
-        <MenuItem>일기작성</MenuItem>
+        <MenuItem to='/group'>그룹일기</MenuItem>
+        <MenuItem to='/write'>일기작성</MenuItem>
         <ProfileContainer>
           로그인
           <ProfileItem></ProfileItem>
