@@ -31,6 +31,7 @@ export default function Addpicture({
     setTab("WRITE_CONTENT");
   };
   return (
+    <div className = 'bg-red-800 flex justify-center'>
     <FileUploader
     handleChange={imageRegistHandler}
     name='file'
@@ -45,5 +46,6 @@ export default function Addpicture({
       />
     </button>
   </FileUploader>
+  </div>
   );
 }
