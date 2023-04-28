@@ -9,6 +9,7 @@ export const NavbarContainer = styled.div`
   left: 0;
   right: 0;
   height: 56px;
+  z-index: 7;
 `;
 
 export const NavbarBox = styled.div`
@@ -19,7 +20,6 @@ export const NavbarBox = styled.div`
 export const LogoContainer = styled.div`
   ${tw`flex font-berry text-4xl my-auto ml-4`}
 `;
-
 export const LogoBlue = styled.div`
   ${tw`text-bud-blue`}
 `;
