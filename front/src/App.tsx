@@ -1,38 +1,24 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import useMember from "./hooks/memberHook";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import store from "./store/store";
 import "./App.css";
 
-import NotFound from "./pages/notfound/NotFoundPage";
-import WritePage from "./pages/write/WritePage";
-import GroupDetailPage from "./pages/groupdetail/GroupDetailPage";
-import GroupPage from "./pages/group/GroupPage";
-import SurveyPage from "./pages/survey/SurveyPage";
-import HomePage from "./pages/home/HomePage";
-import MypagePage from "./pages/mypage/MypagePage";
 import NavBar from "./components/navbar/NavBar";
+import LoadPage from "./pages/load/LoadPage";
 
-const router = createBrowserRouter([
-  {
-    errorElement: <NotFound />,
-    children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/survey", element: <SurveyPage /> },
-      { path: "/group", element: <GroupPage /> },
-      { path: "/group/:id", element: <GroupDetailPage /> },
-      { path: "/write", element: <WritePage /> },
-      { path: "/mypage", element: <MypagePage /> },
-    ],
-  },
-]);
+const persistor = persistStore(store);
 
-export default function App() {
-  const { isLoggedIn } = useMember();
+function App() {
   return (
-    <div className="App">
-      <NavBar />
-      <div className={isLoggedIn ? "page" : "login"}>
-        <RouterProvider router={router} />
-      </div>
-    </div>
+    <React.Suspense fallback={<LoadPage />}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavBar />
+        <Outlet />
+      </PersistGate>
+    </React.Suspense>
   );
 }
+
+export default App;

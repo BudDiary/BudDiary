@@ -1,27 +1,33 @@
-import React from 'react'
-import { LogoBlue,LogoContainer,LogoGreen, MenuItem,ProfileContainer,ProfileItem, NavbarContainer, MobileMenu } from './NavBar.styles'
-import {RxHamburgerMenu} from 'react-icons/rx'
-
+import React from "react";
+import {
+  LogoBlue,
+  LogoContainer,
+  LogoGreen,
+  MenuItem,
+  ProfileContainer,
+  ProfileItem,
+  NavbarContainer,
+  MobileMenu,
+} from "./NavBar.styles";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 export default function NavBar() {
   return (
     <NavbarContainer>
       <LogoContainer>
-          <LogoBlue>Bud</LogoBlue>
-          <LogoGreen>:D</LogoGreen>
-          <LogoBlue>iary</LogoBlue>
+        <LogoBlue>Bud</LogoBlue>
+        <LogoGreen>:D</LogoGreen>
+        <LogoBlue>iary</LogoBlue>
       </LogoContainer>
-      <MenuItem>
-        그룹일기
-      </MenuItem>
-      <MenuItem>
-        일기작성
-      </MenuItem>
+      <MenuItem>그룹일기</MenuItem>
+      <MenuItem>일기작성</MenuItem>
       <ProfileContainer>
         로그인
         <ProfileItem></ProfileItem>
       </ProfileContainer>
-      <MobileMenu><RxHamburgerMenu /></MobileMenu>
+      <MobileMenu>
+        <RxHamburgerMenu />
+      </MobileMenu>
     </NavbarContainer>
-  )
+  );
 }
