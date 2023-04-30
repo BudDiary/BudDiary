@@ -37,7 +37,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 				// Cookie accessCookie = new Cookie(ACCESS_TOKEN_SUBJECT, accessToken);
 				// 회원은 아니니 리프래쉬는 주지 않는다. 그냥 주지 말까? 가입하면 토큰주는걸로 할까
-				// jwtService.sendAccessAndRefreshToken(response, accessToken, null);
+				jwtService.sendAccessAndRefreshToken(response, accessToken, null);
 				response.sendRedirect("oauth2/sign-up");
 
 			} else {

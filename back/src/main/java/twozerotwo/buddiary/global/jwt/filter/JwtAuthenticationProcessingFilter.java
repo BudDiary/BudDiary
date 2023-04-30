@@ -1,6 +1,7 @@
 package twozerotwo.buddiary.global.jwt.filter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -41,6 +42,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 		// "/login"으로 들어오는 요청은 Filter 작동 X 로그인 의경우 토큰 유효성이 아니라 인증인가를 바로 하면됨
 		if (request.getRequestURI().equals(NO_CHECK_URL)) {
+			log.info("go other filter");
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -51,6 +53,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		 *  사용자의 요청 헤더에 RefreshToken이 있는 경우는, AccessToken이 만료되어 요청한 경우밖에 없다.
 		 *  따라서, 위의 경우를 제외하면 추출한 refreshToken은 모두 null
 		 */
+		log.info(request.getRequestURI());
 		String refreshToken = jwtService.extractRefreshToken(request)
 			.filter(jwtService::isTokenValid)
 			.orElse(null);
@@ -102,11 +105,17 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 		log.info("checkAccessTokenAndAuthentication() 호출");
+		Optional<String> s = jwtService.extractAccessToken(request);
+		String testEmail = s.orElse(null);
+		log.info("email :{}", testEmail);
+
 		jwtService.extractAccessToken(request)
 			.filter(jwtService::isTokenValid)
 			.ifPresent(accessToken -> jwtService.extractUserName(accessToken)
-				.ifPresent(email -> memberRepository.findByUsername(email)
-					.ifPresent(this::saveAuthentication)));
+				.ifPresent(email ->
+					memberRepository.findByUsername(email)
+
+						.ifPresent(this::saveAuthentication)));
 
 		filterChain.doFilter(request, response);
 	}

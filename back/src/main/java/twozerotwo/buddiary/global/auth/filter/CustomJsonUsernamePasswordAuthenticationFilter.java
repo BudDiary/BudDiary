@@ -60,6 +60,7 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
 		AuthenticationException, IOException {
+		log.info("로그인 요청을 보넸습니다.");
 		if (request.getContentType() == null || !request.getContentType().equals(CONTENT_TYPE)) {
 			throw new AuthenticationServiceException(
 				"Authentication Content-Type not supported: " + request.getContentType());

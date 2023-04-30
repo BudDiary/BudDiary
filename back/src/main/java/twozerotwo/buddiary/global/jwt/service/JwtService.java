@@ -50,6 +50,7 @@ public class JwtService {
 	 */
 	public String createAccessToken(String username) {
 		Date now = new Date();
+		log.info("토큰 만들기");
 		return JWT.create() // JWT 토큰을 생성하는 빌더 반환
 			.withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
 			.withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
@@ -89,8 +90,8 @@ public class JwtService {
 		Cookie cookie = new Cookie(ACCESS_TOKEN_SUBJECT, accessToken);
 
 		if (envName.equals("local")) {
-
-			cookie.setDomain("local");
+			log.info("test");
+			cookie.setDomain("localhost");
 		}
 		cookie.setPath("/");
 		cookie.setMaxAge(1000000000);
@@ -137,7 +138,12 @@ public class JwtService {
 	 * 헤더에서 RefreshToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractRefreshToken(HttpServletRequest request) {
+		log.info(request.getRequestURI());
+		if (request.getCookies() == null) {
+			log.info("쿠키가 없습니다");
+		}
 		for (Cookie cookie : request.getCookies()) {
+			log.info("쿠키 {}", cookie.getName());
 			if (cookie.getName().equals(REFRESH_TOKEN_SUBJECT)) {
 				return Optional.ofNullable(cookie.getValue()); // 옵셔널객체에 담아서 리턴
 			}
@@ -151,6 +157,7 @@ public class JwtService {
 	 */
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
 		for (Cookie cookie : request.getCookies()) {
+			log.info("쿠키값 :{}", cookie.getName(), cookie.getValue());
 			if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
 				return Optional.ofNullable(cookie.getValue());
 			}
