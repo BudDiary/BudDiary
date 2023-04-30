@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,11 +26,10 @@ import twozerotwo.buddiary.domain.diary.service.DiaryService;
 public class DiaryController {
 	private final DiaryService diaryService;
 
-	//----------------------------------------------개인 다이어리 작성------------------------------------------------
+	//----------------------------------------------다이어리 작성------------------------------------------------
 	@PostMapping
-	public ResponseEntity<DiaryPostResponse> createDiary(@ModelAttribute @Valid DiaryPostRequest request) throws IOException {
+	public ResponseEntity<DiaryPostResponse> createDiary(@ModelAttribute DiaryPostRequest request) throws IOException {
 		DiaryPostResponse response = diaryService.createDiary(request);
-		// return ResponseEntity.ok().body(DiaryPostResponse);
-		return null;
+		return ResponseEntity.ok().body(response);
 	}
 }

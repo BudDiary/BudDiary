@@ -66,13 +66,13 @@ public class Member implements UserDetails {
 	@OneToMany(mappedBy = "member")
 	private Set<MemberClub> memberClubs = new HashSet<>();
 
-	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<Notification> notifications = new ArrayList<>();
 
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Diary> diaries = new ArrayList<>();
+	// @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+	// private List<Diary> diaries = new ArrayList<>();
 
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<UnusedSticker> stickers = new ArrayList<>();
 
 
@@ -101,5 +101,9 @@ public class Member implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.enabled;
+	}
+
+	public void addPoint(Long point) {
+		this.point += point;
 	}
 }

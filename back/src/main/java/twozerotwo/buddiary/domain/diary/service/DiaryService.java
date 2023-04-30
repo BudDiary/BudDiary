@@ -25,12 +25,13 @@ public class DiaryService {
 	private final DiaryRepository diaryRepository;
 	private final ClubRepository clubRepository;
 	private final S3Uploader s3Uploader;
+	private final Long WRITE_POINT = 5L;
 
 	public DiaryPostResponse createDiary(DiaryPostRequest request) throws IOException {
 		// member 반환
 		/// TODO: 2023-04-28 예외처리 변경
-		Member member = memberRepository.findById(request.getMemberId())
-			.orElseThrow(()-> new RuntimeException());
+		// Member member = memberRepository.findById((Long)request.getMemberId())
+		// 	.orElseThrow(()-> new RuntimeException());
 		// 사진이 있으면 url 반환
 		String imageUrl = null;
 		if (request.getDiaryPhoto() != null) {
@@ -42,15 +43,24 @@ public class DiaryService {
 			/// TODO: 2023-04-28 예외처리 변경
 			Club club = clubRepository.findById(request.getClubUuid())
 				.orElseThrow(()-> new RuntimeException());
-			diary = request.makeClubDiary(member, imageUrl, club);
+			diary = request.makeClubDiary(imageUrl, club);
 		} else {
-			diary = request.makePersonalDiary(member, imageUrl);
+			diary = request.makePersonalDiary(imageUrl);
 		}
+		// diary = request.makePersonalDiary(imageUrl);
 		diaryRepository.save(diary);
-		return null;
-
-
 		// 포인트 ++
+		// member.addPoint(WRITE_POINT);
+		// memberRepository.save(member);
+		/// TODO: 2023-04-30 닉네임 주입 변경 
+		return DiaryPostResponse.builder()
+			.id(diary.getId())
+			.text(diary.getText())
+			.imagePath(imageUrl)
+			.writeDate(diary.getWriteDate())
+			// .writerNickname(member.getUsername())
+			// .writerId(member.getId())
+			.build();
 
 	}
 }

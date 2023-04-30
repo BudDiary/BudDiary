@@ -33,7 +33,7 @@ public class UnusedSticker {
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "STICKER_ID")
 	private Sticker sticker;
 

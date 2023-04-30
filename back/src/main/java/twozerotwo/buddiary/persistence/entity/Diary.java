@@ -46,11 +46,11 @@ public class Diary {
 	@Builder.Default
 	private LocalDateTime writeDate = LocalDateTime.now();
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MEMBER_ID")
-	private Member writer;
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "MEMBER_ID")
+	// private Member writer;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLUB_ID")
 	@Builder.Default
 	private Club club = null;

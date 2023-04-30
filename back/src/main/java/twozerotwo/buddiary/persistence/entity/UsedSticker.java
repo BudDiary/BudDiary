@@ -2,6 +2,7 @@ package twozerotwo.buddiary.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,12 +32,12 @@ public class UsedSticker {
 	private Double yCoordinate;
 
 	// 다이어리 아이디
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DIARY_ID")
 	private Diary diary;
 
 	// 스티커 아이디
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "STICKER_ID")
 	private Sticker sticker;
 

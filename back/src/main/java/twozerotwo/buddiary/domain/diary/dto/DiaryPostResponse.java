@@ -17,6 +17,6 @@ public class DiaryPostResponse {
 	private String text;
 	private String imagePath;
 	private LocalDateTime writeDate;
-	private String writerNickname;
-	private Long writerId;
+	// private String writerNickname;
+	// private Long writerId;
 }
