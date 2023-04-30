@@ -26,13 +26,13 @@ public class JwtService {
 	private final MemberRepository memberRepository;
 	@Value("${server.name}")
 	private String envName;
-	@Value("${jwt.token.secretKey}")
+	@Value("${jwt.token.secret}")
 	private String secretKey;
 
-	@Value("${jwt.access.expiration}")
+	@Value("${jwt.token.access.expiration}")
 	private Long accessTokenExpirationPeriod;
 
-	@Value("${jwt.refresh.expiration}")
+	@Value("${jwt.token.refresh.expiration}")
 	private Long refreshTokenExpirationPeriod;
 
 	/**
@@ -88,7 +88,7 @@ public class JwtService {
 		// TODO: 2023-04-28 httponly 설정
 		Cookie cookie = new Cookie(ACCESS_TOKEN_SUBJECT, accessToken);
 
-		if (envName == "local") {
+		if (envName.equals("local")) {
 
 			cookie.setDomain("local");
 		}

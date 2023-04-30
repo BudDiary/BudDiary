@@ -23,7 +23,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final JwtService jwtService;
 	private final MemberRepository memberRepository;
 
-	@Value("${jwt.access.expiration}")
+	@Value("${jwt.token.access.expiration}")
 	private String accessTokenExpiration;
 
 	@Override
