@@ -15,13 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.global.jwt.service.JwtService;
 import twozerotwo.buddiary.global.oauth.CustomOAuth2User;
 import twozerotwo.buddiary.persistence.enums.Role;
-import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
-	private final MemberRepository memberRepository;
 	private final JwtService jwtService;
 
 	private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";

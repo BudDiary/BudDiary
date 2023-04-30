@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
  * json 커스텀 필터를 위한 필터 jwt-> cjupaf 동작
  */
 @Slf4j
-@Component
 public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 	private final ObjectMapper objectMapper;
 	private static final String DEFAULT_LOGIN_REQUEST_URL = "/login"; // "/login"으로 오는 요청을 처리
@@ -37,7 +35,6 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 
 	public CustomJsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper) {
 		super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER); // 위에서 설정한 "login" + POST로 온 요청을 처리하기 위해 설정
-		log.info("오브젝트 매퍼가 널인지 확인{}", objectMapper == null); //false
 		this.objectMapper = objectMapper;
 	}
 
@@ -62,8 +59,7 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
-		AuthenticationException,
-		IOException {
+		AuthenticationException, IOException {
 		if (request.getContentType() == null || !request.getContentType().equals(CONTENT_TYPE)) {
 			throw new AuthenticationServiceException(
 				"Authentication Content-Type not supported: " + request.getContentType());

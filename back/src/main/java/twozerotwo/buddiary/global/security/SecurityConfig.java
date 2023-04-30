@@ -1,7 +1,5 @@
 package twozerotwo.buddiary.global.security;
 
-import java.util.Collections;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +16,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.global.auth.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import twozerotwo.buddiary.global.auth.handler.LoginFailHandler;
 import twozerotwo.buddiary.global.auth.handler.LoginSuccessHandler;
@@ -34,19 +31,28 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
  * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
  * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
  */
-@Configuration
 @EnableWebSecurity
+@Configuration
 @RequiredArgsConstructor
-@Slf4j
 public class SecurityConfig {
 
 	private final LoginService loginService;
 	private final JwtService jwtService;
-	private final MemberRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final ObjectMapper objectMapper;
 	private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 	private final OAuth2LoginFailHandler oAuth2LoginFailureHandler;
 	private final CustomOauthUserService customOAuth2UserService;
+
+	@Bean
+	public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
+		CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter
+			= new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
+		customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
+		customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+		customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
+		return customJsonUsernamePasswordLoginFilter;
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -113,7 +119,7 @@ public class SecurityConfig {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setPasswordEncoder(passwordEncoder());
 		provider.setUserDetailsService(loginService);
-		return new ProviderManager(Collections.singletonList(provider));
+		return new ProviderManager(provider);
 	}
 
 	/**
@@ -121,7 +127,7 @@ public class SecurityConfig {
 	 */
 	@Bean
 	public LoginSuccessHandler loginSuccessHandler() {
-		return new LoginSuccessHandler(jwtService, userRepository);
+		return new LoginSuccessHandler(jwtService, memberRepository);
 	}
 
 	/**
@@ -138,21 +144,11 @@ public class SecurityConfig {
 	 * setAuthenticationManager(authenticationManager())로 위에서 등록한 AuthenticationManager(ProviderManager) 설정
 	 * 로그인 성공 시 호출할 handler, 실패 시 호출할 handler로 위에서 등록한 handler 설정
 	 */
-	@Bean
-	public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
-		log.info("널인지 검사 {}", objectMapper == null);
-		CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter = new CustomJsonUsernamePasswordAuthenticationFilter(
-			objectMapper);
-		customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
-		customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
-		customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
-		return customJsonUsernamePasswordLoginFilter;
-	}
 
 	@Bean
 	public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
 		JwtAuthenticationProcessingFilter jwtAuthenticationFilter = new JwtAuthenticationProcessingFilter(jwtService,
-			userRepository);
+			memberRepository);
 		return jwtAuthenticationFilter;
 	}
 }

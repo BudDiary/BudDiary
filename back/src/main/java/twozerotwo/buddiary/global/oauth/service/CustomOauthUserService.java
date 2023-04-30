@@ -3,8 +3,6 @@ package twozerotwo.buddiary.global.oauth.service;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.transaction.Transactional;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -38,7 +36,6 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 	 * @throws OAuth2AuthenticationException
 	 */
 	@Override
-	@Transactional
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
 		log.info("CustomOAuth2UserService.loadUser() 실행 - OAuth2 로그인 요청 진입 이제 리소스 오너 로 요청합니다.");
