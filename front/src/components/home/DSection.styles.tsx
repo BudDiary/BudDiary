@@ -3,5 +3,6 @@ import tw from "twin.macro";
 
 export const SectionContainer = styled.div`
   ${tw`relative bg-bud-blue`}
-  height : 100vh;
+  height: 100vh;
+  scroll-snap-align: start;
 `;

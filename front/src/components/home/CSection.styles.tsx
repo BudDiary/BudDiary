@@ -6,9 +6,10 @@ export const SectionContainer = styled.div`
   ${tw`relative bg-contain`}
   height: 100vh;
   width: 100vw;
+  scroll-snap-align: start;
 `;
 
-export const ImgaeContainer = styled.div`
+export const ImageContainer = styled.div`
   background-image: url(${img});
   ${tw`h-full bg-cover`}
 `;

@@ -1,10 +1,10 @@
 import React from "react";
-import { SectionContainer, ImgaeContainer } from "./CSection.styles";
+import { SectionContainer, ImageContainer } from "./CSection.styles";
 
-export default function BSection() {
+export default function CSection() {
   return (
     <SectionContainer>
-      <ImgaeContainer />
+      <ImageContainer />
     </SectionContainer>
   );
 }
