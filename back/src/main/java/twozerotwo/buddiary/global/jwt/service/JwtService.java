@@ -50,7 +50,7 @@ public class JwtService {
 	 */
 	public String createAccessToken(String username) {
 		Date now = new Date();
-		log.info("토큰 만들기");
+		log.info("createAccessToken 토큰 만들기");
 		return JWT.create() // JWT 토큰을 생성하는 빌더 반환
 			.withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
 			.withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
@@ -74,6 +74,8 @@ public class JwtService {
 	 * AccessToken + RefreshToken 헤더에 실어서 보내기
 	 */
 	public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
+
+		log.info("sendAccessAndRefreshToken 에 access token {}", accessToken);
 		response.setStatus(HttpServletResponse.SC_OK);
 
 		sendAccessToken(response, accessToken);
@@ -86,14 +88,14 @@ public class JwtService {
 	 */
 	public void sendAccessToken(HttpServletResponse response, String accessToken) {
 		response.setStatus(HttpServletResponse.SC_OK);
-		// TODO: 2023-04-28 httponly 설정
-		Cookie cookie = new Cookie(ACCESS_TOKEN_SUBJECT, accessToken);
-
+		Cookie cookie = new Cookie(ACCESS_TOKEN_SUBJECT, "" + accessToken);
+		log.info("profile mode is : {}", envName);
 		if (envName.equals("local")) {
-			log.info("test");
+
 			cookie.setDomain("localhost");
 		}
 		cookie.setPath("/");
+		cookie.setHttpOnly(true);
 		cookie.setMaxAge(1000000000);
 
 		response.addCookie(cookie);
@@ -102,14 +104,14 @@ public class JwtService {
 
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
 		response.setStatus(HttpServletResponse.SC_OK);
-		// TODO: 2023-04-28 httponly 설정
-		Cookie cookie = new Cookie(ACCESS_TOKEN_SUBJECT, refreshToken);
+		Cookie cookie = new Cookie(REFRESH_TOKEN_SUBJECT, "" + refreshToken);
 		if (envName == "local") {
 
 			cookie.setDomain("local");
 		}
 		cookie.setPath("/");
 		cookie.setMaxAge(1000000000);
+		cookie.setHttpOnly(true);
 		response.addCookie(cookie);
 		log.info("발급된 refreshToken  : {}", refreshToken);
 
@@ -140,29 +142,54 @@ public class JwtService {
 	public Optional<String> extractRefreshToken(HttpServletRequest request) {
 		log.info(request.getRequestURI());
 		if (request.getCookies() == null) {
-			log.info("쿠키가 없습니다");
+			return Optional.empty();
 		}
-		for (Cookie cookie : request.getCookies()) {
-			log.info("쿠키 {}", cookie.getName());
-			if (cookie.getName().equals(REFRESH_TOKEN_SUBJECT)) {
-				return Optional.ofNullable(cookie.getValue()); // 옵셔널객체에 담아서 리턴
+		try {
+			for (Cookie cookie : request.getCookies()) {
+				log.info("쿠키 {}", cookie.getName());
+				if (cookie.getName().equals(REFRESH_TOKEN_SUBJECT)) {
+					String token = cookie.getValue();
+					if (token != null) {
+						log.info(" extractRefreshToken 추출된 리프레쉬 토큰 token {}", token);
+						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
+					} else {
+						return Optional.empty();
+					}
+				}
 			}
-		}
-		return Optional.empty();
+			return Optional.empty();
+		} catch (NullPointerException nullPointerException) {
 
+			return Optional.empty();
+		}
 	}
 
 	/**
 	 * 헤더에서 AccessToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
-		for (Cookie cookie : request.getCookies()) {
-			log.info("쿠키값 :{}", cookie.getName(), cookie.getValue());
-			if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
-				return Optional.ofNullable(cookie.getValue());
-			}
+		log.info(request.getRequestURI());
+		if (request.getCookies() == null) {
+			return Optional.empty();
 		}
-		return Optional.empty();
+		try {
+			for (Cookie cookie : request.getCookies()) {
+				log.info("쿠키 {}", cookie.getName());
+				if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
+					String token = cookie.getValue();
+					if (token != null) {
+						log.info(" extractRefreshToken 추출된 엑세스 토큰 token {}", token);
+						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
+					} else {
+						return Optional.empty();
+					}
+				}
+			}
+			return Optional.empty();
+		} catch (NullPointerException nullPointerException) {
+
+			return Optional.empty();
+		}
 	}
 
 	/**
