@@ -29,15 +29,21 @@ public class Club {
 	@Column(name = "CLUB_ID")
 	private String uuid;
 
-	@Column(nullable = false)
+	@Column
 	private String name;
 	@Builder.Default
 	@Convert(converter = ClubTypeConverter.class)
 	private ClubType type = ClubType.PLURAL;
 	@Builder.Default
 	private LocalDateTime createDate = LocalDateTime.now();
+	@Builder.Default
+	private String captainUsername = null;
 
+	private Integer maximumMember;
+	@Builder.Default
+	private String thumbnailPath = null;
+	@Builder.Default
 	@OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
-	private Set<MemberClub> groupMembers = new HashSet<>();
+	private Set<MemberClub> clubMembers = new HashSet<>();
 
 }

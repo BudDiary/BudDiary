@@ -40,7 +40,7 @@ public class Reaction {
 	@JoinColumn(name = "DIARY_ID")
 	private Diary diary;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 

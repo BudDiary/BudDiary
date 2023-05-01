@@ -55,9 +55,10 @@ public class Diary {
 	@Builder.Default
 	private Club club = null;
 
-
+	@Builder.Default
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.REMOVE)
 	private List<Reaction> reactions = new ArrayList<>();
+	@Builder.Default
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.REMOVE)
 	private List<UsedSticker> usedStickers = new ArrayList<>();
 }

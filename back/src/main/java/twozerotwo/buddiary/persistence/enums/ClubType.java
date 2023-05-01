@@ -17,5 +17,4 @@ public enum ClubType {
 		return this.code;
 	}
 
-
 }
