@@ -1,5 +1,8 @@
 package twozerotwo.buddiary.domain.member.api;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +21,15 @@ import twozerotwo.buddiary.domain.member.service.MemberService;
 public class MemberController {
 	private final MemberService memberService;
 
-	@PostMapping("/sign-up")
-	public String signUp(@RequestBody MemberSignUpDto memberSignUpDto) throws Exception {
-		memberService.signUp(memberSignUpDto);
+	@PostMapping("/signup")
+	public String signUp(@RequestBody MemberSignUpDto memberSignUpDto, HttpServletRequest resRequest) throws Exception {
+		log.info("회원가입 요청 호출 jwt 인증 성공");
+		for (Cookie cookie : resRequest.getCookies()) {
+
+
+		}
+		// 리프래쉬 토큰 발급
+		// memberService.signUp(memberSignUpDto);
 		return "회원가입 성공";
 	}
 

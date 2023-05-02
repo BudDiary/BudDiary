@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 	private final ObjectMapper objectMapper;
-	private static final String DEFAULT_LOGIN_REQUEST_URL = "/login"; // "/login"으로 오는 요청을 처리
+	private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/members/login"; // "/login"으로 오는 요청을 처리
 	private static final String HTTP_METHOD = "POST"; // 로그인 HTTP 메소드는 POST
 	private static final String CONTENT_TYPE = "application/json"; // JSON 타입의 데이터로 오는 로그인 요청만 처리
 	private static final String USERNAME_KEY = "username"; // 회원 로그인 시 이메일 요청 JSON Key : "username"
@@ -60,7 +60,7 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
 		AuthenticationException, IOException {
-		log.info("로그인 요청을 보넸습니다.");
+		log.info("로그인 요청을 보넸습니다. 로그인 필터 동작");
 		if (request.getContentType() == null || !request.getContentType().equals(CONTENT_TYPE)) {
 			throw new AuthenticationServiceException(
 				"Authentication Content-Type not supported: " + request.getContentType());

@@ -91,7 +91,6 @@ public class JwtService {
 		Cookie cookie = new Cookie(ACCESS_TOKEN_SUBJECT, "" + accessToken);
 		log.info("profile mode is : {}", envName);
 		if (envName.equals("local")) {
-
 			cookie.setDomain("localhost");
 		}
 		cookie.setPath("/");
@@ -140,7 +139,7 @@ public class JwtService {
 	 * 헤더에서 RefreshToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractRefreshToken(HttpServletRequest request) {
-		log.info(request.getRequestURI());
+		log.info("요청 받은 리퀘스트 {}",request.getRequestURI());
 		if (request.getCookies() == null) {
 			return Optional.empty();
 		}
@@ -168,13 +167,12 @@ public class JwtService {
 	 * 헤더에서 AccessToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
-		log.info(request.getRequestURI());
 		if (request.getCookies() == null) {
 			return Optional.empty();
 		}
 		try {
 			for (Cookie cookie : request.getCookies()) {
-				log.info("쿠키 {}", cookie.getName());
+				log.info("요청에서 가져온 쿠키 {}", cookie.getName());
 				if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
 					String token = cookie.getValue();
 					if (token != null) {
@@ -202,10 +200,13 @@ public class JwtService {
 	public Optional<String> extractUserName(String accessToken) {
 		try {
 			// 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
-			return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
-				.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
-				.getClaim(USERNAME_CLAIM) // claim(Emial) 가져오기
-				.asString());
+			Optional<String> userName = Optional.ofNullable(
+				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
+					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+					.getClaim(USERNAME_CLAIM) // claim(Emial) 가져오기
+					.asString());
+			log.info("access 토큰에서 추출된 유저 이름입니다 {}", userName.orElse("없습니다."));
+			return userName;
 		} catch (Exception e) {
 			log.error("액세스 토큰이 유효하지 않습니다.");
 			return Optional.empty();
