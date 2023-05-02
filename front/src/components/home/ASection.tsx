@@ -8,6 +8,8 @@ import {
   FirstDetail,
   SeceondDetail,
   EasterEgg,
+  MouseHelper,
+  MouseWheel,
 } from "./ASection.styles";
 
 export default function ASection() {
@@ -24,6 +26,8 @@ export default function ASection() {
         </SeceondContent>
         <ThirdContent>공유해보세요</ThirdContent>
       </TextContainer>
+      <MouseHelper />
+      <MouseWheel />
     </SectionContainer>
   );
 }
