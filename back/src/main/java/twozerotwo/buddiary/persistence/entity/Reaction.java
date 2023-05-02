@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.reaction.dto.DiaryReactionDto;
 import twozerotwo.buddiary.persistence.enums.ActionType;
 import twozerotwo.buddiary.persistence.enums.ActionTypeConverter;
 
@@ -44,4 +45,11 @@ public class Reaction {
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
+	public DiaryReactionDto toDto() {
+		return DiaryReactionDto.builder()
+			.id(this.id)
+			.username(this.member.getUsername())
+			.actionType(this.getType())
+			.build();
+	}
 }

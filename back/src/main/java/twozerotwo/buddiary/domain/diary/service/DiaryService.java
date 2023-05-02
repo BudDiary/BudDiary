@@ -28,6 +28,7 @@ import twozerotwo.buddiary.persistence.repository.ClubRepository;
 import twozerotwo.buddiary.persistence.repository.DiaryRepository;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 import twozerotwo.buddiary.persistence.repository.StickerRepository;
+import twozerotwo.buddiary.persistence.repository.UnusedStickerRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class DiaryService {
 	private final DiaryRepository diaryRepository;
 	private final ClubRepository clubRepository;
 	private final StickerRepository stickerRepository;
+	private final UnusedStickerRepository unusedStickerRepository;
 	private final S3Uploader s3Uploader;
 	private final ClubService clubService;
 	private final Long WRITE_POINT = 5L;
@@ -92,12 +94,19 @@ public class DiaryService {
 						break;
 					}
 				}
+				log.info("flag"+ flag.toString());
 				if (!flag) {
 					throw new RuntimeException("스티커를 보유하고 있지 않습니다.");
 				} else {
 					Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
 							.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
-					UsedSticker usedSticker = diary.useSticker(sticker, stickerDto.getXCoordinate(), stickerDto.getYCoordinate());
+					UsedSticker usedSticker =  UsedSticker.builder()
+						.diary(diary)
+						.xCoordinate(stickerDto.getXCoordinate())
+						.yCoordinate(stickerDto.getYCoordinate())
+						.sticker(sticker)
+						.build();
+					// 스티커 하나 줄이기
 					usedStickerList.add(usedSticker);
 				}
 			}
@@ -118,5 +127,20 @@ public class DiaryService {
 		// 스티커 리스트 만들고
 		makeStickerList(savedDiary, request.getStickerDtoList());
 
+	}
+	@Transactional
+	public void minusStickerCnt(DiaryPostRequest request) {
+		Member member = memberRepository.findByUsername(request.getMemberUsername())
+			.orElseThrow(() -> new RuntimeException("잘못된 username"));
+		if (request.getStickerDtoList() != null) {
+			for (StickerDto stickerDto : request.getStickerDtoList()) {
+				Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
+					.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
+				// Unused 스티커 조회해서 리턴
+				UnusedSticker unusedSticker = unusedStickerRepository.findByMemberIdAndStickerId(member, sticker);
+				// Unused 스티커 cnt -1
+				unusedSticker.minusCnt();
+			}
+		}
 	}
 }

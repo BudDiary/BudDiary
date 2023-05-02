@@ -37,6 +37,11 @@ public class UnusedSticker {
 	@JoinColumn(name = "STICKER_ID")
 	private Sticker sticker;
 
+	public void minusCnt() {
 
-
+		if(this.count-1 < 0) {
+			throw new RuntimeException("해당 스티커 개수가 부족합니다.");
+		}
+		this.count--;
+	}
 }

@@ -53,10 +53,10 @@ public class Diary {
 	private Club club = null;
 
 	@Builder.Default
-	@OneToMany(mappedBy = "diary", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<Reaction> reactions = new ArrayList<>();
 	@Builder.Default
-	@OneToMany(mappedBy = "diary", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<UsedSticker> usedStickers = new ArrayList<>();
 
 	public UsedSticker useSticker(Sticker sticker, Double xCoordinate, Double yCoordinate) {

@@ -32,13 +32,21 @@ public class DiaryController {
 	@PostMapping
 	public ResponseEntity createDiary(@ModelAttribute DiaryPostRequest request) throws IOException {
 		List<String> clubList = request.getClubList();
+		Boolean isSelected = false;
 		if (request.getClubList().size() > 0) {
+			isSelected = true;
 			for (String clubUuid : clubList) {
 				diaryService.createClubDiary(request, clubUuid);
 			}
 		}
 		if (request.getIsPersonal()) {
+			isSelected = true;
 			diaryService.createPersonalDiary(request);
+		}
+		if (!isSelected) {
+			throw new RuntimeException("ff");
+		} else {
+			diaryService.minusStickerCnt(request);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
