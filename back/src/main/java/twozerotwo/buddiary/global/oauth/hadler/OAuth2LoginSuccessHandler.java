@@ -54,9 +54,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 	}
 
 	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) {
-		log.info("로그인 성공은로 인헤 두개의 토크을 발급합니다.");
+		log.info("로그인 성공은로 인헤 두개의 토큰을 발급합니다.");
 		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 		String refreshToken = jwtService.createRefreshToken();
+		log.info("토큰 발급 밑 디비갱신");
 		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 		jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
 

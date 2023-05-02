@@ -74,9 +74,6 @@ public class Member {
 	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 	private String refreshToken;
 
-	public void authorizeUser() {
-		this.role = Role.USER;
-	}
 
 	// 비밀번호 암호화 메소드
 	public void passwordEncode(PasswordEncoder passwordEncoder) {
@@ -87,30 +84,5 @@ public class Member {
 		this.refreshToken = updateRefreshToken;
 	}
 
-	// //implements methods
-	// @Override
-	// public Collection<? extends GrantedAuthority> getAuthorities() {
-	// 	// 권한 부여
-	// 	return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-	// }
-	//
-	// @Override
-	// public boolean isAccountNonExpired() {
-	// 	return this.accountNotExpired;
-	// }
-	//
-	// @Override
-	// public boolean isAccountNonLocked() {
-	// 	return this.accountNonLocked;
-	// }
-	//
-	// @Override
-	// public boolean isCredentialsNonExpired() {
-	// 	return false;
-	// }
-	//
-	// @Override
-	// public boolean isEnabled() {
-	// 	return this.enabled;
-	// }
+
 }
