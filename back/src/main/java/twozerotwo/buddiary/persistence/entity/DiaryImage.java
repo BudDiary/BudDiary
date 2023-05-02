@@ -2,11 +2,13 @@ package twozerotwo.buddiary.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,16 +20,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Sticker {
+public class DiaryImage {
 	@Id
-	@Column(name = "STICKER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "DIARY_IMAGE_ID")
 	private Long id;
-	@NotBlank(message = "스티커 이미지 url이 없습니다.")
-	private String imageUrl;
-	@Size(min = 1, max = 20, message = "스티커 이름은 1자 이상 20자 이하여야 합니다.")
-	@Column(unique = true)
-	private String name;
-	@NotBlank(message = "스티커 가격을 설정하지 않았습니다.")
-	private Long price;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "DIARY_ID")
+	private Diary diary;
+
+	@NotBlank
+	private String imgUrl;
 }

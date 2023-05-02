@@ -27,6 +27,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 
 @Entity
 @Builder
@@ -65,15 +66,15 @@ public class Member implements UserDetails {
 	@Builder.Default
 	private boolean accountNotExpired = true;
 	@Builder.Default
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private Set<MemberClub> memberClubs = new HashSet<>();
 
 	@Builder.Default
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<Notification> notifications = new ArrayList<>();
 
-	// @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
-	// private List<Diary> diaries = new ArrayList<>();
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+	private List<Diary> diaries = new ArrayList<>();
 	@Builder.Default
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
 	private List<UnusedSticker> stickers = new ArrayList<>();
@@ -109,4 +110,5 @@ public class Member implements UserDetails {
 	public void addPoint(Long point) {
 		this.point += point;
 	}
+
 }

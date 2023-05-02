@@ -1,5 +1,9 @@
 package twozerotwo.buddiary.domain.club.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -13,7 +17,9 @@ import twozerotwo.buddiary.persistence.entity.Member;
 @Slf4j
 @RequiredArgsConstructor
 public class PluralCreateRequest {
-	private String name;
+	private String clubName;
+	@NotNull(message = "그룹 썸네일을 등록해주세요.")
 	private MultipartFile thumbnail;
+	private String captainUsername;
 
 }

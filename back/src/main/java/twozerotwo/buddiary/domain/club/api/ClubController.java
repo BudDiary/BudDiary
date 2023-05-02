@@ -1,5 +1,9 @@
 package twozerotwo.buddiary.domain.club.api;
 
+import java.io.IOException;
+
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,16 +32,15 @@ public class ClubController {
 	private final ClubService clubService;
 	//-------------------------------------------클럽 생성----------------------------------------------
 	@PostMapping("/double")
-	public ResponseEntity<ClubCreateResponse> createClub(@ModelAttribute DoubleCreateRequest request) {
+	public ResponseEntity<ClubCreateResponse> createClub(@RequestBody DoubleCreateRequest request) {
 
 		return new ResponseEntity<ClubCreateResponse>(clubService.createDouble(request), HttpStatus.CREATED);
 	}
 	@PostMapping("/plural")
-	public ResponseEntity<ClubCreateResponse> createClub(@ModelAttribute PluralCreateRequest request) {
+	public ResponseEntity<ClubCreateResponse> createClub(@ModelAttribute @Valid PluralCreateRequest request) throws
+		IOException {
 
-		ClubCreateResponse response = clubService.createPlural(request);
-
-		return null;
+		return new ResponseEntity<ClubCreateResponse>(clubService.createPlural(request), HttpStatus.CREATED);
 	}
 
 }

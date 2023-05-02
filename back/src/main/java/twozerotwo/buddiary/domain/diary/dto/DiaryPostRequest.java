@@ -1,7 +1,9 @@
 package twozerotwo.buddiary.domain.diary.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -19,28 +21,12 @@ import twozerotwo.buddiary.persistence.entity.Member;
 @Slf4j
 @RequiredArgsConstructor
 public class DiaryPostRequest {
-	private MultipartFile diaryPhoto;
+	private List<MultipartFile> fileList;
 	@Size(min = 1, max = 1000, message = "다이어리 내용은 1자 이상 1000자 이하여야 합니다.")
 	private String text;
-	private String clubUuid;
-	// private Long memberId;
-
-	public Diary makeClubDiary(String imageUrl, Club club) {
-		log.info(imageUrl);
-		return Diary.builder()
-			.club(club)
-			.text(this.text)
-			.photoPath(imageUrl)
-			// .writer(member)
-			.build();
-	}
-
-	public Diary makePersonalDiary(String imageUrl) {
-		log.info(imageUrl);
-		return Diary.builder()
-			.text(this.text)
-			.photoPath(imageUrl)
-			// .writer(member)
-			.build();
-	}
+	private List<String> clubList;
+	@NotNull
+	private Boolean isPersonal;
+	private List<StickerDto> stickerDtoList;
+	private String memberUsername;
 }

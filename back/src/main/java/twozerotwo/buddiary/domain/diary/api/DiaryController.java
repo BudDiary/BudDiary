@@ -1,9 +1,11 @@
 package twozerotwo.buddiary.domain.diary.api;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,8 +30,16 @@ public class DiaryController {
 
 	//----------------------------------------------다이어리 작성------------------------------------------------
 	@PostMapping
-	public ResponseEntity<DiaryPostResponse> createDiary(@ModelAttribute DiaryPostRequest request) throws IOException {
-		DiaryPostResponse response = diaryService.createDiary(request);
-		return ResponseEntity.ok().body(response);
+	public ResponseEntity createDiary(@ModelAttribute DiaryPostRequest request) throws IOException {
+		List<String> clubList = request.getClubList();
+		if (request.getClubList().size() > 0) {
+			for (String clubUuid : clubList) {
+				diaryService.createClubDiary(request, clubUuid);
+			}
+		}
+		if (request.getIsPersonal()) {
+			diaryService.createPersonalDiary(request);
+		}
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 }
