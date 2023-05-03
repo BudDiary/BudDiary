@@ -27,7 +27,6 @@ import twozerotwo.buddiary.persistence.enums.ClubTypeConverter;
 public class Club {
 	@Id
 	@Column(name = "CLUB_ID")
-	@NotBlank
 	private String uuid;
 
 	@Column(nullable = false)

@@ -1,5 +1,19 @@
 import React from "react";
+import { PageContainer } from "../../components/common/Page.styles";
+import { SubNavContainer } from "../mypage/MypagePage.styles";
+import Recommended from "../../components/group/Recommended";
+import MyGroup from "../../components/group/MyGroup";
+import MyRandom from "../../components/group/MyRandom";
 
 export default function GroupPage() {
-  return <div>Group!!</div>;
+  return (
+    <>
+    <SubNavContainer>나의 그룹</SubNavContainer>
+    <PageContainer>
+      <Recommended />
+      <MyGroup />
+      <MyRandom />
+    </PageContainer>
+    </>
+  );
 }
