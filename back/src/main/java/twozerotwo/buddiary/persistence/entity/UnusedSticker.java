@@ -9,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +36,7 @@ public class UnusedSticker {
 
 	public void minusCnt() {
 
-		if(this.count-1 < 0) {
+		if (this.count - 1 < 0) {
 			throw new RuntimeException("해당 스티커 개수가 부족합니다.");
 		}
 		this.count--;

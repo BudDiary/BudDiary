@@ -35,6 +35,7 @@ public class JwtTokenProvider {
 
 	private final Key key;
 	private final MemberRepository memberRepository;
+
 	public JwtTokenProvider(@Value("${jwt.token.secret}") String secretKey, MemberRepository memberRepository) {
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -51,9 +52,8 @@ public class JwtTokenProvider {
 
 		//        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
 
-
 		// Access token 생성
-		Date accessTokenExpiresIn = new Date(now + 86400000*3); // 유효기간 1일*3
+		Date accessTokenExpiresIn = new Date(now + 86400000 * 3); // 유효기간 1일*3
 		String accessToken = Jwts.builder()
 			.setSubject(authentication.getName())
 			.claim("auth", authorities)
@@ -71,8 +71,6 @@ public class JwtTokenProvider {
 		String username = authentication.getName();
 		Member member = memberRepository.findByUsername(username)
 			.orElseThrow(() -> new RuntimeException("d"));
-
-
 
 		return TokenInfo.builder()
 			.grantType("Bearer")
@@ -107,14 +105,15 @@ public class JwtTokenProvider {
 		try {
 			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 			return true;
-		}catch(ExpiredJwtException e) {   // Token이 만료된 경우 Exception이 발생한다.
+		} catch (ExpiredJwtException e) {   // Token이 만료된 경우 Exception이 발생한다.
 			log.error("Token Expired");
 
-		}catch(JwtException e) {        // Token이 변조된 경우 Exception이 발생한다.
+		} catch (JwtException e) {        // Token이 변조된 경우 Exception이 발생한다.
 			log.error("Token Error");
 		}
 		return false;
 	}
+
 	public Member getMember(String token) {
 		Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 		String username = String.valueOf(claims.getBody().get("username"));
@@ -122,7 +121,7 @@ public class JwtTokenProvider {
 			.orElseThrow(() -> new RuntimeException("로그인된 사용자를 찾을 수 없습니다."));
 	}
 
-	public String getUserNameWithToken (String token){
+	public String getUserNameWithToken(String token) {
 		Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 		String username = String.valueOf(claims.getBody().get("username"));
 
@@ -137,9 +136,8 @@ public class JwtTokenProvider {
 		}
 	}
 
-	public String getToken (String token){
-		return  token == null ? null : token.substring(7);
+	public String getToken(String token) {
+		return token == null ? null : token.substring(7);
 	}
-
 
 }

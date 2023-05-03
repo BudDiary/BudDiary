@@ -1,8 +1,6 @@
 package twozerotwo.buddiary.domain.diary.service;
 
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -14,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
-import twozerotwo.buddiary.domain.diary.dto.DiaryPostResponse;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
@@ -41,7 +38,8 @@ public class DiaryService {
 	private final UnusedStickerRepository unusedStickerRepository;
 	private final S3Uploader s3Uploader;
 	private final ClubService clubService;
-	private final Long WRITE_POINT = 5L;
+	// private final Long WRITE_POINT = 5L;
+
 	@Transactional
 	public void createClubDiary(DiaryPostRequest request, String clubUuid) throws IOException {
 		/// TODO: 2023-05-02 요청한 사람이 클럽원인지 확인
@@ -62,6 +60,7 @@ public class DiaryService {
 		// 스티커 리스트 만들고
 		makeStickerList(savedDiary, request.getStickerDtoList());
 	}
+
 	@Transactional
 	public void makeDiaryImage(Diary diary, List<MultipartFile> fileList) throws IOException {
 		List<DiaryImage> imgList = diary.getDiaryImages();
@@ -77,6 +76,7 @@ public class DiaryService {
 			}
 		}
 	}
+
 	@Transactional
 	public void makeStickerList(Diary diary, List<StickerDto> stickerDtoList) {
 		List<UsedSticker> usedStickerList = diary.getUsedStickers();
@@ -94,13 +94,13 @@ public class DiaryService {
 						break;
 					}
 				}
-				log.info("flag"+ flag.toString());
+				log.info("flag" + flag);
 				if (!flag) {
 					throw new RuntimeException("스티커를 보유하고 있지 않습니다.");
 				} else {
 					Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
-							.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
-					UsedSticker usedSticker =  UsedSticker.builder()
+						.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
+					UsedSticker usedSticker = UsedSticker.builder()
 						.diary(diary)
 						.xCoordinate(stickerDto.getXCoordinate())
 						.yCoordinate(stickerDto.getYCoordinate())
@@ -112,6 +112,7 @@ public class DiaryService {
 			}
 		}
 	}
+
 	@Transactional
 	public void createPersonalDiary(DiaryPostRequest request) throws IOException {
 		Member member = memberRepository.findByUsername(request.getMemberUsername())
@@ -128,6 +129,7 @@ public class DiaryService {
 		makeStickerList(savedDiary, request.getStickerDtoList());
 
 	}
+
 	@Transactional
 	public void minusStickerCnt(DiaryPostRequest request) {
 		Member member = memberRepository.findByUsername(request.getMemberUsername())

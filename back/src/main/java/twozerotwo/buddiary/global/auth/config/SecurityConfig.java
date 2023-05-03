@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +24,7 @@ public class SecurityConfig {
 	private final JwtTokenProvider jwtTokenProvider;
 	@Autowired
 	DataSource dataSource;
+
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -74,9 +74,8 @@ public class SecurityConfig {
 	}
 
 	// Security 무시하기
-	public void configure(WebSecurity web)throws Exception{
+	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/h2-console/**");
 	}
-
 
 }

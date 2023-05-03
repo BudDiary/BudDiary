@@ -2,7 +2,6 @@ package twozerotwo.buddiary.domain.club.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -14,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import twozerotwo.buddiary.domain.club.dto.ClubCreateResponse;
 import twozerotwo.buddiary.domain.club.dto.DoubleCreateRequest;
 import twozerotwo.buddiary.domain.club.dto.PluralCreateRequest;
@@ -66,6 +64,7 @@ public class ClubService {
 			.uuid(club.getUuid())
 			.build();
 	}
+
 	@Transactional
 	public ClubCreateResponse createPlural(PluralCreateRequest request) throws IOException {
 		Member captain = returnMemberByUsername(request.getCaptainUsername());
@@ -106,11 +105,11 @@ public class ClubService {
 
 		return memberClubRepository.save(memberClub);
 	}
+
 	private Member returnMemberByUsername(String username) {
 		Member member = memberRepository.findByUsername(username)
 			.orElseThrow(() -> new RuntimeException("dd"));
 		return member;
 	}
-
 
 }
