@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.reaction.dto.DiaryReactionDto;
 import twozerotwo.buddiary.persistence.enums.ActionType;
 import twozerotwo.buddiary.persistence.enums.ActionTypeConverter;
 
@@ -35,12 +37,19 @@ public class Reaction {
 	@Convert(converter = ActionTypeConverter.class)
 	private ActionType type;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DIARY_ID")
 	private Diary diary;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
+	public DiaryReactionDto toDto() {
+		return DiaryReactionDto.builder()
+			.id(this.id)
+			.username(this.member.getUsername())
+			.actionType(this.getType())
+			.build();
+	}
 }

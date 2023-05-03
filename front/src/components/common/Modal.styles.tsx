@@ -15,5 +15,25 @@ export const ModalContainer = styled.div`
   top: 10%;
   left: 20%;
   z-index: 15;
-  ${tw`bg-white h-[75%] w-[320px] sm:w-[50%] rounded-xl border-2 p-10`}
+  ${tw`bg-white h-[75%] w-[320px] sm:w-[60%] border-2`}
+`;
+// 모달창 위에있는 상단바
+export const ModalTopNavContainer = styled.div`
+  ${tw`bg-bud-blue h-[42px] flex justify-between`}
+`;
+
+
+// 모달창 나가기버튼
+export const CloseModalButton = styled.button`
+  ${tw`h-[42px] ml-4`}
+`;
+
+// 모달창 제목
+export const ModalTitle = styled.button`
+  ${tw``}
+`;
+
+// 모달창 제목
+export const SaveModalButton = styled.button`
+  ${tw`text-blue-800 mr-4`}
 `;

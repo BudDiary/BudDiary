@@ -2,6 +2,7 @@ package twozerotwo.buddiary.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,14 +26,19 @@ public class UnusedSticker {
 	private Long id;
 	private Long count;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "STICKER_ID")
 	private Sticker sticker;
 
+	public void minusCnt() {
 
-
+		if (this.count - 1 < 0) {
+			throw new RuntimeException("해당 스티커 개수가 부족합니다.");
+		}
+		this.count--;
+	}
 }

@@ -37,7 +37,5 @@ out/
 .vscode/
 /src/main/resources/application.properties
 /src/main/resources/application.yml
-
-### properties ###
-application.yml
-application.properties
+/src/main/resources/application-jwt.yml
+/src/main/resources/application-oauth.yml
