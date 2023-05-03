@@ -2,8 +2,7 @@ import React from "react";
 import { PageContainer } from "../../components/common/Page.styles";
 import { SubNavContainer } from "../mypage/MypagePage.styles";
 import Recommended from "../../components/group/Recommended";
-import MyGroup from "../../components/group/MyGroup";
-import MyRandom from "../../components/group/MyRandom";
+import MyTab from "../../components/group/MyTab";
 
 export default function GroupPage() {
   return (
@@ -11,8 +10,8 @@ export default function GroupPage() {
     <SubNavContainer>나의 그룹</SubNavContainer>
     <PageContainer>
       <Recommended />
-      <MyGroup />
-      <MyRandom />
+      <br />
+      <MyTab/>
     </PageContainer>
     </>
   );
