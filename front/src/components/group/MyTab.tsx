@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-
+import MyGroup from './MyGroup';
 
 import 'swiper/swiper-bundle.css';
 import { width } from '@mui/system';
@@ -73,7 +73,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function MyGroup() {
+export default function MyTab() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -98,35 +98,7 @@ export default function MyGroup() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-      <span className="flex h-80">
-        <Paper elevation={3} sx={{ p: 3, width: '30%', height: '80%', mr: '10%'}}>
-        <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                  새 일기 추가하기
-                </Typography>
-                <img
-                  src=''
-                  alt= '대체'
-                  style={{ width: '100%', marginBottom: '10%' }}
-                />
-        </Paper>
-        <Swiper spaceBetween={50} slidesPerView={3}>
-          {data.map((item, index) => (
-            <SwiperSlide key={index}>
-              <Paper elevation={3} sx={{ p: 2}}>
-                <Typography variant="h5" component="div" sx={{ mb: 1 }}>
-                  {item.title}
-                </Typography>
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  style={{ width: '100%', marginBottom: '50%' }}
-                />
-                <Typography component="div">{item.description}</Typography>
-              </Paper>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        </span>
+        2:2
       </TabPanel>
       <TabPanel value={value} index={1}>
         1:1

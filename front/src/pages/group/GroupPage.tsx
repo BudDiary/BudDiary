@@ -3,6 +3,7 @@ import { PageContainer } from "../../components/common/Page.styles";
 import { SubNavContainer } from "../mypage/MypagePage.styles";
 import Recommended from "../../components/group/Recommended";
 import MyGroup from "../../components/group/MyGroup";
+import MyTab from "../../components/group/MyGroup";
 import MyRandom from "../../components/group/MyRandom";
 
 export default function GroupPage() {
@@ -11,6 +12,8 @@ export default function GroupPage() {
     <SubNavContainer>나의 그룹</SubNavContainer>
     <PageContainer>
       <Recommended />
+      <br />
+      {/* <MyTab/> */}
       <MyGroup />
       <MyRandom />
     </PageContainer>
