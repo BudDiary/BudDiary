@@ -9,7 +9,7 @@ import twozerotwo.buddiary.persistence.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-	Optional<Member> findByUsername(String userName);
+	Optional<Member> findByUsername(String username);
 
 	Optional<Member> findByRefreshToken(String refreshToken);
 

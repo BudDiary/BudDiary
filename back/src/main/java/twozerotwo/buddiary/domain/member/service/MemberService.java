@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.member.dto.MemberSignUpDto;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.enums.Role;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
@@ -20,7 +21,7 @@ public class MemberService {
 	public void signUp(MemberSignUpDto userSignUpDto) throws Exception {
 
 		if (memberRepository.findByUsername(userSignUpDto.getUsername()).isPresent()) {
-			throw new Exception("이미 존재하는 유저의 이메일입니다.");
+			throw new NotFoundException("이미 존재하는 유저의 이메일입니다.");
 		}
 
 		Member member = Member.builder()

@@ -82,11 +82,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			log.info("리프레쉬 토큰이 널임이고 디비에 정보가 없습니다 .");
 			checkAccessTokenAndAuthentication(request, response, filterChain);
 		}
-		// TODO: 2023/05/02 여기부터 토큰 보유하고 유저 있다면 처리 해야함
-
-		String userName = jwtService.extractUserName(accessToken).filter(jwtService::isTokenValid).orElse(null);
-
-		log.info("토큰에서 추출한 유저 이름 {}", userName);
 
 	}
 

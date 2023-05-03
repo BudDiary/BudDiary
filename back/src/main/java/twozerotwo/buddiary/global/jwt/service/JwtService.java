@@ -42,7 +42,6 @@ public class JwtService {
 	private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
 	private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
 	private static final String USERNAME_CLAIM = "username";
-	private static final String BEARER = "Bearer ";
 
 	/**
 	 * AccessToken 생성 메소드
@@ -95,7 +94,7 @@ public class JwtService {
 		}
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
-		cookie.setMaxAge(1000000000);
+		cookie.setMaxAge(3600000);
 
 		response.addCookie(cookie);
 		log.info("발급된 Access Token : {}", accessToken);
@@ -109,7 +108,7 @@ public class JwtService {
 			cookie.setDomain("local");
 		}
 		cookie.setPath("/");
-		cookie.setMaxAge(1000000000);
+		cookie.setMaxAge(1209600000);
 		cookie.setHttpOnly(true);
 		response.addCookie(cookie);
 		log.info("발급된 refreshToken  : {}", refreshToken);
@@ -126,6 +125,7 @@ public class JwtService {
 	}
 
 	public boolean isTokenValid(String token) {
+		// TODO: 2023-05-03 exception 으로 처리 필요
 		try {
 			JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
 			log.info("유효한 토큰입니다.");
