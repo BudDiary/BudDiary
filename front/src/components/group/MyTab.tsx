@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import MyGroup from './MyGroup';
-
+import MyRandom from './MyRandom';
 import 'swiper/swiper-bundle.css';
 import { width } from '@mui/system';
 
@@ -15,36 +15,6 @@ interface TabPanelProps {
   index: number;
   value: number;
 }
-
-
-const data = [
-  {
-    title: 'Paper 1',
-    description: 'This is the description for Paper 1.',
-    image: '/path/to/image1.jpg'
-  },
-  {
-    title: 'Paper 2',
-    description: 'This is the description for Paper 2.',
-    image: '/path/to/image2.jpg'
-  },
-  {
-    title: 'Paper 3',
-    description: 'This is the description for Paper 3.',
-    image: '/path/to/image3.jpg'
-  },
-  {
-    title: 'Paper 4',
-    description: 'This is the description for Paper 3.',
-    image: '/path/to/image3.jpg'
-  },
-  {
-    title: 'Paper 5',
-    description: 'This is the description for Paper 3.',
-    image: '/path/to/image3.jpg'
-  }
-];
-
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -98,10 +68,10 @@ export default function MyTab() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        2:2
+        <MyGroup/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        1:1
+        <MyRandom/>
       </TabPanel>
     </Box>
   );
