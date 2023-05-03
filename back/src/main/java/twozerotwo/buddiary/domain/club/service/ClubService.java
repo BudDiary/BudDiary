@@ -14,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.dto.ClubCreateResponse;
+import twozerotwo.buddiary.domain.club.dto.ClubDto;
 import twozerotwo.buddiary.domain.club.dto.DoubleCreateRequest;
+import twozerotwo.buddiary.domain.club.dto.MyClubDto;
 import twozerotwo.buddiary.domain.club.dto.PluralCreateRequest;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
@@ -112,4 +114,35 @@ public class ClubService {
 		return member;
 	}
 
+	public MyClubDto getMyClub(String username) {
+		Member me = returnMemberByUsername(username);
+		Set<MemberClub> memberClubs = me.getMemberClubs();
+		List<ClubDto> pluralList = new ArrayList<>();
+		List<ClubDto> doubleList = new ArrayList<>();
+		for (MemberClub memberClub : memberClubs) {
+			// 클럽 조회해서
+			Club club = memberClub.getClub();
+			ClubType type = club.getType();
+
+			if (type.equals(ClubType.PLURAL)) {
+				pluralList.add(club.toPluralDto());
+			} else if (type.equals(ClubType.DOUBLE)) {
+				// 클럽원 돌면서 .. 나랑 같지 않으면 그사람 프사를 그룹 이미지로
+				String clubImgUrl = null;
+				for (MemberClub clubMember : club.getClubMembers()) {
+					Member member = clubMember.getMember();
+					if (!member.equals(me)) {
+						clubImgUrl = member.getProfilePath();
+					}
+				}
+				doubleList.add(club.toDoubleDto(clubImgUrl));
+			}
+			// 다수, 1:1로 분리해서 저장
+		}
+		return MyClubDto.builder()
+			.doubleList(doubleList)
+			.pluralList(pluralList)
+			.build();
+
+	}
 }

@@ -1,14 +1,18 @@
 package twozerotwo.buddiary.domain.diary.api;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -45,5 +49,13 @@ public class DiaryController {
 			diaryService.minusStickerCnt(request);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+
+	//-------------------------------------------다이어리 쓴 날 조회----------------------------------------------
+	@GetMapping("/write-day")
+	public ResponseEntity getWriteDays(@RequestParam("month") String month) {
+		String username = "yeokyung";
+		List<LocalDate> writeDays = diaryService.getWriteDays(username, month); // 해당 월에 쓴 다이어리 날짜들 조회
+		return ResponseEntity.ok(Map.of("writeDays", writeDays));
 	}
 }

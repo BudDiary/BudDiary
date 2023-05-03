@@ -10,12 +10,12 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.club.dto.ClubDto;
 import twozerotwo.buddiary.persistence.enums.ClubType;
 import twozerotwo.buddiary.persistence.enums.ClubTypeConverter;
 
@@ -43,7 +43,22 @@ public class Club {
 	@Builder.Default
 	private String thumbnailPath = null;
 	@Builder.Default
-	@OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
 	private Set<MemberClub> clubMembers = new HashSet<>();
 
+	public ClubDto toPluralDto() {
+		return ClubDto.builder()
+			.clubUuid(this.uuid)
+			.thumbnailUrl(this.thumbnailPath)
+			.name(this.name)
+			.build();
+	}
+
+	public ClubDto toDoubleDto(String clubImgUrl) {
+		return ClubDto.builder()
+			.clubUuid(this.uuid)
+			.thumbnailUrl(clubImgUrl)
+			.name(this.name)
+			.build();
+	}
 }

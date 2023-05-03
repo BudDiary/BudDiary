@@ -1,6 +1,7 @@
 package twozerotwo.buddiary.domain.diary.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -142,5 +143,9 @@ public class DiaryService {
 				unusedSticker.minusCnt();
 			}
 		}
+	}
+
+	public List<LocalDate> getWriteDays(String username, String month) {
+		return null;
 	}
 }

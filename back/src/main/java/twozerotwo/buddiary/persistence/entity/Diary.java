@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,6 +57,10 @@ public class Diary {
 	@Builder.Default
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<UsedSticker> usedStickers = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
 
 	public UsedSticker useSticker(Sticker sticker, Double xCoordinate, Double yCoordinate) {
 		return UsedSticker.builder()

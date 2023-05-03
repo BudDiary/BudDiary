@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,11 +25,10 @@ import lombok.NoArgsConstructor;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
-
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 public class Member {
 	@Id
@@ -40,12 +38,16 @@ public class Member {
 	@Column(nullable = false)
 	private String username;
 	// @Column(nullable = false)
-	private String password;
+	@Builder.Default
+	private String password = null;
 	@Column(nullable = false)
 	@Builder.Default
 	private Long point = 0L;
 	@Builder.Default
 	private LocalDateTime enrollDate = LocalDateTime.now();
+
+	@Builder.Default
+	private String profilePath = null;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -72,11 +74,6 @@ public class Member {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<UnusedSticker> stickers = new ArrayList<>();
 
-
-
-
-
-
 	@Enumerated(EnumType.STRING)
 	private SocialType socialType; // KAKAO, NAVER, GOOGLE
 	@Builder.Default
@@ -91,8 +88,6 @@ public class Member {
 	public void updateRefreshToken(String updateRefreshToken) {
 		this.refreshToken = updateRefreshToken;
 	}
-
-
 
 	public void addPoint(Long point) {
 		this.point += point;
