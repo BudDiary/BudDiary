@@ -40,7 +40,6 @@ public class Member {
 	// @Column(nullable = false)
 	private String password;
 	@Column(nullable = false)
-	
 	@Builder.Default
 	private Long point = 0L;
 	@Builder.Default

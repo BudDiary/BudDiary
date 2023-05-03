@@ -48,7 +48,7 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 		 * userNameAttributeName은 이후에 nameAttributeKey로 설정된다.
 		 */
 		String registrationId = userRequest.getClientRegistration().getRegistrationId(); // 등록 아이디저장
-		SocialType socialType = getSocialType(registrationId);// 소셜타입 저장
+		SocialType socialType = getSocialType(registrationId); // 소셜타입 저장
 		// OAuth2 로그인 시 키(PK)가 되는 값
 		String userNameAttributeName = userRequest.getClientRegistration()
 			.getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
@@ -81,7 +81,7 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 	 * 만약 찾은 회원이 있다면, 그대로 반환하고 없다면 saveUser()를 호출하여 회원을 저장한다.
 	 */
 	private Member getUser(OAuthAttributes attributes, SocialType socialType) {
-		log.info("################### attributes {}" , attributes.getOauth2UserInfo().getNickname());
+		log.info("################### attributes {}", attributes.getOauth2UserInfo().getNickname());
 		Member findUser = memberRepository.findBySocialTypeAndSocialId(socialType,
 				attributes.getOauth2UserInfo().getId())
 			.orElse(null);

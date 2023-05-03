@@ -140,7 +140,7 @@ public class JwtService {
 	 * 헤더에서 RefreshToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractRefreshToken(HttpServletRequest request) {
-		log.info("요청 받은 리퀘스트 {}",request.getRequestURI());
+		log.info("요청 받은 리퀘스트 {}", request.getRequestURI());
 		if (request.getCookies() == null) {
 			return Optional.empty();
 		}

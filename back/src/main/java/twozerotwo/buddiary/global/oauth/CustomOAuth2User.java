@@ -19,7 +19,6 @@ import twozerotwo.buddiary.persistence.enums.Role;
 // TODO: 2023/04/28 사업자 등록 완료되면 여기다른 값들 추가해보기
 @Getter
 public class CustomOAuth2User extends DefaultOAuth2User {
-	// TODO: 2023/04/28 나중에 username으로 변경해야한다. 
 	private String email;
 	// OAuth 처음 로그인시 임의의 이메일을 여기에 넣는다.
 	// 이후

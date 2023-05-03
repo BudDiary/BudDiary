@@ -1,7 +1,6 @@
 package twozerotwo.buddiary.global.jwt.filter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -54,12 +53,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		 *  사용자의 요청 헤더에 RefreshToken이 있는 경우는, AccessToken이 만료되어 요청한 경우밖에 없다.
 		 *  따라서, 위의 경우를 제외하면 추출한 refreshToken은 모두 null
 		 */
-		String refreshToken = jwtService.extractRefreshToken(request)
-			.filter(jwtService::isTokenValid)
-			.orElse(null);
-		String accessToken = jwtService.extractAccessToken(request)
-			.filter(jwtService::isTokenValid)
-			.orElse(null);
+		String refreshToken = jwtService.extractRefreshToken(request).filter(jwtService::isTokenValid).orElse(null);
+		String accessToken = jwtService.extractAccessToken(request).filter(jwtService::isTokenValid).orElse(null);
 
 		// Member extractMember = memberRepository.findByUsername(userName).orElse(null);
 		// log.info("userName {} ",extractMember.getUsername() == null);
@@ -70,7 +65,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		 * 일치한다면 AccessToken을 재발급해준다.
 		 */
 
-		if ( refreshToken != null) {
+		if (refreshToken != null) {
 			log.info("재발급 수행");
 			checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
 			return; // RefreshToken을 보낸 경우에는 AccessToken을 재발급 하고 인증 처리는 하지 않게 하기위해 바로 return으로 필터 진행 막기
@@ -89,11 +84,9 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		}
 		// TODO: 2023/05/02 여기부터 토큰 보유하고 유저 있다면 처리 해야함
 
-		String userName = jwtService.extractUserName(accessToken)
-			.filter(jwtService::isTokenValid)
-			.orElse(null);
+		String userName = jwtService.extractUserName(accessToken).filter(jwtService::isTokenValid).orElse(null);
 
-		log.info("토큰에서 추출한 유저 이름 {}" , userName);
+		log.info("토큰에서 추출한 유저 이름 {}", userName);
 
 	}
 
@@ -105,12 +98,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	 * 그 후 JwtService.sendAccessTokenAndRefreshToken()으로 응답 헤더에 보내기
 	 */
 	public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
-		memberRepository.findByRefreshToken(refreshToken)
-			.ifPresent(member -> {
-				String reIssuedRefreshToken = reIssueRefreshToken(member);
-				jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
-					reIssuedRefreshToken);
-			});
+		memberRepository.findByRefreshToken(refreshToken).ifPresent(member -> {
+			String reIssuedRefreshToken = reIssueRefreshToken(member);
+			jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
+				reIssuedRefreshToken);
+		});
 	}
 
 	private String reIssueRefreshToken(Member member) {
@@ -127,8 +119,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		jwtService.extractAccessToken(request)
 			.filter(jwtService::isTokenValid)
 			.ifPresent(accessToken -> jwtService.extractUserName(accessToken)
-				.ifPresent(userName -> memberRepository.findByUsername(userName)
-						.ifPresent(this::saveAuthentication)));
+				.ifPresent(userName -> memberRepository.findByUsername(userName).ifPresent(this::saveAuthentication)));
 		// 다음 필터로 넘어간다.
 		filterChain.doFilter(request, response);
 	}
@@ -145,9 +136,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			.roles(myUser.getRole().name())
 			.build();
 
-		Authentication authentication =
-			new UsernamePasswordAuthenticationToken(userDetailsUser, null,
-				authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetailsUser, null,
+			authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
 
 		//시큐리티 컨텍스트에 저장
 		SecurityContextHolder.getContext().setAuthentication(authentication);
