@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Swal from 'sweetalert2';
-import { FullRoundedButton } from "../button/Button.styles";
+import { FullRoundedButton } from "../common/Button.styles";
+import ProfileEditModal from "./ProfileEditModal";
+import { BsCoin } from 'react-icons/bs'
+// interface Props {
+//   profileModalState: false;
+// }
 
 export default function Profile() {
-  const showProfileEditModal = () => {
-    Swal.fire({
-      title: `초대 성공`,
-      icon: 'success',
-      // showConfirmButton: false,
-    });
+  const [profileModalState, setProfileModalState] = useState(false);
+  const showProfileModal = () => {
+    setProfileModalState(true);
   }
   return (<div>프로필~!!
-    <FullRoundedButton>지금 내가 가진 포인트</FullRoundedButton>
-    <FullRoundedButton onClick={showProfileEditModal}>프로필수정</FullRoundedButton>
+    {profileModalState === false ? null : <ProfileEditModal />}
+    <FullRoundedButton><BsCoin /></FullRoundedButton>
+    <FullRoundedButton onClick={showProfileModal} >프로필수정</FullRoundedButton>
   </div>);
 }

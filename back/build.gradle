@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'towzerotow'
+group = 'twozerotwo'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -33,6 +33,10 @@ dependencies {
     //amzaon s3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+    implementation 'com.auth0:java-jwt:4.2.1'
+
+    //OAuth
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'

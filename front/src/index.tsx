@@ -15,9 +15,10 @@ import SurveyPage from "./pages/survey/SurveyPage";
 import HomePage from "./pages/home/HomePage";
 import MypagePage from "./pages/mypage/MypagePage";
 
+
+
 const router = createBrowserRouter([
   {
-    path: "/",
     element: (
       <Provider store={store}>
         <App />
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
     ),
     errorElement: <NotFoundPage />,
     children: [
-      { path: "/main", element: <HomePage /> },
+      { path: "/", element: <HomePage /> },
       { path: "/survey", element: <SurveyPage /> },
       { path: "/group", element: <GroupPage /> },
       { path: "/group/:id", element: <GroupDetailPage /> },

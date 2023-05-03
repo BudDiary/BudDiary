@@ -1,28 +1,32 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-// import { Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export const NavbarContainer = styled.div`
-  ${tw`bg-bud-yellow`}
-  height: 56px;
+  ${tw`bg-bud-white`}
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42px;
+  z-index: 7;
 `;
 
 export const NavbarBox = styled.div`
   ${tw`flex max-w-[1152px] mx-auto justify-between`}
-  height: 56px;
+  height: 42px;
 `;
 
-export const LogoContainer = styled.div`
-  ${tw`flex font-berry text-4xl my-auto ml-4`}
+export const LogoContainer = styled(Link)`
+  ${tw`flex font-berry text-3xl my-auto ml-4`}
 `;
-
 export const LogoBlue = styled.div`
   ${tw`text-bud-blue`}
 `;
 export const LogoGreen = styled.div`
   ${tw`text-bud-green`}
 `;
-export const MenuItem = styled.button`
+export const MenuItem = styled(Link)`
   ${tw`text-bud-black font-berry text-lg my-auto invisible sm:visible`}
 `;
 
