@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function Calendar() {
   return (
-    <div>Calendar</div>
+    <div className='font-noto'>캘린더</div>
   )
 }
