@@ -1,16 +1,18 @@
 import React from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
+
 interface Props {
   setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 export default function Content({ setContent }: Props) {
   return (
     <div>
-      <textarea
-      style={{position: "absolute", top: "20%", left: "20%",  width: "50%", height: "50%", resize: "both"}}
-      // style={{height: "200px", width: "500px", resize: "both"}}
-        rows={10}
-        placeholder=''
-        onChange={(e) => setContent(e.target.value)}
+      <TextareaAutosize
+      style={{width: "100%", fontSize: '16px'}}
+      minRows={8}
+      defaultValue="일기를 작성해 보세요"  
+      
+      onChange={(e) => setContent(e.target.value)}
       />
     </div>
   );
