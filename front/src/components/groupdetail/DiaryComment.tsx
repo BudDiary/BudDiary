@@ -7,19 +7,25 @@ import {
   InputSet,
   CommentWrapper,
 } from "./DiaryComment.style";
+import CommentList from "./CommentList.json";
+type Props = {
+  diaryId: number;
+};
 
-export default function DiaryComment() {
-  const [showReply, setShowReply] = useState(false);
+export default function DiaryComment({ diaryId }: Props) {
+  // const [showReply, setShowReply] = useState(false);
   const [commentText, setCommentText] = useState("");
 
-  const toggleShowReply = () => setShowReply(!showReply);
+  // const toggleShowReply = () => setShowReply(!showReply);
 
   const handleCommentSubmit = () => {
     console.log(commentText);
     setCommentText("");
   };
 
-  const replyButtonText = showReply ? "▲ 닫기" : `▼ {}개의 답글 보기`;
+  const filteredComments = CommentList.filter(
+    (comment) => comment.diary_id === diaryId
+  );
 
   return (
     <CommentWrapper>
@@ -28,32 +34,30 @@ export default function DiaryComment() {
         <BasicButton>+😀</BasicButton>
       </div>
 
-      <p>댓글 {}</p>
-      <UserInfo>
-        <div>
-          <img src="{user.profile}" alt="프로필" />
-        </div>
-        <div>
-          <div style={{ display: "flex", alignItems: "baseline" }}>
-            <h2>멤버 2</h2>
-            <h3
-              style={{
-                marginLeft: "0.5rem",
-                color: "gray",
-                fontSize: "0.75rem",
-              }}
-            >
-              2023. 5. 2. 12:20:00
-            </h3>
+      <p style={{ fontWeight: "bold" }}>댓글 {filteredComments.length}</p>
+      {filteredComments.map((comment) => (
+        <UserInfo key={comment.id}>
+          <div>
+            <img src={comment.userImage} alt="프로필" />
           </div>
-          <p>댓글이 들어갈 장소입니다.</p>
-        </div>
-      </UserInfo>
-      <CommentWrapper>
-        <button>답글쓰기</button>
-        <button onClick={toggleShowReply}>{replyButtonText}</button>
-        {showReply && <Reply />}
-      </CommentWrapper>
+          <div>
+            <div style={{ display: "flex", alignItems: "baseline" }}>
+              <h2>{comment.member_name}</h2>
+              <h3
+                style={{
+                  marginLeft: "0.5rem",
+                  color: "gray",
+                  fontSize: "0.75rem",
+                }}
+              >
+                {comment.update_at}
+              </h3>
+            </div>
+            <p>{comment.comment}</p>
+            <Reply key={comment.id} commentId={comment.id} />
+          </div>
+        </UserInfo>
+      ))}
       <InputSet>
         <InputBox
           value={commentText}

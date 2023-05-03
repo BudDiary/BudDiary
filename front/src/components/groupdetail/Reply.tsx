@@ -1,45 +1,73 @@
 import React, { useState } from "react";
 import { BasicButton } from "./Diaries.styles";
-import { UserInfo, InputSet, InputBox } from "./DiaryComment.style";
-export default function Reply() {
+import {
+  UserInfo,
+  InputSet,
+  InputBox,
+  CommentWrapper,
+} from "./DiaryComment.style";
+import ReplyList from "./ReplyData.json";
+
+type Props = {
+  commentId: number;
+};
+
+export default function Reply({ commentId }: Props) {
   const [commentText, setCommentText] = useState("");
+  const [showReply, setShowReply] = useState(false);
 
   const handleCommentSubmit = () => {
-    // TODO: 입력한 댓글 내용을 전달하는 로직 구현
     console.log(commentText);
     setCommentText("");
   };
+
+  const filterReplies = ReplyList.filter(
+    (reply) => reply.comment_id === commentId
+  );
+
+  const replyButtonText = showReply
+    ? "▲ 닫기"
+    : filterReplies.length > 0
+    ? `▼ ${filterReplies.length}개의 답글 보기`
+    : "답글 입력";
   return (
-    <div>
-      <div>
-        <UserInfo>
-          <div>
-            <img src="{user.profile}" alt="프로필" />
-          </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-              <h2>멤버 1</h2>
-              <h3
-                style={{
-                  marginLeft: "0.5rem",
-                  color: "gray",
-                  fontSize: "0.75rem",
-                }}
-              >
-                2023. 5. 2. 12:21:00
-              </h3>
-            </div>
-            <p>답글이 들어가는 자리입니다.</p>
-          </div>
-        </UserInfo>
-        <InputSet>
-          <InputBox
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-          />
-          <BasicButton onClick={handleCommentSubmit}>댓글 달기</BasicButton>
-        </InputSet>
-      </div>
-    </div>
+    <CommentWrapper>
+      <BasicButton onClick={() => setShowReply(!showReply)}>
+        {replyButtonText}
+      </BasicButton>
+      {showReply && (
+        <div style={{ width: "160%" }}>
+          {filterReplies.map((reply) => (
+            <UserInfo key={reply.id}>
+              <div>
+                <img src={reply.userImage} alt="프로필" />
+              </div>
+              <div>
+                <div style={{ display: "flex", alignItems: "baseline" }}>
+                  <h2>{reply.member_name}</h2>
+                  <h3
+                    style={{
+                      marginLeft: "0.5rem",
+                      color: "gray",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    {reply.update_at}
+                  </h3>
+                </div>
+                <p>{reply.reply}</p>
+              </div>
+            </UserInfo>
+          ))}
+          <InputSet>
+            <InputBox
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+            <BasicButton onClick={handleCommentSubmit}>댓글 달기</BasicButton>
+          </InputSet>
+        </div>
+      )}
+    </CommentWrapper>
   );
 }
