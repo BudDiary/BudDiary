@@ -4,16 +4,19 @@ import tw from "twin.macro";
 export const BasicButton = styled.button`
   ${tw`bg-bud-blue rounded-full px-2 py-1 font-bold`}
 `;
-
 export const WideButton = styled.button`
-  ${tw`bg-white py-2 px-4 rounded-md font-bold text-black`}
-  width: 45vw;
+  ${tw`bg-white py-2 px-4 rounded-md font-bold text-black flex items-center justify-center`}
+  width: 42vw;
   border: 1px solid black;
+
+  svg {
+    ${tw`mr-2`}
+  }
 `;
 
 export const DiaryDetail = styled.div`
   ${tw`sm:col-span-2 bg-white rounded-md`}
-  width: 45vw;
+  width: 42vw;
   margin-top: 20px;
   padding: 20px;
   border: 1px solid black;
@@ -24,7 +27,7 @@ export const DiaryDetail = styled.div`
 
 export const DiaryHeader = styled.div`
   ${tw`flex items-center mb-4`}
-  width: 45vw;
+  width: 42vw;
   height: 50px;
 
   > div:first-child {
@@ -45,14 +48,14 @@ export const DiaryContent = styled.div`
 
   > div:first-child {
     margin-inline: 1rem;
-    flex: 4;
+    flex: 4.5;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   > div:last-child {
-    flex: 6;
+    flex: 5.5;
     margin: 10px;
     padding: 20px;
     height: 250px;
@@ -65,7 +68,7 @@ export const DiaryContent = styled.div`
   }
 
   img {
-    width: 150px;
+    width: 100%;
     height: 200px;
     border: 1px solid black;
   }
