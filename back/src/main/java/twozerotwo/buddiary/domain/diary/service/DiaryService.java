@@ -1,7 +1,6 @@
 package twozerotwo.buddiary.domain.diary.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -12,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
+import twozerotwo.buddiary.domain.diary.api.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
@@ -145,7 +145,7 @@ public class DiaryService {
 		}
 	}
 
-	public List<LocalDate> getWriteDays(String username, String month) {
+	public List<SimpleDiaryDto> getDayDiaryList(String username, String date) {
 		return null;
 	}
 }

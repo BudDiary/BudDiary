@@ -1,7 +1,6 @@
 package twozerotwo.buddiary.domain.diary.api;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -51,11 +50,11 @@ public class DiaryController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	//-------------------------------------------다이어리 쓴 날 조회----------------------------------------------
+	//-------------------------------------------특정 날짜 다이어리 리스트 반환----------------------------------------------
 	@GetMapping("/write-day")
-	public ResponseEntity getWriteDays(@RequestParam("month") String month) {
+	public ResponseEntity getDayDiaryList(@RequestParam("date") String date) {
 		String username = "yeokyung";
-		List<LocalDate> writeDays = diaryService.getWriteDays(username, month); // 해당 월에 쓴 다이어리 날짜들 조회
-		return ResponseEntity.ok(Map.of("writeDays", writeDays));
+		List<SimpleDiaryDto> simpleDiaryList = diaryService.getDayDiaryList(username, date); // 해당 월에 쓴 다이어리 날짜들 조회
+		return ResponseEntity.ok(Map.of("dairyList", simpleDiaryList));
 	}
 }

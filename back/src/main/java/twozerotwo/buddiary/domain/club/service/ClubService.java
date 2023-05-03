@@ -108,7 +108,7 @@ public class ClubService {
 		return memberClubRepository.save(memberClub);
 	}
 
-	private Member returnMemberByUsername(String username) {
+	public Member returnMemberByUsername(String username) {
 		Member member = memberRepository.findByUsername(username)
 			.orElseThrow(() -> new RuntimeException("dd"));
 		return member;

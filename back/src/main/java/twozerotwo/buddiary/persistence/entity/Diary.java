@@ -62,6 +62,9 @@ public class Diary {
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
 
+	private Float positiveRate;
+	private Float negativeRate;
+
 	public UsedSticker useSticker(Sticker sticker, Double xCoordinate, Double yCoordinate) {
 		return UsedSticker.builder()
 			.diary(this)
