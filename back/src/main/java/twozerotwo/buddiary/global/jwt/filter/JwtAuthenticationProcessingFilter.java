@@ -41,46 +41,51 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 		// "/login"으로 들어오는 요청은 Filter 작동 X 로그인 의경우 토큰 유효성이 아니라 인증인가를 바로 하면됨
-		if (request.getRequestURI().equals(NO_CHECK_URL)) {
-			log.info("다음필터로 보냅니다.");
-			filterChain.doFilter(request, response);
-			return;
-		}
+		try {
+			if (request.getRequestURI().equals(NO_CHECK_URL)) {
+				log.info("다음필터로 보냅니다.");
+				filterChain.doFilter(request, response);
+				return;
+			}
 
-		/**
-		 * 사용자 요청 헤더에서 RefreshToken 추출
-		 *  -> RefreshToken이 없거나 유효하지 않다면(DB에 저장된 RefreshToken과 다르다면) null을 반환
-		 *  사용자의 요청 헤더에 RefreshToken이 있는 경우는, AccessToken이 만료되어 요청한 경우밖에 없다.
-		 *  따라서, 위의 경우를 제외하면 추출한 refreshToken은 모두 null
-		 */
-		String refreshToken = jwtService.extractRefreshToken(request).filter(jwtService::isTokenValid).orElse(null);
-		String accessToken = jwtService.extractAccessToken(request).filter(jwtService::isTokenValid).orElse(null);
+			/**
+			 * 사용자 요청 헤더에서 RefreshToken 추출
+			 *  -> RefreshToken이 없거나 유효하지 않다면(DB에 저장된 RefreshToken과 다르다면) null을 반환
+			 *  사용자의 요청 헤더에 RefreshToken이 있는 경우는, AccessToken이 만료되어 요청한 경우밖에 없다.
+			 *  따라서, 위의 경우를 제외하면 추출한 refreshToken은 모두 null
+			 */
+			String refreshToken = jwtService.extractRefreshToken(request).filter(jwtService::isTokenValid).orElse(null);
+			String accessToken = jwtService.extractAccessToken(request).filter(jwtService::isTokenValid).orElse(null);
 
-		// Member extractMember = memberRepository.findByUsername(userName).orElse(null);
-		// log.info("userName {} ",extractMember.getUsername() == null);
+			// Member extractMember = memberRepository.findByUsername(userName).orElse(null);
+			// log.info("userName {} ",extractMember.getUsername() == null);
 
-		/**
-		 *리프레시 토큰이 요청 쿠키에 존재했다면, 사용자가 AccessToken이 만료되어서
-		 * RefreshToken까지 보낸 것이므로 리프레시 토큰이 DB의 리프레시 토큰과 일치하는지 판단 후,
-		 * 일치한다면 AccessToken을 재발급해준다.
-		 */
+			/**
+			 *리프레시 토큰이 요청 쿠키에 존재했다면, 사용자가 AccessToken이 만료되어서
+			 * RefreshToken까지 보낸 것이므로 리프레시 토큰이 DB의 리프레시 토큰과 일치하는지 판단 후,
+			 * 일치한다면 AccessToken을 재발급해준다.
+			 */
 
-		if (refreshToken != null) {
-			log.info("재발급 수행");
-			checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-			return; // RefreshToken을 보낸 경우에는 AccessToken을 재발급 하고 인증 처리는 하지 않게 하기위해 바로 return으로 필터 진행 막기
-		}
-		/**
-		 * RefreshToken이 없거나 유효하지 않다면, AccessToken을 검사하고 인증을 처리하는 로직 수행
-		 * AccessToken이 없거나 유효하지 않다면, 인증 객체가 담기지 않은 상태로 다음 필터로 넘어가기 때문에 403 에러 발생
-		 * AccessToken이 유효하다면, 인증 객체가 담긴 상태로 다음 필터로 넘어가기 때문에 인증 성공
-		 *
-		 * 리프래쉬가 널이이고 디비에서 찾은 회원이 없다면
-		 * */
+			if (refreshToken != null) {
+				String s = jwtService.extractUserName(accessToken).orElseGet(null);
+				log.info(s);
+				filterChain.doFilter(request, response);
+			}
+			/**
+			 * RefreshToken이 없거나 유효하지 않다면, AccessToken을 검사하고 인증을 처리하는 로직 수행
+			 * AccessToken이 없거나 유효하지 않다면, 인증 객체가 담기지 않은 상태로 다음 필터로 넘어가기 때문에 403 에러 발생
+			 * AccessToken이 유효하다면, 인증 객체가 담긴 상태로 다음 필터로 넘어가기 때문에 인증 성공
+			 *
+			 * 리프래쉬가 널이이고 디비에서 찾은 회원이 없다면
+			 * */
 
-		if (refreshToken == null) {
-			log.info("리프레쉬 토큰이 널임이고 디비에 정보가 없습니다 .");
-			checkAccessTokenAndAuthentication(request, response, filterChain);
+			if (refreshToken == null) {
+				log.info("리프레쉬 토큰이 널임이고 디비에 정보가 없습니다 .");
+				checkAccessTokenAndAuthentication(request, response, filterChain);
+			}
+
+		} catch (Exception err) {
+			err.printStackTrace();
 		}
 
 	}

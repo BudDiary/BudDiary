@@ -26,7 +26,6 @@ public class MemberController {
 		log.info("회원가입 요청 호출 jwt 인증 성공");
 		for (Cookie cookie : resRequest.getCookies()) {
 
-
 		}
 		// 리프래쉬 토큰 발급
 		// memberService.signUp(memberSignUpDto);
@@ -35,6 +34,7 @@ public class MemberController {
 
 	@GetMapping("/jwt-test")
 	public String jwtTest() {
+		log.info("jwt-test");
 		return "jwtTest 요청 성공";
 	}
 

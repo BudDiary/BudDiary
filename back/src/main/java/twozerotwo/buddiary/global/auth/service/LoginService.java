@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
@@ -18,6 +19,7 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LoginService implements UserDetailsService {
 	private final MemberRepository memberRepository;
 
@@ -25,6 +27,7 @@ public class LoginService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Member member = memberRepository.findByUsername(username)
 			.orElseThrow(() -> new UsernameNotFoundException("해당 이메일이 존재하지 않습니다"));
+		log.info(" 여기로 드루와 {}", member.getUsername());
 		return User.builder()
 			.username(member.getUsername())
 			.password(member.getPassword())

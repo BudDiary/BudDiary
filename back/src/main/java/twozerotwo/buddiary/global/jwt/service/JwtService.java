@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -16,6 +17,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Slf4j
@@ -212,5 +214,13 @@ public class JwtService {
 			log.error("액세스 토큰이 유효하지 않습니다.");
 			return Optional.empty();
 		}
+	}
+
+	// TODO: 2023-05-03 이거 구현해야함
+	public Authentication getAuthentication(String accessToken) {
+		String s = extractUserName(accessToken).orElseGet(null);
+		Member member = memberRepository.findByUsername(s).orElseGet(null);
+		// UserDetails principal = new User(member.getUsername(), "", Collections.singleton());
+		return null;
 	}
 }
