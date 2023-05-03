@@ -3,6 +3,11 @@ import tw from "twin.macro";
 
 interface ImageSectionProps {
   Image: string;
+  run: string;
+}
+
+interface running {
+  run: string;
 }
 
 export const Container = styled.div`
@@ -37,6 +42,7 @@ export const ImageSection = styled.div<ImageSectionProps>`
   animation-delay: 0.3s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes BslideImg {
     0% {
@@ -68,12 +74,13 @@ export const TextSection = styled.div`
   }
 `;
 
-export const FirstDetail = styled.div`
+export const FirstDetail = styled.div<running>`
   ${tw``}
   animation-name: BslideIn;
   animation-delay: 0.3s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes BslideIn {
     0% {
@@ -89,13 +96,14 @@ export const FirstDetail = styled.div`
 
 export const SecondBox = styled.div``;
 
-export const SecondDetail = styled.div`
+export const SecondDetail = styled.div<running>`
   ${tw`flex flex-col`}
 
   animation-name: BslideIn2;
   animation-delay: 0.9s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes BslideIn2 {
     0% {
@@ -109,13 +117,14 @@ export const SecondDetail = styled.div`
   }
 `;
 
-export const ThirdDetail = styled.div`
+export const ThirdDetail = styled.div<running>`
   ${tw``}
 
   animation-name: BslideIn3;
   animation-delay: 1.5s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes BslideIn3 {
     0% {
@@ -129,7 +138,7 @@ export const ThirdDetail = styled.div`
   }
 `;
 
-export const WordSection = styled.div`
+export const WordSection = styled.div<running>`
   ${tw`text-2xl`}
   height: 40%;
   width: 100%;
@@ -147,7 +156,7 @@ export const WordsSection = styled.div`
   }
 `;
 
-export const UnderLine = styled.div`
+export const UnderLine = styled.div<running>`
   ${tw`bg-bud-blue`}
   height: 2px;
   width: 1rem;
@@ -182,7 +191,7 @@ export const UnderLine = styled.div`
   animation-delay: 3s;
   animation-duration: 1s;
   animation-fill-mode: both;
-
+  animation-play-state: ${(props) => props.run};
   @keyframes BunderLine {
     0% {
       width: 0%;
@@ -207,7 +216,7 @@ export const UnderLine = styled.div`
   }
 `;
 
-export const UnderLine2 = styled.div`
+export const UnderLine2 = styled.div<running>`
   ${tw`bg-bud-blue`}
   height: 2px;
   width: 1rem;
@@ -242,6 +251,7 @@ export const UnderLine2 = styled.div`
   animation-delay: 3.5s;
   animation-duration: 1s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes BunderLine {
     0% {

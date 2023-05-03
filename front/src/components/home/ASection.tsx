@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import {
   SectionContainer,
   ImageContainer,
@@ -13,21 +15,32 @@ import {
 } from "./ASection.styles";
 
 export default function ASection() {
+  const [ref, inView] = useInView({ threshold: 0.9 });
+  const [run, setRun] = useState<string>("paused");
+
+  useEffect(() => {
+    if (inView) {
+      setRun("running");
+      console.log(inView);
+    } else {
+    }
+  }, [inView]);
+
   return (
-    <SectionContainer>
+    <SectionContainer ref={ref}>
       <ImageContainer />
       <TextContainer>
-        <FirstContent>소중한 추억을</FirstContent>
+        <FirstContent run={run}>소중한 추억을</FirstContent>
         <SeceondContent>
-          <FirstDetail>
+          <FirstDetail run={run}>
             Bud<EasterEgg>:D</EasterEgg>iary{" "}
           </FirstDetail>
-          <SeceondDetail>에서</SeceondDetail>
+          <SeceondDetail run={run}>에서</SeceondDetail>
         </SeceondContent>
-        <ThirdContent>공유해보세요</ThirdContent>
+        <ThirdContent run={run}>공유해보세요</ThirdContent>
       </TextContainer>
       <MouseHelper />
-      <MouseWheel />
+      <MouseWheel run={run} />
     </SectionContainer>
   );
 }

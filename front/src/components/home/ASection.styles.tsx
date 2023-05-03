@@ -2,6 +2,10 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import img from "./assets/Testimg.jpg";
 
+interface running {
+  run: string;
+}
+
 export const SectionContainer = styled.div`
   ${tw`relative bg-contain`}
   height: calc(100vh - 42px);
@@ -37,11 +41,12 @@ export const TextContainer = styled.div`
   transform: translateY(-5%);
 `;
 
-export const FirstContent = styled.div`
+export const FirstContent = styled.div<running>`
   animation-name: AslideIn;
   animation-delay: 0.3s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes AslideIn {
     0% {
@@ -59,13 +64,14 @@ export const SeceondContent = styled.div`
   ${tw`flex`}
 `;
 
-export const FirstDetail = styled.div`
+export const FirstDetail = styled.div<running>`
   ${tw`mr-6 text-bud-blue`}
   animation-name: AfadeIn, ABounce;
   animation-delay: 3s, 4s;
   animation-duration: 2s, 4s;
   animation-iteration-count: 1, infinite;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes AfadeIn {
     0% {
@@ -104,11 +110,12 @@ export const EasterEgg = styled.span`
   }
 `;
 
-export const SeceondDetail = styled.div`
+export const SeceondDetail = styled.div<running>`
   animation-name: AslideIn2;
   animation-delay: 1s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes AslideIn2 {
     0% {
@@ -121,11 +128,12 @@ export const SeceondDetail = styled.div`
   }
 `;
 
-export const ThirdContent = styled.div`
+export const ThirdContent = styled.div<running>`
   animation-name: AslideIn3;
   animation-delay: 2s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes AslideIn3 {
     0% {
@@ -143,13 +151,13 @@ export const ThirdContent = styled.div`
 
 export const MouseHelper = styled.div`
   ${tw`absolute bottom-12 left-1/2 rounded-full bg-transparent border-solid border border-white`}
-  transform : translateX(-25px);
-  width: 50px;
-  height: 90px;
+  transform : translateX(-20px);
+  width: 40px;
+  height: 60px;
 `;
 
-export const MouseWheel = styled.div`
-  ${tw`absolute bottom-28 left-1/2 rounded-full bg-transparent border-solid border border-white`}
+export const MouseWheel = styled.div<running>`
+  ${tw`absolute bottom-20 left-1/2 rounded-full bg-transparent border-solid border border-white`}
   transform : translateX(-5px);
   width: 10px;
   height: 10px;
@@ -159,19 +167,16 @@ export const MouseWheel = styled.div`
   animation-duration: 2s;
   animation-fill-mode: both;
   animation-iteration-count: infinite;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes WheelAnimation {
-    0% {
+    20% {
       opacity: 1;
-      transform: translateY(-10%);
+      transform: translate(-5px, -35%);
     }
     100% {
       opacity: 0;
-      transform: translateY(400%);
+      transform: translate(-5px, 300%);
     }
   }
 `;
-// @media screen and (min-width: 640px) {
-// width: 100px;
-// height: 150px;
-// }
