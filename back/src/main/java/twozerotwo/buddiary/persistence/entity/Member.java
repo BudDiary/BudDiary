@@ -40,8 +40,7 @@ public class Member {
 	// @Column(nullable = false)
 	private String password;
 	@Column(nullable = false)
-
-	private String oauth2Id;
+	
 	@Builder.Default
 	private Long point = 0L;
 	@Builder.Default
@@ -74,7 +73,6 @@ public class Member {
 	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 	private String refreshToken;
 
-
 	// 비밀번호 암호화 메소드
 	public void passwordEncode(PasswordEncoder passwordEncoder) {
 		this.password = passwordEncoder.encode(this.password);
@@ -83,6 +81,5 @@ public class Member {
 	public void updateRefreshToken(String updateRefreshToken) {
 		this.refreshToken = updateRefreshToken;
 	}
-
 
 }
