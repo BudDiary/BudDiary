@@ -3,12 +3,18 @@ import tw from "twin.macro";
 
 export const DetailPageContainer = styled.div`
   ${tw`grid grid-cols-1 sm:grid-cols-3 gap-4 bg-red-200`}
-`
+`;
 
 export const DiariesContainer = styled.div`
   ${tw`sm:col-span-2 bg-blue-200`}
-`
+  display: flex;
+  justify-content: center;
+  padding-block: 20px;
+  > * {
+    margin: auto;
+  }
+`;
 
 export const GroupInfoContainer = styled.div`
-  ${tw`bg-green-200`}
-`
+  ${tw`bg-green-200 flex justify-center pt-20`}
+`;

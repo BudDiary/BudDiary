@@ -21,6 +21,6 @@ app.add_middleware(
 )
 
 
-@app.get("/test")
+@app.get("/fastapi/test")
 def test():
     return {'test': 'complete'}

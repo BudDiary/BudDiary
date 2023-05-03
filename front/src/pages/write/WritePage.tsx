@@ -7,20 +7,25 @@ import { PostingTabType } from "../../types/write";
 import {SubNavContainer } from "../mypage/MypagePage.styles"
 import { PageContainer } from "../../components/common/Page.styles";
 
+interface Props {
+  onFilesChanged: (files: File[]) => void;
+}
+
 export default function WritePage() {
-  const [tab, setTab] = useState<PostingTabType>("SELECT_IMAGE");
   const [content, setContent] = useState<string>('');
   const [originFiles, setOriginFiles] = useState<File[]>([]);
   return (
     <>
       <SubNavContainer>write</SubNavContainer>
       <PageContainer>
+        <span className="flex h-80">
         <Addpicture
-          setTab={setTab}
           originFiles={originFiles}
           setOriginFiles={setOriginFiles}
           />
-          <Pictures originFiles={originFiles} />
+          <Pictures originFiles={originFiles}
+          setOriginFiles={setOriginFiles}/>
+          </span>
           <Content setContent={setContent} />
       </PageContainer>
     </>
