@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,26 +20,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class UnusedSticker {
+public class DiaryImage {
 	@Id
-	@Column(name = "UNUSED_STICKER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "DIARY_IMAGE_ID")
 	private Long id;
-	private Long count;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MEMBER_ID")
-	private Member member;
+	@JoinColumn(name = "DIARY_ID")
+	private Diary diary;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "STICKER_ID")
-	private Sticker sticker;
-
-	public void minusCnt() {
-
-		if (this.count - 1 < 0) {
-			throw new RuntimeException("해당 스티커 개수가 부족합니다.");
-		}
-		this.count--;
-	}
+	@NotBlank
+	private String imgUrl;
 }

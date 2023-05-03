@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,10 +26,11 @@ import lombok.NoArgsConstructor;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
+
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Member {
 	@Id
@@ -56,15 +58,24 @@ public class Member {
 	private boolean enabled = true;
 	@Builder.Default
 	private boolean accountNotExpired = true;
-
-	@OneToMany(mappedBy = "member")
+	@Builder.Default
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private Set<MemberClub> memberClubs = new HashSet<>();
 
-	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<Notification> notifications = new ArrayList<>();
 
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
 	private List<Diary> diaries = new ArrayList<>();
+	@Builder.Default
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+	private List<UnusedSticker> stickers = new ArrayList<>();
+
+
+
+
+
 
 	@Enumerated(EnumType.STRING)
 	private SocialType socialType; // KAKAO, NAVER, GOOGLE
@@ -79,6 +90,12 @@ public class Member {
 
 	public void updateRefreshToken(String updateRefreshToken) {
 		this.refreshToken = updateRefreshToken;
+	}
+
+
+
+	public void addPoint(Long point) {
+		this.point += point;
 	}
 
 }
