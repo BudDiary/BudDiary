@@ -87,28 +87,26 @@ public class DiaryService {
 			for (StickerDto stickerDto : stickerDtoList) {
 				/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
 				// Boolean isOwned =  member.isOwned(stickerDto);
-				Boolean flag = false;
+				Boolean stickerOwned = false;
 				for (UnusedSticker ownedSticker : member.getStickers()) {
 					if (ownedSticker.getSticker().getId().equals(stickerDto.getStickerId())) {
-						flag = true;
+						stickerOwned = true;
 						break;
 					}
 				}
-				log.info("flag" + flag);
-				if (!flag) {
+				if (!stickerOwned) {
 					throw new RuntimeException("스티커를 보유하고 있지 않습니다.");
-				} else {
-					Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
-						.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
-					UsedSticker usedSticker = UsedSticker.builder()
-						.diary(diary)
-						.xCoordinate(stickerDto.getXCoordinate())
-						.yCoordinate(stickerDto.getYCoordinate())
-						.sticker(sticker)
-						.build();
-					// 스티커 하나 줄이기
-					usedStickerList.add(usedSticker);
 				}
+				Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
+					.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
+				UsedSticker usedSticker = UsedSticker.builder()
+					.diary(diary)
+					.xCoordinate(stickerDto.getXCoordinate())
+					.yCoordinate(stickerDto.getYCoordinate())
+					.sticker(sticker)
+					.build();
+				// 스티커 하나 줄이기
+				usedStickerList.add(usedSticker);
 			}
 		}
 	}
