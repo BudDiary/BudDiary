@@ -14,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@JsonIgnoreProperties({ "diaryId" })
 public class Comment {
 	@Id
 	@Column(name = "COMMENT_ID")
@@ -32,7 +36,7 @@ public class Comment {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member writer;
-
+	@JsonProperty("diaryId")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DIARY_ID")
 	private Diary diary;

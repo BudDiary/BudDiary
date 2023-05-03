@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +23,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@JsonIgnoreProperties({ "replyId", "comment"})
 public class Reply {
 	@Id
 	@Column(name = "REPLY_ID")
+	@JsonProperty("replyId")
 	private String id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -31,6 +36,7 @@ public class Reply {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "COMMENT_ID")
+	@JsonProperty("comment")
 	private Comment comment;
 
 	@Builder.Default

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
+import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.service.DiaryService;
 
 @RequiredArgsConstructor

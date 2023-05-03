@@ -1,6 +1,9 @@
 package twozerotwo.buddiary.domain.diary.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
-import twozerotwo.buddiary.domain.diary.api.SimpleDiaryDto;
+import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
@@ -146,6 +149,14 @@ public class DiaryService {
 	}
 
 	public List<SimpleDiaryDto> getDayDiaryList(String username, String date) {
+		Member member = clubService.returnMemberByUsername(username);
+		int year = Integer.parseInt(date.substring(0,4));
+		int month = Integer.parseInt(date.substring(5,7));
+		int day = Integer.parseInt(date.substring(8,10));
+		LocalDate targetDay = LocalDate.of(year, month, day);
+		LocalDateTime startDateTime = LocalDateTime.of(targetDay, LocalTime.of(0,0,0));
+		LocalDateTime endDateTime = LocalDateTime.of(targetDay, LocalTime.of(23,59,59));
+		List<Diary> diaryList = diaryRepository.findAllByDateAndMemberId(member, startDateTime, endDateTime);
 		return null;
 	}
 }
