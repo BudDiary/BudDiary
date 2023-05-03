@@ -1,19 +1,14 @@
 import React from "react";
 import { FileUploader } from "react-drag-drop-files";
-import { UploadImageBox } from "./Addpicture.styles"
+import { UploadImageBox } from "./Addpicture.styles";
 import { v4 } from "uuid";
-import { MdLibraryAdd } from 'react-icons/md'
+import { MdLibraryAdd } from "react-icons/md";
 interface Props {
   setOriginFiles: React.Dispatch<React.SetStateAction<File[]>>;
   originFiles: File[];
 }
 
-export default function Addpicture({
-
-  originFiles,
-  setOriginFiles,
-}: Props) {
-
+export default function Addpicture({ originFiles, setOriginFiles }: Props) {
   const fileTypes = ["png", "jpeg", "jpg"];
   const imageRegistHandler = (files: File[]) => {
     let tempImagelist = [...originFiles];
@@ -26,7 +21,6 @@ export default function Addpicture({
       tempImagelist.push(newFile);
     }
     setOriginFiles(tempImagelist);
-
   };
   return (
     <UploadImageBox>
@@ -38,10 +32,9 @@ export default function Addpicture({
         hoverTitle="놓아주세요"
       >
         <button>
-          <MdLibraryAdd color="blue" size={32}/>
+          <MdLibraryAdd color="blue" size={32} />
         </button>
       </FileUploader>
-      
     </UploadImageBox>
   );
 }

@@ -26,6 +26,7 @@ public class Sticker {
 	@NotBlank(message = "스티커 이미지 url이 없습니다.")
 	private String imageUrl;
 	@Size(min = 1, max = 20, message = "스티커 이름은 1자 이상 20자 이하여야 합니다.")
+	@Column(unique = true)
 	private String name;
 	@NotBlank(message = "스티커 가격을 설정하지 않았습니다.")
 	private Long price;

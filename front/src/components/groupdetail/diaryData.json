@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "user_name": "문영식",
+    "user_thumbnail": "https://picsum.photos/57",
+    "user_updated_at": "2022-04-01",
+    "content": "오늘은 날씨가 좋네요!",
+    "thumbnail": "/diary/1.jpg"
+  },
+  {
+    "id": 2,
+    "user_name": "김지오",
+    "user_thumbnail": "https://picsum.photos/52",
+    "user_updated_at": "2022-04-02",
+    "content": "오늘은 개발을 했어요!",
+    "thumbnail": "/diary/2.jpg"
+  },
+  {
+    "id": 3,
+    "user_name": "김명진",
+    "user_thumbnail": "https://picsum.photos/55",
+    "user_updated_at": "2022-04-03",
+    "content": "오늘은 운동을 했어요!",
+    "thumbnail": null
+  }
+]

@@ -12,7 +12,7 @@ import Diaries from "../../components/groupdetail/Diaries";
 export default function GroupDetailPage() {
   return (
     <>
-      <SubNavContainer>{}그룹 이름</SubNavContainer>
+      <SubNavContainer>그룹 이름</SubNavContainer>
       <PageContainer>
         <DetailPageContainer>
           <DiariesContainer>

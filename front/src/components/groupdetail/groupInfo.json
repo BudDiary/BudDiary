@@ -1,0 +1,35 @@
+{
+  "thumbnail": "group.thumbnail",
+  "members": [
+    {
+      "id": 1,
+      "name": "김준영",
+      "thumbnail": "https://picsum.photos/51"
+    },
+    {
+      "id": 2,
+      "name": "김지오",
+      "thumbnail": "https://picsum.photos/52"
+    },
+    {
+      "id": 3,
+      "name": "문여경",
+      "thumbnail": "https://picsum.photos/53"
+    },
+    {
+      "id": 4,
+      "name": "정민우",
+      "thumbnail": "https://picsum.photos/54"
+    },
+    {
+      "id": 5,
+      "name": "김명진",
+      "thumbnail": "https://picsum.photos/55"
+    },
+    {
+      "id": 6,
+      "name": "문영식",
+      "thumbnail": "https://picsum.photos/57"
+    }
+  ]
+}
