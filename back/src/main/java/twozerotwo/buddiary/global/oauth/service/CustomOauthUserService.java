@@ -57,6 +57,10 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 
 		OAuthAttributes extractAttributes = OAuthAttributes.of(socialType, userNameAttributeName, attributes);
 		Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
+		log.info("oauth 를 통해 얻어온 getEmail 정보 : {}",extractAttributes.getOauth2UserInfo().getEmail());
+		log.info("oauth 를 통해 얻어온 getNickname 정보 : {}",extractAttributes.getOauth2UserInfo().getNickname());
+		log.info("oauth 를 통해 얻어온 getId 정보 : {}",extractAttributes.getOauth2UserInfo().getId());
+		log.info("oauth 를 통해 얻어온 getImageUrl 정보 : {}",extractAttributes.getOauth2UserInfo().getImageUrl());
 		return new CustomOAuth2User(
 			Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
 			attributes,
