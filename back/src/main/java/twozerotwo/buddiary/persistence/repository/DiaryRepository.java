@@ -12,7 +12,13 @@ import twozerotwo.buddiary.persistence.entity.Member;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 	@Query(value = "SELECT d FROM Diary d "
-		+ "WHERE d.writer = :member AND d.writeDate BETWEEN :start AND :end ")
+		+ "WHERE d.writer = :member AND d.writeDate BETWEEN :start AND :end AND d.club IS NULL ")
+	List<Diary> findPersonalAllByDateAndMemberId(@Param("member") Member member, @Param("start") LocalDateTime start,
+		@Param("start") LocalDateTime end);
 
-	List<Diary> findAllByDateAndMemberId(@Param("member") Member member, @Param("start") LocalDateTime start, @Param("start") LocalDateTime end);
+	@Query(value = "SELECT d FROM Diary d "
+		+ "WHERE d.writer = :member AND d.writeDate BETWEEN :start AND :end AND d.club IS NOT NULL ")
+	List<Diary> findClubAllByDateAndMemberId(@Param("member") Member member, @Param("start") LocalDateTime start,
+		@Param("start") LocalDateTime end);
+
 }

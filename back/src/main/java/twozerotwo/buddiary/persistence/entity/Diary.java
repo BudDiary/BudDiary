@@ -20,12 +20,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
+import twozerotwo.buddiary.persistence.enums.ClubType;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Slf4j
 public class Diary {
 	@Id
 	@Column(name = "DIARY_ID")
@@ -50,7 +54,6 @@ public class Diary {
 	@JoinColumn(name = "CLUB_ID")
 	@Builder.Default
 	private Club club = null;
-
 	@Builder.Default
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<Reaction> reactions = new ArrayList<>();
@@ -61,9 +64,10 @@ public class Diary {
 	@Builder.Default
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
-
-	private Float positiveRate;
-	private Float negativeRate;
+	@Builder.Default
+	private Float positiveRate = 0f;
+	@Builder.Default
+	private Float negativeRate = 0f;
 
 	public UsedSticker useSticker(Sticker sticker, Double xCoordinate, Double yCoordinate) {
 		return UsedSticker.builder()
@@ -74,4 +78,29 @@ public class Diary {
 			.build();
 
 	}
+
+	public SimpleDiaryDto toPersonalDto() {
+		// String type = club == null ? "PERSONAL"
+		// 	: club.getType() == ClubType.DOUBLE ? "DOUBLE"
+		// 	: club.getType() == ClubType.PLURAL ? "PLURAL" : "UNKNOWN";
+		// return SimpleDiaryDto.builder().type("PERSONAL").clubName(club.getName()).clubUuid(club.getUuid())
+		// 	.diaryId(this.getId()).writer(this.getWriter()).writeDate(this.getWriteDate()).text(this.getText())
+		// 	.imgList(this.getDiaryImages()).positiveRate(this.getPositiveRate()).negativeRate(this.getNegativeRate())
+		// 	.reactionList(this.getReactions()).commentList(this.getComments()).build();
+		return SimpleDiaryDto.builder().type("PERSONAL")
+			.diaryId(this.getId()).writer(this.getWriter()).writeDate(this.getWriteDate()).text(this.getText())
+			.imgList(this.getDiaryImages()).positiveRate(this.getPositiveRate()).negativeRate(this.getNegativeRate())
+			.reactionList(this.getReactions()).commentList(this.getComments()).build();
+	}
+
+	public SimpleDiaryDto toClubDto() {
+		String type = club.getType() == ClubType.DOUBLE ? "DOUBLE"
+			: club.getType() == ClubType.PLURAL ? "PLURAL" : "UNKNOWN";
+		return SimpleDiaryDto.builder().type(type).clubName(club.getName()).clubUuid(club.getUuid())
+			.diaryId(this.getId()).writer(this.getWriter()).writeDate(this.getWriteDate()).text(this.getText())
+			.imgList(this.getDiaryImages()).positiveRate(this.getPositiveRate()).negativeRate(this.getNegativeRate())
+			.reactionList(this.getReactions()).commentList(this.getComments()).build();
+
+	}
+
 }

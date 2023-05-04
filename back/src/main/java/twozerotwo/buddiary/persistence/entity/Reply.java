@@ -23,11 +23,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@JsonIgnoreProperties({ "replyId", "comment"})
+@JsonIgnoreProperties({"comment"})
 public class Reply {
 	@Id
 	@Column(name = "REPLY_ID")
-	@JsonProperty("replyId")
 	private String id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
