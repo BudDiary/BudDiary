@@ -7,7 +7,7 @@ import {
   CommentWrapper,
 } from "./DiaryComment.style";
 import ReplyList from "./ReplyData.json";
-
+import { timeAgo } from "./GroupDetailFunction";
 type Props = {
   commentId: number;
 };
@@ -44,7 +44,7 @@ export default function Reply({ commentId }: Props) {
               </div>
               <div>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <h2>{reply.member_name}</h2>
+                  <h2 style={{ fontWeight: "bold" }}>{reply.member_name}</h2>
                   <h3
                     style={{
                       marginLeft: "0.5rem",
@@ -52,8 +52,14 @@ export default function Reply({ commentId }: Props) {
                       fontSize: "0.75rem",
                     }}
                   >
-                    {reply.update_at}
+                    {timeAgo(reply.update_at)}
                   </h3>
+                  <button>
+                    <h3 style={{ color: "#ABC4FF" }}>수정하기</h3>
+                  </button>
+                  <button>
+                    <h3 style={{ color: "#FB557C" }}>삭제하기</h3>
+                  </button>
                 </div>
                 <p>{reply.reply}</p>
               </div>

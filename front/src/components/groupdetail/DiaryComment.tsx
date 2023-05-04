@@ -8,30 +8,66 @@ import {
   CommentWrapper,
 } from "./DiaryComment.style";
 import CommentList from "./CommentList.json";
+import EmojiPicker from "./emoji/EmojiPicker";
+import EmojiCount from "./emoji/EmojiCount";
+import { timeAgo } from "./GroupDetailFunction";
+
 type Props = {
   diaryId: number;
 };
 
 export default function DiaryComment({ diaryId }: Props) {
-  // const [showReply, setShowReply] = useState(false);
   const [commentText, setCommentText] = useState("");
-
-  // const toggleShowReply = () => setShowReply(!showReply);
+  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
+  const [showEmojiPopup, setShowEmojiPopup] = useState(false);
 
   const handleCommentSubmit = () => {
     console.log(commentText);
     setCommentText("");
   };
 
+  const handleEmojiSelect = (emoji: string) => {
+    if (selectedEmojis.includes(emoji)) {
+      setSelectedEmojis(
+        selectedEmojis.filter((selected) => selected !== emoji)
+      );
+    } else {
+      setSelectedEmojis([...selectedEmojis, emoji]);
+    }
+    setShowEmojiPopup(false);
+  };
   const filteredComments = CommentList.filter(
-    (comment) => comment.diary_id === diaryId
+    (comment) => comment.diaryId === diaryId
   );
 
   return (
     <CommentWrapper>
-      <div style={{ display: "flex", alignItems: "baseline" }}>
-        <p>😀 1</p>
-        <BasicButton>+😀</BasicButton>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "baseline",
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            position: "relative",
+          }}
+        >
+          <EmojiCount emojis={selectedEmojis} />
+          <BasicButton onClick={() => setShowEmojiPopup((prev) => !prev)}>
+            +😀
+          </BasicButton>
+        </div>
+        {showEmojiPopup && (
+          <EmojiPicker
+            onSelect={handleEmojiSelect}
+            selectedEmojis={selectedEmojis}
+          />
+        )}
       </div>
 
       <p style={{ fontWeight: "bold" }}>댓글 {filteredComments.length}</p>
@@ -40,9 +76,18 @@ export default function DiaryComment({ diaryId }: Props) {
           <div>
             <img src={comment.userImage} alt="프로필" />
           </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-              <h2>{comment.member_name}</h2>
+          <div
+            style={{
+              width: "55%",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+              }}
+            >
+              <h2 style={{ fontWeight: "bold" }}>{comment.member_name}</h2>
               <h3
                 style={{
                   marginLeft: "0.5rem",
@@ -50,8 +95,14 @@ export default function DiaryComment({ diaryId }: Props) {
                   fontSize: "0.75rem",
                 }}
               >
-                {comment.update_at}
+                {timeAgo(comment.update_at)}
               </h3>
+              <button>
+                <h3 style={{ color: "#ABC4FF" }}>수정하기</h3>
+              </button>
+              <button>
+                <h3 style={{ color: "#FB557C" }}>삭제하기</h3>
+              </button>
             </div>
             <p>{comment.comment}</p>
             <Reply key={comment.id} commentId={comment.id} />

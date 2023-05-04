@@ -8,11 +8,22 @@ import {
 } from "./GroupDetailPage.styles";
 import GroupInfo from "../../components/groupdetail/GroupInfo";
 import Diaries from "../../components/groupdetail/Diaries";
+import groupData from "../../components/groupdetail/groupInfo.json";
 
 export default function GroupDetailPage() {
+  const subNavStyle = {
+    background: `url(${groupData.thumbnailUrl})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    color: "black",
+    fontWeight: "bold",
+  };
+
   return (
     <>
-      <SubNavContainer>그룹 이름</SubNavContainer>
+      <SubNavContainer style={subNavStyle}>
+        {groupData.clubName}
+      </SubNavContainer>
       <PageContainer>
         <DetailPageContainer>
           <DiariesContainer>
