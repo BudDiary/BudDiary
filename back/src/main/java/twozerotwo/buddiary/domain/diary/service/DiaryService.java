@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
+import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
@@ -164,11 +165,15 @@ public class DiaryService {
 		List<SimpleDiaryDto> simpleDtoList = new ArrayList<>();
 		for (Diary diary : personalDiaries) {
 			// log.info("확인: " + diary.getClub());
-			simpleDtoList.add(diary.toPersonalDto());
+			//다이어리 > diaryInfo로 바꾸는 메소드 필요
+			DiaryInfo diaryInfo = diary.toDiaryInfo();
+			//diaryInfo 인자로 바꿈
+			simpleDtoList.add(diary.toPersonalDto(diaryInfo));
 		}
 		for (Diary diary : clubDiaries) {
+			DiaryInfo diaryInfo = diary.toDiaryInfo();
 			// log.info("확인: " + diary.getClub());
-			simpleDtoList.add(diary.toClubDto());
+			simpleDtoList.add(diary.toClubDto(diaryInfo));
 		}
 		return simpleDtoList;
 	}

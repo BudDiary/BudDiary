@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.dto.ClubCreateResponse;
+import twozerotwo.buddiary.domain.club.dto.ClubDetail;
 import twozerotwo.buddiary.domain.club.dto.DoubleCreateRequest;
 import twozerotwo.buddiary.domain.club.dto.MyClubDto;
 import twozerotwo.buddiary.domain.club.dto.PluralCreateRequest;
@@ -53,6 +55,13 @@ public class ClubController {
 		MyClubDto myClubDto = clubService.getMyClub(username);
 		return new ResponseEntity<>(Map.of("myClubDto", myClubDto), HttpStatus.OK);
 	}
+
 	//-------------------------------------------클럽 디테일----------------------------------------------
+	@GetMapping("/{clubId}")
+	public ResponseEntity getClubDetail(@PathVariable("clubId") String clubUuid) {
+		String username = "yeokyung";
+		ClubDetail clubDetail = clubService.getClubDetail(clubUuid, username);
+		return new ResponseEntity<>(Map.of("clubDetail", clubDetail), HttpStatus.OK);
+	}
 
 }

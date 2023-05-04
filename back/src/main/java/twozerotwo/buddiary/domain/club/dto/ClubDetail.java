@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
+import twozerotwo.buddiary.persistence.entity.Member;
 
-@Getter
 @Builder
-@Slf4j
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyClubDto {
-	private List<ClubInfo> pluralList;
-	private List<ClubInfo> doubleList;
+public class ClubDetail {
+	private List<DiaryInfo> diaryList;
+	private List<Member> memberList;
 }

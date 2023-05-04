@@ -57,7 +57,7 @@ public class DiaryController {
 	public ResponseEntity getDayDiaryList(@RequestParam("date") String date) {
 		String username = "yeokyung";
 		List<SimpleDiaryDto> simpleDiaryList = diaryService.getDayDiaryList(username, date); // 해당 월에 쓴 다이어리 날짜들 조회
-		return ResponseEntity.ok(Map.of("dairyList", simpleDiaryList));
+		return ResponseEntity.ok(Map.of("diaryList", simpleDiaryList));
 	}
 
 	//-------------------------------------------특정 날짜 다이어리 리스트 반환----------------------------------------------

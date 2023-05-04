@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import twozerotwo.buddiary.domain.club.dto.ClubDto;
+import twozerotwo.buddiary.domain.club.dto.ClubInfo;
 import twozerotwo.buddiary.persistence.enums.ClubType;
 import twozerotwo.buddiary.persistence.enums.ClubTypeConverter;
 
@@ -46,19 +46,19 @@ public class Club {
 	@OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
 	private Set<MemberClub> clubMembers = new HashSet<>();
 
-	public ClubDto toPluralDto() {
-		return ClubDto.builder()
+	public ClubInfo toPluralDto() {
+		return ClubInfo.builder()
 			.clubUuid(this.uuid)
 			.thumbnailUrl(this.thumbnailPath)
-			.name(this.name)
+			.clubName(this.name)
 			.build();
 	}
 
-	public ClubDto toDoubleDto(String clubImgUrl) {
-		return ClubDto.builder()
+	public ClubInfo toDoubleDto(String clubImgUrl) {
+		return ClubInfo.builder()
 			.clubUuid(this.uuid)
 			.thumbnailUrl(clubImgUrl)
-			.name(this.name)
+			.clubName(this.name)
 			.build();
 	}
 }

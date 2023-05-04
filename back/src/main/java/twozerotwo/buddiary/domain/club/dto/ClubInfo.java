@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClubDto {
+public class ClubInfo {
 	private String clubUuid;
 	private String thumbnailUrl;
-	private String name;
+	private String clubName;
 }
