@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,5 +58,11 @@ public class DiaryController {
 		String username = "yeokyung";
 		List<SimpleDiaryDto> simpleDiaryList = diaryService.getDayDiaryList(username, date); // 해당 월에 쓴 다이어리 날짜들 조회
 		return ResponseEntity.ok(Map.of("dairyList", simpleDiaryList));
+	}
+
+	//-------------------------------------------특정 날짜 다이어리 리스트 반환----------------------------------------------
+	@GetMapping("/{diaryid}")
+	public ResponseEntity getDiaryStricker(@PathVariable("diaryid") Long diaryId) {
+		return ResponseEntity.ok(Map.of("usedStickers", diaryService.getDiarySticker(diaryId)));
 	}
 }

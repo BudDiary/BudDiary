@@ -18,6 +18,8 @@ import twozerotwo.buddiary.domain.club.service.ClubService;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
+import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
 import twozerotwo.buddiary.persistence.entity.Diary;
@@ -169,5 +171,16 @@ public class DiaryService {
 			simpleDtoList.add(diary.toClubDto());
 		}
 		return simpleDtoList;
+	}
+
+	public List<UsedStickerDto> getDiarySticker(Long diaryId) {
+		Diary diary = diaryRepository.findById(diaryId)
+			.orElseThrow(() -> new NotFoundException(diaryId + "번의 일기를 찾을 수 없습니다."));
+		List<UsedStickerDto> usedStickerList = new ArrayList<>();
+
+		for (UsedSticker usedSticker : diary.getUsedStickers()) {
+			usedStickerList.add(usedSticker.toUsedStickerDto());
+		}
+		return usedStickerList;
 	}
 }

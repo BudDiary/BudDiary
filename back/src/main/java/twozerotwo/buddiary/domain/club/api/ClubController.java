@@ -52,7 +52,7 @@ public class ClubController {
 		String username = "yeokyung";
 		MyClubDto myClubDto = clubService.getMyClub(username);
 		return new ResponseEntity<>(Map.of("myClubDto", myClubDto), HttpStatus.OK);
-
 	}
+	//-------------------------------------------클럽 디테일----------------------------------------------
 
 }
