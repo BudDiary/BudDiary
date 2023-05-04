@@ -25,6 +25,7 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "react-textarea-autosize": "^8.4.1",
+    "react-wordcloud": "^1.2.7",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.10",
     "sweetalert2": "^11.7.3",

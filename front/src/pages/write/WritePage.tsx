@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import Addpicture from "../../components/write/Addpicture";
 import Pictures from "../../components/write/Pictures";
 import Content from "../../components/write/Content";
-
 import { PostingTabType } from "../../types/write";
-import {SubNavContainer } from "../mypage/MypagePage.styles"
-import { PageContainer } from "../../components/common/Page.styles";
+import { PageContainer, SubNavContainer } from "../../components/common/Page.styles";
 
 interface Props {
   onFilesChanged: (files: File[]) => void;
