@@ -56,5 +56,5 @@ public class UsedSticker {
 			.imgUrl(this.getSticker().getImageUrl())
 			.build();
 	}
-	
+
 }
