@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class Reply {
 	@Id
 	@Column(name = "REPLY_ID")
-	private String id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")

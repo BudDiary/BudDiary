@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 public class Comment {
 	@Id
 	@Column(name = "COMMENT_ID")
-	private String id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
