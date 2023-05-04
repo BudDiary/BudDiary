@@ -5,6 +5,10 @@ export const InputBox = styled.textarea`
   ${tw`bg-blue-200 text-gray-700 border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal`}
   width: 80%;
   height: 30px;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  word-wrap: break-word;
 `;
 
 export const UserInfo = styled.div`
@@ -13,7 +17,7 @@ export const UserInfo = styled.div`
   > div:first-child {
     display: flex;
     align-items: center;
-    margin-right: 1rem;
+    margin-right: 2rem;
   }
 
   img {
@@ -50,4 +54,9 @@ export const InputSet = styled.div`
 export const CommentWrapper = styled.div`
   ${tw`mx-auto`}
   width: 95%;
+`;
+export const EmojiPickerWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  margin-right: 1rem;
 `;

@@ -17,29 +17,29 @@ import { useState } from "react";
 export default function NavBar() {
   const [sideBarState, setSidebarState] = useState(false);
   const showSidebar = () => {
-    setSidebarState(true)
+    setSidebarState(true);
   };
   return (
     <div>
       {sideBarState === true ? <MobileSidebar /> : null}
-    <NavbarContainer>
-      <NavbarBox>
-        <LogoContainer to='/'>
-          <LogoBlue>Bud</LogoBlue>
-          <LogoGreen>:D</LogoGreen>
-          <LogoBlue>iary</LogoBlue>
-        </LogoContainer>
-        <MenuItem to='/group'>그룹일기</MenuItem>
-        <MenuItem to='/write'>일기작성</MenuItem>
-        <ProfileContainer>
-          로그인
-          <ProfileItem></ProfileItem>
-        </ProfileContainer>
-        <MobileMenu>
-          <RxHamburgerMenu onClick={showSidebar} />
-        </MobileMenu>
-      </NavbarBox>
-    </NavbarContainer>
+      <NavbarContainer>
+        <NavbarBox>
+          <LogoContainer to="/">
+            <LogoBlue>Bud</LogoBlue>
+            <LogoGreen>:D</LogoGreen>
+            <LogoBlue>iary</LogoBlue>
+          </LogoContainer>
+          <MenuItem to="/group">그룹일기</MenuItem>
+          <MenuItem to="/write">일기작성</MenuItem>
+          <ProfileContainer>
+            로그인
+            <ProfileItem></ProfileItem>
+          </ProfileContainer>
+          <MobileMenu>
+            <RxHamburgerMenu onClick={showSidebar} />
+          </MobileMenu>
+        </NavbarBox>
+      </NavbarContainer>
     </div>
   );
 }
