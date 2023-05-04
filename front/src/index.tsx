@@ -14,6 +14,7 @@ import GroupPage from "./pages/group/GroupPage";
 import SurveyPage from "./pages/survey/SurveyPage";
 import HomePage from "./pages/home/HomePage";
 import MypagePage from "./pages/mypage/MypagePage";
+import SignUpPage from "./pages/signup/SignUpPage";
 
 
 
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: "/group/:id", element: <GroupDetailPage /> },
       { path: "/write", element: <WritePage /> },
       { path: "/mypage", element: <MypagePage /> },
+      { path: "/signup", element: <SignUpPage /> },
     ],
   },
 ]);

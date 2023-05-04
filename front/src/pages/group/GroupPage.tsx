@@ -1,6 +1,5 @@
 import React from "react";
-import { PageContainer } from "../../components/common/Page.styles";
-import { SubNavContainer } from "../mypage/MypagePage.styles";
+import { PageContainer, SubNavContainer } from "../../components/common/Page.styles";
 import Recommended from "../../components/group/Recommended";
 import MyTab from "../../components/group/MyTab";
 
