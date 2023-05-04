@@ -1,5 +1,8 @@
 package twozerotwo.buddiary.global.jwt.service;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -8,7 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -214,12 +222,16 @@ public class JwtService {
 			return Optional.empty();
 		}
 	}
-
-	// TODO: 2023-05-03 이거 구현해야함
 	public Authentication getAuthentication(String accessToken) {
-		String s = extractUserName(accessToken).orElseGet(null);
-		Member member = memberRepository.findByUsername(s).orElseGet(null);
-		// UserDetails principal = new User(member.getUsername(), "", Collections.singleton());
-		return null;
+		String username = extractUserName(accessToken).orElseGet(null);
+		Member member = memberRepository.findByUsername(username).orElseGet(null);
+		if (member == null) {
+			log.error("맴버 정보가 없습니다.");
+		}
+		Collection<? extends GrantedAuthority> authorities = Collections.singleton(
+			new SimpleGrantedAuthority(member.getRole().getKey()));
+		UserDetails principal = new User(member.getUsername(), "", authorities);
+
+		return new UsernamePasswordAuthenticationToken(principal, "",authorities );
 	}
 }
