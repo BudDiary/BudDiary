@@ -25,6 +25,7 @@ public class CustomOAuth2User extends DefaultOAuth2User {
 	private Role role;
 	// 추가 정보 입력하기 전에는 guest 추후 SuccessHandler 에서 추가 정보 를 입력하는 로직에서 사용할 예정
 	// 추가 정보를 입력하면 user 의 상태를 가질 role
+	private String socialID;
 
 	/**
 	 * Constructs a {@code DefaultOAuth2User} using the provided parameters.
@@ -35,10 +36,11 @@ public class CustomOAuth2User extends DefaultOAuth2User {
 	 *                         {@link #getAttributes()}
 	 */
 	public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities,
-		Map<String, Object> attributes, String nameAttributeKey, String email, Role role) {
+		Map<String, Object> attributes, String nameAttributeKey, String email, Role role, String socialID) {
 		super(authorities, attributes, nameAttributeKey);
 		this.email = email;
 		this.role = role;
+		this.socialID = socialID;
 	}
 
 }

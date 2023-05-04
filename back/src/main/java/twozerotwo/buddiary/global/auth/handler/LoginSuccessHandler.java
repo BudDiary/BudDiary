@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.global.jwt.service.JwtService;
+import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Slf4j
@@ -30,7 +31,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authentication) throws IOException, ServletException {
 		String username = extractUsername(authentication);
-		String accessToken = jwtService.createAccessToken(username);
+		String socialID = extractSocialID(authentication);
+		String accessToken = jwtService.createAccessToken(username, socialID);
 		String refreshToken = jwtService.createRefreshToken();
 		// 쿠키로 전달
 		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
@@ -47,6 +49,12 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private String extractUsername(Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		return userDetails.getUsername();
+	}
+
+	private String extractSocialID(Authentication authentication) {
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		Member member = memberRepository.findByUsername(userDetails.getUsername()).orElseGet(null);
+		return member.getSocialId();
 	}
 
 }
