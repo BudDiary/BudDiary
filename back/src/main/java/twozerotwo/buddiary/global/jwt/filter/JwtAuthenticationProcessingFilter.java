@@ -42,16 +42,16 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 		// "/login"으로 들어오는 요청은 Filter 작동 X 로그인 의경우 토큰 유효성이 아니라 인증인가를 바로 하면됨
 
-		// if (request.getRequestURI().equals(NO_CHECK_URL)) {
-		// 	log.info("다음필터로 보냅니다.");
-		// 	filterChain.doFilter(request, response);
-		// 	return;
-		// }
+		if (request.getRequestURI().equals(NO_CHECK_URL)) {
+			log.info("다음필터로 보냅니다.");
+			filterChain.doFilter(request, response);
+			return;
+		}
 
 		String refreshToken = jwtService.extractRefreshToken(request).filter(jwtService::isTokenValid).orElse(null);
 		String accessToken = jwtService.extractAccessToken(request).filter(jwtService::isTokenValid).orElse(null);
 
-		if(refreshToken == null  && accessToken == null){
+		if (refreshToken == null && accessToken == null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -66,7 +66,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
 		if (refreshToken != null && !jwtService.isTokenValid(accessToken)) {
 			String username = jwtService.extractUserName(accessToken).orElse(null);
-			if(username == null){
+			if (username == null) {
 				log.error("access 토큰에 정보가 없습니다.");
 				filterChain.doFilter(request, response);
 			}
@@ -105,7 +105,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			jwtService.sendAccessToken(response, accessToken);
 		});
 	}
-
 
 	public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {

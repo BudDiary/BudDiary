@@ -22,6 +22,7 @@ import twozerotwo.buddiary.global.auth.handler.LoginSuccessHandler;
 import twozerotwo.buddiary.global.auth.service.LoginService;
 import twozerotwo.buddiary.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import twozerotwo.buddiary.global.jwt.service.JwtService;
+import twozerotwo.buddiary.global.oauth.cookie.HttpCookieOAuth2AuthorizationRequestRepository;
 import twozerotwo.buddiary.global.oauth.hadler.OAuth2LoginFailHandler;
 import twozerotwo.buddiary.global.oauth.hadler.OAuth2LoginSuccessHandler;
 import twozerotwo.buddiary.global.oauth.service.CustomOauthUserService;
@@ -55,6 +56,11 @@ public class SecurityConfig {
 		return customJsonUsernamePasswordLoginFilter;
 	}
 
+	// @Bean
+	// public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+	// 	return new HttpCookieOAuth2AuthorizationRequestRepository();
+	// }
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.formLogin()
@@ -77,21 +83,22 @@ public class SecurityConfig {
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
 
-			// 아이콘, css, js 관련
-			// 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능, h2-console에 접근 가능
-			.antMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**")
-			.permitAll()
-			// .antMatchers("/login")
-			// .permitAll() // 회원가입 접근 가능
 			.anyRequest()
-			.authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
+			.permitAll()// 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
 			.and()
 			//== 소셜 로그인 설정 ==//
 			.oauth2Login()
-			.successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
-			.failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+			.authorizationEndpoint().baseUri("/oauth2/authorize")
+			.authorizationRequestRepository(cookieAuthorizationRequestRepository())
+			.and()
+			.redirectionEndpoint()
+			// .baseUri("/login/oauth2/code/kakao/code*")
+			.and()
 			.userInfoEndpoint()
-			.userService(customOAuth2UserService); // customUserService 설정
+			.userService(customOAuth2UserService)
+			.and()
+			.successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+			.failureHandler(oAuth2LoginFailureHandler);// 소셜 로그인 실패 시 핸들러 설정
 
 		// 원래 스프링 시큐리티 필터 순서가 LogoutFilter 이후에 로그인 필터 동작
 		// 따라서, LogoutFilter 이후에 우리가 만든 필터 동작하도록 설정
@@ -101,6 +108,11 @@ public class SecurityConfig {
 
 		return http.build();
 
+	}
+
+	@Bean
+	public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+		return new HttpCookieOAuth2AuthorizationRequestRepository();
 	}
 
 	@Bean
