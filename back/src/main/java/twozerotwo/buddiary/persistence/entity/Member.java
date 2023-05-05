@@ -108,10 +108,9 @@ public class Member {
 			.build();
 	}
 
-	public Member signup(String username, String intro){
+	public Member signup(String username){
 		this.username = username;
-		this.intro = intro;
-		this.role = Role.GUEST;
+		this.role = Role.USER;
 		return this;
 	}
 
