@@ -64,7 +64,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		log.info("로그인 성공은로 인헤 두개의 토큰을 발급합니다.");
 		String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID());
 		String refreshToken = jwtService.createRefreshToken();
-		log.info("토큰 발급 밑 디비갱신");
 		// 이미 가입한 사람의 정보를 줘야한다. 리프 엑세스 둘다 있다.
 		//
 		ObjectMapper objectMapper = new ObjectMapper();
