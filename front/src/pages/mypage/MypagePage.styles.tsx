@@ -6,9 +6,9 @@ export const MyPageContainer = styled.div`
 `
 
 export const MyProfileInfoContainer = styled.div`
-    ${tw`bg-blue-200`}
+    ${tw`border-b-2`}
 `
 
 export const MyDiaryCalendarContainer = styled.div`
-    ${tw`bg-red-200 sm:row-span-2`}
+    ${tw`sm:row-span-2 border-l-2`}
 `

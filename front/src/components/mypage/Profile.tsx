@@ -4,7 +4,7 @@ import { FullRoundedButton } from "../common/Button.styles";
 import ProfileEditModal from "./ProfileEditModal";
 import { BsCoin } from 'react-icons/bs'
 import { userdummy } from "./userdummy";
-import { UserProfileContainer, IntroContainer, ProfilePicSection, ProfileInfoSection } from "./Profile.styles";
+import { UserProfileContainer, IntroContainer, ProfilePicSection, ProfileInfoSection, PointsButton, ChangeProfileSection } from "./Profile.styles";
 
 export default function Profile() {
   const [profileModalState, setProfileModalState] = useState(false);
@@ -18,12 +18,13 @@ export default function Profile() {
     </ProfilePicSection>
     <ProfileInfoSection>
       {userdummy.nickname}
-      <FullRoundedButton>
-        <div className="my-auto ml-4 mr-2"><BsCoin /></div>
-        <div className="my-auto">{userdummy.points}</div>
-      </FullRoundedButton>
-      <FullRoundedButton onClick={showProfileModal} >프로필수정</FullRoundedButton>
+      <PointsButton>
+        {userdummy.points}pts
+      </PointsButton>
     </ProfileInfoSection>
+    <ChangeProfileSection>
+    <FullRoundedButton onClick={showProfileModal} >프로필수정</FullRoundedButton>
+    </ChangeProfileSection>
     <IntroContainer>{userdummy.intro}</IntroContainer>
   </UserProfileContainer>);
 }
