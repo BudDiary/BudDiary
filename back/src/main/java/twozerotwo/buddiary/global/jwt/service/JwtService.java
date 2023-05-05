@@ -222,6 +222,7 @@ public class JwtService {
 			return Optional.empty();
 		}
 	}
+
 	public Authentication getAuthentication(String accessToken) {
 		String username = extractUserName(accessToken).orElseGet(null);
 		Member member = memberRepository.findByUsername(username).orElseGet(null);
@@ -232,6 +233,6 @@ public class JwtService {
 			new SimpleGrantedAuthority(member.getRole().getKey()));
 		UserDetails principal = new User(member.getUsername(), "", authorities);
 
-		return new UsernamePasswordAuthenticationToken(principal, "",authorities );
+		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
 	}
 }
