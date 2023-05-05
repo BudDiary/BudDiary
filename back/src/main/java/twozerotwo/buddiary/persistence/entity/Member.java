@@ -108,4 +108,11 @@ public class Member {
 			.build();
 	}
 
+	public Member signup(String username, String intro){
+		this.username = username;
+		this.intro = intro;
+		this.role = Role.GUEST;
+		return this;
+	}
+
 }
