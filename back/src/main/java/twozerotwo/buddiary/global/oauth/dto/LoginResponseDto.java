@@ -13,6 +13,6 @@ public class LoginResponseDto {
 	private String username;
 	private String nickname;
 	private String profilePic;
-	private String points;
+	private Long points;
 	private String intro;
 }

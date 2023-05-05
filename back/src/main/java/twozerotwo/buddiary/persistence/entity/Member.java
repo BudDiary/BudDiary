@@ -50,6 +50,8 @@ public class Member {
 	@Builder.Default
 	private LocalDateTime enrollDate = LocalDateTime.now();
 
+	@Builder.Default
+	private String profilePath = null;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	//민우 요청사항 추가 설문조사

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	}
 
-	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) {
+	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws
+		IOException {
 		log.info("로그인 성공은로 인헤 두개의 토큰을 발급합니다.");
 		String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID());
 		String refreshToken = jwtService.createRefreshToken();
@@ -72,10 +74,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		LoginResponseDto loginResponseDto = LoginResponseDto.builder()
 			.username(findMember.getUsername())
 			.nickname(findMember.getNickname())
-			// .intro(findMember.get)
+			.intro(findMember.getIntro())
+			.points(findMember.getPoint())
+			.profilePic(findMember.getProfilePath())
 			.build();
+		String jsonResponse = objectMapper.writeValueAsString(loginResponseDto);
 		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 		jwtService.updateRefreshToken(oAuth2User.getUsername(), refreshToken);
+		response.getWriter().write(jsonResponse);
 		response.setContentType("application/json;charset=UTF-8");
 
 
