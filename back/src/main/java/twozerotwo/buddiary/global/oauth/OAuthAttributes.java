@@ -84,7 +84,6 @@ public class OAuthAttributes {
 		return Member.builder()
 			// TODO: 2023-04-27 추후 사업자 등록하면 추가 정보 넣어서 주어야합니다.
 			.username(UUID.randomUUID() + "@socialUser.com") //userName JWT 토큰 발급 위한 용도뿐
-			.nickname(oauth2UserInfo.getNickname())
 			.socialType(socialType)
 			.socialId(oauth2UserInfo.getId())
 			.role(Role.GUEST).build();
