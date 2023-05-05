@@ -41,7 +41,8 @@ public class Member {
 	// @Column(nullable = false)
 	private String password;
 	// 카카오에서 가져온 카카오 이름 ex) 김명영
-	private String nickname;
+	@Builder.Default
+	private String nickname = null;
 	private String intro;
 	@Column(nullable = false)
 	@Builder.Default
