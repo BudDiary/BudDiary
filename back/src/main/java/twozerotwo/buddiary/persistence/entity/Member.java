@@ -41,6 +41,8 @@ public class Member {
 	private String username;
 	// @Column(nullable = false)
 	private String password;
+	// 카카오에서 가져온 카카오 이름 ex) 김명영
+	private String nickname;
 	@Column(nullable = false)
 	@Builder.Default
 	private Long point = 0L;

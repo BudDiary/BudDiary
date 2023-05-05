@@ -10,10 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.global.jwt.service.JwtService;
 import twozerotwo.buddiary.global.oauth.CustomOAuth2User;
+import twozerotwo.buddiary.global.oauth.dto.LoginResponseDto;
 import twozerotwo.buddiary.persistence.enums.Role;
 
 @Slf4j
@@ -58,8 +61,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getSocialID());
 		String refreshToken = jwtService.createRefreshToken();
 		log.info("토큰 발급 밑 디비갱신");
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		LoginResponseDto loginResponseDto;
 		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 		jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
+		response.setContentType("application/json;charset=UTF-8");
+
+
 
 	}
 
