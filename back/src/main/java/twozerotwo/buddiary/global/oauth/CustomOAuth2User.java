@@ -19,7 +19,7 @@ import twozerotwo.buddiary.persistence.enums.Role;
 // TODO: 2023/04/28 사업자 등록 완료되면 여기다른 값들 추가해보기
 @Getter
 public class CustomOAuth2User extends DefaultOAuth2User {
-	private String email;
+	private String username;
 	// OAuth 처음 로그인시 임의의 이메일을 여기에 넣는다.
 	// 이후
 	private Role role;
@@ -36,9 +36,9 @@ public class CustomOAuth2User extends DefaultOAuth2User {
 	 *                         {@link #getAttributes()}
 	 */
 	public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities,
-		Map<String, Object> attributes, String nameAttributeKey, String email, Role role, String socialID) {
+		Map<String, Object> attributes, String nameAttributeKey, String username, Role role, String socialID) {
 		super(authorities, attributes, nameAttributeKey);
-		this.email = email;
+		this.username = username;
 		this.role = role;
 		this.socialID = socialID;
 	}
