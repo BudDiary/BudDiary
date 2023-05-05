@@ -18,10 +18,10 @@ const api = axios.create({
 //   }
 // );
 // 카카오톡 로그인
-const REDIRECT_URI = 'http://localhost:3000/login/oauth2/code/kakao'
+const REDIRECT_URI = "http://localhost:3000/login/oauth2/code/kakao";
 // const KAKAO_API_KEY = 'c20864e836acea814d3687543c21c103'
 // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_API_KEY}&redirect_uri=${REDIRECT_URI}`;
-const KAKAO_AUTH_URL = `http://192.168.100.169:8080/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URI}`;
+const KAKAO_AUTH_URL = `http://localhost:8080/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URI}`;
 const kakaoApi = axios.create({
   baseURL: KAKAO_AUTH_URL,
 });
