@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.club.dto.MemberDto;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
@@ -94,6 +95,17 @@ public class Member {
 
 	public void addPoint(Long point) {
 		this.point += point;
+	}
+
+	public MemberDto toDto(){
+		return MemberDto.builder()
+			.username(this.username)
+			.profilePath(this.profilePath)
+			.intro(this.intro)
+			.point(this.point)
+			.sociaId(this.socialId)
+			.socialType(this.socialType)
+			.build();
 	}
 
 }

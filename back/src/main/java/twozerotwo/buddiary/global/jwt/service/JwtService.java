@@ -34,7 +34,6 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Getter
 public class JwtService {
 	private final MemberRepository memberRepository;
 	@Value("${server.name}")
@@ -191,7 +190,7 @@ public class JwtService {
 				log.info("요청에서 가져온 쿠키 {}", cookie.getName());
 				if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
 					String token = cookie.getValue();
-					if (token != null) {
+					if (token != null && isTokenValid(token)) {
 						log.info(" extractAccessToken 추출된 엑세스 토큰 token {}", token);
 						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
 					} else {
