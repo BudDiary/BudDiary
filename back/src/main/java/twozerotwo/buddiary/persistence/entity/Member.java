@@ -97,7 +97,7 @@ public class Member {
 		this.point += point;
 	}
 
-	public MemberDto toDto(){
+	public MemberDto toDto() {
 		return MemberDto.builder()
 			.username(this.username)
 			.profilePath(this.profilePath)

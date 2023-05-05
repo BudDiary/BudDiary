@@ -1,6 +1,5 @@
 package twozerotwo.buddiary.global.util;
 
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
