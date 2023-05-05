@@ -63,7 +63,6 @@ public class JwtService {
 	 */
 	public String createAccessToken(String username, String socialId, SocialType socialType) {
 		Date now = new Date();
-		log.info("createAccessToken 토큰 만들기");
 		return JWT.create() // JWT 토큰을 생성하는 빌더 반환
 			.withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
 			.withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
@@ -87,12 +86,10 @@ public class JwtService {
 	 */
 	public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
 
-		log.info("sendAccessAndRefreshToken 에 access token {}", accessToken);
 		response.setStatus(HttpServletResponse.SC_OK);
 
 		sendAccessToken(response, accessToken);
 		sendRefreshToken(response, refreshToken);
-		log.info("Access Token, Refresh Token 쿠키 설정 완료");
 	}
 
 	/**
@@ -110,7 +107,6 @@ public class JwtService {
 		cookie.setMaxAge(3600000);
 
 		response.addCookie(cookie);
-		log.info("발급된 Access Token : {}", accessToken);
 	}
 
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
@@ -124,7 +120,6 @@ public class JwtService {
 		cookie.setMaxAge(1209600000);
 		cookie.setHttpOnly(true);
 		response.addCookie(cookie);
-		log.info("발급된 refreshToken  : {}", refreshToken);
 
 	}
 
@@ -132,7 +127,6 @@ public class JwtService {
 	 * RefreshToken DB 저장(업데이트)
 	 */
 	public void updateRefreshToken(String email, String refreshToken) {
-		log.info("리프래쉬 토큰 다시 디비에 저장");
 		memberRepository.findByUsername(email)
 			.ifPresentOrElse(member -> member.updateRefreshToken(refreshToken),
 				() -> new NotFoundException("일치하는 회원이 없습니다."));
@@ -154,17 +148,14 @@ public class JwtService {
 	 * 헤더에서 RefreshToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractRefreshToken(HttpServletRequest request) {
-		log.info("요청 받은 리퀘스트 {}", request.getRequestURI());
 		if (request.getCookies() == null) {
 			return Optional.empty();
 		}
 		try {
 			for (Cookie cookie : request.getCookies()) {
-				log.info("쿠키 {}", cookie.getName());
 				if (cookie.getName().equals(REFRESH_TOKEN_SUBJECT)) {
 					String token = cookie.getValue();
 					if (token != null) {
-						log.info(" extractRefreshToken 추출된 리프레쉬 토큰 token {}", token);
 						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
 					} else {
 						return Optional.empty();
@@ -187,11 +178,9 @@ public class JwtService {
 		}
 		try {
 			for (Cookie cookie : request.getCookies()) {
-				log.info("요청에서 가져온 쿠키 {}", cookie.getName());
 				if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
 					String token = cookie.getValue();
 					if (token != null && isTokenValid(token)) {
-						log.info(" extractAccessToken 추출된 엑세스 토큰 token {}", token);
 						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
 					} else {
 						return Optional.empty();
@@ -231,13 +220,12 @@ public class JwtService {
 	public Optional<String> extractSocialId(String accessToken) {
 		try {
 			// 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
-			Optional<String> userName = Optional.ofNullable(
+			Optional<String> socialId = Optional.ofNullable(
 				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
 					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
 					.getClaim(SOCIAL_ID) // claim(Emial) 가져오기
 					.asString());
-			log.info("access 토큰에서 추출된 SOCIAL_ID 입니다 {}", userName.orElse("없습니다."));
-			return userName;
+			return socialId;
 		} catch (Exception e) {
 			log.error("액세스 토큰이 유효하지 않습니다.");
 			return Optional.empty();
@@ -246,13 +234,12 @@ public class JwtService {
 
 	public Optional<String> extractSocialType(String accessToken) {
 		try {
-			Optional<String> userName = Optional.ofNullable(
+			Optional<String> socialType = Optional.ofNullable(
 				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
 					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
 					.getClaim(SOCIAL_TYPE)
 					.asString());
-			log.info("access 토큰에서 추출된 SOCIAL_TYPE 입니다 {}", userName.orElse("없습니다."));
-			return userName;
+			return socialType;
 		} catch (Exception e) {
 			log.error("액세스 토큰이 유효하지 않습니다.");
 			return Optional.empty();
@@ -260,16 +247,13 @@ public class JwtService {
 	}
 
 	public Authentication getAuthentication(String accessToken) {
-		String username = extractUserName(accessToken).orElse(null);
-		log.info("유저 이름은 다음과 같습니다. {}", username);
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
-		log.info("소셜 타입과 소셜 아이디 입니다. {}", extractSocialType.name(), socialId);
 		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
 		log.info(member.getUsername());
 		if (member == null) {
-			log.error("맴버 정보가 없습니다. 빈값을 돌려보넵니다.");
+			log.error("맴버 정보가 없습니다. 빈값을 return 합니다.");
 			return new UsernamePasswordAuthenticationToken(null, "", null);
 		}
 		Collection<? extends GrantedAuthority> authorities = Collections.singleton(
