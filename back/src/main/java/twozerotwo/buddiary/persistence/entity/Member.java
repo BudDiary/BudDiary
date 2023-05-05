@@ -26,7 +26,6 @@ import lombok.NoArgsConstructor;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
-
 @Entity
 @Builder
 @AllArgsConstructor
@@ -43,6 +42,7 @@ public class Member {
 	private String password;
 	// 카카오에서 가져온 카카오 이름 ex) 김명영
 	private String nickname;
+	private String intro;
 	@Column(nullable = false)
 	@Builder.Default
 	private Long point = 0L;
@@ -74,11 +74,6 @@ public class Member {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<UnusedSticker> stickers = new ArrayList<>();
 
-
-
-
-
-
 	@Enumerated(EnumType.STRING)
 	private SocialType socialType; // KAKAO, NAVER, GOOGLE
 	@Builder.Default
@@ -93,8 +88,6 @@ public class Member {
 	public void updateRefreshToken(String updateRefreshToken) {
 		this.refreshToken = updateRefreshToken;
 	}
-
-
 
 	public void addPoint(Long point) {
 		this.point += point;
