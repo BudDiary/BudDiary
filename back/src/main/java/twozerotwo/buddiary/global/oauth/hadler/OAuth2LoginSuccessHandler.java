@@ -43,7 +43,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 			if (oAuth2User.getRole() == Role.GUEST) {
 				log.info("새로 가입하는 회원입니다.");
-				String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID(), oAuth2User.getSocialType());
+				String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID(),
+					oAuth2User.getSocialType());
 				// Cookie accessCookie = new Cookie(ACCESS_TOKEN_SUBJECT, accessToken);
 				// 회원은 아니니 리프래쉬는 주지 않는다. 그냥 주지 말까? 가입하면 토큰주는걸로 할까
 				jwtService.sendAccessAndRefreshToken(response, accessToken, null);

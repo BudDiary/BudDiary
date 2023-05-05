@@ -226,6 +226,7 @@ public class JwtService {
 			return Optional.empty();
 		}
 	}
+
 	public Optional<String> extractSocialId(String accessToken) {
 		try {
 			// 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
@@ -241,6 +242,7 @@ public class JwtService {
 			return Optional.empty();
 		}
 	}
+
 	public Optional<String> extractSocialType(String accessToken) {
 		try {
 			Optional<String> userName = Optional.ofNullable(
@@ -258,12 +260,12 @@ public class JwtService {
 
 	public Authentication getAuthentication(String accessToken) {
 		String username = extractUserName(accessToken).orElse(null);
-		log.info("유저 이름은 다음과 같습니다. {}",username);
+		log.info("유저 이름은 다음과 같습니다. {}", username);
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
-		log.info("소셜 타입과 소셜 아이디 입니다. {}",extractSocialType.name(),socialId);
-		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType,socialId).orElse(null);
+		log.info("소셜 타입과 소셜 아이디 입니다. {}", extractSocialType.name(), socialId);
+		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
 		log.info(member.getUsername());
 		if (member == null) {
 			log.error("맴버 정보가 없습니다. 빈값을 돌려보넵니다.");

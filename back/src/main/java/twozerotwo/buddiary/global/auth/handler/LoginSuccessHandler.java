@@ -33,7 +33,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authentication) throws IOException, ServletException {
 		String username = extractUsernameFromAuthentication(authentication);
-		String socialID = extractSocialIDFromAuthentication(authentication);
+		String socialID = extractSocialIdFromAuthentication(authentication);
 		SocialType socialType = extractSocialTypeFromAuthentication(authentication);
 		String accessToken = jwtService.createAccessToken(username, socialID, socialType);
 		String refreshToken = jwtService.createRefreshToken();
@@ -54,7 +54,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		return userDetails.getUsername();
 	}
 
-	private String extractSocialIDFromAuthentication(Authentication authentication) {
+	private String extractSocialIdFromAuthentication(Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		Member member = memberRepository.findByUsername(userDetails.getUsername())
 			.orElseThrow(() -> new NotFoundException("OAuth 성공 했지만 맴버 가 디비에 없습니다."));
