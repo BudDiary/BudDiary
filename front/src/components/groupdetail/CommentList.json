@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "diary_id": 1,
+    "member_name": "김명진",
+    "userImage": "https://picsum.photos/55",
+    "update_at": "2022-05-01T09:30:00.000Z",
+    "comment": "첫 댓글입니다."
+  },
+  {
+    "id": 2,
+    "diary_id": 1,
+    "member_name": "문영식",
+    "userImage": "https://picsum.photos/57",
+    "update_at": "2022-05-02T14:00:00.000Z",
+    "comment": "두 번째 댓글입니다."
+  },
+  {
+    "id": 3,
+    "diary_id": 2,
+    "member_name": "김지오",
+    "userImage": "https://picsum.photos/52",
+    "update_at": "2022-05-03T12:00:00.000Z",
+    "comment": "세 번째 댓글입니다."
+  },
+  {
+    "id": 4,
+    "diary_id": 3,
+    "member_name": "김지오",
+    "userImage": "https://picsum.photos/52",
+    "update_at": "2022-05-03T12:00:00.000Z",
+    "comment": "네 번째 댓글입니다."
+  }
+]

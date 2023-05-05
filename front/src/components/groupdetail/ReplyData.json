@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "member_name": "김준영",
+    "userImage": "https://picsum.photos/51",
+    "update_at": "2022-05-01T10:00:00.000Z",
+    "reply": "첫 답글입니다.",
+    "comment_id": 1
+  },
+  {
+    "id": 2,
+    "member_name": "문여경",
+    "userImage": "https://picsum.photos/50",
+    "update_at": "2022-05-01T11:00:00.000Z",
+    "reply": "두 번째 답글입니다.",
+    "comment_id": 1
+  },
+
+  {
+    "id": 3,
+    "member_name": "정민우",
+    "userImage": "https://picsum.photos/54",
+    "update_at": "2022-05-02T14:30:00.000Z",
+    "reply": "세 번째 답글입니다.",
+    "comment_id": 2
+  },
+
+  {
+    "id": 4,
+    "member_name": "김명진",
+    "userImage": "https://picsum.photos/55",
+    "update_at": "2022-05-02T14:30:00.000Z",
+    "reply": "네 번째 답글입니다.",
+    "comment_id": 3
+  }
+]

@@ -49,5 +49,5 @@ export const InputSet = styled.div`
 
 export const CommentWrapper = styled.div`
   ${tw`mx-auto`}
-  width: 85%;
+  width: 95%;
 `;

@@ -3,18 +3,27 @@ import Swal from 'sweetalert2';
 import { FullRoundedButton } from "../common/Button.styles";
 import ProfileEditModal from "./ProfileEditModal";
 import { BsCoin } from 'react-icons/bs'
-// interface Props {
-//   profileModalState: false;
-// }
+import { userdummy } from "./userdummy";
+import { UserProfileContainer, IntroContainer, ProfilePicSection, ProfileInfoSection } from "./Profile.styles";
 
 export default function Profile() {
   const [profileModalState, setProfileModalState] = useState(false);
   const showProfileModal = () => {
     setProfileModalState(true);
   }
-  return (<div>프로필~!!
+  return (<UserProfileContainer>
     {profileModalState === false ? null : <ProfileEditModal />}
-    <FullRoundedButton><BsCoin /></FullRoundedButton>
-    <FullRoundedButton onClick={showProfileModal} >프로필수정</FullRoundedButton>
-  </div>);
+    <ProfilePicSection>
+      <img src={userdummy.profilePic} className="rounded-full h-32"></img>
+    </ProfilePicSection>
+    <ProfileInfoSection>
+      {userdummy.nickname}
+      <FullRoundedButton>
+        <div className="my-auto ml-4 mr-2"><BsCoin /></div>
+        <div className="my-auto">{userdummy.points}</div>
+      </FullRoundedButton>
+      <FullRoundedButton onClick={showProfileModal} >프로필수정</FullRoundedButton>
+    </ProfileInfoSection>
+    <IntroContainer>{userdummy.intro}</IntroContainer>
+  </UserProfileContainer>);
 }

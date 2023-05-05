@@ -1,8 +1,8 @@
-import { api } from "./axiosConfig";
+import { kakaoApi } from "./axiosConfig";
 
 
-const userSignUpApi = () => {
-    return api.post('주소')
+const kakaoSignUpApi = () => {
+    return kakaoApi.get('/')
     .then((res) => {
         console.log(res, '아 성공이요')
       })
@@ -12,4 +12,4 @@ const userSignUpApi = () => {
 }
 
 
-export { userSignUpApi };
+export { kakaoSignUpApi };

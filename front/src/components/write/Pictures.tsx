@@ -30,8 +30,8 @@ export default function Pictures({ originFiles, setOriginFiles  }: Props) {
   return (
     <>
       <Swiper
-        slidesPerView={2}
-        spaceBetween={30}
+        slidesPerView={3}
+        spaceBetween={50}
         pagination={{
           clickable: true,
         }}

@@ -1,6 +1,5 @@
 import React from "react";
-import { PageContainer } from "../../components/common/Page.styles";
-import { SubNavContainer } from "../mypage/MypagePage.styles";
+import { PageContainer, SubNavContainer } from "../../components/common/Page.styles";
 import {
   DetailPageContainer,
   DiariesContainer,
@@ -12,7 +11,7 @@ import Diaries from "../../components/groupdetail/Diaries";
 export default function GroupDetailPage() {
   return (
     <>
-      <SubNavContainer>{}그룹 이름</SubNavContainer>
+      <SubNavContainer>그룹 이름</SubNavContainer>
       <PageContainer>
         <DetailPageContainer>
           <DiariesContainer>
