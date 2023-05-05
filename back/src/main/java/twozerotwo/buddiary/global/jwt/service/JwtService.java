@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
@@ -53,18 +55,20 @@ public class JwtService {
 	private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
 	private static final String USERNAME_CLAIM = "username";
 	private static final String SOCIAL_ID = "socialId";
+	private static final String SOCIAL_TYPE = "socialType";
 
 	/**
 	 * AccessToken 생성 메소드
 	 * 오늘 날자기준 access 토큰 생성
 	 */
-	public String createAccessToken(String username, String socialId) {
+	public String createAccessToken(String username, String socialId, SocialType socialType) {
 		Date now = new Date();
 		log.info("createAccessToken 토큰 만들기");
 		return JWT.create() // JWT 토큰을 생성하는 빌더 반환
 			.withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
 			.withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
 			.withClaim(SOCIAL_ID, socialId)
+			.withClaim(SOCIAL_TYPE, socialType.name())
 			//추가하실 경우 .withClaim(클래임 이름, 클래임 값) 으로 설정해주시면 됩니다
 			.withClaim(USERNAME_CLAIM, username)
 			.sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
@@ -174,7 +178,7 @@ public class JwtService {
 	}
 
 	/**
-	 * 헤더에서 AccessToken 쿠키로 부터 추출 옵셔널 반환
+	 * 쿠키에서 AccessToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
 		if (request.getCookies() == null) {
@@ -186,7 +190,7 @@ public class JwtService {
 				if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
 					String token = cookie.getValue();
 					if (token != null) {
-						log.info(" extractRefreshToken 추출된 엑세스 토큰 token {}", token);
+						log.info(" extractAccessToken 추출된 엑세스 토큰 token {}", token);
 						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
 					} else {
 						return Optional.empty();
@@ -222,12 +226,48 @@ public class JwtService {
 			return Optional.empty();
 		}
 	}
+	public Optional<String> extractSocialId(String accessToken) {
+		try {
+			// 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
+			Optional<String> userName = Optional.ofNullable(
+				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
+					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+					.getClaim(SOCIAL_ID) // claim(Emial) 가져오기
+					.asString());
+			log.info("access 토큰에서 추출된 SOCIAL_ID 입니다 {}", userName.orElse("없습니다."));
+			return userName;
+		} catch (Exception e) {
+			log.error("액세스 토큰이 유효하지 않습니다.");
+			return Optional.empty();
+		}
+	}
+	public Optional<String> extractSocialType(String accessToken) {
+		try {
+			Optional<String> userName = Optional.ofNullable(
+				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
+					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+					.getClaim(SOCIAL_TYPE)
+					.asString());
+			log.info("access 토큰에서 추출된 SOCIAL_TYPE 입니다 {}", userName.orElse("없습니다."));
+			return userName;
+		} catch (Exception e) {
+			log.error("액세스 토큰이 유효하지 않습니다.");
+			return Optional.empty();
+		}
+	}
 
 	public Authentication getAuthentication(String accessToken) {
-		String username = extractUserName(accessToken).orElseGet(null);
-		Member member = memberRepository.findByUsername(username).orElseGet(null);
+		String username = extractUserName(accessToken).orElse(null);
+		log.info("유저 이름은 다음과 같습니다. {}",username);
+		String socialId = extractSocialId(accessToken).orElse(null);
+		String socialType = extractSocialType(accessToken).orElse(null);
+		SocialType extractSocialType = SocialType.of(socialType);
+		log.info("소셜 타입과 소셜 아이디 입니다. {}",extractSocialType.name(),socialId);
+		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType,socialId).orElse(null);
+		log.info(member.getUsername());
 		if (member == null) {
-			log.error("맴버 정보가 없습니다.");
+			log.error("맴버 정보가 없습니다. 빈값을 돌려보넵니다.");
+			return new UsernamePasswordAuthenticationToken(null, "", null);
 		}
 		Collection<? extends GrantedAuthority> authorities = Collections.singleton(
 			new SimpleGrantedAuthority(member.getRole().getKey()));

@@ -43,7 +43,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 			if (oAuth2User.getRole() == Role.GUEST) {
 				log.info("새로 가입하는 회원입니다.");
-				String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID());
+				String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID(), oAuth2User.getSocialType());
 				// Cookie accessCookie = new Cookie(ACCESS_TOKEN_SUBJECT, accessToken);
 				// 회원은 아니니 리프래쉬는 주지 않는다. 그냥 주지 말까? 가입하면 토큰주는걸로 할까
 				jwtService.sendAccessAndRefreshToken(response, accessToken, null);
@@ -64,7 +64,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws
 		IOException {
 		log.info("로그인 성공은로 인헤 두개의 토큰을 발급합니다.");
-		String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID());
+		String accessToken = jwtService.createAccessToken(oAuth2User.getUsername(), oAuth2User.getSocialID(),
+			oAuth2User.getSocialType());
 		String refreshToken = jwtService.createRefreshToken();
 		// 이미 가입한 사람의 정보를 줘야한다. 리프 엑세스 둘다 있다.
 		//
@@ -83,8 +84,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		jwtService.updateRefreshToken(oAuth2User.getUsername(), refreshToken);
 		response.getWriter().write(jsonResponse);
 		response.setContentType("application/json;charset=UTF-8");
-
-
 
 	}
 

@@ -17,12 +17,14 @@ import twozerotwo.buddiary.global.oauth.CustomOAuth2User;
 import twozerotwo.buddiary.global.oauth.OAuthAttributes;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.entity.Member;
+import twozerotwo.buddiary.persistence.repository.ClubRepository;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CustomOauthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+	private final ClubRepository clubRepository;
 	private final MemberRepository memberRepository;
 	private static final String KAKAO = "kakao";
 
@@ -68,7 +70,8 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 			extractAttributes.getNameAttributeKey(),
 			createdUser.getUsername(),
 			createdUser.getRole(),
-			createdUser.getSocialId()
+			createdUser.getSocialId(),
+			createdUser.getSocialType()
 		);
 	}
 
