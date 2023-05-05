@@ -26,6 +26,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
@@ -134,7 +135,8 @@ public class JwtService {
 	public void updateRefreshToken(String email, String refreshToken) {
 		log.info("리프래쉬 토큰 다시 디비에 저장");
 		memberRepository.findByUsername(email)
-			.ifPresentOrElse(member -> member.updateRefreshToken(refreshToken), () -> new Exception("일치하는 회원이 없습니다."));
+			.ifPresentOrElse(member -> member.updateRefreshToken(refreshToken),
+				() -> new NotFoundException("일치하는 회원이 없습니다."));
 	}
 
 	public boolean isTokenValid(String token) {

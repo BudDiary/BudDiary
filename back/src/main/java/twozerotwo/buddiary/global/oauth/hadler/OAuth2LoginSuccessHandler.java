@@ -82,7 +82,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			.build();
 		String jsonResponse = objectMapper.writeValueAsString(loginResponseDto);
 		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-		jwtService.updateRefreshToken(oAuth2User.getUsername(), refreshToken);
+		// jwtService.updateRefreshToken(oAuth2User.getUsername(), refreshToken);
 		response.getWriter().write(jsonResponse);
 		response.setContentType("application/json;charset=UTF-8");
 
