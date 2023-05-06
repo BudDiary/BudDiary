@@ -2,6 +2,7 @@ package twozerotwo.buddiary.global.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -82,8 +83,8 @@ public class SecurityConfig {
 
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
-			.antMatchers("/jwt-test").hasRole("USER")
-			.antMatchers("/signup").hasRole("GUEST")
+			// .antMatchers(HttpMethod.GET,"/api/members/signup/jwt-test/**").hasRole("USER")
+			// .antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
 			.anyRequest()
 			.permitAll()// 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
 			.and()

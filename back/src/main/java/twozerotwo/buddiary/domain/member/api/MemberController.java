@@ -1,7 +1,7 @@
 package twozerotwo.buddiary.domain.member.api;
 
+
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,13 +27,19 @@ public class MemberController {
 	private final MemberService memberService;
 	private final AuthenticationUtil authenticationUtil;
 
-	@PostMapping(value = "/signup")
-	public ResponseEntity<?> signUp(@RequestBody @Valid MemberSignUpRequest memberSignUpDto, HttpServletRequest request) {
-		MemberDto memberDto = memberService.signUp(memberSignUpDto, request);
-		log.info(memberSignUpDto.getUsername());
-		// 리프래쉬 토큰 발급
-		// memberService.signUp(memberSignUpDto);
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(true);
+	@PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> signUp(@RequestBody MemberSignUpRequest memberSignUpDto, HttpServletRequest request) {
+	// public ResponseEntity<?> signUp() {
+		try{
+			MemberDto memberDto = memberService.signUp(memberSignUpDto, request);
+			// 리프래쉬 토큰 발급
+			return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(memberSignUpDto);
+
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return null;
+
 	}
 
 	@GetMapping("/jwt-test")

@@ -28,6 +28,7 @@ public class MemberService {
 		Member memberDtoFromRequest = authenticationUtil.getMemberEntityFromRequest(request);
 		if (memberRepository.findByUsername(userSignUpDto.getUsername()).isPresent()) {
 			throw new NotFoundException("이미 존재하는 유저의 이메일입니다.");
+			// 이거 애러가 안나가는데 확인좀
 		}
 		Member signup = memberDtoFromRequest.signup(userSignUpDto.getUsername());
 		return signup.toDto();

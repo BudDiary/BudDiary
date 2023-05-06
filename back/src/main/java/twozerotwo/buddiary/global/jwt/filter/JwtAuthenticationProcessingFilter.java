@@ -87,7 +87,10 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		}
 		Authentication authentication = jwtService.getAuthentication(accessToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		filterChain.doFilter(request, response);
+		if(refreshToken != null  && accessToken != null){
+
+			filterChain.doFilter(request, response);
+		}
 
 	}
 
