@@ -1,0 +1,15 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+				checkout scmGit(branches: [[name: '*/develop']],
+				 extensions: [],
+				  userRemoteConfigs: [[credentialsId: 'logbymoon',
+				   url: 'https://lab.ssafy.com/s08-final/S08P31C202.git']])
+                echo 'Hello World'
+            }
+        }
+    }
+}
