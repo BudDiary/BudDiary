@@ -2,13 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('checkout') {
             steps {
 				checkout scmGit(branches: [[name: '*/develop']],
 				 extensions: [],
 				  userRemoteConfigs: [[credentialsId: 'logbymoon',
 				   url: 'https://lab.ssafy.com/s08-final/S08P31C202.git']])
                 echo 'Hello World'
+            }
+        }
+		stage('build') {
+            steps {
+				dir('back') {
+					withGradle {
+						sh 'chmod +x ./gradlew'
+						sh './gradlew clean'
+						sh './gradlew bootJar'
+					}
+				}
             }
         }
     }
