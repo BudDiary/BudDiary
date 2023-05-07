@@ -31,7 +31,7 @@ public class CommentController {
 		return new ResponseEntity<CommentResponse>(commentService.createComment(request), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("{diaryId}/comments/{commentId}/{username}")
+	@DeleteMapping("/{diaryId}/comments/{commentId}/{username}")
 	public ResponseEntity deleteComment(@PathVariable Long diaryId, @PathVariable Long commentId,
 		@PathVariable String username) {
 		commentService.deleteComment(username, diaryId, commentId);
