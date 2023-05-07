@@ -28,6 +28,7 @@ public class OAuthAttributes {
 
 	@Builder
 	public OAuthAttributes(String nameAttributeKey, OAuth2UserInfo oauth2UserInfo) {
+		log.info("oauth 정보 확인 {}",oauth2UserInfo.getId());
 		this.nameAttributeKey = nameAttributeKey;
 		this.oauth2UserInfo = oauth2UserInfo;
 	}

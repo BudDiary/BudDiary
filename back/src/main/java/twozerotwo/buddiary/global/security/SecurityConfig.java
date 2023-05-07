@@ -85,7 +85,6 @@ public class SecurityConfig {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
 			.and()
-			.cors().and()
 
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
@@ -123,7 +122,7 @@ public class SecurityConfig {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		// corsConfiguration.addAllowedOriginPattern("*");
 		corsConfiguration.addAllowedHeader("*");
-		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedOrigin("http://localhost:3000");
 		corsConfiguration.addAllowedMethod("GET, POST, OPTIONS, PUT, PATCH, DELETE");
 		corsConfiguration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
