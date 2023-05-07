@@ -20,6 +20,7 @@ import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
@@ -193,5 +194,15 @@ public class DiaryService {
 		Diary diary = diaryRepository.findById(diaryId)
 			.orElseThrow(() -> new NotFoundException(diaryId + "번의 다이어리를 찾을 수 없습니다."));
 		return diary;
+	}
+
+	@Transactional
+	public void deleteDiary(Long diaryId, String username) {
+		Member member = clubService.returnMemberByUsername(username);
+		Diary diary = returnDiaryById(diaryId);
+		if (!diary.getWriter().equals(member)) {
+			throw new BadRequestException("해당 글의 작성자가 아닙니다.");
+		}
+		diaryRepository.delete(diary);
 	}
 }
