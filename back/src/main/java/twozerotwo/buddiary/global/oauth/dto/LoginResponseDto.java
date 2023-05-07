@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class LoginResponseDto {
+	private boolean isNewBe;
 	private String username;
 	private String nickname;
 	private String profilePic;
