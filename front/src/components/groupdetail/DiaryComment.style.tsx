@@ -5,12 +5,11 @@ export const InputBox = styled.textarea`
   ${tw`bg-blue-200 text-gray-700 border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal`}
   width: 80%;
   height: 30px;
+  resize: none;
   ::-webkit-scrollbar {
     display: none;
   }
-  word-wrap: break-word;
 `;
-
 export const UserInfo = styled.div`
   ${tw`flex items-start mb-4`}
 
