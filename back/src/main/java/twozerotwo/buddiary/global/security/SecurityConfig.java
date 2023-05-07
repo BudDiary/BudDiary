@@ -31,7 +31,7 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
  * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
  * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
  */
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -83,8 +83,8 @@ public class SecurityConfig {
 			.permitAll()
 			.antMatchers("/login")
 			.permitAll() // 회원가입 접근 가능
-			.anyRequest()
-			.authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
+			// .anyRequest()
+			// .authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
 			.and()
 			//== 소셜 로그인 설정 ==//
 			.oauth2Login()
@@ -136,7 +136,7 @@ public class SecurityConfig {
 	 */
 	// @Bean
 	// public LoginFailHandler loginFailureHandler() {
-	// 	return new LoginFailHandler();
+	//     return new LoginFailHandler();
 	// }
 
 	/**

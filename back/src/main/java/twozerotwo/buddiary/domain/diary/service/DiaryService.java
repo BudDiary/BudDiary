@@ -1,6 +1,10 @@
 package twozerotwo.buddiary.domain.diary.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,8 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
+import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
+import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
+import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
 import twozerotwo.buddiary.persistence.entity.Diary;
@@ -142,5 +150,42 @@ public class DiaryService {
 				unusedSticker.minusCnt();
 			}
 		}
+	}
+
+	public List<SimpleDiaryDto> getDayDiaryList(String username, String date) {
+		Member member = clubService.returnMemberByUsername(username);
+		LocalDate targetDay = LocalDate.of(Integer.parseInt(date.substring(0, 4)),
+			Integer.parseInt(date.substring(5, 7)),
+			Integer.parseInt(date.substring(8, 10)));
+		LocalDateTime startDateTime = LocalDateTime.of(targetDay, LocalTime.of(0, 0, 0));
+		LocalDateTime endDateTime = LocalDateTime.of(targetDay, LocalTime.of(23, 59, 59));
+		List<Diary> personalDiaries = diaryRepository.findPersonalAllByDateAndMemberId(member, startDateTime,
+			endDateTime);
+		List<Diary> clubDiaries = diaryRepository.findClubAllByDateAndMemberId(member, startDateTime, endDateTime);
+		List<SimpleDiaryDto> simpleDtoList = new ArrayList<>();
+		for (Diary diary : personalDiaries) {
+			// log.info("확인: " + diary.getClub());
+			//다이어리 > diaryInfo로 바꾸는 메소드 필요
+			DiaryInfo diaryInfo = diary.toDiaryInfo();
+			//diaryInfo 인자로 바꿈
+			simpleDtoList.add(diary.toPersonalDto(diaryInfo));
+		}
+		for (Diary diary : clubDiaries) {
+			DiaryInfo diaryInfo = diary.toDiaryInfo();
+			// log.info("확인: " + diary.getClub());
+			simpleDtoList.add(diary.toClubDto(diaryInfo));
+		}
+		return simpleDtoList;
+	}
+
+	public List<UsedStickerDto> getDiarySticker(Long diaryId) {
+		Diary diary = diaryRepository.findById(diaryId)
+			.orElseThrow(() -> new NotFoundException(diaryId + "번의 일기를 찾을 수 없습니다."));
+		List<UsedStickerDto> usedStickerList = new ArrayList<>();
+
+		for (UsedSticker usedSticker : diary.getUsedStickers()) {
+			usedStickerList.add(usedSticker.toUsedStickerDto());
+		}
+		return usedStickerList;
 	}
 }

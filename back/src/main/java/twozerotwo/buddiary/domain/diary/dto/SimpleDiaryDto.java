@@ -4,18 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.domain.club.dto.ClubInfo;
 
 @Getter
-@Setter
 @Slf4j
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StickerDto {
-	private Long stickerId;
-	private Double xCoordinate;
-	private Double yCoordinate;
+public class SimpleDiaryDto {
+	// type: PERSONAL(개인), PLURAL(다수), DOUBLE(1:1)
+	private String type;
+	private ClubInfo clubInfo;
+	private DiaryInfo diaryInfo;
 
 }

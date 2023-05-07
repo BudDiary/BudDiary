@@ -14,14 +14,22 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.dto.ClubCreateResponse;
+import twozerotwo.buddiary.domain.club.dto.ClubDetail;
+import twozerotwo.buddiary.domain.club.dto.ClubInfo;
 import twozerotwo.buddiary.domain.club.dto.DoubleCreateRequest;
+import twozerotwo.buddiary.domain.club.dto.MyClubDto;
 import twozerotwo.buddiary.domain.club.dto.PluralCreateRequest;
+import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
+import twozerotwo.buddiary.persistence.entity.Diary;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.entity.MemberClub;
 import twozerotwo.buddiary.persistence.enums.ClubType;
 import twozerotwo.buddiary.persistence.repository.ClubRepository;
+import twozerotwo.buddiary.persistence.repository.DiaryRepository;
 import twozerotwo.buddiary.persistence.repository.MemberClubRepository;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
@@ -30,6 +38,7 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 @Slf4j
 public class ClubService {
 	private final ClubRepository clubRepository;
+	private final DiaryRepository diaryRepository;
 	private final MemberRepository memberRepository;
 	private final MemberClubRepository memberClubRepository;
 	private final S3Uploader s3Uploader;
@@ -106,10 +115,67 @@ public class ClubService {
 		return memberClubRepository.save(memberClub);
 	}
 
-	private Member returnMemberByUsername(String username) {
+	public Member returnMemberByUsername(String username) {
 		Member member = memberRepository.findByUsername(username)
 			.orElseThrow(() -> new RuntimeException("dd"));
 		return member;
 	}
 
+	public MyClubDto getMyClub(String username) {
+		Member me = returnMemberByUsername(username);
+		Set<MemberClub> memberClubs = me.getMemberClubs();
+		List<ClubInfo> pluralList = new ArrayList<>();
+		List<ClubInfo> doubleList = new ArrayList<>();
+		for (MemberClub memberClub : memberClubs) {
+			// 클럽 조회해서
+			Club club = memberClub.getClub();
+			ClubType type = club.getType();
+
+			if (type.equals(ClubType.PLURAL)) {
+				pluralList.add(club.toPluralDto());
+			} else if (type.equals(ClubType.DOUBLE)) {
+				// 클럽원 돌면서 .. 나랑 같지 않으면 그사람 프사를 그룹 이미지로
+				String clubImgUrl = null;
+				for (MemberClub clubMember : club.getClubMembers()) {
+					Member member = clubMember.getMember();
+					if (!member.equals(me)) {
+						clubImgUrl = member.getProfilePath();
+					}
+				}
+				doubleList.add(club.toDoubleDto(clubImgUrl));
+			}
+			// 다수, 1:1로 분리해서 저장
+		}
+		return MyClubDto.builder()
+			.doubleList(doubleList)
+			.pluralList(pluralList)
+			.build();
+	}
+
+	public ClubDetail getClubDetail(String clubUuid, String username) {
+		Member member = returnMemberByUsername(username);
+		Club club = clubRepository.findById(clubUuid)
+			.orElseThrow(() -> new NotFoundException("해당 클럽을 찾을 수 없습니다."));
+		Set<MemberClub> memberClubs = club.getClubMembers();
+		boolean isClubMember = false;
+		List<Member> members = new ArrayList<>();
+		for (MemberClub memberClub : memberClubs) {
+			if (memberClub.getMember().getId().equals(member.getId())) {
+				isClubMember = true;
+			}
+			members.add(memberClub.getMember());
+		}
+		if (!isClubMember) {
+			throw new BadRequestException("클럽원의 요청이 아닙니다.");
+		}
+		List<Diary> diaries = diaryRepository.findAllByClubIdOrOrderByWriteDateDesc(club);
+		List<DiaryInfo> diaryInfos = new ArrayList<>();
+		for (Diary diary : diaries) {
+			diaryInfos.add(diary.toDiaryInfo());
+		}
+
+		return ClubDetail.builder()
+			.diaryList(diaryInfos)
+			.memberList(members).build();
+	}
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.domain.reaction.dto.DiaryReactionDto;
+import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
 import twozerotwo.buddiary.domain.reaction.dto.ReactionRequest;
 import twozerotwo.buddiary.persistence.entity.Diary;
 import twozerotwo.buddiary.persistence.entity.Member;
@@ -27,7 +27,7 @@ public class ReactionService {
 	private final ReactionRepository reactionRepository;
 
 	@Transactional
-	public List<DiaryReactionDto> createReaction(ReactionRequest request) {
+	public List<ReactionDto> createReaction(ReactionRequest request) {
 		// 다이어리 조회
 		Diary diary = diaryRepository.findById(request.getDiaryId())
 			.orElseThrow(() -> new RuntimeException("dd"));
@@ -43,7 +43,7 @@ public class ReactionService {
 			.build();
 		reactions.add(newReaction);
 
-		List<DiaryReactionDto> reactionDtos = new ArrayList<>();
+		List<ReactionDto> reactionDtos = new ArrayList<>();
 		for (Reaction reaction : reactions) {
 			reactionDtos.add(reaction.toDto());
 		}

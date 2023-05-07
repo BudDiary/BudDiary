@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException error) {
 		return ResponseEntity.internalServerError()
-			.body(new ErrorResponse(500, "서버에 알 수 없는 문제가 발생했습니다." + error.getMessage()));
+			.body(new ErrorResponse(500, "서버에 알 수 없는 문제가 발생했습니다." + error.toString()));
 	}
 
 }

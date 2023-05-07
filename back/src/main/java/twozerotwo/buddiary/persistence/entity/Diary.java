@@ -16,17 +16,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
+import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
+import twozerotwo.buddiary.persistence.enums.ClubType;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Slf4j
 public class Diary {
 	@Id
 	@Column(name = "DIARY_ID")
@@ -51,13 +55,20 @@ public class Diary {
 	@JoinColumn(name = "CLUB_ID")
 	@Builder.Default
 	private Club club = null;
-
 	@Builder.Default
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<Reaction> reactions = new ArrayList<>();
 	@Builder.Default
 	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
 	private List<UsedSticker> usedStickers = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
+	@Builder.Default
+	private Float positiveRate = 0f;
+	@Builder.Default
+	private Float negativeRate = 0f;
 
 	public UsedSticker useSticker(Sticker sticker, Double xCoordinate, Double yCoordinate) {
 		return UsedSticker.builder()
@@ -67,5 +78,32 @@ public class Diary {
 			.sticker(sticker)
 			.build();
 
+	}
+
+	public SimpleDiaryDto toPersonalDto(DiaryInfo diaryInfo) {
+
+		return SimpleDiaryDto.builder().type("PERSONAL")
+			.diaryInfo(diaryInfo)
+			.clubInfo(null)
+			.build();
+	}
+
+	public SimpleDiaryDto toClubDto(DiaryInfo diaryInfo) {
+		String type = club.getType() == ClubType.DOUBLE ? "DOUBLE"
+			: club.getType() == ClubType.PLURAL ? "PLURAL" : "UNKNOWN";
+
+		return SimpleDiaryDto.builder().type(type)
+			.diaryInfo(diaryInfo)
+			.clubInfo(club.toPluralDto())
+			.build();
+
+	}
+
+	public DiaryInfo toDiaryInfo() {
+		return DiaryInfo.builder()
+			.diaryId(this.getId()).writer(this.getWriter()).writeDate(this.getWriteDate()).text(this.getText())
+			.imgList(this.getDiaryImages()).positiveRate(this.getPositiveRate()).negativeRate(this.getNegativeRate())
+			.reactionList(this.getReactions()).commentList(this.getComments())
+			.build();
 	}
 }

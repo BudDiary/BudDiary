@@ -1,21 +1,19 @@
-package twozerotwo.buddiary.domain.diary.dto;
+package twozerotwo.buddiary.domain.club.dto;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
-@Setter
-@Slf4j
 @Builder
+@Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
-public class StickerDto {
-	private Long stickerId;
-	private Double xCoordinate;
-	private Double yCoordinate;
-
+public class MyClubDto {
+	private List<ClubInfo> pluralList;
+	private List<ClubInfo> doubleList;
 }
