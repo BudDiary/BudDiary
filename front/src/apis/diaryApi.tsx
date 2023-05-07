@@ -21,5 +21,4 @@ const getDateDiaryListAPI = (payload: string) => {
 
 export {
   getDateDiaryListAPI,
-
 };

@@ -2,11 +2,11 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const CalendarContainer = styled.div`
-  ${tw`flex-col`}
+  ${tw`flex-col m-5`}
 `
 
 export const DateControlContainer = styled.div`
-  ${tw`flex justify-between`}
+  ${tw`flex justify-between text-2xl font-bold`}
 `
 
 export const ChangeDateButton = styled.button`
@@ -17,9 +17,22 @@ export const TodayMonthYear = styled.button`
 `
 
 export const CalendarSection = styled.div`
-  ${tw`grid grid-cols-7`}
+  ${tw`grid grid-cols-7 mt-4`}
 `
 
-export const WeekDaySection = styled.div`
-  ${tw`text-center bg-bud-green border-[0.5px] border-black`}
+interface ContainerProps {
+  isSaturday: boolean;
+  isSunday: boolean;
+}
+
+export const WeekDaySection = styled.div<ContainerProps>`
+  ${({ isSaturday }) =>
+  isSaturday
+    ? tw`text-blue-500`
+    : tw``}
+  ${({ isSunday }) =>
+    isSunday
+      ? tw`text-red-500`
+      : tw``}
+  ${tw`ml-3`}
 `

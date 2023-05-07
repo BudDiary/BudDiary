@@ -15,11 +15,13 @@ import MobileSidebar from "./MobileSidebar";
 import { useState } from "react";
 import { KAKAO_AUTH_URL } from "../../apis/axiosConfig";
 
+
 export default function NavBar() {
   const [sideBarState, setSidebarState] = useState(false);
   const showSidebar = () => {
     setSidebarState(true);
   };
+
   return (
     <div>
       {sideBarState === true ? <MobileSidebar /> : null}
