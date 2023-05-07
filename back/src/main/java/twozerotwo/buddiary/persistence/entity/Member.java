@@ -50,6 +50,8 @@ public class Member {
 	@Builder.Default
 	private String password = null;
 	// @JsonProperty("point")
+	@Builder.Default
+	private String nickname = null;
 	@JsonIgnore
 	@Column(nullable = false)
 	@Builder.Default

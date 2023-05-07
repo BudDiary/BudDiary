@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -51,10 +52,9 @@ public class ClubController {
 
 	//-------------------------------------------내가 속한 클럽 조회----------------------------------------------
 	@GetMapping
-	public ResponseEntity getMyClub() {
-		String username = "yeokyung";
+	public ResponseEntity getMyClub(@RequestParam("username") String username) {
 		MyClubDto myClubDto = clubService.getMyClub(username);
-		return new ResponseEntity<>(Map.of("myClubDto", myClubDto), HttpStatus.OK);
+		return new ResponseEntity<>(Map.of("myClubList", myClubDto), HttpStatus.OK);
 	}
 
 	//-------------------------------------------클럽 디테일----------------------------------------------

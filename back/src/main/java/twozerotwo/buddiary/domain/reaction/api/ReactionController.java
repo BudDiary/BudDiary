@@ -23,23 +23,22 @@ import twozerotwo.buddiary.domain.reaction.service.ReactionService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/diaries/reactions")
+@RequestMapping("/api/diaries")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class ReactionController {
 	private final ReactionService reactionService;
 
-	@PostMapping
+	@PostMapping("/reactions")
 	public ResponseEntity createReaction(@RequestBody @Valid ReactionRequest request) {
 		List<ReactionDto> reactions = reactionService.createReaction(request);
 		return new ResponseEntity<>(Map.of("reactionList", reactions), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/{actionId}")
-	public ResponseEntity deleteReaction(@PathVariable Long actionId) {
-		// test용
-		Long memberId = 2L;
-		reactionService.deleteReaction(memberId, actionId);
+	@DeleteMapping("/{diaryId}/reactions/{actionId}/{username}")
+	public ResponseEntity deleteReaction(@PathVariable Long diaryId, @PathVariable Long actionId,
+		@PathVariable String username) {
+		reactionService.deleteReaction(username, diaryId, actionId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
