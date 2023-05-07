@@ -188,4 +188,10 @@ public class DiaryService {
 		}
 		return usedStickerList;
 	}
+
+	public Diary returnDiaryById(Long diaryId) {
+		Diary diary = diaryRepository.findById(diaryId)
+			.orElseThrow(() -> new NotFoundException(diaryId + "번의 다이어리를 찾을 수 없습니다."));
+		return diary;
+	}
 }
