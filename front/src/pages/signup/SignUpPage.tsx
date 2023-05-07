@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import { kakaoSignUpApi } from '../../apis/userApi';
+// import { getCookie } from '../../apis/cookie';
 
 export default function SignUpPage() {
   useEffect(() => {

@@ -3,7 +3,7 @@ import { api } from "./axiosConfig";
 
 const kakaoSignUpApi = (payload: string) => {
   console.log('카카오톡 로그인에 들어옴', payload)
-    return api.get(`/${payload}`)
+    return api.get(`/${payload}`, { withCredentials: true })
     .then((res) => {
         console.log(res, '아 성공이요')
       })

@@ -1,4 +1,6 @@
+import { getCookie, setCookie } from './cookie';
 import axios from "axios";
+
 
 // 로그인된 사용자
 const BASE_URL = "http://localhost:8080/";
@@ -9,17 +11,22 @@ const api = axios.create({
   baseURL: BASE_URL,
 });
 
-
-// authApi.interceptors.request.use(
-//   (request) => {
-//     const ACCESS_TOKEN = Cookies.get('AccessToken');
-//     request.headers.Authorization = ACCESS_TOKEN || null;
-//     return request;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-// );
+const authApi = axios.create({
+  baseURL: BASE_URL,
+});
+authApi.interceptors.request.use(
+  (request) => {
+    const oauth2_auth_request = getCookie('oauth2_auth_request');
+    console.log(oauth2_auth_request, "oauth2_auth_request")
+    const redirect_uri = getCookie('redirect_uri');
+    console.log(redirect_uri, "redirect_uri")
+    request.headers.Cookie = `redirect_uri=${redirect_uri}`
+    return request;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 // api.interceptors.request.use(
 //   (request) => {
 //     return request;
@@ -37,4 +44,4 @@ const kakaoApi = axios.create({
   baseURL: KAKAO_AUTH_URL,
 });
 
-export { axios, api, kakaoApi, KAKAO_AUTH_URL };
+export { axios, api, authApi, kakaoApi, KAKAO_AUTH_URL };

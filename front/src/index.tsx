@@ -17,6 +17,7 @@ import HomePage from "./pages/home/HomePage";
 import MypagePage from "./pages/mypage/MypagePage";
 import SignUpPage from "./pages/signup/SignUpPage";
 import ViewDiariesPage from "./pages/view/ViewDiariesPage";
+import LoginSignUpPage from "./pages/signup/LoginSignUpPage";
 
 
 // const {isLoggedIn} = useMember();
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignUpPage /> },
       { path: "/view/diary/:id", element: <ViewDiariesPage /> },
       { path: "/login/oauth2/code/kakao", element: <SignUpPage /> },
+      { path: "/login/sign", element: <LoginSignUpPage /> },
     ],
   },
 ]);
