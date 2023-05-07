@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,9 +61,17 @@ public class DiaryController {
 		return ResponseEntity.ok(Map.of("diaryList", simpleDiaryList));
 	}
 
-	//-------------------------------------------특정 날짜 다이어리 리스트 반환----------------------------------------------
-	@GetMapping("/{diaryid}")
-	public ResponseEntity getDiaryStricker(@PathVariable("diaryid") Long diaryId) {
+	//-------------------------------------------다이어리 상세(스티커)----------------------------------------------
+	@GetMapping("/{diaryId}")
+	public ResponseEntity getDiaryStricker(@PathVariable Long diaryId) {
 		return ResponseEntity.ok(Map.of("usedStickers", diaryService.getDiarySticker(diaryId)));
+	}
+
+	//-------------------------------------------다이어리 삭제----------------------------------------------
+	@DeleteMapping("/{diaryId}/{username}")
+	public ResponseEntity deleteDiary(@PathVariable Long diaryId, @PathVariable String username) {
+		diaryService.deleteDiary(diaryId, username);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
 	}
 }

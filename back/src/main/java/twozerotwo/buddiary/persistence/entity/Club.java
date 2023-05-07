@@ -61,4 +61,8 @@ public class Club {
 			.clubName(this.name)
 			.build();
 	}
+
+	public void deleteMember(Member member) {
+		this.getClubMembers().remove(member);
+	}
 }
