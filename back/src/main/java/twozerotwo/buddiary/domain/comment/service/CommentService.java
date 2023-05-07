@@ -36,6 +36,7 @@ public class CommentService {
 		Comment savedComment = commentRepository.save(comment);
 		return CommentResponse.builder()
 			.commentId(savedComment.getId())
+			.text(savedComment.getText())
 			.writeDate(savedComment.getWriteDate())
 			.writer(savedComment.getWriter())
 			.build();
