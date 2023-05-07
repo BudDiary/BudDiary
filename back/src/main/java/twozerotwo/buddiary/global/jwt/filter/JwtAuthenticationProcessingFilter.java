@@ -41,21 +41,20 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 		// "/login"으로 들어오는 요청은 Filter 작동 X 로그인 의경우 토큰 유효성이 아니라 인증인가를 바로 하면됨
+
 		if (request.getRequestURI().equals(NO_CHECK_URL)) {
 			log.info("다음필터로 보냅니다.");
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		/**
-		 * 사용자 요청 헤더에서 RefreshToken 추출
-		 *  -> RefreshToken이 없거나 유효하지 않다면(DB에 저장된 RefreshToken과 다르다면) null을 반환
-		 *  사용자의 요청 헤더에 RefreshToken이 있는 경우는, AccessToken이 만료되어 요청한 경우밖에 없다.
-		 *  따라서, 위의 경우를 제외하면 추출한 refreshToken은 모두 null
-		 */
 		String refreshToken = jwtService.extractRefreshToken(request).filter(jwtService::isTokenValid).orElse(null);
 		String accessToken = jwtService.extractAccessToken(request).filter(jwtService::isTokenValid).orElse(null);
 
+		if (refreshToken == null && accessToken == null) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 		// Member extractMember = memberRepository.findByUsername(userName).orElse(null);
 		// log.info("userName {} ",extractMember.getUsername() == null);
 
@@ -65,10 +64,14 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		 * 일치한다면 AccessToken을 재발급해준다.
 		 */
 
-		if (refreshToken != null) {
-			log.info("재발급 수행");
-			checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-			return; // RefreshToken을 보낸 경우에는 AccessToken을 재발급 하고 인증 처리는 하지 않게 하기위해 바로 return으로 필터 진행 막기
+		if (refreshToken != null && !jwtService.isTokenValid(accessToken)) {
+			String username = jwtService.extractUserName(accessToken).orElse(null);
+			if (username == null) {
+				log.error("access 토큰에 정보가 없습니다.");
+				filterChain.doFilter(request, response);
+			}
+			checkMemberAndReIssueAccessToken(response, username);
+			filterChain.doFilter(request, response);
 		}
 		/**
 		 * RefreshToken이 없거나 유효하지 않다면, AccessToken을 검사하고 인증을 처리하는 로직 수행
@@ -82,6 +85,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			log.info("리프레쉬 토큰이 널임이고 디비에 정보가 없습니다 .");
 			checkAccessTokenAndAuthentication(request, response, filterChain);
 		}
+		Authentication authentication = jwtService.getAuthentication(accessToken);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		if(refreshToken != null  && accessToken != null){
+
+			filterChain.doFilter(request, response);
+		}
 
 	}
 
@@ -90,21 +99,14 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	 * 파라미터로 들어온 헤더에서 추출한 리프레시 토큰으로 DB에서 유저를 찾고, 해당 유저가 있다면
 	 * JwtService.createAccessToken()으로 AccessToken 생성,
 	 * reIssueRefreshToken()로 리프레시 토큰 재발급 & DB에 리프레시 토큰 업데이트 메소드 호출
-	 * 그 후 JwtService.sendAccessTokenAndRefreshToken()으로 응답 헤더에 보내기
+	 * 그 후 JwtService.sendAccessTokenAndRefreshToken()으로 응답 쿠키에 보내기
 	 */
-	public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
-		memberRepository.findByRefreshToken(refreshToken).ifPresent(member -> {
-			String reIssuedRefreshToken = reIssueRefreshToken(member);
-			jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getUsername()),
-				reIssuedRefreshToken);
+	public void checkMemberAndReIssueAccessToken(HttpServletResponse response, String username) {
+		memberRepository.findByUsername(username).ifPresent(member -> {
+			String reIssuedRefreshToken = jwtService.createRefreshToken();
+			String accessToken = jwtService.createAccessToken(username, member.getSocialId(), member.getSocialType());
+			jwtService.sendAccessToken(response, accessToken);
 		});
-	}
-
-	private String reIssueRefreshToken(Member member) {
-		String reIssuedRefreshToken = jwtService.createRefreshToken();
-		member.updateRefreshToken(reIssuedRefreshToken);
-		memberRepository.saveAndFlush(member);
-		return reIssuedRefreshToken;
 	}
 
 	public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,

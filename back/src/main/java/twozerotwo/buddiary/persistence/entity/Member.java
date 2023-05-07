@@ -23,9 +23,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.club.dto.MemberDto;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
-
 
 @Entity
 @Builder
@@ -41,12 +41,18 @@ public class Member {
 	private String username;
 	// @Column(nullable = false)
 	private String password;
+	// 카카오에서 가져온 카카오 이름 ex) 김명영
+	@Builder.Default
+	private String nickname = null;
+	private String intro;
 	@Column(nullable = false)
 	@Builder.Default
 	private Long point = 0L;
 	@Builder.Default
 	private LocalDateTime enrollDate = LocalDateTime.now();
 
+	@Builder.Default
+	private String profilePath = null;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	//민우 요청사항 추가 설문조사
@@ -72,11 +78,6 @@ public class Member {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<UnusedSticker> stickers = new ArrayList<>();
 
-
-
-
-
-
 	@Enumerated(EnumType.STRING)
 	private SocialType socialType; // KAKAO, NAVER, GOOGLE
 	@Builder.Default
@@ -92,10 +93,25 @@ public class Member {
 		this.refreshToken = updateRefreshToken;
 	}
 
-
-
 	public void addPoint(Long point) {
 		this.point += point;
+	}
+
+	public MemberDto toDto() {
+		return MemberDto.builder()
+			.username(this.username)
+			.profilePath(this.profilePath)
+			.intro(this.intro)
+			.point(this.point)
+			.sociaId(this.socialId)
+			.socialType(this.socialType)
+			.build();
+	}
+
+	public Member signup(String username){
+		this.username = username;
+		this.role = Role.USER;
+		return this;
 	}
 
 }

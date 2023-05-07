@@ -1,5 +1,8 @@
 package twozerotwo.buddiary.global.jwt.service;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -7,7 +10,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -16,12 +26,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
+import twozerotwo.buddiary.global.oauth.dto.SocialType;
+import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Getter
 public class JwtService {
 	private final MemberRepository memberRepository;
 	@Value("${server.name}")
@@ -42,20 +54,20 @@ public class JwtService {
 	private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
 	private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
 	private static final String USERNAME_CLAIM = "username";
+	private static final String SOCIAL_ID = "socialId";
+	private static final String SOCIAL_TYPE = "socialType";
 
 	/**
 	 * AccessToken 생성 메소드
 	 * 오늘 날자기준 access 토큰 생성
 	 */
-	public String createAccessToken(String username) {
+	public String createAccessToken(String username, String socialId, SocialType socialType) {
 		Date now = new Date();
-		log.info("createAccessToken 토큰 만들기");
 		return JWT.create() // JWT 토큰을 생성하는 빌더 반환
 			.withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
 			.withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
-
-			//클레임으로는 저희는 email 하나만 사용합니다.
-			//추가적으로 식별자나, 이름 등의 정보를 더 추가하셔도 됩니다.
+			.withClaim(SOCIAL_ID, socialId)
+			.withClaim(SOCIAL_TYPE, socialType.name())
 			//추가하실 경우 .withClaim(클래임 이름, 클래임 값) 으로 설정해주시면 됩니다
 			.withClaim(USERNAME_CLAIM, username)
 			.sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
@@ -74,12 +86,10 @@ public class JwtService {
 	 */
 	public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
 
-		log.info("sendAccessAndRefreshToken 에 access token {}", accessToken);
 		response.setStatus(HttpServletResponse.SC_OK);
 
 		sendAccessToken(response, accessToken);
 		sendRefreshToken(response, refreshToken);
-		log.info("Access Token, Refresh Token 쿠키 설정 완료");
 	}
 
 	/**
@@ -97,7 +107,6 @@ public class JwtService {
 		cookie.setMaxAge(3600000);
 
 		response.addCookie(cookie);
-		log.info("발급된 Access Token : {}", accessToken);
 	}
 
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
@@ -111,7 +120,6 @@ public class JwtService {
 		cookie.setMaxAge(1209600000);
 		cookie.setHttpOnly(true);
 		response.addCookie(cookie);
-		log.info("발급된 refreshToken  : {}", refreshToken);
 
 	}
 
@@ -119,9 +127,9 @@ public class JwtService {
 	 * RefreshToken DB 저장(업데이트)
 	 */
 	public void updateRefreshToken(String email, String refreshToken) {
-		log.info("리프래쉬 토큰 다시 디비에 저장");
 		memberRepository.findByUsername(email)
-			.ifPresentOrElse(member -> member.updateRefreshToken(refreshToken), () -> new Exception("일치하는 회원이 없습니다."));
+			.ifPresentOrElse(member -> member.updateRefreshToken(refreshToken),
+				() -> new NotFoundException("일치하는 회원이 없습니다."));
 	}
 
 	public boolean isTokenValid(String token) {
@@ -140,17 +148,14 @@ public class JwtService {
 	 * 헤더에서 RefreshToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractRefreshToken(HttpServletRequest request) {
-		log.info("요청 받은 리퀘스트 {}", request.getRequestURI());
 		if (request.getCookies() == null) {
 			return Optional.empty();
 		}
 		try {
 			for (Cookie cookie : request.getCookies()) {
-				log.info("쿠키 {}", cookie.getName());
 				if (cookie.getName().equals(REFRESH_TOKEN_SUBJECT)) {
 					String token = cookie.getValue();
 					if (token != null) {
-						log.info(" extractRefreshToken 추출된 리프레쉬 토큰 token {}", token);
 						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
 					} else {
 						return Optional.empty();
@@ -165,7 +170,7 @@ public class JwtService {
 	}
 
 	/**
-	 * 헤더에서 AccessToken 쿠키로 부터 추출 옵셔널 반환
+	 * 쿠키에서 AccessToken 쿠키로 부터 추출 옵셔널 반환
 	 */
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
 		if (request.getCookies() == null) {
@@ -173,11 +178,9 @@ public class JwtService {
 		}
 		try {
 			for (Cookie cookie : request.getCookies()) {
-				log.info("요청에서 가져온 쿠키 {}", cookie.getName());
 				if (cookie.getName().equals(ACCESS_TOKEN_SUBJECT)) {
 					String token = cookie.getValue();
-					if (token != null) {
-						log.info(" extractRefreshToken 추출된 엑세스 토큰 token {}", token);
+					if (token != null && isTokenValid(token)) {
 						return Optional.ofNullable(token); // 옵셔널객체에 담아서 리턴
 					} else {
 						return Optional.empty();
@@ -212,5 +215,51 @@ public class JwtService {
 			log.error("액세스 토큰이 유효하지 않습니다.");
 			return Optional.empty();
 		}
+	}
+
+	public Optional<String> extractSocialId(String accessToken) {
+		try {
+			// 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
+			Optional<String> socialId = Optional.ofNullable(
+				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
+					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+					.getClaim(SOCIAL_ID) // claim(Emial) 가져오기
+					.asString());
+			return socialId;
+		} catch (Exception e) {
+			log.error("액세스 토큰이 유효하지 않습니다.");
+			return Optional.empty();
+		}
+	}
+
+	public Optional<String> extractSocialType(String accessToken) {
+		try {
+			Optional<String> socialType = Optional.ofNullable(
+				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
+					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+					.getClaim(SOCIAL_TYPE)
+					.asString());
+			return socialType;
+		} catch (Exception e) {
+			log.error("액세스 토큰이 유효하지 않습니다.");
+			return Optional.empty();
+		}
+	}
+
+	public Authentication getAuthentication(String accessToken) {
+		String socialId = extractSocialId(accessToken).orElse(null);
+		String socialType = extractSocialType(accessToken).orElse(null);
+		SocialType extractSocialType = SocialType.of(socialType);
+		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
+		log.info(member.getUsername());
+		if (member == null) {
+			log.error("맴버 정보가 없습니다. 빈값을 return 합니다.");
+			return new UsernamePasswordAuthenticationToken(null, "", null);
+		}
+		Collection<? extends GrantedAuthority> authorities = Collections.singleton(
+			new SimpleGrantedAuthority(member.getRole().getKey()));
+		UserDetails principal = new User(member.getUsername(), "", authorities);
+
+		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
 	}
 }
