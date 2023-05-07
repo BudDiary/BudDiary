@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,11 +58,17 @@ public class ClubController {
 	}
 
 	//-------------------------------------------클럽 디테일----------------------------------------------
-	@GetMapping("/{clubId}")
-	public ResponseEntity getClubDetail(@PathVariable("clubId") String clubUuid) {
-		String username = "yeokyung";
+	@GetMapping("/{clubId}/{username}")
+	public ResponseEntity getClubDetail(@PathVariable("clubId") String clubUuid, @PathVariable String username) {
 		ClubDetail clubDetail = clubService.getClubDetail(clubUuid, username);
 		return new ResponseEntity<>(Map.of("clubDetail", clubDetail), HttpStatus.OK);
+	}
+
+	//------------------------------------------클럽 나가기----------------------------------------------
+	@DeleteMapping("/{clubId}/{username}")
+	public ResponseEntity deleteMemberAtClub(@PathVariable("clubId") String clubUuid, @PathVariable String username) {
+		clubService.deleteMemberAtClub(clubUuid, username);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
 }

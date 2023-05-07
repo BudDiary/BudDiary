@@ -154,8 +154,7 @@ public class ClubService {
 
 	public ClubDetail getClubDetail(String clubUuid, String username) {
 		Member member = returnMemberByUsername(username);
-		Club club = clubRepository.findById(clubUuid)
-			.orElseThrow(() -> new NotFoundException("해당 클럽을 찾을 수 없습니다."));
+		Club club = returnClubById(clubUuid);
 		Set<MemberClub> memberClubs = club.getClubMembers();
 		boolean isClubMember = false;
 		List<Member> members = new ArrayList<>();
@@ -177,5 +176,36 @@ public class ClubService {
 		return ClubDetail.builder()
 			.diaryList(diaryInfos)
 			.memberList(members).build();
+	}
+
+	@Transactional
+	public void deleteMemberAtClub(String clubUuid, String username) {
+		Member member = returnMemberByUsername(username);
+		Club club = returnClubById(clubUuid);
+		// boolean isClubMember = false;
+		Set<MemberClub> clubMembers = club.getClubMembers();
+		MemberClub target = null;
+		for (MemberClub memberClub : clubMembers) {
+			if (memberClub.getMember().equals(member)) {
+				// 외래키 다 지우고 삭제해야 함
+				target = memberClub;
+				// memberClubRepository.deleteMemberClubByMemberAndClub(club, member);
+				// isClubMember = true;
+			}
+		}
+		if (target == null) {
+			throw new BadRequestException("요청자가 해당 클럽의 구성원이 아닙니다.");
+		} else {
+			club.getClubMembers().remove(target);
+			member.getMemberClubs().remove(target);
+			memberClubRepository.delete(target);
+		}
+		// clubRepository.save(club);
+	}
+
+	public Club returnClubById(String clubUuid) {
+		Club club = clubRepository.findById(clubUuid)
+			.orElseThrow(() -> new NotFoundException("해당 클럽을 찾을 수 없습니다."));
+		return club;
 	}
 }
