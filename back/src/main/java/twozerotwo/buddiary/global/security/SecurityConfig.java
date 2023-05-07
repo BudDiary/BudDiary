@@ -74,6 +74,7 @@ public class SecurityConfig {
 			.disable() // httpBasic 사용 X
 			.csrf()
 			.disable() // csrf 보안 사용 X
+			.cors().configurationSource(corsConfigurationSource()).and()
 			.headers()
 			.frameOptions()
 			.disable()
@@ -83,9 +84,7 @@ public class SecurityConfig {
 			// 세션 사용하지 않으므로 STATELESS로 설정
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
 			.and()
-
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
@@ -120,10 +119,11 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource(){
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		// corsConfiguration.addAllowedOriginPattern("*");
+		corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
 		corsConfiguration.addAllowedHeader("*");
-		corsConfiguration.addAllowedOrigin("http://localhost:3000");
-		corsConfiguration.addAllowedMethod("GET, POST, OPTIONS, PUT, PATCH, DELETE");
+		// corsConfiguration.addAllowedOrigin("http://localhost:3000");
+		// corsConfiguration.addAllowedOrigin("http://localhost:8080");
+		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration);
