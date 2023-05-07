@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // 로그인된 사용자
-const BASE_URL = "http://172.19.236.180:8080/api";
+const BASE_URL = "http://localhost:8080/";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -9,6 +9,17 @@ const api = axios.create({
   baseURL: BASE_URL,
 });
 
+
+// authApi.interceptors.request.use(
+//   (request) => {
+//     const ACCESS_TOKEN = Cookies.get('AccessToken');
+//     request.headers.Authorization = ACCESS_TOKEN || null;
+//     return request;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   },
+// );
 // api.interceptors.request.use(
 //   (request) => {
 //     return request;
