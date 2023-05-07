@@ -121,7 +121,7 @@ public class SecurityConfig {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.addAllowedOrigin("http://localhost:3000");
 		corsConfiguration.addAllowedHeader("*");
-		corsConfiguration.addAllowedMethod("*");
+		corsConfiguration.addAllowedMethod("GET, POST, OPTIONS, PUT, PATCH, DELETE");
 		corsConfiguration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration);
