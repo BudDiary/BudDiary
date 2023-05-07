@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // 로그인된 사용자
-const BASE_URL = "http://localhost:8080/";
+const BASE_URL = "http://172.19.236.180:8080/api";
 
 axios.defaults.baseURL = BASE_URL;
 

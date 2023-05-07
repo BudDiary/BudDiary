@@ -36,7 +36,7 @@ export const ImageContainer = styled.div`
 `;
 
 export const TextContainer = styled.div`
-  ${tw`h-full flex flex-col justify-center items-center text-white sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl`}
+  ${tw`h-full flex flex-col justify-center items-center text-white sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-mf font-bold`}
   font-size: 2rem;
   transform: translateY(-5%);
 `;

@@ -15,7 +15,7 @@ module.exports = {
     },
     fontFamily: {
       berry: ["GoryeongStrawberry"],
-      noto: ["Poppins", "sans-serif"],
+      mf: ["KBIZHanmaumMyungjo"],
     },
   },
   variants: {
