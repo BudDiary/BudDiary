@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -88,6 +89,7 @@ public class SecurityConfig {
 
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
+			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 			// .antMatchers(HttpMethod.GET,"/api/members/signup/jwt-test/**").hasRole("USER")
 			// .antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
 			.anyRequest()
