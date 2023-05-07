@@ -13,6 +13,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -75,11 +78,13 @@ public class SecurityConfig {
 			.disable()
 			.and()
 
+
 			// 세션 사용하지 않으므로 STATELESS로 설정
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
 			.and()
+			.cors().and()
 
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
@@ -110,6 +115,17 @@ public class SecurityConfig {
 
 		return http.build();
 
+	}
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource(){
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.addAllowedOrigin("http://localhost:3000");
+		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.addAllowedMethod("*");
+		corsConfiguration.setAllowCredentials(true);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return source;
 	}
 
 	@Bean
