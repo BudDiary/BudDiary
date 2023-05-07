@@ -6,9 +6,8 @@ pipeline {
             steps {
 				checkout scmGit(branches: [[name: '*/develop']],
 				 extensions: [],
-				  userRemoteConfigs: [[credentialsId: 'logbymoon',
+				  userRemoteConfigs: [[credentialsId: 'mj',
 				   url: 'https://lab.ssafy.com/s08-final/S08P31C202.git']])
-                echo 'Hello World'
             }
         }
 		stage('build') {
