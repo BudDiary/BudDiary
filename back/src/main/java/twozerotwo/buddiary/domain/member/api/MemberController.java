@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.domain.club.dto.MemberDto;
+import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.domain.member.dto.MemberSignUpRequest;
 import twozerotwo.buddiary.domain.member.service.MemberService;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;

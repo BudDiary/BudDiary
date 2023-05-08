@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import twozerotwo.buddiary.domain.club.dto.MemberDto;
+import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
@@ -102,6 +102,7 @@ public class Member {
 	// @JsonProperty("socialId")
 	@JsonIgnore
 	@Builder.Default
+	@Column(unique = true)
 	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 	// @JsonProperty("refreshToken")
 	@JsonIgnore
