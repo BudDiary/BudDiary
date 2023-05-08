@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +23,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
+import twozerotwo.buddiary.domain.diary.dto.StickerToDiaryDto;
+import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
 import twozerotwo.buddiary.domain.diary.service.DiaryService;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
+import twozerotwo.buddiary.persistence.entity.UsedSticker;
 
 @RequiredArgsConstructor
 @RestController
@@ -62,7 +69,7 @@ public class DiaryController {
 
 	//-------------------------------------------다이어리 상세(스티커)----------------------------------------------
 	@GetMapping("/{diaryId}")
-	public ResponseEntity getDiaryStricker(@PathVariable Long diaryId) {
+	public ResponseEntity getDiarySticker(@PathVariable Long diaryId) {
 		return ResponseEntity.ok(Map.of("usedStickers", diaryService.getDiarySticker(diaryId)));
 	}
 
@@ -73,4 +80,12 @@ public class DiaryController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 	}
+	//---------------------------------------다이어리에 스티커 추가------------------------------------------
+	@PatchMapping("/stickers")
+	public ResponseEntity addStickerToDiary(@RequestBody @Valid StickerToDiaryDto request) {
+		List<UsedStickerDto> usedStickers = diaryService.addStickerToDiary(request);
+		return new ResponseEntity<>(Map.of("usedStickers", usedStickers), HttpStatus.OK);
+
+	}
+
 }

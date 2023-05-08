@@ -25,6 +25,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
@@ -142,4 +143,17 @@ public class Member {
 		return this;
 	}
 
+	public boolean checkPoint(Long totalPrice) {
+		if (this.point >= totalPrice) {
+			return true;
+		}
+		return false;
+	}
+
+	public void minusPoint(Long totalPrice) {
+		if (this.point - totalPrice < 0) {
+			throw new BadRequestException("포인트가 부족합니다.");
+		}
+		this.point -= totalPrice;
+	}
 }

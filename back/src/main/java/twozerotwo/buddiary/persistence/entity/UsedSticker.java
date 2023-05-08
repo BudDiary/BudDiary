@@ -31,9 +31,9 @@ public class UsedSticker {
 	@Column(name = "USED_STICKER_ID")
 	private Long id;
 
-	@NotNull(message = "x좌표가 비어있습니다.")
+
 	private Double xCoordinate;
-	@NotNull(message = "y좌표가 비어있습니다.")
+
 	private Double yCoordinate;
 
 	// 다이어리 아이디

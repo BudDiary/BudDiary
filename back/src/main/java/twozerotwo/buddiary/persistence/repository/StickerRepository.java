@@ -1,9 +1,17 @@
 package twozerotwo.buddiary.persistence.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import io.lettuce.core.dynamic.annotation.Param;
 import twozerotwo.buddiary.persistence.entity.Sticker;
 
 public interface StickerRepository extends JpaRepository<Sticker, Long> {
-	boolean existsStickerByName(String name);
+	@Query("SELECT COUNT(s) > 0 FROM Sticker s WHERE s.name = :name")
+	Boolean existsByName(@Param("pid") String name);
+
+	List<Sticker> findAll();
 }
