@@ -56,7 +56,8 @@ public class DiaryController {
 
 	//-------------------------------------------특정 날짜 다이어리 리스트 반환----------------------------------------------
 	@GetMapping
-	public ResponseEntity getDayDiaryList(@RequestParam("date") String date, @RequestParam("username") String username) {
+	public ResponseEntity getDayDiaryList(@RequestParam("date") String date,
+		@RequestParam("username") String username) {
 		List<SimpleDiaryDto> simpleDiaryList = diaryService.getDayDiaryList(username, date); // 해당 월에 쓴 다이어리 날짜들 조회
 		return ResponseEntity.ok(Map.of("diaryList", simpleDiaryList));
 	}

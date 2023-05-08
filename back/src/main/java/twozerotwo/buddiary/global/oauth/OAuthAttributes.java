@@ -79,12 +79,11 @@ public class OAuthAttributes {
 	public Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
 		log.info("member 로 변환 중 nickName 정보를 출력합니다." + oauth2UserInfo.getNickname());
 		log.info("member 로 변환 중 id 정보를 출력합니다." + oauth2UserInfo.getId());
+		log.info("member 로 변환 중 getNickname 정보를 출력합니다." + oauth2UserInfo.getNickname());
 		log.info("member 로 변환 중  image 정보를 출력합니다." + oauth2UserInfo.getImageUrl());
 		return Member.builder()
 			// TODO: 2023-04-27 추후 사업자 등록하면 추가 정보 넣어서 주어야합니다.
 			.username(UUID.randomUUID() + "@socialUser.com") //userName JWT 토큰 발급 위한 용도뿐
-			.socialType(socialType)
-			.socialId(oauth2UserInfo.getId())
-			.role(Role.GUEST).build();
+			.socialType(socialType).socialId(oauth2UserInfo.getId()).role(Role.GUEST).build();
 	}
 }

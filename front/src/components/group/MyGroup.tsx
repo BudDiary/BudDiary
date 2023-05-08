@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { MdLibraryAdd } from 'react-icons/md'
 import NewGroupDiaryModal from './NewGroupDiaryModal'
+import Modal from '../common/Modal';
 const data = [
   {
     title: 'Paper 1',
@@ -35,12 +36,15 @@ const data = [
 
 
 export default function MyGroup() {
-  const [NewDiaryModal, setNewDiaryModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const createNewDiary = () => {
-    setNewDiaryModal(true)
+    setModalOpen(true)
   }
   return (<>
-    {NewDiaryModal === false ? null : <NewGroupDiaryModal setNewDiaryModal={setNewDiaryModal}/>}
+  
+    {modalOpen && <Modal page={1} setModalOpen={setModalOpen}/>}
+  
+    {/* {NewDiaryModal === false ? null : <NewGroupDiaryModal setNewDiaryModal={setNewDiaryModal}/>} */}
     <span className="flex h-80">
     <Paper elevation={3} sx={{ p: 3, width: '30%', height: '80%', mr: '10%'}}>
     <Typography variant="h5" component="div" sx={{ mb: 3 }}>

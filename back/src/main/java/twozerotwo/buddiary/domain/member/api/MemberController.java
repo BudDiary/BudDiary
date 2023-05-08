@@ -1,8 +1,9 @@
 package twozerotwo.buddiary.domain.member.api;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.domain.member.dto.MemberSignUpDto;
+import twozerotwo.buddiary.domain.member.dto.MemberDto;
+import twozerotwo.buddiary.domain.member.dto.MemberSignUpRequest;
 import twozerotwo.buddiary.domain.member.service.MemberService;
+import twozerotwo.buddiary.global.util.AuthenticationUtil;
 
 @RestController
 @Slf4j
@@ -20,21 +23,26 @@ import twozerotwo.buddiary.domain.member.service.MemberService;
 @AllArgsConstructor
 public class MemberController {
 	private final MemberService memberService;
+	private final AuthenticationUtil authenticationUtil;
 
-	@PostMapping("/signup")
-	public String signUp(@RequestBody MemberSignUpDto memberSignUpDto, HttpServletRequest resRequest) throws Exception {
-		log.info("회원가입 요청 호출 jwt 인증 성공");
-		for (Cookie cookie : resRequest.getCookies()) {
+	@PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> signUp(@RequestBody MemberSignUpRequest memberSignUpDto, HttpServletRequest request) {
+		// public ResponseEntity<?> signUp() {
+		try {
+			MemberDto memberDto = memberService.signUp(memberSignUpDto, request);
+			// 리프래쉬 토큰 발급
+			return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(memberSignUpDto);
 
-
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
-		// 리프래쉬 토큰 발급
-		// memberService.signUp(memberSignUpDto);
-		return "회원가입 성공";
+		return null;
+
 	}
 
 	@GetMapping("/jwt-test")
 	public String jwtTest() {
+		log.info("jwt-test");
 		return "jwtTest 요청 성공";
 	}
 

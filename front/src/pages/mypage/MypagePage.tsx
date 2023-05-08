@@ -2,7 +2,7 @@ import React from "react";
 import { MyDiaryCalendarContainer, MyPageContainer, MyProfileInfoContainer} from "./MypagePage.styles";
 
 import Profile from "../../components/mypage/Profile";
-import Calendar from "../../components/mypage/Calendar";
+import Calendar from "../../components/mypage/calendar/Calendar";
 import Stat from "../../components/mypage/Stat";
 import { PageContainer, SubNavContainer } from "../../components/common/Page.styles";
 

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
@@ -18,6 +19,7 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LoginService implements UserDetailsService {
 	private final MemberRepository memberRepository;
 

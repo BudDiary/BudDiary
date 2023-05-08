@@ -10,7 +10,7 @@ export default function Content({ setContent }: Props) {
       <TextareaAutosize
         style={{ width: "100%", fontSize: "16px" }}
         minRows={8}
-        defaultValue="일기를 작성해 보세요"
+        defaultValue="일기를 작성해 보세요 "
         onChange={(e) => setContent(e.target.value)}
       />
     </div>

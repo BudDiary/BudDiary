@@ -26,10 +26,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
-// @JsonIgnoreProperties({ "memberId", "password", "point", "enrollDate", "role", "checkPreference" })
 @Entity
 @Builder
 @AllArgsConstructor
@@ -39,19 +39,16 @@ public class Member {
 	@Id
 	@Column(name = "MEMBER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// @JsonProperty("memberId")
-	@JsonIgnore
 	private Long id;
 	@Column(nullable = false)
 	private String username;
 	// @Column(nullable = false)
-	// @JsonProperty("password")
+	private String password;
+	// 카카오에서 가져온 카카오 이름 ex) 김명영
 	@JsonIgnore
 	@Builder.Default
-	private String password = null;
-	// @JsonProperty("point")
-	@Builder.Default
 	private String nickname = null;
+	private String intro;
 	@JsonIgnore
 	@Column(nullable = false)
 	@Builder.Default
@@ -63,7 +60,6 @@ public class Member {
 
 	@Builder.Default
 	private String profilePath = null;
-	// @JsonProperty("role")
 	@JsonIgnore
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -111,6 +107,7 @@ public class Member {
 	// @JsonProperty("socialId")
 	@JsonIgnore
 	@Builder.Default
+	@Column(unique = true)
 	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 	// @JsonProperty("refreshToken")
 	@JsonIgnore
@@ -127,6 +124,23 @@ public class Member {
 
 	public void addPoint(Long point) {
 		this.point += point;
+	}
+
+	public MemberDto toDto() {
+		return MemberDto.builder()
+			.username(this.username)
+			.profilePath(this.profilePath)
+			.intro(this.intro)
+			.point(this.point)
+			.sociaId(this.socialId)
+			.socialType(this.socialType)
+			.build();
+	}
+
+	public Member signup(String username) {
+		this.username = username;
+		this.role = Role.USER;
+		return this;
 	}
 
 }

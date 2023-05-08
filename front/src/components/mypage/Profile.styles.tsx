@@ -29,11 +29,11 @@ export const UserProfileContainer = styled.div`
 `
 
 export const ProfilePicSection = styled.div`
-  ${tw`col-span-1`}
+  ${tw``}
 `
 
 export const ProfileInfoSection = styled.div`
-  ${tw`col-span-2 mt-10`}
+  ${tw`mt-10`}
 `
 
 export const ProfilePictureCircle = styled.div`
@@ -41,5 +41,13 @@ export const ProfilePictureCircle = styled.div`
 `
 
 export const IntroContainer = styled.div`
-  ${tw`col-span-3`}
+  ${tw`col-span-3 mt-4`}
+`
+
+export const PointsButton = styled.div`
+    ${tw`bg-bud-blue text-white w-[100px] h-[30px] rounded-md flex my-6 py-0.5 pl-6`}
+`
+
+export const ChangeProfileSection = styled.div`
+    ${tw`mt-20`}
 `
