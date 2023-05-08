@@ -99,7 +99,7 @@ public class ClubService {
 
 	public String uploadS3(MultipartFile file, String dirName) throws IOException {
 		if (file.isEmpty()) {
-			throw new RuntimeException("gg");
+			throw new BadRequestException("업로드할 file이 없습니다.");
 		} else {
 			return s3Uploader.upload(file, dirName);
 		}
@@ -117,7 +117,7 @@ public class ClubService {
 
 	public Member returnMemberByUsername(String username) {
 		Member member = memberRepository.findByUsername(username)
-			.orElseThrow(() -> new RuntimeException("dd"));
+			.orElseThrow(() -> new NotFoundException("해당 아이디의 회원을 찾을 수 없습니다."));
 		return member;
 	}
 

@@ -52,11 +52,8 @@ public class DiaryService {
 	@Transactional
 	public void createClubDiary(DiaryPostRequest request, String clubUuid) throws IOException {
 		/// TODO: 2023-05-02 요청한 사람이 클럽원인지 확인
-		Club club = clubRepository.findById(clubUuid)
-			.orElseThrow(() -> new RuntimeException("잘못된 UUid"));
-		Member member = memberRepository.findByUsername(request.getMemberUsername())
-			.orElseThrow(() -> new RuntimeException("잘못된 username"));
-		// request.getStickerDtoList().get(0).getXCoordinate()
+		Club club = returnClubById(clubUuid);
+		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
 		// 다이어리 포스트 생성 > 저장
 		Diary diary = Diary.builder()
 			.club(club)
@@ -68,6 +65,12 @@ public class DiaryService {
 		makeDiaryImage(savedDiary, request.getFileList());
 		// 스티커 리스트 만들고
 		makeStickerList(savedDiary, request.getStickerDtoList());
+	}
+
+	private Club returnClubById(String clubUuid) {
+		Club club = clubRepository.findById(clubUuid)
+			.orElseThrow(() -> new BadRequestException("잘못된 클럽 id입니다."));
+		return club;
 	}
 
 	@Transactional
@@ -104,10 +107,10 @@ public class DiaryService {
 					}
 				}
 				if (!stickerOwned) {
-					throw new RuntimeException("스티커를 보유하고 있지 않습니다.");
+					throw new BadRequestException("스티커를 보유하고 있지 않습니다.");
 				}
 				Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
-					.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
+					.orElseThrow(() -> new BadRequestException("존재하지 않는 스티커"));
 				UsedSticker usedSticker = UsedSticker.builder()
 					.diary(diary)
 					.xCoordinate(stickerDto.getXCoordinate())
@@ -122,8 +125,7 @@ public class DiaryService {
 
 	@Transactional
 	public void createPersonalDiary(DiaryPostRequest request) throws IOException {
-		Member member = memberRepository.findByUsername(request.getMemberUsername())
-			.orElseThrow(() -> new RuntimeException("잘못된 username"));
+		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
 		// 다이어리 포스트 생성 > 저장
 		Diary diary = Diary.builder()
 			.writer(member)
@@ -139,12 +141,11 @@ public class DiaryService {
 
 	@Transactional
 	public void minusStickerCnt(DiaryPostRequest request) {
-		Member member = memberRepository.findByUsername(request.getMemberUsername())
-			.orElseThrow(() -> new RuntimeException("잘못된 username"));
+		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
 		if (request.getStickerDtoList() != null) {
 			for (StickerDto stickerDto : request.getStickerDtoList()) {
 				Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
-					.orElseThrow(() -> new RuntimeException("존재하지 않는 스티커"));
+					.orElseThrow(() -> new BadRequestException("존재하지 않는 스티커"));
 				// Unused 스티커 조회해서 리턴
 				UnusedSticker unusedSticker = unusedStickerRepository.findByMemberIdAndStickerId(member, sticker);
 				// Unused 스티커 cnt -1
