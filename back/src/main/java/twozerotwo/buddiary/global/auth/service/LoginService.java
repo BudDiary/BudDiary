@@ -27,7 +27,6 @@ public class LoginService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Member member = memberRepository.findByUsername(username)
 			.orElseThrow(() -> new UsernameNotFoundException("해당 이메일이 존재하지 않습니다"));
-		log.info(" 여기로 드루와 {}", member.getUsername());
 		return User.builder()
 			.username(member.getUsername())
 			.password(member.getPassword())

@@ -1,12 +1,11 @@
 package twozerotwo.buddiary.global.util;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
-import twozerotwo.buddiary.domain.club.dto.MemberDto;
+import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.jwt.service.JwtService;
@@ -22,6 +21,7 @@ public class AuthenticationUtil {
 
 	/**
 	 * 조회용 dto 반환
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -40,6 +40,7 @@ public class AuthenticationUtil {
 
 	/**
 	 * 업데이트 용 엔티티 반환
+	 *
 	 * @param request
 	 * @return
 	 */

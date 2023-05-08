@@ -19,14 +19,12 @@ import javax.persistence.OneToMany;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import twozerotwo.buddiary.domain.club.dto.MemberDto;
+import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.enums.Role;
 
@@ -104,6 +102,7 @@ public class Member {
 	// @JsonProperty("socialId")
 	@JsonIgnore
 	@Builder.Default
+	@Column(unique = true)
 	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 	// @JsonProperty("refreshToken")
 	@JsonIgnore
@@ -117,8 +116,6 @@ public class Member {
 	public void updateRefreshToken(String updateRefreshToken) {
 		this.refreshToken = updateRefreshToken;
 	}
-
-
 
 	public void addPoint(Long point) {
 		this.point += point;
@@ -135,7 +132,7 @@ public class Member {
 			.build();
 	}
 
-	public Member signup(String username){
+	public Member signup(String username) {
 		this.username = username;
 		this.role = Role.USER;
 		return this;

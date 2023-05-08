@@ -28,7 +28,6 @@ public class OAuthAttributes {
 
 	@Builder
 	public OAuthAttributes(String nameAttributeKey, OAuth2UserInfo oauth2UserInfo) {
-		log.info("oauth 정보 확인 {}",oauth2UserInfo.getId());
 		this.nameAttributeKey = nameAttributeKey;
 		this.oauth2UserInfo = oauth2UserInfo;
 	}
@@ -85,8 +84,6 @@ public class OAuthAttributes {
 		return Member.builder()
 			// TODO: 2023-04-27 추후 사업자 등록하면 추가 정보 넣어서 주어야합니다.
 			.username(UUID.randomUUID() + "@socialUser.com") //userName JWT 토큰 발급 위한 용도뿐
-			.socialType(socialType)
-			.socialId(oauth2UserInfo.getId())
-			.role(Role.GUEST).build();
+			.socialType(socialType).socialId(oauth2UserInfo.getId()).role(Role.GUEST).build();
 	}
 }
