@@ -24,11 +24,11 @@ public class MemberService {
 	@Transactional
 	public MemberDto signUp(MemberSignUpRequest userSignUpDto, HttpServletRequest request) {
 		Member memberDtoFromRequest = authenticationUtil.getMemberEntityFromRequest(request);
-		if (memberRepository.findByUsername(userSignUpDto.getUsername()).isPresent()) {
+		if (memberRepository.findByUsername(userSignUpDto.getNickname()).isPresent()) {
 			throw new ConflictException("이미 존재하는 유저의 이메일입니다.");
 			// 이거 애러가 안나가는데 확인좀
 		}
-		Member signup = memberDtoFromRequest.signup(userSignUpDto.getUsername());
+		Member signup = memberDtoFromRequest.signup(userSignUpDto.getNickname());
 		return signup.toDto();
 	}
 }
