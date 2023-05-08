@@ -1,12 +1,11 @@
 import { api } from "./axiosConfig";
 import Swal from 'sweetalert2';
 
-const getDateDiaryListAPI = (payload: string) => {
+const getDateDiaryListAPI = (date: string, email: string) => {
   return api
-    .get(`diaries?date=${payload}`)
+    .get(`/api/diaries?date=${date}&username=${email}`)
     .then((res) => {
-      console.log(res)
-      // return res.data
+      return res.data.diaryList
     })
     .catch((err) => {
       console.log(err, 'getDateDiaryListAPI 오류')

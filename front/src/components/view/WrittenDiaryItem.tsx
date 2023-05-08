@@ -1,7 +1,15 @@
 import React from 'react'
 
-export default function WrittenDiaryItem() {
+interface Props {
+  type: string;
+}
+
+export default function WrittenDiaryItem(diary: Props) {
   return (
-    <div>WrittenDiaryItem</div>
+    <>
+      <div>
+        {diary.type}
+      </div>
+    </>
   )
 }
