@@ -6,6 +6,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store/store";
 import { Provider } from "react-redux";
+import useMember from "./hooks/memberHook";
 
 import NotFoundPage from "./pages/notfound/NotFoundPage";
 import WritePage from "./pages/write/WritePage";
@@ -15,8 +16,11 @@ import SurveyPage from "./pages/survey/SurveyPage";
 import HomePage from "./pages/home/HomePage";
 import MypagePage from "./pages/mypage/MypagePage";
 import SignUpPage from "./pages/signup/SignUpPage";
+import ViewDiariesPage from "./pages/view/ViewDiariesPage";
+import LoginSignUpPage from "./pages/signup/LoginSignUpPage";
 
 
+// const {isLoggedIn} = useMember();
 
 const router = createBrowserRouter([
   {
@@ -34,6 +38,9 @@ const router = createBrowserRouter([
       { path: "/write", element: <WritePage /> },
       { path: "/mypage", element: <MypagePage /> },
       { path: "/signup", element: <SignUpPage /> },
+      { path: "/view/diary/:id", element: <ViewDiariesPage /> },
+      { path: "/login/oauth2/code/kakao", element: <SignUpPage /> },
+      { path: "/login/sign", element: <LoginSignUpPage /> },
     ],
   },
 ]);

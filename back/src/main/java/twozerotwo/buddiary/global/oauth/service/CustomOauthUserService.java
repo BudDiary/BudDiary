@@ -17,12 +17,14 @@ import twozerotwo.buddiary.global.oauth.CustomOAuth2User;
 import twozerotwo.buddiary.global.oauth.OAuthAttributes;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.entity.Member;
+import twozerotwo.buddiary.persistence.repository.ClubRepository;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CustomOauthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+	private final ClubRepository clubRepository;
 	private final MemberRepository memberRepository;
 	private static final String KAKAO = "kakao";
 
@@ -57,12 +59,19 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 
 		OAuthAttributes extractAttributes = OAuthAttributes.of(socialType, userNameAttributeName, attributes);
 		Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
+		log.info("oauth 를 통해 얻어온 getEmail 정보 : {}", extractAttributes.getOauth2UserInfo().getEmail());
+		log.info("oauth 를 통해 얻어온 getNickname 정보 : {}", extractAttributes.getOauth2UserInfo().getNickname());
+		log.info("oauth 를 통해 얻어온 getId 정보 : {}", extractAttributes.getOauth2UserInfo().getId());
+		log.info("oauth 를 통해 얻어온 getImageUrl 정보 : {}", extractAttributes.getOauth2UserInfo().getImageUrl());
+		// 시큐리티 컨텍스트 저장을위한 UserDetail 생성
 		return new CustomOAuth2User(
 			Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
 			attributes,
 			extractAttributes.getNameAttributeKey(),
 			createdUser.getUsername(),
-			createdUser.getRole()
+			createdUser.getRole(),
+			createdUser.getSocialId(),
+			createdUser.getSocialType()
 		);
 	}
 
@@ -81,7 +90,9 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 	 * 만약 찾은 회원이 있다면, 그대로 반환하고 없다면 saveUser()를 호출하여 회원을 저장한다.
 	 */
 	private Member getUser(OAuthAttributes attributes, SocialType socialType) {
-		log.info("################### attributes {}", attributes.getOauth2UserInfo().getNickname());
+		// log.info("유저가 없으면 저장하고 있으면 던져준다", attributes.getOauth2UserInfo().getNickname());
+		log.info("getUser 소셜타입{}",socialType);
+		log.info("getUser 유저 정보{}",attributes.getOauth2UserInfo().getId());
 		Member findUser = memberRepository.findBySocialTypeAndSocialId(socialType,
 				attributes.getOauth2UserInfo().getId())
 			.orElse(null);
