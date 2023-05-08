@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 
 @Entity
 @Builder
@@ -37,7 +38,7 @@ public class UnusedSticker {
 	public void minusCnt() {
 
 		if (this.count - 1 < 0) {
-			throw new RuntimeException("해당 스티커 개수가 부족합니다.");
+			throw new BadRequestException("해당 스티커 개수가 부족합니다.");
 		}
 		this.count--;
 	}
