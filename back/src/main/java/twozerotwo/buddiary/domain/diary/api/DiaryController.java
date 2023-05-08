@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,11 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.service.DiaryService;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/diaries")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class DiaryController {
 	private final DiaryService diaryService;
@@ -46,7 +45,7 @@ public class DiaryController {
 			diaryService.createPersonalDiary(request);
 		}
 		if (!isSelected) {
-			throw new RuntimeException("ff");
+			throw new BadRequestException("다이어리를 작성할 위치가 작성되지 않았습니다.");
 		} else {
 			diaryService.minusStickerCnt(request);
 		}
@@ -55,8 +54,8 @@ public class DiaryController {
 
 	//-------------------------------------------특정 날짜 다이어리 리스트 반환----------------------------------------------
 	@GetMapping
-	public ResponseEntity getDayDiaryList(@RequestParam("date") String date) {
-		String username = "yeokyung";
+	public ResponseEntity getDayDiaryList(@RequestParam("date") String date,
+		@RequestParam("username") String username) {
 		List<SimpleDiaryDto> simpleDiaryList = diaryService.getDayDiaryList(username, date); // 해당 월에 쓴 다이어리 날짜들 조회
 		return ResponseEntity.ok(Map.of("diaryList", simpleDiaryList));
 	}
