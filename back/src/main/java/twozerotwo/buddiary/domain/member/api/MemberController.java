@@ -25,11 +25,14 @@ public class MemberController {
 	private final AuthenticationUtil authenticationUtil;
 
 	@PostMapping(value = "/signup")
-	public ResponseEntity<?> signUp(@Valid MemberSignUpRequest memberSignUpDto, HttpServletRequest request) {
+	//리퀘스트 파트
+	public ResponseEntity<?> signUp(@Valid MemberSignUpRequest memberSignUpDto,
+		HttpServletRequest request) {
 		try {
 			MemberDto memberDto = memberService.signUp(memberSignUpDto, request);
 			return ResponseEntity.ok().body(true);
 		} catch (Exception err) {
+			err.printStackTrace();
 			return ResponseEntity.badRequest().body(err.getMessage());
 		}
 
