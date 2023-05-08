@@ -1,14 +1,17 @@
 import React from "react";
 import { GroupList, MemberList } from "./GroupInfo.styles";
 import { BasicButton } from "./Diaries.styles";
-// 나중에 axios 요청
 import groupData from "./groupInfo.json";
 
-export default function GroupInfo() {
+interface GroupInfoProps {
+  style?: React.CSSProperties;
+}
+
+export default function GroupInfo({ style }: GroupInfoProps) {
   const { thumbnailUrl, members, clubName } = groupData;
 
   return (
-    <GroupList>
+    <GroupList style={style}>
       <img src={thumbnailUrl} alt="그룹 섬네일" />
       <p style={{ fontWeight: "bold" }}>{clubName}</p>
       <div

@@ -6,6 +6,10 @@ interface running {
   run: string;
 }
 
+interface timer {
+  time: string;
+}
+
 export const SectionContainer = styled.div`
   ${tw`relative bg-contain`}
   height: calc(100vh - 42px);
@@ -36,8 +40,8 @@ export const ImageContainer = styled.div`
 `;
 
 export const TextContainer = styled.div`
-  ${tw`h-full flex flex-col justify-center items-center text-white sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-mf font-bold`}
-  font-size: 2rem;
+  ${tw`h-full flex flex-col mx-auto max-w-[1152px] justify-center items-center text-white sm:text-8xl xl:text-9xl`}
+  font-size: 3rem;
   transform: translateY(-5%);
 `;
 
@@ -65,12 +69,12 @@ export const SeceondContent = styled.div`
 `;
 
 export const FirstDetail = styled.div<running>`
-  ${tw`mr-6 text-bud-blue`}
-  animation-name: AfadeIn, ABounce;
-  animation-delay: 3s, 4s;
-  animation-duration: 2s, 4s;
+  ${tw`mr-6 text-bud-blue font-test xl:text-8xl`}
+  animation-name: AfadeIn, AllBounce;
+  animation-delay: 3s, 5s;
+  animation-duration: 2s, 5s;
   animation-iteration-count: 1, infinite;
-  animation-fill-mode: both;
+  animation-fill-mode: both, both;
   animation-play-state: ${(props) => props.run};
 
   @keyframes AfadeIn {
@@ -82,30 +86,72 @@ export const FirstDetail = styled.div<running>`
     }
   }
 
-  @keyframes ABounce {
+  @keyframes AllBounce {
+    0% {
+      transform: translate(0px, 0px);
+    }
     10% {
-      transform: translateY(-6%);
+      transform: translate(0px, 0px);
     }
-    40% {
-      transform: translateY(0%);
+    18% {
+      transform: translate(0px, -20%);
     }
-    75% {
-      transform: translateY(-3%);
+    26% {
+      transform: translate(0px, 0px);
     }
     100% {
-      transform: translateY(0%);
+      transform: translate(0px, 0px);
     }
   }
 `;
-export const EasterEgg = styled.span`
-  ${tw`text-bud-green`}
+
+export const BounceText = styled.span<timer>`
   display: inline-block;
+  animation-name: ABounce;
+  animation-delay: ${(props) => props.time};
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: running;
+
+  @keyframes ABounce {
+    0% {
+      transform: translate(0px, 0px);
+    }
+    10% {
+      transform: translate(0px, -30%);
+    }
+    20% {
+      transform: translate(0px, 0px);
+    }
+    100% {
+      transform: translate(0px, 0px);
+    }
+  }
+
+  transition: all ease 0.2s;
   &:hover {
-    transform: rotate(90deg);
+    ${tw`text-bud-green`}
     transition: all ease 0.2s;
   }
-  &:not(:hover) {
-    transform: rotate(0);
+`;
+
+export const EasterEgg = styled.span<timer>`
+  ${tw`text-bud-green`}
+  animation-name: ABounce;
+  animation-delay: ${(props) => props.time};
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: running;
+
+  display: inline-block;
+  transform: rotate(0);
+  transition: all ease 0.2s;
+
+  &:hover {
+    ${tw`text-bud-blue`}
+    transform: rotate(90deg);
     transition: all ease 0.2s;
   }
 `;

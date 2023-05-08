@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@JsonIgnoreProperties({"diary"})
 public class DiaryImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +32,7 @@ public class DiaryImage {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DIARY_ID")
+	@JsonProperty("diary")
 	private Diary diary;
 
 	@NotBlank

@@ -11,12 +11,13 @@ interface running {
 }
 
 export const Container = styled.div`
-  ${tw`flex flex-col sm:flex-none relative`}
+  ${tw`flex flex-col sm:flex-none relative bg-bud-yellow`}
 `;
 
 export const SectionContainer = styled.div`
-  ${tw`relative bg-bud-yellow flex justify-center sm:items-center`}
+  ${tw`relative flex justify-center sm:items-center max-w-[1152px] mx-auto`}
   height: 100vh;
+  width: 100%;
   scroll-snap-align: start;
   cursor: default;
 
@@ -27,8 +28,8 @@ export const SectionContainer = styled.div`
 
 export const ImageSection = styled.div<ImageSectionProps>`
   background-image: url(${(props) => props.Image});
-  ${tw`bg-contain bg-no-repeat bg-top rounded-md`}
-  width: 45%;
+  ${tw`bg-contain bg-no-repeat bg-left rounded-md`}
+  width: 50%;
   height: 80%;
   min-height: calc(220px + 40%);
 
@@ -58,6 +59,7 @@ export const ImageSection = styled.div<ImageSectionProps>`
 
 export const TextContainer = styled.div`
   ${tw`h-full flex justify-center sm:flex sm:flex-col`}
+  width:50%;
 `;
 
 export const TextSection = styled.div`

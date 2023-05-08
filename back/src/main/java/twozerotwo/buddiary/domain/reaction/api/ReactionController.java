@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.domain.reaction.dto.DiaryReactionDto;
+import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
 import twozerotwo.buddiary.domain.reaction.dto.ReactionRequest;
 import twozerotwo.buddiary.domain.reaction.service.ReactionService;
 
@@ -31,7 +31,7 @@ public class ReactionController {
 
 	@PostMapping
 	public ResponseEntity createReaction(@RequestBody @Valid ReactionRequest request) {
-		List<DiaryReactionDto> reactions = reactionService.createReaction(request);
+		List<ReactionDto> reactions = reactionService.createReaction(request);
 		return new ResponseEntity<>(Map.of("reactionList", reactions), HttpStatus.CREATED);
 	}
 

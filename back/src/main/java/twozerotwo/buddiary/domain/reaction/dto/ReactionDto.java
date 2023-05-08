@@ -12,7 +12,7 @@ import twozerotwo.buddiary.persistence.enums.ActionType;
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiaryReactionDto {
+public class ReactionDto {
 	private Long id;
 	private String username;
 	private ActionType actionType;

@@ -17,3 +17,25 @@ export function timeAgo(timestamp: string) {
     return `${days}일 전`;
   }
 }
+
+export const handleCommentChange = (
+  event: React.ChangeEvent<HTMLTextAreaElement>,
+  setHeight: React.Dispatch<React.SetStateAction<string>>
+) => {
+  const textareaLineHeight = 24;
+  const minRows = 1;
+  const maxRows = 5;
+  const { value, scrollHeight } = event.target;
+  const rows =
+    Math.ceil((scrollHeight - textareaLineHeight) / textareaLineHeight) + 1;
+  const rowsToShow = rows >= maxRows ? maxRows : rows;
+  const newHeight = rowsToShow * textareaLineHeight;
+  setHeight(`${newHeight}px`);
+};
+
+export const handleCommentBlur = (
+  event: React.FocusEvent<HTMLTextAreaElement>,
+  setCommentState: React.Dispatch<React.SetStateAction<string>>
+) => {
+  setCommentState(event.target.value);
+};
