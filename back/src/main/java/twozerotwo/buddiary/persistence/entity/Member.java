@@ -137,9 +137,10 @@ public class Member {
 			.build();
 	}
 
-	public Member signup(String username) {
-		this.username = username;
+	public Member signup(String nickname, String profilePath) {
+		this.nickname = nickname;
 		this.role = Role.USER;
+		this.profilePath = profilePath;
 		return this;
 	}
 
