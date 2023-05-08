@@ -31,7 +31,7 @@ public class S3Uploader {
 	public String upload(MultipartFile multipartFile, String dirName) throws IOException {
 
 		if (multipartFile.isEmpty()) {
-			throw new RuntimeException("파일이 널입니다.");
+			throw new RuntimeException("파일이 잘못되었습니다.");
 		}
 
 		File uploadFile = convert(multipartFile).orElseThrow(
