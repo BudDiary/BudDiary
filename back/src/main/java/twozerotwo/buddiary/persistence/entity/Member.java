@@ -19,8 +19,6 @@ import javax.persistence.OneToMany;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,11 +41,12 @@ public class Member {
 	@Column(nullable = false)
 	private String username;
 	// @Column(nullable = false)
+	@JsonIgnore
 	private String password;
 	// 카카오에서 가져온 카카오 이름 ex) 김명영
-	@JsonIgnore
 	@Builder.Default
 	private String nickname = null;
+	@JsonIgnore
 	private String intro;
 	@JsonIgnore
 	@Column(nullable = false)

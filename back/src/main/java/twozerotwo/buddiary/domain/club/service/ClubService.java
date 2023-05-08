@@ -42,6 +42,7 @@ public class ClubService {
 	private final MemberRepository memberRepository;
 	private final MemberClubRepository memberClubRepository;
 	private final S3Uploader s3Uploader;
+	private static Long CREATE_DOUBLE_POINT = 10l;
 
 	@Transactional
 	public ClubCreateResponse createDouble(DoubleCreateRequest request) {
@@ -65,7 +66,9 @@ public class ClubService {
 		for (Member member : memberList) {
 			clubMembers.add(createMemberClub(member, club));
 		}
-		log.info(club.getClubMembers().toString());
+		// point 추가
+		firstMember.addPoint(CREATE_DOUBLE_POINT);
+		secondMember.addPoint(CREATE_DOUBLE_POINT);
 
 		// dto로 반환
 		return ClubCreateResponse.builder()

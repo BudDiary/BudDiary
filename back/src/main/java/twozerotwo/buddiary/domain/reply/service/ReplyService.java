@@ -7,18 +7,15 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
-import twozerotwo.buddiary.domain.comment.dto.CommentResponse;
 import twozerotwo.buddiary.domain.comment.service.CommentService;
 import twozerotwo.buddiary.domain.reply.dto.ReplyRequest;
 import twozerotwo.buddiary.domain.reply.dto.ReplyResponse;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.persistence.entity.Comment;
-import twozerotwo.buddiary.persistence.entity.Diary;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.entity.Reply;
 import twozerotwo.buddiary.persistence.repository.CommentRepository;
-import twozerotwo.buddiary.persistence.repository.DiaryRepository;
 import twozerotwo.buddiary.persistence.repository.ReplyRepository;
 
 @Service
@@ -29,6 +26,8 @@ public class ReplyService {
 	private final CommentRepository commentRepository;
 	private final ClubService clubService;
 	private final CommentService commentService;
+	private static Long ADD_REPLY_POINT = 5l;
+
 	@Transactional
 	public ReplyResponse createReply(ReplyRequest request) {
 		Member member = clubService.returnMemberByUsername(request.getUsername());
@@ -39,6 +38,9 @@ public class ReplyService {
 			.writer(member)
 			.build();
 		Reply savedReply = replyRepository.save(reply);
+		//point 추가
+		member.addPoint(ADD_REPLY_POINT);
+
 		return ReplyResponse.builder()
 			.replyId(savedReply.getId())
 			.writeDate(savedReply.getWriteDate())

@@ -47,7 +47,7 @@ public class DiaryService {
 	private final UnusedStickerRepository unusedStickerRepository;
 	private final S3Uploader s3Uploader;
 	private final ClubService clubService;
-	// private final Long WRITE_POINT = 5L;
+	private static Long WRITE_DIARY_POINT = 5L;
 
 	@Transactional
 	public void createClubDiary(DiaryPostRequest request, String clubUuid) throws IOException {
@@ -142,6 +142,9 @@ public class DiaryService {
 	@Transactional
 	public void minusStickerCnt(DiaryPostRequest request) {
 		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+		// 5 point 추가
+		member.addPoint(WRITE_DIARY_POINT);
+
 		if (request.getStickerDtoList() != null) {
 			for (StickerDto stickerDto : request.getStickerDtoList()) {
 				Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())

@@ -26,6 +26,8 @@ public class CommentService {
 	private final DiaryService diaryService;
 	private final DiaryRepository diaryRepository;
 	private final CommentRepository commentRepository;
+	private static Long ADD_COMMENT_POINT = 5l;
+
 	@Transactional
 	public CommentResponse createComment(CommentRequest request) {
 		Member member = clubService.returnMemberByUsername(request.getUsername());
@@ -36,6 +38,7 @@ public class CommentService {
 			.writer(member)
 			.build();
 		Comment savedComment = commentRepository.save(comment);
+		member.addPoint(ADD_COMMENT_POINT);
 		return CommentResponse.builder()
 			.commentId(savedComment.getId())
 			.text(savedComment.getText())

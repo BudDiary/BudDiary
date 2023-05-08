@@ -29,6 +29,7 @@ public class ReactionService {
 	private final ClubService clubService;
 	private final MemberRepository memberRepository;
 	private final ReactionRepository reactionRepository;
+	private static Long ADD_REACTION_POINT = 5l;
 
 	@Transactional
 	public List<ReactionDto> createReaction(ReactionRequest request) {
@@ -53,6 +54,8 @@ public class ReactionService {
 		for (Reaction reaction : reactions) {
 			reactionDtos.add(reaction.toDto());
 		}
+		// member point 추가
+		member.addPoint(ADD_REACTION_POINT);
 		return reactionDtos;
 	}
 
