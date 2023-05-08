@@ -5,18 +5,22 @@ import {
   DiaryHeader,
   DiaryContent,
   DiaryImageSlider,
+  DiaryText,
 } from "./Diaries.styles";
+import { DiaryDelete } from "./groupdetailapis/groupdetailapis";
 import { LogoBlue, LogoGreen } from "../navbar/NavBar.styles";
 import DiaryComment from "./DiaryComment";
+import { DeleteButton } from "../common/Button.styles";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.css";
+import { userdummy } from "../mypage/userdummy";
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 export default function DiaryBox() {
   if (diaryData.length === 0) {
     return (
-      <div>
+      <DiaryDetail>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <LogoBlue style={{ fontSize: "50px" }}>Bud</LogoBlue>
           <LogoGreen style={{ fontSize: "50px" }}>:(</LogoGreen>
@@ -31,7 +35,7 @@ export default function DiaryBox() {
           </h1>
           <LogoGreen>:D</LogoGreen>
         </div>
-      </div>
+      </DiaryDetail>
     );
   }
 
@@ -43,7 +47,17 @@ export default function DiaryBox() {
             <DiaryHeader>
               <img src={diary.user_thumbnail} alt="프로필" />
               <div>
-                <h2 style={{ fontWeight: "bold" }}>{diary.user_name}</h2>
+                <h2 style={{ fontWeight: "bold" }}>
+                  {diary.nickname}
+                  {userdummy.nickname === diary.nickname && (
+                    <DeleteButton
+                      style={{ fontSize: "12px" }}
+                      onClick={() => DiaryDelete(diary.id)}
+                    >
+                      삭제
+                    </DeleteButton>
+                  )}
+                </h2>
                 <h3>{diary.user_updated_at}</h3>
               </div>
             </DiaryHeader>
@@ -65,15 +79,9 @@ export default function DiaryBox() {
                   </Swiper>
                 </DiaryImageSlider>
               )}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  margin: 0,
-                }}
-              >
+              <DiaryText>
                 <p style={{ marginTop: 0 }}>{diary.content}</p>
-              </div>
+              </DiaryText>
             </DiaryContent>
             <DiaryComment key={diary.id} diaryId={diary.id} />
           </DiaryDetail>

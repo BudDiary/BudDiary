@@ -2,12 +2,12 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const BasicButton = styled.button`
-  ${tw`bg-bud-blue rounded-full px-2 py-1 font-bold`}
+  ${tw`bg-bud-blue rounded-full px-3 py-1 font-bold`}
 `;
 export const WideButton = styled.button`
-  ${tw`bg-white py-2 px-4 rounded-md font-bold text-black flex items-center justify-center`}
-  width: 40vw;
-  border: 1px solid black;
+  ${tw`bg-bud-blue py-2 px-4 rounded-md font-bold text-black flex items-center justify-center`}
+  width: 45vw;
+  border: 5px solid #c3cfe3;
 
   svg {
     ${tw`mr-2`}
@@ -16,10 +16,10 @@ export const WideButton = styled.button`
 
 export const DiaryDetail = styled.div`
   ${tw`sm:col-span-2 bg-white rounded-md`}
-  width: 40vw;
-  margin-top: 20px;
+  width: 45vw;
+  margin-block: 30px;
   padding: 20px;
-  border: 1px solid black;
+  border: 5px solid #c3cfe3;
   > * {
     margin: auto;
   }
@@ -59,7 +59,7 @@ export const DiaryContent = styled.div`
     margin: 10px;
     padding: 20px;
     height: 250px;
-    border: 3px solid pink;
+    border: 4px solid pink;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
@@ -69,8 +69,9 @@ export const DiaryContent = styled.div`
 
   img {
     width: 100%;
-    height: 200px;
-    border: 1px solid black;
+    height: 250px;
+    border-radius: 20px;
+    border: 4px solid pink;
   }
 `;
 
@@ -83,7 +84,7 @@ export const DiaryImageSlider = styled.div`
     width: 0;
     height: 0;
   }
-  max-width: 60%; /* 변경: 슬라이드 전후 버튼의 표시 영역을 늘립니다. */
+  max-width: 60%;
 
   & > .swiper-button-prev,
   & > .swiper-button-next {
@@ -99,7 +100,7 @@ export const DiaryImageSlider = styled.div`
     align-items: center;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    z-index: 0; /* 변경: z-index 값을 낮춰서 버튼을 클릭할 수 있도록 합니다. */
+    z-index: 0;
   }
 
   .swiper-button-prev:hover,
@@ -114,4 +115,10 @@ export const DiaryImage = styled.img`
   object-fit: cover;
   border-radius: 5px;
   margin-right: 10px;
+`;
+
+export const DiaryText = styled.div`
+  display: "flex",
+  justifyContent: "flex-start",
+  margin: 0,
 `;
