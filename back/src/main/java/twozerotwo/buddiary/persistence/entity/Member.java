@@ -132,8 +132,8 @@ public class Member {
 			.build();
 	}
 
-	public Member signup(String username) {
-		this.username = username;
+	public Member signup(String nickname) {
+		this.nickname = nickname;
 		this.role = Role.USER;
 		return this;
 	}
