@@ -19,8 +19,6 @@ import javax.persistence.OneToMany;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -118,8 +116,6 @@ public class Member {
 		this.refreshToken = updateRefreshToken;
 	}
 
-
-
 	public void addPoint(Long point) {
 		this.point += point;
 	}
@@ -135,7 +131,7 @@ public class Member {
 			.build();
 	}
 
-	public Member signup(String username){
+	public Member signup(String username) {
 		this.username = username;
 		this.role = Role.USER;
 		return this;

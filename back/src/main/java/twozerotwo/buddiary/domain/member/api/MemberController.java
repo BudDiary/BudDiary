@@ -1,9 +1,7 @@
 package twozerotwo.buddiary.domain.member.api;
 
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +27,13 @@ public class MemberController {
 
 	@PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> signUp(@RequestBody MemberSignUpRequest memberSignUpDto, HttpServletRequest request) {
-	// public ResponseEntity<?> signUp() {
-		try{
+		// public ResponseEntity<?> signUp() {
+		try {
 			MemberDto memberDto = memberService.signUp(memberSignUpDto, request);
 			// 리프래쉬 토큰 발급
 			return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(memberSignUpDto);
 
-		}catch (Exception exception) {
+		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
 		return null;

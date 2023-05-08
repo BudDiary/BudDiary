@@ -53,7 +53,9 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 		SocialType socialType = getSocialType(registrationId); // 소셜타입 저장
 		// OAuth2 로그인 시 키(PK)가 되는 값
 		String userNameAttributeName = userRequest.getClientRegistration()
-			.getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+			.getProviderDetails()
+			.getUserInfoEndpoint()
+			.getUserNameAttributeName();
 		// 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보들)
 		Map<String, Object> attributes = oAuth2User.getAttributes();
 
@@ -64,15 +66,9 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 		log.info("oauth 를 통해 얻어온 getId 정보 : {}", extractAttributes.getOauth2UserInfo().getId());
 		log.info("oauth 를 통해 얻어온 getImageUrl 정보 : {}", extractAttributes.getOauth2UserInfo().getImageUrl());
 		// 시큐리티 컨텍스트 저장을위한 UserDetail 생성
-		return new CustomOAuth2User(
-			Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
-			attributes,
-			extractAttributes.getNameAttributeKey(),
-			createdUser.getUsername(),
-			createdUser.getRole(),
-			createdUser.getSocialId(),
-			createdUser.getSocialType()
-		);
+		return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
+			attributes, extractAttributes.getNameAttributeKey(), createdUser.getUsername(), createdUser.getRole(),
+			createdUser.getSocialId(), createdUser.getSocialType());
 	}
 
 	private SocialType getSocialType(String registrationId) {
@@ -91,11 +87,10 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 	 */
 	private Member getUser(OAuthAttributes attributes, SocialType socialType) {
 		// log.info("유저가 없으면 저장하고 있으면 던져준다", attributes.getOauth2UserInfo().getNickname());
-		log.info("getUser 소셜타입{}",socialType);
-		log.info("getUser 유저 정보{}",attributes.getOauth2UserInfo().getId());
+		log.info("getUser 소셜타입{}", socialType);
+		log.info("getUser 유저 정보{}", attributes.getOauth2UserInfo().getId());
 		Member findUser = memberRepository.findBySocialTypeAndSocialId(socialType,
-				attributes.getOauth2UserInfo().getId())
-			.orElse(null);
+			attributes.getOauth2UserInfo().getId()).orElse(null);
 
 		if (findUser == null) {
 			// 없으면 저장한다.

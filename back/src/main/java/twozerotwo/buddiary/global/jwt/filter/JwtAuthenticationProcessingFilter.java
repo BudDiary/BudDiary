@@ -61,8 +61,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		// Member extractMember = memberRepository.findByUsername(userName).orElse(null);
-		// log.info("userName {} ",extractMember.getUsername() == null);
 
 		/**
 		 *리프레시 토큰이 요청 쿠키에 존재했다면, 사용자가 AccessToken이 만료되어서
@@ -93,7 +91,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		}
 		Authentication authentication = jwtService.getAuthentication(accessToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		if(refreshToken != null  && accessToken != null){
+		if (refreshToken != null && accessToken != null) {
 
 			filterChain.doFilter(request, response);
 		}

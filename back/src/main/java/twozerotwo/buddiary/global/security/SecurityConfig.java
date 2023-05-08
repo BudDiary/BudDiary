@@ -80,7 +80,6 @@ public class SecurityConfig {
 			.disable()
 			.and()
 
-
 			// 세션 사용하지 않으므로 STATELESS로 설정
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -88,8 +87,8 @@ public class SecurityConfig {
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-			// .antMatchers(HttpMethod.GET,"/api/members/signup/jwt-test/**").hasRole("USER")
-			// .antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
+			.antMatchers(HttpMethod.GET, "/api/members/signup/jwt-test/**").hasRole("USER")
+			.antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
 			.anyRequest()
 			.permitAll()// 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
 			.and()
@@ -116,8 +115,9 @@ public class SecurityConfig {
 		return http.build();
 
 	}
+
 	@Bean
-	public CorsConfigurationSource corsConfigurationSource(){
+	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
 		corsConfiguration.addAllowedHeader("*");

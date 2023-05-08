@@ -24,7 +24,7 @@ public class MemberService {
 	private final AuthenticationUtil authenticationUtil;
 
 	@Transactional
-	public MemberDto signUp(MemberSignUpRequest userSignUpDto, HttpServletRequest request){
+	public MemberDto signUp(MemberSignUpRequest userSignUpDto, HttpServletRequest request) {
 		Member memberDtoFromRequest = authenticationUtil.getMemberEntityFromRequest(request);
 		if (memberRepository.findByUsername(userSignUpDto.getUsername()).isPresent()) {
 			throw new NotFoundException("이미 존재하는 유저의 이메일입니다.");
