@@ -90,13 +90,13 @@ export const FirstDetail = styled.div<running>`
     0% {
       transform: translate(0px, 0px);
     }
-    10% {
+    28% {
       transform: translate(0px, 0px);
     }
-    18% {
+    36% {
       transform: translate(0px, -20%);
     }
-    26% {
+    44% {
       transform: translate(0px, 0px);
     }
     100% {

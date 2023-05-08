@@ -80,6 +80,10 @@ export const ThirdSection = styled.div`
   width: 100%;
 `;
 
+export const TypeText = styled.span`
+  display: inline-block;
+`;
+
 export const ChangeBox = styled.div<timer>`
   ${tw``}
   animation-name: ${(props) => props.run}1;
@@ -107,12 +111,11 @@ export const ChangeBox = styled.div<timer>`
 `;
 
 export const TextBox = styled.p<timer>`
-  ${tw`absolute text-right`}
-  width:70%;
+  ${tw`text-left`}
 
   animation-name: ${(props) => props.run};
   /* animation-delay: 1.9s; */
-  animation-duration: 6.02s;
+  /* animation-duration: 6.02s;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
   animation-play-state: ${(props) => props.run};
@@ -132,5 +135,5 @@ export const TextBox = styled.p<timer>`
     100% {
       transform: translate(10%, 0px);
     }
-  }
+  } */
 `;
