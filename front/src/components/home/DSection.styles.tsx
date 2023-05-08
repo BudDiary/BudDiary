@@ -18,12 +18,12 @@ export const SectionContainer = styled.div`
 `;
 
 export const ContentSection = styled.div`
-  ${tw`max-w-[1152px] flex mx-auto h-full items-center text-white sm:text-5xl sm:pl-12 md:text-6xl md:pl-8 lg:pl-4 xl:text-7xl`}
+  ${tw`max-w-[1152px] flex mx-auto h-full items-center text-white sm:text-7xl sm:pl-12 md:pl-8 lg:pl-4 lg:text-8xl`}
   font-size: 2.5rem;
 `;
 
 export const TextContainer = styled.div`
-  ${tw`flex flex-col justify-between `}
+  ${tw`flex flex-col justify-between border`}
   width: 70%;
   height: 80%;
 `;
@@ -68,10 +68,11 @@ export const WhiteBox = styled.p<animationrun>`
   ${tw`absolute h-full`}
 
   animation-name: hide;
-  animation-delay: 3.5s;
-  animation-duration: 1s;
+  animation-delay: 6.2s;
+  animation-duration: 0.5s;
   animation-fill-mode: both;
   animation-play-state: running;
+  animation-timing-function: ease-in;
   animation-play-state: ${(props) => props.run};
 
   @keyframes hide {
@@ -80,12 +81,12 @@ export const WhiteBox = styled.p<animationrun>`
       background-color: white;
     }
     50% {
-      width: 100%;
+      width: 110%;
       margin-left: 0%;
       background-color: white;
     }
     100% {
-      margin-left: 100%;
+      margin-left: 110%;
       width: 0%;
       background-color: white;
     }
@@ -97,8 +98,6 @@ export const FirstSection = styled.div``;
 export const FirstBox = styled.div`
   ${tw`flex`}
 `;
-
-// export const SecondBox = styled.div``;
 
 export const SeceondSection = styled.div``;
 
@@ -114,57 +113,90 @@ export const ImageContainer = styled.div`
 
 export const ButtonSection = styled.div`
   ${tw`border mx-auto relative border-bud-green`}
+  z-index:1;
   width: 50%;
   height: 10%;
+  min-height: 50px;
 `;
 
-export const ButtonTextBox = styled.div<animationrun>`
-  ${tw`absolute flex items-center justify-center bg-bud-yellow`}
-  width:80%;
+export const ButtonTextBox = styled.div`
+  ${tw`absolute flex items-center justify-center bg-transparent`}
+  width: 80%;
   height: 100%;
-  &:hover {
-    animation-name: fillbox1;
-    animation-duration: 0.5s;
-    animation-fill-mode: both;
-    animation-play-state: ${(props) => props.run};
+
+  @media screen and (max-width: 640px) {
+    font-size: 16rem;
   }
+
+  animation-name: fillbox1;
+  animation-duration: 0.6s;
+  animation-fill-mode: both;
 
   @keyframes fillbox1 {
     0% {
       width: 0%;
+      ${tw`bg-bud-yellow`}
     }
     100% {
-      width: 100%;
+      width: 80%;
+      height: 100%;
+      ${tw`bg-bud-yellow`}
     }
   }
 `;
 
 export const ButtonSubBox = styled.div`
-  ${tw`absolute bg-bud-green`}
-  width:80%;
+  ${tw`absolute bg-transparent`}
+  width: 80%;
   height: 100%;
 
   animation-name: fillbox2;
-  animation-delay: 0.2s;
-  animation-duration: 0.5s;
+  animation-delay: 0.3s;
+  animation-duration: 0.6s;
   animation-fill-mode: both;
-  animation-play-state: running;
 
   @keyframes fillbox2 {
     0% {
       width: 0%;
+      ${tw`bg-bud-pink`}
     }
     100% {
-      width: 100%;
+      width: 80%;
+      height: 100%;
+      ${tw`bg-bud-pink`}
+    }
+  }
+`;
+
+export const ButtonSSubBox = styled.div`
+  ${tw`absolute bg-transparent`}
+  width: 80%;
+  height: 100%;
+
+  animation-name: fillbox3;
+  animation-delay: 0.6s;
+  animation-duration: 0.6s;
+  animation-fill-mode: both;
+
+  @keyframes fillbox3 {
+    0% {
+      width: 0%;
+      ${tw`bg-bud-green`}
+    }
+    100% {
+      width: 80%;
+      height: 100%;
+      ${tw`bg-bud-green`}
     }
   }
 `;
 
 export const ButtonText = styled.p`
-  ${tw`z-10 absolute left-1/2 top-1/2`}
+  ${tw`absolute left-1/2 top-1/2 sm:text-3xl lg:text-5xl`}
+  z-index: 2;
   width: 80%;
-  transform: translate(-50%, -50%);
-  font-size: 2.5rem;
+  transform: translate(-40%, -50%);
+  font-size: 1.5rem;
 `;
 
 export const ButtonArrowBox = styled.div`
@@ -173,17 +205,17 @@ export const ButtonArrowBox = styled.div`
   height: 100%;
 `;
 
-export const ButtonArrow = styled.div`
-  ${tw``}
+export const ButtonArrow = styled.p`
+  ${tw`relative`}
   font-size: 3rem;
-  height: 80%;
+  transform: translateY(5%);
 `;
 
 export const SecondBox = styled.div<animationrun>`
   ${tw``}
 
   animation-name: lazyAppear;
-  animation-delay: 2s;
+  animation-delay: 4s;
   animation-duration: 1s;
   animation-fill-mode: both;
   animation-play-state: ${(props) => props.run};

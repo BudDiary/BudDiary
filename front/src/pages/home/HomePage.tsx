@@ -8,9 +8,9 @@ import DSection from "../../components/home/DSection";
 export default function HomePage() {
   return (
     <Container>
-      <ASection />
+      {/* <ASection />
       <BSection />
-      <CSection />
+      <CSection /> */}
       <DSection />
     </Container>
   );

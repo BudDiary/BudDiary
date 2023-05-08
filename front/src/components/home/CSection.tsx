@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import TypeIt from "typeit-react";
 import { useInView } from "react-intersection-observer";
 import {
   SectionContainer,
@@ -8,7 +9,7 @@ import {
   AppearText,
   SeceondSection,
   ThirdSection,
-  ChangeBox,
+  TypeText,
   TextBox,
 } from "./CSection.styles";
 
@@ -16,18 +17,6 @@ export default function CSection() {
   const [ref, inView] = useInView({ threshold: 0.9 });
   const [run, setRun] = useState<string>("paused");
   const [text, setText] = useState<string>("    ");
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (text === "반응을 ") {
-        setText("스티커를");
-      }
-      if (text === "스티커를") {
-        setText("반응을 ");
-      }
-      console.log("바뀌는중", text);
-    }, 3000);
-  }, [text]);
 
   useEffect(() => {
     if (inView) {
@@ -83,7 +72,23 @@ export default function CSection() {
           </AppearText>
         </SeceondSection>
         <ThirdSection>
-          <ChangeBox time={"0.7s"} run={run}>
+          <TypeText>
+            <TypeIt
+              options={{
+                strings: ["반응을", "스티커를"],
+                lifeLike: true,
+                cursor: false,
+                loop: true,
+                startDelay: 2000,
+                waitUntilVisible: true,
+                deleteSpeed: 300,
+                breakLines: false,
+                html: false,
+                nextStringDelay: 2000,
+              }}
+            />
+          </TypeText>
+          {/* <ChangeBox time={"0.7s"} run={run}>
             <AppearText time={"0.7s"} run={run}>
               {text[0]}
             </AppearText>
@@ -96,11 +101,10 @@ export default function CSection() {
             <AppearText time={"0.85s"} run={run}>
               {text[3]}
             </AppearText>
-          </ChangeBox>
+          </ChangeBox> */}
           <TextBox time={"0.9s"} run={run}>
             <AppearText time={"0.9s"} run={run}>
-              {" "}
-              남
+              &nbsp; 남
             </AppearText>
             <AppearText time={"0.95s"} run={run}>
               겨
