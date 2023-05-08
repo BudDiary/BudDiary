@@ -9,7 +9,6 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +77,7 @@ public class ClubService {
 	public ClubCreateResponse createPlural(PluralCreateRequest request) throws IOException {
 		Member captain = returnMemberByUsername(request.getCaptainUsername());
 
-		String imageUrl = uploadS3(request.getThumbnail(), "Club");
+		String imageUrl = s3Uploader.upload(request.getThumbnail(), "Club");
 
 		Club club = Club.builder()
 			.uuid(UUID.randomUUID().toString())
@@ -95,14 +94,6 @@ public class ClubService {
 			.type(ClubType.PLURAL.getCode())
 			.uuid(club.getUuid())
 			.build();
-	}
-
-	public String uploadS3(MultipartFile file, String dirName) throws IOException {
-		if (file.isEmpty()) {
-			throw new RuntimeException("gg");
-		} else {
-			return s3Uploader.upload(file, dirName);
-		}
 	}
 
 	@Transactional
