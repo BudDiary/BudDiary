@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,7 +29,6 @@ import twozerotwo.buddiary.domain.club.service.ClubService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/clubs")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class ClubController {
 	private final ClubService clubService;

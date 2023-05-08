@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,7 +25,6 @@ import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/diaries")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class DiaryController {
 	private final DiaryService diaryService;
