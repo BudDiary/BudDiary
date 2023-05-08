@@ -1,12 +1,12 @@
 package twozerotwo.buddiary.domain.member.api;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,17 +26,13 @@ public class MemberController {
 	private final AuthenticationUtil authenticationUtil;
 
 	@PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> signUp(@RequestBody MemberSignUpRequest memberSignUpDto, HttpServletRequest request) {
+	public ResponseEntity<?> signUp(@Valid MemberSignUpRequest memberSignUpDto,
+		HttpServletRequest request) {
 		// public ResponseEntity<?> signUp() {
-		try {
-			MemberDto memberDto = memberService.signUp(memberSignUpDto, request);
-			// 리프래쉬 토큰 발급
-			return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(memberSignUpDto);
 
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
-		return null;
+		MemberDto memberDto = memberService.signUp(memberSignUpDto, request);
+		// 리프래쉬 토큰 발급
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(memberSignUpDto);
 
 	}
 
