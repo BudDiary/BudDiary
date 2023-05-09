@@ -8,6 +8,7 @@ import {
 import { UserInfo } from "./DiaryComment.style";
 import { timeAgo } from "./GroupDetailFunction";
 import { DeleteContent } from "./DiaryComment.style";
+import { ReplyDelete } from "./groupdetailapis/groupdetailapis";
 import { Divider } from "@mui/material";
 import { Reply } from "../../types/group";
 interface RepliesProps {
@@ -18,6 +19,11 @@ interface RepliesProps {
 export default function DeleteReply({ reply, onClose }: RepliesProps) {
   const [commentState, setCommentState] = useState(reply.text);
   const closeCommentModal = () => {
+    onClose();
+  };
+
+  const handleDeleteReply = () => {
+    ReplyDelete(reply.id);
     onClose();
   };
 
@@ -71,7 +77,7 @@ export default function DeleteReply({ reply, onClose }: RepliesProps) {
         <p>다음 댓글을 삭제하시겠습니까?</p>
         <DeleteContent>{commentState}</DeleteContent>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <DeleteButton>댓글 삭제</DeleteButton>
+          <DeleteButton onClick={handleDeleteReply}>댓글 삭제</DeleteButton>
         </div>
       </EditContent>
     </EditContainer>

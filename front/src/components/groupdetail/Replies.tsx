@@ -25,12 +25,12 @@ export default function Replies({ replies, commentId }: RepliesProps) {
 
   // 대댓글 작성
   const handleReplySubmit = async () => {
-    console.log("답글 요청", replyText, commentId, userdummy.nickname);
+    console.log("답글 요청", replyText, commentId, userdummy.username);
     try {
       const response = await CreateReply(
         replyText,
         commentId,
-        userdummy.nickname
+        userdummy.username
       );
       // console.log(response);
       setReplyText("");
