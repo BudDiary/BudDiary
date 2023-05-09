@@ -63,6 +63,7 @@ public class Member {
 	private LocalDateTime enrollDate = LocalDateTime.now();
 
 	@Builder.Default
+	@Column(length = 2000)
 	private String profilePath = null;
 	@JsonIgnore
 	@Enumerated(EnumType.STRING)
@@ -162,8 +163,18 @@ public class Member {
 		this.point -= totalPrice;
 	}
 
+	public String updateIntro(String intro) {
+		this.intro = intro;
+		return this.intro;
+	}
+
 	public String updateNickname(String nickname) {
 		this.nickname = nickname;
 		return this.nickname;
+	}
+
+	public String setProfilePath(String profilePath) {
+		this.profilePath = profilePath;
+		return this.profilePath;
 	}
 }
