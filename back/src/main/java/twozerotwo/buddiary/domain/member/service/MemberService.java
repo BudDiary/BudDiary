@@ -29,7 +29,7 @@ public class MemberService {
 	private final AuthenticationUtil authenticationUtil;
 	private final S3Uploader s3Uploader;
 
-	private static final  String MEMBER_PROFILE_DIR = "memberProfile";
+	private static final String MEMBER_PROFILE_DIR = "memberProfile";
 
 	@Transactional
 	public MemberDto signUp(MemberSignUpRequest userSignUpDto, HttpServletRequest request) throws IOException {
@@ -80,12 +80,11 @@ public class MemberService {
 		IOException {
 
 		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
-		if(!updateProfile.getOriginalFilename().isEmpty() ){
+		if (!updateProfile.getOriginalFilename().isEmpty()) {
 			String uploadedFile = s3Uploader.upload(updateProfile, MEMBER_PROFILE_DIR);
 			String updatedFile = targetMember.setProfilePath(uploadedFile);
 			return Optional.of(updatedFile);
-		}
-		else {
+		} else {
 			String updatedFile = targetMember.setProfilePath(null);
 			return Optional.of(updatedFile);
 		}
