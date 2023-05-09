@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.domain.member.dto.MemberSignUpRequest;
 import twozerotwo.buddiary.domain.member.service.MemberService;
-import twozerotwo.buddiary.global.util.AuthenticationUtil;
 
 @RestController
 @Slf4j
@@ -22,7 +21,6 @@ import twozerotwo.buddiary.global.util.AuthenticationUtil;
 @AllArgsConstructor
 public class MemberController {
 	private final MemberService memberService;
-	private final AuthenticationUtil authenticationUtil;
 
 	@PostMapping(value = "/signup")
 	//리퀘스트 파트
