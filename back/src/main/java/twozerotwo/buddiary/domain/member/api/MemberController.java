@@ -78,7 +78,7 @@ public class MemberController {
 			return ResponseEntity.ok(updatedNickname);
 		} catch (Exception err)  {
 			err.printStackTrace();
-			return ResponseEntity.internalServerError().body(err.getMessage());
+			return ResponseEntity.badRequest().body(err.getMessage());
 		}
 
 	}

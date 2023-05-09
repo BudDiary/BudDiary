@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,10 @@ public class MemberService {
 		if (nickname == null || nickname.trim().isEmpty()) {
 			throw new BadRequestException("닉네임이 비어 있습니다");
 		}
+		if(StringUtils.containsWhitespace(nickname)){
+			throw new BadRequestException("닉네임은 공백을 포함하면안됩니다");
+		}
+
 		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
 		String updateNickname = targetMember.updateNickname(nickname);
 		return Optional.of(updateNickname);
