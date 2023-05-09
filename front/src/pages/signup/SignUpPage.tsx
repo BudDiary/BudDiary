@@ -10,7 +10,6 @@ export default function SignUpPage() {
       const currentUrl: string = window.location.href;
       const code = currentUrl.split('localhost:3000/')[1];
       const response = await kakaoSignUpApi(code)
-      console.log(response)
       // 처음 가입한 사람이면 signup 으로 보내고, 아니면 메인페이지로
       if (response.newBe === true ) {
         navigate('/signup-info')

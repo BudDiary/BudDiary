@@ -18,9 +18,9 @@ const kakaoSignUpApi = (payload: string | null) => {
 
 // 회원가입 
 const firstSignUpApi = (payload: any) => {
-  console.log('회원가입 들어옴?', payload)
-    return formApi.post(`api/members/signup`, payload)
+    return formApi.post(`api/members/signup`, payload,  { withCredentials: true })
     .then((res) => {
+        console.log(res, '회원가입 시켜줘.')
         return res.data;
       })
       .catch((err) => {
