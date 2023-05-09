@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { BasicButton } from "./Diaries.styles";
-import { ModalContainer, ModalTopNavContainer } from "../common/Modal.styles";
+import { ModalContainer, ModalTopNavContainer } from "../common/ModalWindow.styles";
 import { UserInfo } from "./DiaryComment.style";
 import { timeAgo } from "./GroupDetailFunction";
 import { InputBox, InputSet } from "./DiaryComment.style";
