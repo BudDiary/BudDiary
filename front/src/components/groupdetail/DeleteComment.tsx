@@ -10,6 +10,7 @@ import { timeAgo } from "./GroupDetailFunction";
 import { DeleteContent } from "./DiaryComment.style";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
+import { CommentDelete } from "./groupdetailapis/groupdetailapis";
 interface CommentDeleteProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,6 +25,10 @@ export default function DeleteComment({
     onClose();
   };
 
+  const handleDeleteComment = () => {
+    CommentDelete(comment.id);
+    onClose();
+  };
   return (
     <EditContainer>
       <ModalTopNavContainer
@@ -74,7 +79,7 @@ export default function DeleteComment({
         <p>다음 댓글을 삭제하시겠습니까?</p>
         <DeleteContent>{commentState}</DeleteContent>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <DeleteButton>댓글 삭제</DeleteButton>
+          <DeleteButton onClick={handleDeleteComment}>댓글 삭제</DeleteButton>
         </div>
       </EditContent>
     </EditContainer>

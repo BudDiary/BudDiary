@@ -10,7 +10,7 @@ import {
 } from "./GroupDetailPage.styles";
 import GroupInfo from "../../components/groupdetail/GroupInfo";
 import Diaries from "../../components/groupdetail/Diaries";
-
+import { GetClubData } from "../../components/groupdetail/groupdetailapis/groupdetailapis";
 import { Club } from "../../types/group";
 const clubDetailJson = require("../../components/groupdetail/clubDetail.json");
 
@@ -18,6 +18,23 @@ const GroupDetailPage = () => {
   const [scrollY, setScrollY] = useState(0);
 
   const [groupDetail, setGroupDetail] = useState<Club | null>(null);
+  const [clubData, setClubData] = useState<Club | null>(null);
+
+  const clubId = "club_key";
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await GetClubData(clubId);
+        setClubData(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+    console.log(clubData);
+  }, [clubId]);
 
   useEffect(() => {
     const Club = clubDetailJson as Club;
