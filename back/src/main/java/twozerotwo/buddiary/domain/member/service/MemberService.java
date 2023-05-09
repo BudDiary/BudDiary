@@ -1,6 +1,7 @@
 package twozerotwo.buddiary.domain.member.service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.domain.member.dto.MemberSignUpRequest;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.ConflictException;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
@@ -39,5 +41,19 @@ public class MemberService {
 		}
 		Member signup = memberDtoFromRequest.signup(userSignUpDto.getNickname(), null);
 		return signup.toDto();
+	}
+
+	@Transactional
+	public Optional<String> updateNickname(String nickname, HttpServletRequest  request){
+		if(!(nickname.length() >= 2 && nickname.length() <= 8)){
+			throw  new BadRequestException("닉네임 의 길이는 2이상 8 이하입니다.");
+		}
+		if(nickname == null || nickname.trim().isEmpty()){
+			throw new BadRequestException("닉네임이 비어 있습니다");
+		}
+		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
+		String updateNickname = targetMember.updateNickname(nickname);
+		return Optional.of(updateNickname);
+
 	}
 }

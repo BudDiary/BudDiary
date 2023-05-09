@@ -15,6 +15,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -156,5 +160,10 @@ public class Member {
 			throw new BadRequestException("포인트가 부족합니다.");
 		}
 		this.point -= totalPrice;
+	}
+
+	public String updateNickname(String nickname) {
+		this.nickname = nickname;
+		return this.nickname;
 	}
 }
