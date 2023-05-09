@@ -11,7 +11,7 @@ export const InputBox = styled.textarea`
   }
 `;
 export const UserInfo = styled.div`
-  ${tw`flex items-start mb-4`}
+  ${tw`flex items-start`}
 
   > div:first-child {
     display: flex;
@@ -47,7 +47,7 @@ export const UserInfo = styled.div`
 `;
 
 export const InputSet = styled.div`
-  ${tw`flex justify-between w-full mt-4`}
+  ${tw`flex justify-around w-full mt-4`}
 `;
 
 export const CommentWrapper = styled.div`
@@ -58,4 +58,9 @@ export const EmojiPickerWrapper = styled.div`
   position: relative;
   display: inline-block;
   margin-right: 1rem;
+`;
+
+export const DeleteContent = styled.div`
+  ${tw`bg-blue-200 text-gray-700 mx-6`}
+  height: 150px;
 `;

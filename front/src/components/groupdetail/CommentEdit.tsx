@@ -1,28 +1,27 @@
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { BasicButton } from "./Diaries.styles";
-import { ModalContainer, ModalTopNavContainer } from "../common/ModalWindow.styles";
+import {
+  ModalContainer,
+  ModalTopNavContainer,
+} from "../common/ModalWindow.styles";
 import { UserInfo } from "./DiaryComment.style";
 import { timeAgo } from "./GroupDetailFunction";
 import { InputBox, InputSet } from "./DiaryComment.style";
 import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
+import { Comment } from "../../types/group";
+
 interface CommentEditProps {
-  comment: {
-    id: number;
-    diaryId: number;
-    nickname: string;
-    userImage: string;
-    update_at: string;
-    comment: string;
-  };
+  isOpen: boolean;
   onClose: () => void;
+  comment: Comment;
 }
 
-export default function CommentEdit(props: CommentEditProps) {
-  const [commentState, setCommentState] = useState(props.comment.comment);
+export default function CommentEdit({ comment, onClose }: CommentEditProps) {
+  const [commentState, setCommentState] = useState(comment.text);
   const [height, setHeight] = useState("30px");
   const closeCommentModal = () => {
-    props.onClose();
+    onClose();
   };
 
   return (
@@ -33,7 +32,7 @@ export default function CommentEdit(props: CommentEditProps) {
 
       <UserInfo style={{ padding: "20px" }}>
         <div>
-          <img src={props.comment.userImage} alt="프로필" />
+          <img src={comment.writer.profilePath ?? ""} alt="프로필" />
         </div>
         <div
           style={{
@@ -46,7 +45,7 @@ export default function CommentEdit(props: CommentEditProps) {
               alignItems: "baseline",
             }}
           >
-            <h2 style={{ fontWeight: "bold" }}>{props.comment.nickname}</h2>
+            <h2 style={{ fontWeight: "bold" }}>{comment.writer.nickname}</h2>
             <h3
               style={{
                 marginLeft: "0.5rem",
@@ -54,7 +53,7 @@ export default function CommentEdit(props: CommentEditProps) {
                 fontSize: "0.75rem",
               }}
             >
-              {timeAgo(props.comment.update_at)}
+              {timeAgo(comment.writeDate)}
             </h3>
           </div>
         </div>

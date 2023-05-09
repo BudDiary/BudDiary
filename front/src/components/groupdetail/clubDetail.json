@@ -1,0 +1,270 @@
+{
+  "clubDetail": {
+    "diaryList": [
+      {
+        "diaryId": 7,
+        "writer": {
+          "id": 1,
+          "username": "yeokyung502@naver.com",
+          "nickname": "문여경",
+          "profilePath": "https://picsum.photos/53"
+        },
+        "writeDate": "2023-05-08T15:18:32",
+        "text": "이러지마 제발..",
+        "imgList": [
+          {
+            "id": 5,
+            "imgUrl": "https://picsum.photos/640/480/?random&category=animal"
+          },
+          {
+            "id": 6,
+            "imgUrl": "https://picsum.photos/640/480/?random&category=dog"
+          }
+        ],
+        "positiveRate": 0,
+        "negativeRate": 0,
+        "reactionList": [],
+        "commentList": [
+          {
+            "id": 1,
+            "writer": {
+              "id": 1,
+              "username": "gio",
+              "nickname": "김지오",
+              "profilePath": "https://picsum.photos/56"
+            },
+            "replies": [
+              {
+                "id": 1,
+                "writer": {
+                  "id": 5,
+                  "username": "ymoon1@gmail.com",
+                  "nickname": "문영식",
+                  "profilePath": "https://picsum.photos/56"
+                },
+                "writeDate": "2023-05-08T14:27:06",
+                "text": "대댓1"
+              },
+              {
+                "id": 2,
+                "writer": {
+                  "id": 1,
+                  "username": "gio",
+                  "nickname": "김지오",
+                  "profilePath": "https://picsum.photos/56"
+                },
+                "writeDate": "2023-05-08T15:59:18",
+                "text": "대댓2"
+              },
+              {
+                "id": 3,
+                "writer": {
+                  "id": 1,
+                  "username": "yeokyung502@naver.com",
+                  "nickname": "문여경",
+                  "profilePath": "https://picsum.photos/53"
+                },
+                "writeDate": "2023-05-08T15:59:37",
+                "text": "대댓3"
+              }
+            ],
+            "writeDate": "2023-05-08T14:26:21",
+            "text": "첫 댓글입니다."
+          },
+          {
+            "id": 2,
+            "writer": {
+              "id": 1,
+              "username": "yeokyung502@naver.com",
+              "nickname": "문여경",
+              "profilePath": "https://picsum.photos/53"
+            },
+            "replies": [],
+            "writeDate": "2023-05-08T15:58:58",
+            "text": "두번째 댓글입니다."
+          },
+          {
+            "id": 3,
+            "writer": {
+              "id": 1,
+              "username": "yeokyung502@naver.com",
+              "nickname": "문여경",
+              "profilePath": "https://picsum.photos/53"
+            },
+            "replies": [],
+            "writeDate": "2023-05-08T15:58:58",
+            "text": "세번째 댓글입니다."
+          }
+        ]
+      },
+      {
+        "diaryId": 8,
+        "writer": {
+          "id": 5,
+          "username": "ymoon1@gmail.com",
+          "nickname": "문영식",
+          "profilePath": "https://picsum.photos/52"
+        },
+        "writeDate": "2023-05-08T15:16:06",
+        "text": "이러지마 제발..",
+        "imgList": [
+          {
+            "id": 3,
+            "imgUrl": "https://buddiary-bucket.s3.ap-northeast-2.amazonaws.com/Diary/056b5411-d13f-400f-a489-b738cf4001db-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.jpg"
+          }
+        ],
+        "positiveRate": 0,
+        "negativeRate": 0,
+        "reactionList": [],
+        "commentList": [
+          {
+            "id": 1,
+            "writer": {
+              "id": 1,
+              "username": "gio",
+              "nickname": "김지오",
+              "profilePath": "https://picsum.photos/56"
+            },
+            "replies": [
+              {
+                "id": 4,
+                "writer": {
+                  "id": 1,
+                  "username": "gio",
+                  "nickname": "김지오",
+                  "profilePath": "https://picsum.photos/56"
+                },
+                "writeDate": "2023-05-08T14:27:06",
+                "text": "대댓1"
+              }
+            ],
+            "writeDate": "2023-05-08T14:26:21",
+            "text": "첫 댓글입니다."
+          },
+          {
+            "id": 2,
+            "writer": {
+              "id": 1,
+              "username": "yeokyung502@naver.com",
+              "nickname": "문여경",
+              "profilePath": "https://picsum.photos/53"
+            },
+            "replies": [],
+            "writeDate": "2023-05-08T15:58:58",
+            "text": "두번째 댓글입니다."
+          }
+        ]
+      },
+      {
+        "diaryId": 9,
+        "writer": {
+          "id": 1,
+          "username": "yeokyung502@naver.com",
+          "nickname": "문여경",
+          "profilePath": "https://picsum.photos/53"
+        },
+        "writeDate": "2023-05-08T14:25:10",
+        "text": "이러지마 제발..",
+        "imgList": [],
+        "positiveRate": 0,
+        "negativeRate": 0,
+        "reactionList": [
+          {
+            "type": "SURPRISED"
+          }
+        ],
+        "commentList": [
+          {
+            "id": 1,
+            "writer": {
+              "id": 1,
+              "username": "gio",
+              "nickname": "김지오",
+              "profilePath": "https://picsum.photos/56"
+            },
+            "replies": [
+              {
+                "id": 1,
+                "writer": {
+                  "id": 1,
+                  "username": "gio",
+                  "nickname": "김지오",
+                  "profilePath": "https://picsum.photos/56"
+                },
+                "writeDate": "2023-05-08T14:27:06",
+                "text": "대댓1"
+              },
+              {
+                "id": 2,
+                "writer": {
+                  "id": 2,
+                  "username": "gio",
+                  "nickname": "김지오",
+                  "profilePath": "https://picsum.photos/56"
+                },
+                "writeDate": "2023-05-08T15:59:18",
+                "text": "대댓2"
+              },
+              {
+                "id": 3,
+                "writer": {
+                  "id": 1,
+                  "username": "yeokyung502@naver.com",
+                  "nickname": "문여경",
+                  "profilePath": "https://picsum.photos/53"
+                },
+                "writeDate": "2023-05-08T15:59:37",
+                "text": "대댓"
+              }
+            ],
+            "writeDate": "2023-05-08T14:26:21",
+            "text": "댓글 내용"
+          }
+        ]
+      }
+    ],
+    "memberList": [
+      {
+        "id": 1,
+        "username": "yeokyung502@naver.com",
+        "nickname": "문여경",
+        "profilePath": "https://picsum.photos/53"
+      },
+      {
+        "id": 2,
+        "username": "JunYeong@naver.com",
+        "nickname": "김준영",
+        "profilePath": "https://picsum.photos/52"
+      },
+      {
+        "id": 3,
+        "username": "MyeongJin.com",
+        "nickname": "김명진",
+        "profilePath": "https://picsum.photos/51"
+      },
+      {
+        "id": 4,
+        "username": "gio",
+        "nickname": "김지오",
+        "profilePath": "https://picsum.photos/56"
+      },
+      {
+        "id": 5,
+        "username": "ymoon1@gmail.com",
+        "nickname": "문영식",
+        "profilePath": "https://picsum.photos/54"
+      },
+      {
+        "id": 6,
+        "username": "MinuJeong@naver.com",
+        "nickname": "정민우",
+        "profilePath": "https://picsum.photos/55"
+      }
+    ],
+    "myclubList": {
+      "clubUuid": "6892719f-2d87-43b5-96db-a620816146dd",
+      "thumbnailUrl": "https://buddiary-bucket.s3.ap-northeast-2.amazonaws.com/Club/09d9bd3e-a926-474f-b983-ee6e83fcfacc-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-04-01%20200847.png",
+      "clubName": "C202 Buddiary"
+    }
+  }
+}

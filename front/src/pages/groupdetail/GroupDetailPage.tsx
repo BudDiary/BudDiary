@@ -10,18 +10,19 @@ import {
 } from "./GroupDetailPage.styles";
 import GroupInfo from "../../components/groupdetail/GroupInfo";
 import Diaries from "../../components/groupdetail/Diaries";
-import groupData from "../../components/groupdetail/groupInfo.json";
+
+import { Club } from "../../types/group";
+const clubDetailJson = require("../../components/groupdetail/clubDetail.json");
 
 const GroupDetailPage = () => {
   const [scrollY, setScrollY] = useState(0);
 
-  const subNavStyle = {
-    background: `url(${groupData?.thumbnailUrl})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    color: "black",
-    fontWeight: "bold",
-  };
+  const [groupDetail, setGroupDetail] = useState<Club | null>(null);
+
+  useEffect(() => {
+    const Club = clubDetailJson as Club;
+    setGroupDetail(Club);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,11 +35,19 @@ const GroupDetailPage = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  const subNavStyle = {
+    backgroundImage: `url(${groupDetail?.clubDetail.myclubList.thumbnailUrl})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    color: "black",
+    fontWeight: "bold",
+  };
+
   return (
     <>
-      {groupData && (
+      {groupDetail?.clubDetail.myclubList.clubName && (
         <SubNavContainer style={subNavStyle}>
-          {groupData.clubName}
+          {groupDetail?.clubDetail.myclubList.clubName}
         </SubNavContainer>
       )}
       <PageContainer>
@@ -47,8 +56,10 @@ const GroupDetailPage = () => {
             <Diaries />
           </DiariesContainer>
           <GroupInfoContainer style={{ position: "relative" }}>
-           < div></div>
+            <div></div>
             <GroupInfo
+              myclubList={groupDetail?.clubDetail.myclubList}
+              memberList={groupDetail?.clubDetail.memberList}
               style={{ position: "absolute", top: `${scrollY - 20}px` }}
             />
           </GroupInfoContainer>

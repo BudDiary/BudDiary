@@ -1,39 +1,46 @@
 import React, { useState } from "react";
-import { BiArrowBack } from "react-icons/bi";
+import { BiLeftArrowCircle } from "react-icons/bi";
 import { BasicButton } from "./Diaries.styles";
-import { ModalContainer, ModalTopNavContainer } from "../common/ModalWindow.styles";
+import {
+  ModalContainer,
+  ModalTopNavContainer,
+} from "../common/ModalWindow.styles";
 import { UserInfo } from "./DiaryComment.style";
 import { timeAgo } from "./GroupDetailFunction";
 import { InputBox, InputSet } from "./DiaryComment.style";
 import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
-interface CommentEditProps {
-  reply: {
-    id: number;
-    commentId: number;
-    nickname: string;
-    userImage: string;
-    update_at: string;
-    reply: string;
-  };
+import { Reply } from "../../types/group";
+import { Divider } from "@mui/material";
+interface ReplyEditProps {
+  isOpen: boolean;
   onClose: () => void;
+  reply: Reply;
 }
 
-export default function ReplyEdit(props: CommentEditProps) {
-  const [commentState, setCommentState] = useState(props.reply.reply);
-  const [height, setHeight] = useState("30px");
+export default function ReplyEdit({ reply, onClose }: ReplyEditProps) {
+  const [commentState, setCommentState] = useState(reply.text);
+  const [height, setHeight] = useState("35px");
   const closeCommentModal = () => {
-    props.onClose();
+    onClose();
   };
 
   return (
     <ModalContainer>
-      <ModalTopNavContainer>
-        <BiArrowBack onClick={closeCommentModal} />
+      <ModalTopNavContainer
+        style={{
+          display: "flex",
+          alignItems: "center",
+          padding: "15px",
+        }}
+      >
+        <BiLeftArrowCircle onClick={closeCommentModal} />
+        <div>답글 수정하기</div>
+        <div></div>
       </ModalTopNavContainer>
 
       <UserInfo style={{ padding: "20px" }}>
         <div>
-          <img src={props.reply.userImage} alt="프로필" />
+          <img src={reply.writer.profilePath ?? ""} alt="프로필" />
         </div>
         <div
           style={{
@@ -46,7 +53,7 @@ export default function ReplyEdit(props: CommentEditProps) {
               alignItems: "baseline",
             }}
           >
-            <h2 style={{ fontWeight: "bold" }}>{props.reply.nickname}</h2>
+            <h2 style={{ fontWeight: "bold" }}>{reply.writer.nickname}</h2>
             <h3
               style={{
                 marginLeft: "0.5rem",
@@ -54,13 +61,29 @@ export default function ReplyEdit(props: CommentEditProps) {
                 fontSize: "0.75rem",
               }}
             >
-              {timeAgo(props.reply.update_at)}
+              {timeAgo(reply.writeDate)}
             </h3>
           </div>
         </div>
       </UserInfo>
       <div>
-        <p>댓글 수정하기</p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <p
+            style={{
+              marginBlock: "10px",
+            }}
+          >
+            답글 수정하기
+          </p>
+          <Divider style={{ border: "solid 2px #BFDBFE", width: "90%" }} />
+        </div>
         <InputSet>
           <InputBox
             key={commentState}
