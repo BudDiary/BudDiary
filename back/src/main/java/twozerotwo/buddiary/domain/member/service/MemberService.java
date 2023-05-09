@@ -68,10 +68,7 @@ public class MemberService {
 	@Transactional
 	public Optional<String> updateIntro(String intro, HttpServletRequest request) {
 		if (!(intro.length() <= 200)) {
-			throw new BadRequestException("소개 의 길이는 100 자 이하입니다.");
-		}
-		if (intro == null || intro.trim().isEmpty()) {
-			throw new BadRequestException("소개가 비어 있습니다");
+			throw new BadRequestException("소개 의 길이는 200 자 이하입니다.");
 		}
 		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
 		String updatedIntro = targetMember.updateIntro(intro);
@@ -83,8 +80,15 @@ public class MemberService {
 		IOException {
 
 		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
-		String uploadedFile = s3Uploader.upload(updateProfile, MEMBER_PROFILE_DIR);
-		String updatedFile = targetMember.setProfilePath(uploadedFile);
-		return Optional.of(updatedFile);
+		if(!updateProfile.getOriginalFilename().isEmpty() ){
+			String uploadedFile = s3Uploader.upload(updateProfile, MEMBER_PROFILE_DIR);
+			String updatedFile = targetMember.setProfilePath(uploadedFile);
+			return Optional.of(updatedFile);
+		}
+		else {
+			String updatedFile = targetMember.setProfilePath(null);
+			return Optional.of(updatedFile);
+		}
+
 	}
 }

@@ -29,7 +29,7 @@ import twozerotwo.buddiary.global.advice.exception.ConflictException;
 @AllArgsConstructor
 public class MemberController {
 	private final MemberService memberService;
-
+	//-------------------------------------------맴버 회원가입 추가정보 기입----------------------------------------------
 	@PostMapping(value = "/signup")
 	//리퀘스트 파트
 	public ResponseEntity<?> signUp(@Valid MemberSignUpRequest memberSignUpDto,
@@ -43,7 +43,7 @@ public class MemberController {
 		}
 
 	}
-
+	//-------------------------------------------맴버 닉네임 변경----------------------------------------------
 	@PatchMapping("/nickname")
 	public ResponseEntity<?> patchNickname(@RequestBody Map<String, String> nicknameReq, HttpServletRequest request) {
 
@@ -54,7 +54,7 @@ public class MemberController {
 		return ResponseEntity.ok(updatedNickname);
 
 	}
-
+	//-------------------------------------------맴버 인트러 변경----------------------------------------------
 	@PatchMapping("/intro")
 	public ResponseEntity<?> patchIntro(@RequestBody Map<String, String> introReq, HttpServletRequest request) {
 		log.info("컨트롤러 진입");
@@ -64,14 +64,11 @@ public class MemberController {
 		);
 		return ResponseEntity.ok(updatedNickname);
 	}
-
+	//-------------------------------------------맴버 사진 변경----------------------------------------------
 	@PatchMapping("/profile")
 	public ResponseEntity<?> patchMemberProfile(MultipartFile inputFile,
 		HttpServletRequest request) {
 		try {
-			if (inputFile.getOriginalFilename() == null) {
-				throw new BadRequestException("파일이 비어 있습니다.");
-			}
 			String updatedNickname = memberService.updateProfilePath(inputFile, request).orElseThrow(
 				() -> new ConflictException("프로파일 변경을 실패 했습니다.")
 			);
@@ -82,7 +79,7 @@ public class MemberController {
 		}
 
 	}
-
+	//-------------------------------------------테스트----------------------------------------------
 	@GetMapping("/jwt-test")
 	public String jwtTest() {
 		log.info("jwt-test");
