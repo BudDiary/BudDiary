@@ -36,6 +36,7 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class ClubService {
+	private static final Long CREATE_DOUBLE_POINT = 10L;
 	private final ClubRepository clubRepository;
 	private final DiaryRepository diaryRepository;
 	private final MemberRepository memberRepository;
@@ -64,7 +65,9 @@ public class ClubService {
 		for (Member member : memberList) {
 			clubMembers.add(createMemberClub(member, club));
 		}
-		log.info(club.getClubMembers().toString());
+		// point 추가
+		firstMember.addPoint(CREATE_DOUBLE_POINT);
+		secondMember.addPoint(CREATE_DOUBLE_POINT);
 
 		// dto로 반환
 		return ClubCreateResponse.builder()

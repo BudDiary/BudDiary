@@ -25,6 +25,7 @@ import twozerotwo.buddiary.persistence.repository.ReactionRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class ReactionService {
+	private static final Long ADD_REACTION_POINT = 5L;
 	private final DiaryService diaryService;
 	private final ClubService clubService;
 	private final MemberRepository memberRepository;
@@ -53,6 +54,8 @@ public class ReactionService {
 		for (Reaction reaction : reactions) {
 			reactionDtos.add(reaction.toDto());
 		}
+		// member point 추가
+		member.addPoint(ADD_REACTION_POINT);
 		return reactionDtos;
 	}
 
@@ -71,7 +74,6 @@ public class ReactionService {
 			// 삭제
 			diary.getReactions().remove(reaction);
 			reactionRepository.delete(reaction);
-			log.info("왜 안돼?");
 		} else {
 			throw new BadRequestException("요청자의 반응이 아닌 걸 취소할 수 없습니다.");
 		}

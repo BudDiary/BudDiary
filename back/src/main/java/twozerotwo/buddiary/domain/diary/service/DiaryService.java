@@ -19,7 +19,9 @@ import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
+import twozerotwo.buddiary.domain.diary.dto.StickerToDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
+import twozerotwo.buddiary.domain.sticker.service.StickerService;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
@@ -35,6 +37,7 @@ import twozerotwo.buddiary.persistence.repository.DiaryRepository;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
 import twozerotwo.buddiary.persistence.repository.StickerRepository;
 import twozerotwo.buddiary.persistence.repository.UnusedStickerRepository;
+import twozerotwo.buddiary.persistence.repository.UsedStickerRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -45,9 +48,11 @@ public class DiaryService {
 	private final ClubRepository clubRepository;
 	private final StickerRepository stickerRepository;
 	private final UnusedStickerRepository unusedStickerRepository;
+	private final UsedStickerRepository usedStickerRepository;
 	private final S3Uploader s3Uploader;
 	private final ClubService clubService;
-	// private final Long WRITE_POINT = 5L;
+	private final StickerService stickerService;
+	private static Long WRITE_DIARY_POINT = 5L;
 
 	@Transactional
 	public void createClubDiary(DiaryPostRequest request, String clubUuid) throws IOException {
@@ -98,7 +103,6 @@ public class DiaryService {
 		if (stickerDtoList != null) {
 			for (StickerDto stickerDto : stickerDtoList) {
 				/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
-				// Boolean isOwned =  member.isOwned(stickerDto);
 				Boolean stickerOwned = false;
 				for (UnusedSticker ownedSticker : member.getStickers()) {
 					if (ownedSticker.getSticker().getId().equals(stickerDto.getStickerId())) {
@@ -109,8 +113,8 @@ public class DiaryService {
 				if (!stickerOwned) {
 					throw new BadRequestException("스티커를 보유하고 있지 않습니다.");
 				}
-				Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
-					.orElseThrow(() -> new BadRequestException("존재하지 않는 스티커"));
+				Sticker sticker = stickerService.returnStickerById(stickerDto.getStickerId());
+
 				UsedSticker usedSticker = UsedSticker.builder()
 					.diary(diary)
 					.xCoordinate(stickerDto.getXCoordinate())
@@ -142,14 +146,19 @@ public class DiaryService {
 	@Transactional
 	public void minusStickerCnt(DiaryPostRequest request) {
 		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+		// 5 point 추가
+		member.addPoint(WRITE_DIARY_POINT);
+
 		if (request.getStickerDtoList() != null) {
 			for (StickerDto stickerDto : request.getStickerDtoList()) {
-				Sticker sticker = stickerRepository.findById(stickerDto.getStickerId())
-					.orElseThrow(() -> new BadRequestException("존재하지 않는 스티커"));
+				Sticker sticker = stickerService.returnStickerById(stickerDto.getStickerId());
 				// Unused 스티커 조회해서 리턴
 				UnusedSticker unusedSticker = unusedStickerRepository.findByMemberIdAndStickerId(member, sticker);
 				// Unused 스티커 cnt -1
 				unusedSticker.minusCnt();
+				if (unusedSticker.getCount() <= 0) {
+					unusedStickerRepository.delete(unusedSticker);
+				}
 			}
 		}
 	}
@@ -181,8 +190,7 @@ public class DiaryService {
 	}
 
 	public List<UsedStickerDto> getDiarySticker(Long diaryId) {
-		Diary diary = diaryRepository.findById(diaryId)
-			.orElseThrow(() -> new NotFoundException(diaryId + "번의 일기를 찾을 수 없습니다."));
+		Diary diary = returnDiaryById(diaryId);
 		List<UsedStickerDto> usedStickerList = new ArrayList<>();
 
 		for (UsedSticker usedSticker : diary.getUsedStickers()) {
@@ -205,5 +213,35 @@ public class DiaryService {
 			throw new BadRequestException("해당 글의 작성자가 아닙니다.");
 		}
 		diaryRepository.delete(diary);
+	}
+
+	@Transactional
+	public List<UsedStickerDto> addStickerToDiary(StickerToDiaryDto request) {
+		// log.info(request.getYCoordinate().toString());
+		// 소유자가 맞는지 확인
+		Diary diary = returnDiaryById(request.getDiaryId());
+		UnusedSticker unusedSticker = unusedStickerRepository.findById(request.getUnusedStickerId())
+			.orElseThrow(() -> new NotFoundException("미사용 스티커를 찾을 수 없습니다."));
+		Member member = clubService.returnMemberByUsername(request.getUsername());
+		if (!unusedSticker.getMember().equals(member)) {
+			throw new BadRequestException("요청자와 소유자가 다릅니다.");
+		}
+		// 맞다면 다이어리에 등록 > used sticker 추가
+		// List<UsedSticker> usedStickerList = diary.getUsedStickers();
+
+		UsedSticker usedSticker = UsedSticker.builder()
+			.diary(diary)
+			.xCoordinate(request.getXCoordinate())
+			.yCoordinate(request.getYCoordinate())
+			.sticker(unusedSticker.getSticker())
+			.build();
+		// 스티커 ++
+		UsedSticker savedSticker = usedStickerRepository.save(usedSticker);
+		// usedStickerList.add(usedSticker);
+
+		// 앤드 차감 > 0 되면 삭제
+		unusedSticker.minusCnt();
+
+		return getDiarySticker(diary.getId());
 	}
 }

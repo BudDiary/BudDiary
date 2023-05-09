@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,18 +23,21 @@ import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@JsonIgnoreProperties({"id", "member"})
 public class UnusedSticker {
+	@JsonProperty("unusedStickerId")
 	@Id
 	@Column(name = "UNUSED_STICKER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long count;
 
+	@JsonProperty("member")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "STICKER_ID")
 	private Sticker sticker;
 
@@ -41,5 +47,9 @@ public class UnusedSticker {
 			throw new BadRequestException("해당 스티커 개수가 부족합니다.");
 		}
 		this.count--;
+	}
+
+	public void plusCnt(Long count) {
+		this.count += count;
 	}
 }
