@@ -226,8 +226,6 @@ public class DiaryService {
 		if (!unusedSticker.getMember().equals(member)) {
 			throw new BadRequestException("요청자와 소유자가 다릅니다.");
 		}
-		// 맞다면 다이어리에 등록 > used sticker 추가
-		// List<UsedSticker> usedStickerList = diary.getUsedStickers();
 
 		UsedSticker usedSticker = UsedSticker.builder()
 			.diary(diary)
@@ -236,12 +234,12 @@ public class DiaryService {
 			.sticker(unusedSticker.getSticker())
 			.build();
 		// 스티커 ++
-		UsedSticker savedSticker = usedStickerRepository.save(usedSticker);
-		// usedStickerList.add(usedSticker);
-
+		usedStickerRepository.save(usedSticker);
 		// 앤드 차감 > 0 되면 삭제
 		unusedSticker.minusCnt();
-
+		if (unusedSticker.getCount() <= 0) {
+			unusedStickerRepository.delete(unusedSticker);
+		}
 		return getDiarySticker(diary.getId());
 	}
 }

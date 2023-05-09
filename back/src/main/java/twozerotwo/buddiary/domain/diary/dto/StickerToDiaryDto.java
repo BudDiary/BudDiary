@@ -4,6 +4,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,9 +26,11 @@ public class StickerToDiaryDto {
 	@NotNull(message = "다이어리 아이디를 입력해주세요.")
 	private Long diaryId;
 	// @NotNull(message = "x좌표를 입력해주세요.")
-	private Double xCoordinate;
+	@JsonProperty("xCoordinate")
+	private double xCoordinate;
 	// @NotNull(message = "y좌표를 입력해주세요.")
-	private Double yCoordinate;
+	@JsonProperty("yCoordinate")
+	private double yCoordinate;
 	@NotBlank(message = "사용자 아이디를 입력해주세요.")
 	private String username;
 
