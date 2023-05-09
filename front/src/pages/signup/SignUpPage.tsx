@@ -9,11 +9,13 @@ export default function SignUpPage() {
     async function fetchData() {
       const currentUrl: string = window.location.href;
       const code = currentUrl.split('localhost:3000/')[1];
-      // console.log(code)
       const response = await kakaoSignUpApi(code)
       console.log(response)
+      // 처음 가입한 사람이면 signup 으로 보내고, 아니면 메인페이지로
       if (response.newBe === true ) {
-        navigate('/login/oauth2/code/kakao')
+        navigate('/signup-info')
+      } else {
+        navigate('/')
       }
     }
     fetchData();

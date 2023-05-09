@@ -46,7 +46,7 @@ export default function DateItem({
 
   const clickDate = () => {
     setClickedDate(day);
-    navigate(`/view/diary/${day.getFullYear()}-${day.getMonth().toString().padStart(2, '0')}-${day.getDate().toString().padStart(2, '0')}`);
+    navigate(`/view/diary/${day.getFullYear()}-${(day.getMonth()+1).toString().padStart(2, '0')}-${day.getDate().toString().padStart(2, '0')}`);
   };
 
   return (

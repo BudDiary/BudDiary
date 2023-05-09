@@ -13,3 +13,7 @@ export const EditButton = styled.button`
 export const DeleteButton = styled.button`
   ${tw`text-bud-pink  w-[35px] h-[20px]`}
 `;
+
+export const ResetButton = styled.button`
+  ${tw`bg-bud-pink text-white h-10 rounded-sm px-4`}
+`;
