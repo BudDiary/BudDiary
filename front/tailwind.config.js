@@ -15,6 +15,8 @@ module.exports = {
     },
     fontFamily: {
       berry: ["GoryeongStrawberry"],
+      mf: ["KBIZHanmaumMyungjo"],
+      inkLip: ["InkLipquid"],
     },
   },
   variants: {

@@ -2,104 +2,159 @@ package twozerotwo.buddiary.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.member.dto.MemberDto;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
+import twozerotwo.buddiary.global.oauth.dto.SocialType;
+import twozerotwo.buddiary.persistence.enums.Role;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Member implements UserDetails {
+public class Member {
 	@Id
 	@Column(name = "MEMBER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(nullable = false)
 	private String username;
-	@Column(nullable = false)
+	// @Column(nullable = false)
+	@JsonIgnore
 	private String password;
+	// 카카오에서 가져온 카카오 이름 ex) 김명영
+	@Builder.Default
+	private String nickname = null;
+	@JsonIgnore
+	private String intro;
+	@JsonIgnore
 	@Column(nullable = false)
-
-	private String oauth2Id;
 	@Builder.Default
 	private Long point = 0L;
+	// @JsonProperty("enrollDate")
+	@JsonIgnore
 	@Builder.Default
 	private LocalDateTime enrollDate = LocalDateTime.now();
 
-	@ElementCollection
 	@Builder.Default
-	private List<String> roles = new ArrayList<>() {
-		{
-			add("USER");
-		}
-	};
-
+	private String profilePath = null;
+	@JsonIgnore
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	//민우 요청사항 추가 설문조사
+	// @JsonProperty("checkPreference")
+	@JsonIgnore
+	@Builder.Default
+	private boolean checkPreference = false;
+	// @JsonProperty("accountNonLocked")
+	@JsonIgnore
 	@Builder.Default
 	private boolean accountNonLocked = true;
+	// @JsonProperty("enabled")
+	@JsonIgnore
 	@Builder.Default
 	private boolean enabled = true;
+	// @JsonProperty("accountNotExpired")
+	@JsonIgnore
 	@Builder.Default
 	private boolean accountNotExpired = true;
-
-	@OneToMany(mappedBy = "member")
+	// @JsonProperty("memberClubs")
+	@JsonIgnore
+	@Builder.Default
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private Set<MemberClub> memberClubs = new HashSet<>();
-
-	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+	// @JsonProperty("notifications")
+	@JsonIgnore
+	@Builder.Default
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<Notification> notifications = new ArrayList<>();
-
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+	// @JsonProperty("diaries")
+	@JsonIgnore
+	@Builder.Default
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
 	private List<Diary> diaries = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	// @JsonProperty("stickers")
+	@JsonIgnore
+	@Builder.Default
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<UnusedSticker> stickers = new ArrayList<>();
+	// @JsonProperty("socialType")
+	@JsonIgnore
+	@Enumerated(EnumType.STRING)
+	private SocialType socialType; // KAKAO, NAVER, GOOGLE
+	// @JsonProperty("socialId")
+	@JsonIgnore
+	@Builder.Default
+	@Column(unique = true)
+	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
+	// @JsonProperty("refreshToken")
+	@JsonIgnore
+	private String refreshToken;
 
-
-	//implements methods
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// 권한 부여
-		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	// 비밀번호 암호화 메소드
+	public void passwordEncode(PasswordEncoder passwordEncoder) {
+		this.password = passwordEncoder.encode(this.password);
 	}
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return this.accountNotExpired;
+	public void updateRefreshToken(String updateRefreshToken) {
+		this.refreshToken = updateRefreshToken;
 	}
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return this.accountNonLocked;
+	public void addPoint(Long point) {
+		this.point += point;
 	}
 
-	@Override
-	public boolean isCredentialsNonExpired() {
+	public MemberDto toDto() {
+		return MemberDto.builder()
+			.username(this.username)
+			.profilePath(this.profilePath)
+			.intro(this.intro)
+			.point(this.point)
+			.sociaId(this.socialId)
+			.socialType(this.socialType)
+			.build();
+	}
+
+	public Member signup(String nickname, String profilePath) {
+		this.nickname = nickname;
+		this.role = Role.USER;
+		this.profilePath = profilePath;
+		return this;
+	}
+
+	public boolean checkPoint(Long totalPrice) {
+		if (this.point >= totalPrice) {
+			return true;
+		}
 		return false;
 	}
 
-	@Override
-	public boolean isEnabled() {
-		return this.enabled;
+	public void minusPoint(Long totalPrice) {
+		if (this.point - totalPrice < 0) {
+			throw new BadRequestException("포인트가 부족합니다.");
+		}
+		this.point -= totalPrice;
 	}
 }

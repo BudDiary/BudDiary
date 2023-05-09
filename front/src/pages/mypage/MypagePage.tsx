@@ -1,5 +1,30 @@
 import React from "react";
+import { MyDiaryCalendarContainer, MyPageContainer, MyProfileInfoContainer} from "./MypagePage.styles";
+
+import Profile from "../../components/mypage/Profile";
+import Calendar from "../../components/mypage/calendar/Calendar";
+import Stat from "../../components/mypage/Stat";
+import { PageContainer, SubNavContainer } from "../../components/common/Page.styles";
+
+
 
 export default function MypagePage() {
-  return <div>Mypage!!</div>;
+  return (
+    <>
+    <SubNavContainer>My Page</SubNavContainer>
+    <PageContainer>
+      <MyPageContainer>
+        <MyProfileInfoContainer>
+          <Profile />
+        </MyProfileInfoContainer>
+        <MyDiaryCalendarContainer>
+          <Calendar />
+        </MyDiaryCalendarContainer>
+        <MyProfileInfoContainer>
+          <Stat />
+        </MyProfileInfoContainer>
+      </MyPageContainer>
+    </PageContainer>
+    </>
+  );
 }

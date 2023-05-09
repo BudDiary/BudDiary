@@ -10,12 +10,12 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.club.dto.ClubInfo;
 import twozerotwo.buddiary.persistence.enums.ClubType;
 import twozerotwo.buddiary.persistence.enums.ClubTypeConverter;
 
@@ -29,15 +29,40 @@ public class Club {
 	@Column(name = "CLUB_ID")
 	private String uuid;
 
-	@Column(nullable = false)
+	@Column
 	private String name;
 	@Builder.Default
 	@Convert(converter = ClubTypeConverter.class)
 	private ClubType type = ClubType.PLURAL;
 	@Builder.Default
 	private LocalDateTime createDate = LocalDateTime.now();
+	@Builder.Default
+	private String captainUsername = null;
 
-	@OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
-	private Set<MemberClub> groupMembers = new HashSet<>();
+	private Integer maximumMember;
+	@Builder.Default
+	private String thumbnailPath = null;
+	@Builder.Default
+	@OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
+	private Set<MemberClub> clubMembers = new HashSet<>();
 
+	public ClubInfo toPluralDto() {
+		return ClubInfo.builder()
+			.clubUuid(this.uuid)
+			.thumbnailUrl(this.thumbnailPath)
+			.clubName(this.name)
+			.build();
+	}
+
+	public ClubInfo toDoubleDto(String clubImgUrl) {
+		return ClubInfo.builder()
+			.clubUuid(this.uuid)
+			.thumbnailUrl(clubImgUrl)
+			.clubName(this.name)
+			.build();
+	}
+
+	public void deleteMember(Member member) {
+		this.getClubMembers().remove(member);
+	}
 }

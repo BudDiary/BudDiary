@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "nickname": "문영식",
+    "user_thumbnail": "https://picsum.photos/57",
+    "user_updated_at": "2023. 04. 26 16:53",
+    "content": "오늘은 날씨가 좋네요!",
+
+    "imgList": [
+      "https://picsum.photos/70",
+      "https://picsum.photos/71",
+      "https://picsum.photos/72"
+    ]
+  },
+  {
+    "id": 2,
+    "nickname": "김지오",
+    "user_thumbnail": "https://picsum.photos/52",
+    "user_updated_at": "2023. 04. 28 12:53",
+    "content": "오늘은 개발을 했어요!",
+    "imgList": [
+      "https://picsum.photos/73",
+      "https://picsum.photos/74",
+      "https://picsum.photos/75"
+    ]
+  },
+  {
+    "id": 3,
+    "nickname": "김명진",
+    "user_thumbnail": "https://picsum.photos/55",
+    "user_updated_at": "2023. 04. 30 14:53",
+    "content": "오늘은 운동을 했어요!",
+
+    "imgList": null
+  }
+]

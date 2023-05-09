@@ -6,6 +6,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store/store";
 import { Provider } from "react-redux";
+import useMember from "./hooks/memberHook";
 
 import NotFoundPage from "./pages/notfound/NotFoundPage";
 import WritePage from "./pages/write/WritePage";
@@ -14,10 +15,15 @@ import GroupPage from "./pages/group/GroupPage";
 import SurveyPage from "./pages/survey/SurveyPage";
 import HomePage from "./pages/home/HomePage";
 import MypagePage from "./pages/mypage/MypagePage";
+import SignUpPage from "./pages/signup/SignUpPage";
+import ViewDiariesPage from "./pages/view/ViewDiariesPage";
+import LoginSignUpPage from "./pages/signup/LoginSignUpPage";
+
+
+// const {isLoggedIn} = useMember();
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: (
       <Provider store={store}>
         <App />
@@ -25,12 +31,16 @@ const router = createBrowserRouter([
     ),
     errorElement: <NotFoundPage />,
     children: [
-      { path: "/main", element: <HomePage /> },
+      { path: "/", element: <HomePage /> },
       { path: "/survey", element: <SurveyPage /> },
       { path: "/group", element: <GroupPage /> },
       { path: "/group/:id", element: <GroupDetailPage /> },
       { path: "/write", element: <WritePage /> },
       { path: "/mypage", element: <MypagePage /> },
+      { path: "/signup", element: <SignUpPage /> },
+      { path: "/view/diary/:id", element: <ViewDiariesPage /> },
+      { path: "/login/oauth2/code/kakao", element: <SignUpPage /> },
+      { path: "/login/sign", element: <LoginSignUpPage /> },
     ],
   },
 ]);

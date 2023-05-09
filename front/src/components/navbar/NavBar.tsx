@@ -8,26 +8,42 @@ import {
   ProfileItem,
   NavbarContainer,
   MobileMenu,
+  NavbarBox,
 } from "./NavBar.styles";
 import { RxHamburgerMenu } from "react-icons/rx";
+import MobileSidebar from "./MobileSidebar";
+import { useState } from "react";
+import { KAKAO_AUTH_URL } from "../../apis/axiosConfig";
+
 
 export default function NavBar() {
+  const [sideBarState, setSidebarState] = useState(false);
+  const showSidebar = () => {
+    setSidebarState(true);
+  };
+
   return (
+    <div>
+      {sideBarState === true ? <MobileSidebar /> : null}
     <NavbarContainer>
-      <LogoContainer>
-        <LogoBlue>Bud</LogoBlue>
-        <LogoGreen>:D</LogoGreen>
-        <LogoBlue>iary</LogoBlue>
-      </LogoContainer>
-      <MenuItem>그룹일기</MenuItem>
-      <MenuItem>일기작성</MenuItem>
-      <ProfileContainer>
-        로그인
-        <ProfileItem></ProfileItem>
-      </ProfileContainer>
-      <MobileMenu>
-        <RxHamburgerMenu />
-      </MobileMenu>
+      <NavbarBox>
+        <LogoContainer to="/">
+          <LogoBlue>Bud</LogoBlue>
+          <LogoGreen>:D</LogoGreen>
+          <LogoBlue>iary</LogoBlue>
+        </LogoContainer>
+        <MenuItem to="/group">그룹일기</MenuItem>
+        <MenuItem to="/write">일기작성</MenuItem>
+        <ProfileContainer>
+          로그인
+          <ProfileItem><a href={KAKAO_AUTH_URL}>클릭</a></ProfileItem>
+        </ProfileContainer>
+        <MobileMenu>
+          <RxHamburgerMenu onClick={showSidebar} />
+        </MobileMenu>
+      </NavbarBox>
     </NavbarContainer>
+    </div>
   );
 }
+

@@ -15,7 +15,9 @@ function App() {
     <React.Suspense fallback={<LoadPage />}>
       <PersistGate loading={null} persistor={persistor}>
         <NavBar />
-        <Outlet />
+        <div className="mt-[42px]">
+          <Outlet />
+        </div>
       </PersistGate>
     </React.Suspense>
   );

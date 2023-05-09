@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "nickname": "김준영",
+    "userImage": "https://picsum.photos/51",
+    "update_at": "2023-05-03T10:00:00.000Z",
+    "reply": "첫 답글입니다.",
+    "commentId": 1
+  },
+  {
+    "id": 2,
+    "nickname": "문여경",
+    "userImage": "https://picsum.photos/53",
+    "update_at": "2023-05-03T11:00:00.000Z",
+    "reply": "두 번째 답글입니다.",
+    "commentId": 1
+  },
+
+  {
+    "id": 3,
+    "nickname": "정민우",
+    "userImage": "https://picsum.photos/54",
+    "update_at": "2023-05-03T14:30:00.000Z",
+    "reply": "세 번째 답글입니다.",
+    "commentId": 2
+  },
+
+  {
+    "id": 4,
+    "nickname": "김지오",
+    "userImage": "https://picsum.photos/55",
+    "update_at": "2023-05-03T14:30:00.000Z",
+    "reply": "네 번째 답글입니다.",
+    "commentId": 3
+  }
+]
