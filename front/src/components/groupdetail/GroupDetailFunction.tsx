@@ -24,7 +24,7 @@ export const handleCommentChange = (
 ) => {
   const textareaLineHeight = 24;
   const minRows = 1;
-  const maxRows = 5;
+  const maxRows = 6;
   const { value, scrollHeight } = event.target;
   const rows =
     Math.ceil((scrollHeight - textareaLineHeight) / textareaLineHeight) + 1;
