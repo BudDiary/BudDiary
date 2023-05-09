@@ -1,6 +1,7 @@
 import { api, formApi } from "./axiosConfig";
 import Swal from 'sweetalert2';
 
+// 카카오 인가코드 전송
 const kakaoSignUpApi = (payload: string | null) => {
     return api.get(`${payload}`, { withCredentials: true })
     .then((res) => {
@@ -30,5 +31,53 @@ const firstSignUpApi = (payload: any) => {
       });
 }
 
+// 닉네임 업데이트
+const patchNicknameApi = (payload: any) => {
+  return api.patch(`api/members/nickname`, payload,  { withCredentials: true })
+  .then((res) => {
+      console.log(res)
+      return res.data;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: 'error',
+        text: '닉네임은 2자 이상, 8자 이하여야 합니다.'
+      })
+      return err;
+    });
+}
 
-export { kakaoSignUpApi, firstSignUpApi };
+// intro 업데이트
+const patchIntroApi = (payload: any) => {
+  return api.patch(`api/members/intro`, payload,  { withCredentials: true })
+  .then((res) => {
+      console.log(res)
+      return res.data;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: 'error',
+        text: 'intro 업데이트 에러'
+      })
+      return err;
+    });
+}
+
+// profile 업데이트
+const patchProfileApi = (payload: any) => {
+  return formApi.patch(`api/members/profile`, payload,  { withCredentials: true })
+  .then((res) => {
+      console.log(res)
+      return res.data;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: 'error',
+        text: '프로필 사진 파일이 잘못되었습니다.'
+      })
+      return err;
+    });
+}
+
+
+export { kakaoSignUpApi, firstSignUpApi, patchNicknameApi, patchIntroApi, patchProfileApi };

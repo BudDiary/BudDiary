@@ -16,6 +16,8 @@ import { CloseModalButton, ModalTitle, ModalTopNavContainer, SaveModalButton } f
 import AddGroupPicture from './AddGroupPicture';
 import GroupPicture from './GroupPicture';
 import ModalWindow from '../common/ModalWindow';
+import { postPluralClubApi } from '../../apis/clubApi';
+import useMember from '../../hooks/memberHook';
 
 
 interface Props {
@@ -24,17 +26,42 @@ interface Props {
 
 
 export default function NewGroupDiaryModal({ closeModal }: Props) {
-
+  const {memberData, isLoggedIn} = useMember();
+  const username = memberData.username
   const [image, setImage] = useState<string | null>(null);
+  
   const closeDiaryModal = () => {
     closeModal();
   };
-  const [value, setValue] = useState('');
+  const [clubName, setClubName] = useState('');
 
   const handleClear = () => {
-    setValue('');
+    setClubName('');
   }
 
+  const submitMakeClub = async (event: any) => {
+    
+
+    /** 서버통신 */
+    const formData = new FormData();
+
+    if (image && clubName && username) {
+      formData.append("thumbnail", image);
+      formData.append('captainUsername', username);
+      formData.append('clubName', clubName);
+      // 폼 객체 key 와 value 값을 순회.
+      let entries = formData.entries();
+      for (const pair of entries) {
+          console.log(pair[0]+ ', ' + pair[1]); 
+      }
+      // const response  = await makeClubApi(formData)
+      // if (response === true) {
+      //   console.log('여기에서 설문 띄워주시면 됩니다~~~')
+      // } else {
+      //   console.log('실패여')
+      // }
+    }
+  };
 
 
   function ChildModal() {
@@ -51,9 +78,14 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       closeDiaryModal(); // close parent modal
     };
 
+
     return (
       <React.Fragment>
-        <Button onClick={handleOpen}> 다음 </Button>
+        <Button onClick={(event) => {
+          event.preventDefault();
+          handleOpen()
+          submitMakeClub(event)
+          }}> 다음 </Button>
         <Modal
           open={open}
           onClose={handleClose}
@@ -71,6 +103,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
             // p: 5,
             boxShadow: 'lg',
           }}
+
           >
           <ModalTopNavContainer>
           <CloseModalButton onClick={handleClose}>
@@ -144,10 +177,10 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           <StyledBox marginLeft={3}>
           
           <TextField
-      value={value}
-      onChange={(e:any) => setValue(e.target.value)}
+      value={clubName}
+      onChange={(e:any) => setClubName(e.target.value)}
       InputProps={{
-        endAdornment: value && (
+        endAdornment: clubName && (
           <IconButton onClick={handleClear}>
             <GiCancel color="lightcoral" size={20}/>
           </IconButton>
