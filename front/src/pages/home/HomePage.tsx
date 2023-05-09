@@ -9,7 +9,7 @@ import Footer from "../../components/home/Footer";
 export default function HomePage() {
   return (
     <Container>
-      {/* <ASection /> */}
+      <ASection />
       <BSection />
       <CSection />
       <DSection />

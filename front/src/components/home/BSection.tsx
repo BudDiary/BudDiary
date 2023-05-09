@@ -8,6 +8,11 @@ import {
   Sad,
   Crying,
   Normal,
+  SExcited,
+  SHappy,
+  SSad,
+  SCrying,
+  SNormal,
   SectionContainer,
   ImageSection,
   TextSection,
@@ -61,11 +66,11 @@ export default function BSection() {
             <ThirdDetail run={run}>확인하세요</ThirdDetail>
           </TextSection>
           <WordSection run={run}>
-            <Excited />
-            <Happy />
-            <Normal />
-            <Sad />
-            <Crying />
+            <Excited run={run} />
+            <Happy run={run} />
+            <Normal run={run} />
+            <Sad run={run} />
+            <Crying run={run} />
             {/* <TypeIt
               options={{
                 strings: [
@@ -82,11 +87,11 @@ export default function BSection() {
         </TextContainer>
       </SectionContainer>
       <WordsSection>
-        <Excited />
-        <Happy />
-        <Normal />
-        <Sad />
-        <Crying />
+        <SExcited run={run} />
+        <SHappy run={run} />
+        <SNormal run={run} />
+        <SSad run={run} />
+        <SCrying run={run} />
         {/* <TypeIt
           options={{
             strings: [
