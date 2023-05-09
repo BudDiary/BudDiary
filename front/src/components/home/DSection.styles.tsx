@@ -19,13 +19,21 @@ export const SectionContainer = styled.div`
 
 export const ContentSection = styled.div`
   ${tw`max-w-[1152px] flex mx-auto h-full items-center text-white sm:text-7xl sm:pl-12 md:pl-8 lg:pl-4 lg:text-8xl`}
-  font-size: 2.5rem;
+  font-size: 3.7rem;
 `;
 
 export const TextContainer = styled.div`
-  ${tw`flex flex-col justify-between border`}
+  ${tw`flex flex-col justify-between`}
   width: 70%;
   height: 80%;
+
+  @media screen and (max-width: 640px) {
+    ${tw`items-center`}
+    width: 100%;
+  }
+  @media screen and (max-width: 360px) {
+    font-size: 3rem;
+  }
 `;
 
 export const AppearText = styled.span<timer>`
@@ -105,10 +113,14 @@ export const ThirdSection = styled.div``;
 
 export const ImageContainer = styled.div`
   background-image: url(${dimg});
-  ${tw`bg-cover bg-no-repeat bg-center rounded-md border`}
+  ${tw`bg-cover bg-no-repeat bg-center rounded-md border sm:mr-4`}
   width: 30%;
   height: 80%;
   min-height: calc(220px + 40%);
+
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 export const ButtonSection = styled.div`
@@ -119,7 +131,7 @@ export const ButtonSection = styled.div`
   min-height: 50px;
 `;
 
-export const ButtonTextBox = styled.div`
+export const ButtonTextBox = styled.div<animationrun>`
   ${tw`absolute flex items-center justify-center bg-transparent`}
   width: 80%;
   height: 100%;
@@ -131,6 +143,7 @@ export const ButtonTextBox = styled.div`
   animation-name: fillbox1;
   animation-duration: 0.6s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes fillbox1 {
     0% {
@@ -145,7 +158,7 @@ export const ButtonTextBox = styled.div`
   }
 `;
 
-export const ButtonSubBox = styled.div`
+export const ButtonSubBox = styled.div<animationrun>`
   ${tw`absolute bg-transparent`}
   width: 80%;
   height: 100%;
@@ -154,6 +167,7 @@ export const ButtonSubBox = styled.div`
   animation-delay: 0.3s;
   animation-duration: 0.6s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes fillbox2 {
     0% {
@@ -168,7 +182,7 @@ export const ButtonSubBox = styled.div`
   }
 `;
 
-export const ButtonSSubBox = styled.div`
+export const ButtonSSubBox = styled.div<animationrun>`
   ${tw`absolute bg-transparent`}
   width: 80%;
   height: 100%;
@@ -177,6 +191,7 @@ export const ButtonSSubBox = styled.div`
   animation-delay: 0.6s;
   animation-duration: 0.6s;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes fillbox3 {
     0% {
@@ -197,6 +212,9 @@ export const ButtonText = styled.p`
   width: 80%;
   transform: translate(-40%, -50%);
   font-size: 1.5rem;
+  @media screen and (max-width: 360px) {
+    font-size: 1rem;
+  }
 `;
 
 export const ButtonArrowBox = styled.div`
@@ -209,6 +227,9 @@ export const ButtonArrow = styled.p`
   ${tw`relative`}
   font-size: 3rem;
   transform: translateY(5%);
+  @media screen and (max-width: 360px) {
+    font-size: 2rem;
+  }
 `;
 
 export const SecondBox = styled.div<animationrun>`

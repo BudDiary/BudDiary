@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
-import TypeIt from "typeit-react";
+
 import { useInView } from "react-intersection-observer";
 import {
   Container,
+  Excited,
+  Happy,
+  Sad,
+  Crying,
+  Normal,
   SectionContainer,
   ImageSection,
   TextSection,
@@ -56,7 +61,12 @@ export default function BSection() {
             <ThirdDetail run={run}>확인하세요</ThirdDetail>
           </TextSection>
           <WordSection run={run}>
-            <TypeIt
+            <Excited />
+            <Happy />
+            <Normal />
+            <Sad />
+            <Crying />
+            {/* <TypeIt
               options={{
                 strings: [
                   "기타 여러가지 텍스트가 등장합니다",
@@ -64,16 +74,20 @@ export default function BSection() {
                 ],
                 lifeLike: true,
                 cursor: false,
-                startDelay: 3000,
+                startDelay: 4500,
                 waitUntilVisible: true,
               }}
-            />
+            /> */}
           </WordSection>
         </TextContainer>
       </SectionContainer>
       <WordsSection>
-        {" "}
-        <TypeIt
+        <Excited />
+        <Happy />
+        <Normal />
+        <Sad />
+        <Crying />
+        {/* <TypeIt
           options={{
             strings: [
               "기타 여러가지 텍스트가 등장합니다",
@@ -81,10 +95,10 @@ export default function BSection() {
             ],
             lifeLike: true,
             cursor: false,
-            startDelay: 3000,
+            startDelay: 4500,
             waitUntilVisible: true,
           }}
-        />
+        /> */}
       </WordsSection>
     </Container>
   );

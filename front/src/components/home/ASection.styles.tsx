@@ -69,7 +69,7 @@ export const SeceondContent = styled.div`
 `;
 
 export const FirstDetail = styled.div<running>`
-  ${tw`mr-6 text-bud-blue font-test xl:text-8xl`}
+  ${tw`mr-6 text-bud-blue font-hassam xl:text-8xl`}
   animation-name: AfadeIn, AllBounce;
   animation-delay: 3s, 5s;
   animation-duration: 2s, 5s;

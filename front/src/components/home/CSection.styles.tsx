@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-import cimg from "./assets/CSectionimg.jpg";
+import cimg from "./assets/CCC.jpg";
 
 interface timer {
   time: string;
@@ -36,7 +36,7 @@ export const ImageContainer = styled.div`
 `;
 
 export const TextContainer = styled.div`
-  ${tw`mx-auto pl-0 max-w-[1152px] h-full flex flex-col justify-evenly items-center text-white sm:text-6xl sm:pl-12 md:text-7xl md:pl-8 lg:pl-4 xl:text-8xl`}
+  ${tw`mx-auto pl-0 max-w-[1152px] h-full flex flex-col justify-evenly items-center text-black sm:text-6xl sm:pl-12 md:text-7xl md:pl-8 lg:pl-4 xl:text-8xl`}
   font-size: 2.5rem;
   padding-left: 2rem;
   padding-right: 2rem;
