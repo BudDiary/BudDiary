@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { BasicButton } from "./Diaries.styles";
 import ReplyEdit from "./ReplyEdit";
+import DeleteReply from "./ReplyDelete";
 import {
   UserInfo,
   InputSet,
   InputBox,
   CommentWrapper,
 } from "./DiaryComment.style";
-import { CreateReply, DeleteReply } from "./groupdetailapis/groupdetailapis";
+import { CreateReply } from "./groupdetailapis/groupdetailapis";
 import { EditButton, DeleteButton } from "../common/Button.styles";
 import { userdummy } from "../mypage/userdummy";
-import ReplyList from "./ReplyData.json";
-import { timeAgo } from "./GroupDetailFunction";
-type Props = {
-  commentId: number;
-};
 
-export default function Reply({ commentId }: Props) {
+import { timeAgo } from "./GroupDetailFunction";
+import { Reply } from "../../types/group";
+interface RepliesProps {
+  replies: Reply[];
+  commentId: number;
+}
+
+export default function Replies({ replies, commentId }: RepliesProps) {
   const [replyText, setReplyText] = useState("");
   const [showReply, setShowReply] = useState(false);
 
@@ -37,37 +40,28 @@ export default function Reply({ commentId }: Props) {
     }
   };
 
-  // 대댓글 삭제
+  // 대댓글 수정 삭제 모달
+  const [replyUpdate, setReplyUpdate] = useState(false);
+  const [replyDelete, setReplyDelete] = useState(false);
 
-  const handleDeleteReply = async (reply: number) => {
-    console.log(commentId);
-    try {
-      await DeleteReply(commentId);
-      // 댓글 삭제 성공
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 대댓글 수정 모달
-  const [replyUpdate, setReplytUpdate] = useState(false);
   const [selectedReplyId, setSelectedReplyId] = useState<number | null>(null);
   const showUpdateModal = (commentId: number) => {
     setSelectedReplyId(commentId);
-    setReplytUpdate(true);
+    setReplyUpdate(true);
+  };
+  const showDeleteModal = (commentId: number) => {
+    setSelectedReplyId(commentId);
+    setReplyDelete(true);
   };
   const handleCloseModal = () => {
-    setReplytUpdate(false);
+    setReplyUpdate(false);
+    setReplyDelete(false);
   };
-
-  const filterReplies = ReplyList.filter(
-    (reply) => reply.commentId === commentId
-  );
 
   const replyButtonText = showReply
     ? "▲ 닫기"
-    : filterReplies.length > 0
-    ? `▼ ${filterReplies.length}개의 답글 보기`
+    : replies.length > 0
+    ? `▼ ${replies.length}개의 답글 보기`
     : "▼ 답글 입력";
   return (
     <CommentWrapper>
@@ -84,14 +78,16 @@ export default function Reply({ commentId }: Props) {
       </button>
       {showReply && (
         <div style={{ width: "160%" }}>
-          {filterReplies.map((reply) => (
+          {replies.map((reply) => (
             <UserInfo key={reply.id}>
               <div>
-                <img src={reply.userImage} alt="프로필" />
+                <img src={reply.writer.profilePath ?? ""} alt="프로필" />
               </div>
               <div>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <h2 style={{ fontWeight: "bold" }}>{reply.nickname}</h2>
+                  <h2 style={{ fontWeight: "bold" }}>
+                    {reply.writer.nickname}
+                  </h2>
                   <h3
                     style={{
                       marginLeft: "0.5rem",
@@ -99,16 +95,25 @@ export default function Reply({ commentId }: Props) {
                       fontSize: "0.75rem",
                     }}
                   >
-                    {timeAgo(reply.update_at)}
+                    {timeAgo(reply.writeDate)}
                   </h3>
                   {replyUpdate && selectedReplyId === reply.id && (
                     <ReplyEdit
                       key={reply.id}
+                      isOpen={false}
                       reply={reply}
                       onClose={handleCloseModal}
                     />
                   )}
-                  {userdummy.nickname === reply.nickname && (
+                  {replyDelete && selectedReplyId === reply.id && (
+                    <DeleteReply
+                      key={reply.id}
+                      isOpen={false}
+                      reply={reply}
+                      onClose={handleCloseModal}
+                    />
+                  )}
+                  {userdummy.nickname === reply.writer.nickname && (
                     <EditButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showUpdateModal(reply.id)}
@@ -116,16 +121,16 @@ export default function Reply({ commentId }: Props) {
                       수정
                     </EditButton>
                   )}
-                  {userdummy.nickname === reply.nickname && (
+                  {userdummy.nickname === reply.writer.nickname && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
-                      onClick={() => handleDeleteReply(reply.id)}
+                      onClick={() => showDeleteModal(reply.id)}
                     >
                       삭제
                     </DeleteButton>
                   )}
                 </div>
-                <p>{reply.reply}</p>
+                <p>{reply.text}</p>
               </div>
             </UserInfo>
           ))}

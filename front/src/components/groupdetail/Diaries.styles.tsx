@@ -4,6 +4,13 @@ import tw from "twin.macro";
 export const BasicButton = styled.button`
   ${tw`bg-bud-blue rounded-full px-3 py-1 font-bold`}
 `;
+
+export const DeleteButton = styled.button`
+  ${tw`bg-bud-pink rounded-full px-3 py-1 font-bold my-2`}
+  width: 100px;
+  color: white;
+`;
+
 export const WideButton = styled.button`
   ${tw`bg-bud-blue py-2 px-4 rounded-md font-bold text-black flex items-center justify-center`}
   width: 45vw;
@@ -121,4 +128,8 @@ export const DiaryText = styled.div`
   display: "flex",
   justifyContent: "flex-start",
   margin: 0,
+`;
+
+export const EditContent = styled.div`
+  ${tw`flex flex-col rounded-md w-full mt-2`}
 `;

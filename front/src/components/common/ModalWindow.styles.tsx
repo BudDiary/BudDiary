@@ -22,7 +22,6 @@ export const ModalTopNavContainer = styled.div`
   ${tw`bg-bud-blue h-[42px] flex justify-between`}
 `;
 
-
 // 모달창 나가기버튼
 export const CloseModalButton = styled.button`
   ${tw`h-[42px] ml-4`}
@@ -38,4 +37,12 @@ export const SaveModalButton = styled.button`
   ${tw`text-blue-800 mr-4`}
 `;
 
+// 댓글 & 대댓글 수정 & 삭제 모달
 
+export const EditContainer = styled.div`
+  position: fixed;
+  top: 15%;
+  left: 20%;
+  z-index: 15;
+  ${tw`bg-white h-[55%] w-[320px] sm:w-[60%] border-2`}
+`;

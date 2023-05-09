@@ -1,35 +1,36 @@
 import React, { useState } from "react";
 import { BasicButton } from "./Diaries.styles";
-import Reply from "./Reply";
+import Replies from "./Replies";
 import CommentEdit from "./CommentEdit";
+import DeleteComment from "./DeleteComment";
 import {
   InputBox,
   UserInfo,
   InputSet,
   CommentWrapper,
 } from "./DiaryComment.style";
-import {
-  CreateComment,
-  DeleteComment,
-} from "./groupdetailapis/groupdetailapis";
+import { CreateComment } from "./groupdetailapis/groupdetailapis";
 import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
 import { EditButton, DeleteButton } from "../common/Button.styles";
-import CommentList from "./CommentList.json";
+
 import { userdummy } from "../mypage/userdummy";
 import EmojiPicker from "./emoji/EmojiPicker";
 import EmojiCount from "./emoji/EmojiCount";
 import { timeAgo } from "./GroupDetailFunction";
 import { Divider } from "@mui/material";
-type Props = {
-  diaryId: number;
-};
+import { Comment } from "../../types/group";
 
-export default function DiaryComment({ diaryId }: Props) {
+interface CommentProps {
+  commentList: Comment[];
+  diaryId: number;
+}
+
+export default function DiaryComment({ commentList, diaryId }: CommentProps) {
   const [commentText, setCommentText] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
-  const [height, setHeight] = useState("30px");
+  const [height, setHeight] = useState("35px");
 
-  // 댓글 수정 모달
+  // 댓글 수정 & 삭제 모달
   const [commentUpdate, setCommentUpdate] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState<number | null>(
     null
@@ -38,15 +39,24 @@ export default function DiaryComment({ diaryId }: Props) {
     setSelectedCommentId(commentId);
     setCommentUpdate(true);
   };
+
+  const [commentDelete, setCommentDelete] = useState(false);
+
+  const showDeleteModal = (commentId: number) => {
+    setSelectedCommentId(commentId);
+    setCommentDelete(true);
+  };
+
   const handleCloseModal = () => {
     setCommentUpdate(false);
+    setCommentDelete(false);
   };
 
   // 댓글 작성
 
   const handleCommentSubmit = async () => {
     console.log("댓글 요청", commentText, diaryId, userdummy.nickname);
-    setHeight("30px");
+    setHeight("35px");
     try {
       const response = await CreateComment(
         commentText,
@@ -55,17 +65,6 @@ export default function DiaryComment({ diaryId }: Props) {
       );
       setCommentText("");
       console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 댓글 삭제
-  const handleDeleteComment = async (commentId: number) => {
-    console.log(commentId);
-    try {
-      await DeleteComment(commentId);
-      // 댓글 삭제 성공
     } catch (error) {
       console.error(error);
     }
@@ -84,9 +83,9 @@ export default function DiaryComment({ diaryId }: Props) {
     }
   };
 
-  const filteredComments = CommentList.filter(
-    (comment) => comment.diaryId === diaryId
-  );
+  // const filteredComments = CommentList.filter(
+  //   (comment) => comment.diaryId === diaryId
+  // );
 
   return (
     <CommentWrapper>
@@ -119,13 +118,13 @@ export default function DiaryComment({ diaryId }: Props) {
         )}
       </div>
 
-      <p style={{ fontWeight: "bold" }}>댓글 {filteredComments.length}</p>
-      {filteredComments
-        .slice(0, showAllComments ? filteredComments.length : 2)
+      <p style={{ fontWeight: "bold" }}>댓글 {commentList.length}</p>
+      {commentList
+        .slice(0, showAllComments ? commentList.length : 2)
         .map((comment) => (
           <UserInfo key={comment.id}>
             <div>
-              <img src={comment.userImage} alt="프로필" />
+              <img src={comment.writer.profilePath ?? ""} alt="프로필" />
             </div>
             <div
               style={{
@@ -138,7 +137,9 @@ export default function DiaryComment({ diaryId }: Props) {
                   alignItems: "baseline",
                 }}
               >
-                <h2 style={{ fontWeight: "bold" }}>{comment.nickname}</h2>
+                <h2 style={{ fontWeight: "bold" }}>
+                  {comment.writer.nickname}
+                </h2>
                 <h3
                   style={{
                     marginLeft: "0.5rem",
@@ -146,18 +147,27 @@ export default function DiaryComment({ diaryId }: Props) {
                     fontSize: "0.75rem",
                   }}
                 >
-                  {timeAgo(comment.update_at)}
+                  {timeAgo(comment.writeDate)}
                 </h3>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
                   {commentUpdate && selectedCommentId === comment.id && (
                     <CommentEdit
                       key={comment.id}
                       comment={comment}
+                      isOpen={false}
+                      onClose={handleCloseModal}
+                    />
+                  )}
+                  {commentDelete && selectedCommentId === comment.id && (
+                    <DeleteComment
+                      key={comment.id}
+                      comment={comment}
+                      isOpen={false}
                       onClose={handleCloseModal}
                     />
                   )}
                   {/* {userdummy.nickname}은 나중에 users.user_id 등으로 교체할 것 */}
-                  {userdummy.nickname === comment.nickname && (
+                  {userdummy.nickname === comment.writer.nickname && (
                     <EditButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showUpdateModal(comment.id)}
@@ -165,23 +175,27 @@ export default function DiaryComment({ diaryId }: Props) {
                       수정
                     </EditButton>
                   )}
-                  {userdummy.nickname === comment.nickname && (
+                  {userdummy.nickname === comment.writer.nickname && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
-                      onClick={() => handleDeleteComment(comment.id)}
+                      onClick={() => showDeleteModal(comment.id)}
                     >
                       삭제
                     </DeleteButton>
                   )}
                 </div>
               </div>
-              <p>{comment.comment}</p>
-              <Reply key={comment.id} commentId={comment.id} />
+              <p>{comment.text}</p>
+              <Replies
+                key={comment.id}
+                commentId={comment.id}
+                replies={comment.replies}
+              />
             </div>
           </UserInfo>
         ))}
       <Divider />
-      {filteredComments.length > 2 && (
+      {commentList.length > 2 && (
         <div style={{ textAlign: "center" }}>
           <button
             style={{
