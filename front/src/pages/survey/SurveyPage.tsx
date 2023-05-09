@@ -1,8 +1,24 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSwiper, Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Navigation, Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import "swiper/swiper-bundle.css";
+
+import ModalWindow  from "../../components/common/ModalWindow"
 export default function SurveyPage() {
-  const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const createSurvey = () => {
+    setModalOpen(true)
+  }
+  // const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
+  const swiper = useSwiper();
+  useEffect(() => {
+    if (swiper) {
+      swiper.slideNext();
+    }
+  }, [swiper]);
   const allSentences = [
     "1. 좋아하는 음악 장르는? (다중선택 가능)",
     "2. 나의 MBTI는?",
@@ -43,33 +59,19 @@ export default function SurveyPage() {
   // 7. 여가시간을 주로 어떻게 보내는가?(다중선택 가능) 여행, 집, 게임, 요리, 독서, 유튜브 시청
   // 8. 나의 패션 스타일: (다중선택 가능) 캐주얼, 스트릿, 빈티지, 댄디, 스포티
 
-  const addMyAnswer = (element: string) => {
-    setMyAnswer([...myAnswer, element]);
-  };
-  const outputNextSentence = () => {
-    if (currentSentenceIndex < allSentences.length - 1) {
-      setCurrentSentenceIndex(currentSentenceIndex + 1);
-    }
-  };
+
+
   useEffect(() => {
     console.log(myAnswer)
   }, [myAnswer])
   return (
-    <div>
-      <p>{allSentences[currentSentenceIndex]}</p>
-      {allAnswers[currentSentenceIndex].map((element, index) => (
-        <button key={index} onClick={() => addMyAnswer(element)}>
-          {element}
-        </button>
-      ))}
+    <>
+       {modalOpen && <ModalWindow page={3} setModalOpen={setModalOpen}/>}
 
-      <br />
-      {currentSentenceIndex === 7 ? (
-        <button>완료!</button>
-      ): (
-        <button onClick={outputNextSentence}>다음</button>
-      )}
-      {/* <button onClick={outputNextSentence}>Output next sentence</button> */}
-    </div>
-  );
+       <button onClick={createSurvey}>
+      button
+      </button>
+
+    </>
+  )
 }

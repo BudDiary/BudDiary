@@ -4,13 +4,15 @@ import { SurveyAgainButton, ResetButton } from '../../components/common/Button.s
 import { SignupInfoInput, SignupPicInput } from '../../components/common/Input.styles'
 import { SignUpInfoInputSection,ProfilePicContainer, FlexedContainer, ImgInput } from './SignUpInfoPage.styles'
 import { firstSignUpApi } from '../../apis/userApi'
-
+import ModalWindow from '../../components/common/ModalWindow'
 export default function SignUpInfoPage() {
   const [fileURL, setFileURL] = useState<string>("");
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
   const [nickname, setNickname] = useState('');
-  
+  const [modalOpen, setModalOpen] = useState(false);
+
+
   // useEffect(() => {
   //   setCookie('hey', 'hi', { path: "/"})
   // }, []);
@@ -46,7 +48,7 @@ export default function SignUpInfoPage() {
       // }
       const response  = await firstSignUpApi(formData)
       if (response === true) {
-        console.log('여기에서 설문 띄워주시면 됩니다~~~')
+        setModalOpen(true)
       } else {
         console.log('실패여')
       }
@@ -54,6 +56,8 @@ export default function SignUpInfoPage() {
   };
   return (
     <PageContainer>
+      {modalOpen && <ModalWindow page={3} setModalOpen={setModalOpen}/>}
+
       <FlexedContainer>
         <SignUpInfoInputSection>
         <FlexedContainer>
