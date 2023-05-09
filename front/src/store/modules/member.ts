@@ -11,14 +11,11 @@ export type Member = {
 const initialState: MemberStateType = {
   isLoggedIn: false,
   memberData: {
-    id: '',
-    email: '',
+    username: '',
     nickname: '',
-    profile: {
-      image: '',
-      content: '',
-    },
-    point: 0,
+    profilePic : '',
+    intro: '',
+    points: 0,
     checkPreference: false,
   },
 };
@@ -35,14 +32,11 @@ const memberSlice = createSlice({
     logoutAction(state: MemberStateType) {
       state.isLoggedIn = false;
       state.memberData = {
-        id: '',
-        email: '',
+        username: '',
         nickname: '',
-        profile: {
-          image: '',
-          content: '',
-        },
-        point: 0,
+        profilePic : '',
+        intro: '',
+        points: 0,
         checkPreference: false,
       };
     },

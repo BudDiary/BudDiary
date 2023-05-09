@@ -4,7 +4,6 @@ import { SurveyAgainButton, ResetButton } from '../../components/common/Button.s
 import { SignupInfoInput, SignupPicInput } from '../../components/common/Input.styles'
 import { SignUpInfoInputSection,ProfilePicContainer, FlexedContainer, ImgInput } from './SignUpInfoPage.styles'
 import { firstSignUpApi } from '../../apis/userApi'
-import { getCookie, setCookie } from 'typescript-cookie'
 
 export default function SignUpInfoPage() {
   const [fileURL, setFileURL] = useState<string>("");
@@ -41,12 +40,11 @@ export default function SignUpInfoPage() {
       formData.append("profilePic", file[0]);
       formData.append('nickname', nickname);
       // 폼 객체 key 와 value 값을 순회.
-      let entries = formData.entries();
-      for (const pair of entries) {
-          console.log(pair[0]+ ', ' + pair[1]); 
-      }
+      // let entries = formData.entries();
+      // for (const pair of entries) {
+      //     console.log(pair[0]+ ', ' + pair[1]); 
+      // }
       const response  = await firstSignUpApi(formData)
-
       if (response === true) {
         console.log('여기에서 설문 띄워주시면 됩니다~~~')
       } else {

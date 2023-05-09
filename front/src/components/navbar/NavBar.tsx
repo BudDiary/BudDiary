@@ -9,18 +9,34 @@ import {
   NavbarContainer,
   MobileMenu,
   NavbarBox,
+  NickNameContainer,
+  NavProfilePicContainer
 } from "./NavBar.styles";
 import { RxHamburgerMenu } from "react-icons/rx";
 import MobileSidebar from "./MobileSidebar";
 import { useState } from "react";
 import { KAKAO_AUTH_URL } from "../../apis/axiosConfig";
+import useMember from "../../hooks/memberHook";
+import { useNavigate } from "react-router-dom";
 
 
 export default function NavBar() {
   const [sideBarState, setSidebarState] = useState(false);
+  const {memberData, isLoggedIn} = useMember();
+  const navigate = useNavigate();
+  const nickname = memberData.nickname
+  const profilePic = memberData.profilePic
+  
   const showSidebar = () => {
     setSidebarState(true);
   };
+  const handleUser = () => {
+    if (isLoggedIn === true ) {
+      navigate("/mypage")
+    } else {
+      window.location.href =KAKAO_AUTH_URL 
+    }
+  }
 
   return (
     <div>
@@ -35,8 +51,8 @@ export default function NavBar() {
         <MenuItem to="/group">그룹일기</MenuItem>
         <MenuItem to="/write">일기작성</MenuItem>
         <ProfileContainer>
-          로그인
-          <ProfileItem><a href={KAKAO_AUTH_URL}>클릭</a></ProfileItem>
+          <NickNameContainer onClick={handleUser}>{nickname}</NickNameContainer>
+          <NavProfilePicContainer src={profilePic? profilePic: "base_profile.jpg"} onClick={handleUser}></NavProfilePicContainer>
         </ProfileContainer>
         <MobileMenu>
           <RxHamburgerMenu onClick={showSidebar} />

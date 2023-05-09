@@ -2,12 +2,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import logger from 'redux-logger';
+
 
 import reportWebVitals from "./reportWebVitals";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import useMember from "./hooks/memberHook";
-
 import NotFoundPage from "./pages/notfound/NotFoundPage";
 import WritePage from "./pages/write/WritePage";
 import GroupDetailPage from "./pages/groupdetail/GroupDetailPage";
@@ -21,7 +21,6 @@ import SignUpInfoPage from "./pages/signup/SignUpInfoPage";
 
 
 // const {isLoggedIn} = useMember();
-
 const router = createBrowserRouter([
   {
     element: (
