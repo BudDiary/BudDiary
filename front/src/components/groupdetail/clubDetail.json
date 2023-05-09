@@ -35,7 +35,7 @@
             },
             "replies": [
               {
-                "id": 1,
+                "id": 2,
                 "writer": {
                   "id": 5,
                   "username": "ymoon1@gmail.com",
@@ -46,7 +46,7 @@
                 "text": "대댓1"
               },
               {
-                "id": 2,
+                "id": 3,
                 "writer": {
                   "id": 1,
                   "username": "gio",
@@ -118,7 +118,7 @@
         "reactionList": [],
         "commentList": [
           {
-            "id": 1,
+            "id": 3,
             "writer": {
               "id": 1,
               "username": "gio",
@@ -142,7 +142,7 @@
             "text": "첫 댓글입니다."
           },
           {
-            "id": 2,
+            "id": 4,
             "writer": {
               "id": 1,
               "username": "yeokyung502@naver.com",
@@ -159,8 +159,8 @@
         "diaryId": 9,
         "writer": {
           "id": 1,
-          "username": "yeokyung502@naver.com",
-          "nickname": "문여경",
+          "username": "gio",
+          "nickname": "김지오",
           "profilePath": "https://picsum.photos/53"
         },
         "writeDate": "2023-05-08T14:25:10",
@@ -175,7 +175,7 @@
         ],
         "commentList": [
           {
-            "id": 1,
+            "id": 5,
             "writer": {
               "id": 1,
               "username": "gio",

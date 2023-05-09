@@ -55,13 +55,13 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
   // 댓글 작성
 
   const handleCommentSubmit = async () => {
-    console.log("댓글 요청", commentText, diaryId, userdummy.nickname);
+    console.log("댓글 요청", commentText, diaryId, userdummy.username);
     setHeight("35px");
     try {
       const response = await CreateComment(
         commentText,
         diaryId,
-        userdummy.nickname
+        userdummy.username
       );
       setCommentText("");
       console.log(response);

@@ -1,16 +1,12 @@
 export type MemberLoginType = {
-  id: string;
-  email: string;
-  nickname: string;
-  profile: ProfileType;
-  point: number;
-  checkPreference: boolean;
+  username: string,
+  nickname: string,
+  profilePic : string | null ,
+  intro: string | null ,
+  points: 0,
+  checkPreference: false,
 };
 
-export type ProfileType = {
-  image: string;
-  content: string;
-};
 
 // 초기 상태 타입
 export type MemberStateType = {

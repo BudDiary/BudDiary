@@ -31,8 +31,13 @@ public class MemberService {
 		if (memberRepository.findByUsername(userSignUpDto.getNickname()).isPresent()) {
 			throw new ConflictException("이미 존재하는 유저의 이메일입니다.");
 		}
-		String memberProfile = s3Uploader.upload(userSignUpDto.getProfilePic(), "memberProfile");
-		Member signup = memberDtoFromRequest.signup(userSignUpDto.getNickname(), memberProfile);
+		if (!userSignUpDto.getProfilePic().isEmpty()) {
+			log.info("들어 왔습니다.");
+			String memberProfile = s3Uploader.upload(userSignUpDto.getProfilePic(), "memberProfile");
+			Member signup = memberDtoFromRequest.signup(userSignUpDto.getNickname(), memberProfile);
+			return signup.toDto();
+		}
+		Member signup = memberDtoFromRequest.signup(userSignUpDto.getNickname(), null);
 		return signup.toDto();
 	}
 }

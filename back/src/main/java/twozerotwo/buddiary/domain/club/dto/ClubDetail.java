@@ -16,4 +16,5 @@ import twozerotwo.buddiary.persistence.entity.Member;
 public class ClubDetail {
 	private List<DiaryInfo> diaryList;
 	private List<Member> memberList;
+	private ClubInfo clubInfo;
 }
