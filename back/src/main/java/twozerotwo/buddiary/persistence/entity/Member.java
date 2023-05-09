@@ -15,6 +15,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -59,6 +63,7 @@ public class Member {
 	private LocalDateTime enrollDate = LocalDateTime.now();
 
 	@Builder.Default
+	@Column(length = 2000)
 	private String profilePath = null;
 	@JsonIgnore
 	@Enumerated(EnumType.STRING)
@@ -156,5 +161,20 @@ public class Member {
 			throw new BadRequestException("포인트가 부족합니다.");
 		}
 		this.point -= totalPrice;
+	}
+
+	public String updateIntro(String intro) {
+		this.intro = intro;
+		return this.intro;
+	}
+
+	public String updateNickname(String nickname) {
+		this.nickname = nickname;
+		return this.nickname;
+	}
+
+	public String setProfilePath(String profilePath) {
+		this.profilePath = profilePath;
+		return this.profilePath;
 	}
 }

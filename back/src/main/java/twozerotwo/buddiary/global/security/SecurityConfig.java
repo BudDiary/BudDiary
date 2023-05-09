@@ -87,6 +87,7 @@ public class SecurityConfig {
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+			.antMatchers(HttpMethod.PATCH, "/api/members/**").hasRole("USER")
 			.antMatchers(HttpMethod.GET, "/api/members/signup/jwt-test/**").hasRole("USER")
 			.antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
 			.anyRequest()
