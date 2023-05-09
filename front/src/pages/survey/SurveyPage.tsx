@@ -11,7 +11,7 @@ export default function SurveyPage() {
   const createSurvey = () => {
     setModalOpen(true)
   }
-  const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
+  // const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
   const swiper = useSwiper();
   useEffect(() => {
