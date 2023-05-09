@@ -1,7 +1,7 @@
 import { api } from "./axiosConfig";
 import Swal from 'sweetalert2';
 
-const getSSEAlarmsAPI = () => {
+const getSSEAlarmsApi = () => {
   return api
     .get(``)
     .then((res) => {
@@ -17,7 +17,7 @@ const getSSEAlarmsAPI = () => {
     });
 };
 
-const deleteSSEAlarmsAPI = () => {
+const deleteSSEAlarmsApi = () => {
   return api
     .delete(``)
     .then((res) => {
@@ -36,7 +36,7 @@ const deleteSSEAlarmsAPI = () => {
 
 
 export {
-  getSSEAlarmsAPI,
-  deleteSSEAlarmsAPI,
+  getSSEAlarmsApi,
+  deleteSSEAlarmsApi,
 
 };

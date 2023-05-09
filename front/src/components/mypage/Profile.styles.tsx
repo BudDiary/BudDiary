@@ -1,53 +1,30 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
-// export const UserProfileContainer = styled.div`
-//   ${tw`grid grid-cols-3`}
-// `
-
-// export const ProfilePicSection = styled.div`
-//   ${tw`col-span-1 bg-red-600`}
-// `
-
-// export const ProfileInfoSection = styled.div`
-//   ${tw`col-span-2 bg-blue-900`}
-// `
-
-// export const ProfilePictureCircle = styled.div`
-//   ${tw`rounded-full h-6 w-6`}
-// `
-
-// export const IntroContainer = styled.div`
-//   ${tw`bg-green-300 col-span-3`}
-// `
-
-
-
 
 export const UserProfileContainer = styled.div`
-  ${tw`grid grid-cols-3 m-6`}
+  ${tw`grid grid-cols-2 sm:grid-cols-3 m-6`}
 `
 
-export const ProfilePicSection = styled.div`
-  ${tw``}
+export const ProfilePicSection = styled.img`
+  ${tw`col-span-2 sm:col-span-1 min-w-[160px] max-w-[160px] min-h-[160px] max-h-[160px] border-2 border-gray-200 rounded-full sm:mb-10 ml-2 mt-1`}
 `
 
 export const ProfileInfoSection = styled.div`
-  ${tw`mt-10`}
+  ${tw`mt-10 ml-10`}
 `
-
-export const ProfilePictureCircle = styled.div`
-  ${tw``}
+export const NicknameBox = styled.div`
+  ${tw`text-xl font-bold`}
 `
 
 export const IntroContainer = styled.div`
-  ${tw`col-span-3 mt-4`}
+  ${tw`col-span-3`}
 `
 
 export const PointsButton = styled.div`
-    ${tw`bg-bud-blue text-white w-[100px] h-[30px] rounded-md flex my-6 py-0.5 pl-6`}
+    ${tw`bg-bud-blue text-white w-[100px] h-[30px] rounded-md flex justify-center my-6`}
 `
 
 export const ChangeProfileSection = styled.div`
-    ${tw`mt-20`}
+    ${tw`sm:mt-20`}
 `

@@ -4,10 +4,13 @@ import { ModalContainer, BackgroundContainer, ModalTopNavContainer, CloseModalBu
 import { SurveyAgainButton } from "../common/Button.styles";
 import { SurveyLink } from "./ProfileEditModal.styles";
 
+interface Props {
+  closeModal: any;
+}
 
-export default function ProfileEditModal() {
+export default function ProfileEditModal({ closeModal }: Props) {
   const closeProfileModal = () => {
-    // setProfileModalState(false);
+    closeModal();
   }
   return (
     <>
