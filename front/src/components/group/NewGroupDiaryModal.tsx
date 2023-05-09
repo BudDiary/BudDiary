@@ -8,12 +8,14 @@ import Sheet from '@mui/joy/Sheet';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import { Box } from '@mui/material';
+import { StyledBox } from '../group/NewGroupDiaryModal.styles'
 import Paper from '@mui/material/Paper';
 
 import { GiCancel } from "react-icons/gi"
-import { CloseModalButton, ModalTitle, ModalTopNavContainer, SaveModalButton } from '../common/Modal.styles';
+import { CloseModalButton, ModalTitle, ModalTopNavContainer, SaveModalButton } from '../common/ModalWindow.styles';
 import AddGroupPicture from './AddGroupPicture';
 import GroupPicture from './GroupPicture';
+import ModalWindow from '../common/ModalWindow';
 
 
 interface Props {
@@ -22,8 +24,8 @@ interface Props {
 
 
 export default function NewGroupDiaryModal({ closeModal }: Props) {
-  const [originFiles, setOriginFiles] = useState<File[]>([]);
 
+  const [image, setImage] = useState<string | null>(null);
   const closeDiaryModal = () => {
     closeModal();
   };
@@ -32,7 +34,62 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
   const handleClear = () => {
     setValue('');
   }
-  
+
+
+
+  function ChildModal() {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    const handleClose2 = () => {
+      handleClose();
+      closeDiaryModal(); // close parent modal
+    };
+
+    return (
+      <React.Fragment>
+        <Button onClick={handleOpen}> 다음 </Button>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        >
+                  <Sheet
+          variant="outlined"
+          sx={{
+            minHeight: 300,
+            minWidth: 500,
+            maxWidth: 500,
+            borderRadius: 'md',
+            // p: 5,
+            boxShadow: 'lg',
+          }}
+          >
+          <ModalTopNavContainer>
+          <CloseModalButton onClick={handleClose}>
+            <BiArrowBack />
+            </CloseModalButton>
+          <ModalTitle>초대 신청</ModalTitle>
+            <Button onClick={handleClose2}>완료</Button>
+          </ModalTopNavContainer>
+          <Box>
+            <h2 id="child-modal-title">초대</h2>
+            <p id="child-modal-description">초대링크 들어갈 부분</p>
+          </Box>
+          </Sheet>
+        </Modal>
+      </React.Fragment>
+    );
+  }
+
+
   return (
     <React.Fragment>
       <Modal
@@ -54,10 +111,12 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           }}
           >
           <ModalTopNavContainer>
-          <CloseModalButton onClick={closeDiaryModal}><BiArrowBack /></CloseModalButton>
+          <CloseModalButton onClick={closeDiaryModal}>
+            <BiArrowBack />
+            </CloseModalButton>
           <ModalTitle>새 교환일기</ModalTitle>
 
-          <ModalClose
+          {/* <ModalClose
             variant="outlined"
             sx={{
               top: 'calc(-1/4 * var(--IconButton-size))',
@@ -66,8 +125,9 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
               borderRadius: '50%',
               bgcolor: 'background.body',
             }}
-          />
-          <SaveModalButton>완료</SaveModalButton>
+          /> */}
+          <ChildModal/>
+          {/* <SaveModalButton onClick={createInvite} >다음</SaveModalButton> */}
           </ModalTopNavContainer>
           <Typography
             component="h2"
@@ -81,8 +141,8 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           >
             방 이름
           </Typography>
-          <Box marginLeft={3}>
-            
+          <StyledBox marginLeft={3}>
+          
           <TextField
       value={value}
       onChange={(e:any) => setValue(e.target.value)}
@@ -96,15 +156,12 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       label="그룹일기"
       variant="outlined"
       />
-      </Box>
+      </StyledBox>
       <Box m={2}>
-      <Paper elevation={3}>
-        <AddGroupPicture
-          originFiles={originFiles}
-          setOriginFiles={setOriginFiles}/>
-        <GroupPicture
-          originFiles={originFiles}
-          setOriginFiles={setOriginFiles}/>
+      <Paper elevation={6}>
+      <AddGroupPicture setImage={setImage} />
+    <br />
+      <GroupPicture image={image} />
       </Paper>
 
     </Box>

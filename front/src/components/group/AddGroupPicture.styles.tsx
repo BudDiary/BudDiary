@@ -17,3 +17,12 @@ export const UploadImageBox = styled.div`
   margin-bottom: 10%;
   margin-right: 5%;
 `;
+
+
+export const InputImage = styled.input.attrs({
+    id: "group-picture",
+    type: "file",
+    accept: "image/*",
+  })`
+    display: none;
+  `;

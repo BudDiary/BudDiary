@@ -1,48 +1,41 @@
-import React, { useEffect } from "react";
-import { FileUploader } from "react-drag-drop-files";
-import { UploadImageBox } from "./AddGroupPicture.styles";
-import { v4 } from "uuid";
-import { MdLibraryAdd } from "react-icons/md";
-
-interface Props {
-  setOriginFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  originFiles: File[];
+import React, { useState, useRef } from 'react';
+import { InputImage } from './AddGroupPicture.styles'
+import Button from '@mui/material/Button';
+interface AddGroupPictureProps {
+  setImage: (image: string | null) => void;
 }
 
-export default function AddGroupPicture({ originFiles, setOriginFiles }: Props) {
-  
-    useEffect(() => {
-        console.log("The state of originFiles has changed: ", originFiles);
-      }, [originFiles]);
+const AddGroupPicture: React.FC<AddGroupPictureProps> = ({ setImage }) => {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const fileTypes = ["png", "jpeg", "jpg"];
-  const imageRegistHandler = (files: File[]) => {
-    if (files.length > 0) {
-      let tempImagelist = [...originFiles];
-      for (let i = 0; i < files.length; i++) {
-        const oldFile = files[i];
-        const newName = v4();
-        const newFile = new File([oldFile], newName + ".png", {
-          type: oldFile.type,
-        });
-        tempImagelist.push(newFile);
-      }
-      setOriginFiles(tempImagelist);
+  const handleButtonClick = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
     }
   };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedImage = event.target.files?.[0];
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result?.toString() ?? null);
+      };
+      reader.readAsDataURL(selectedImage);
+      setImageFile(selectedImage);
+    }
+  };
+
   return (
-    <UploadImageBox>
-      <FileUploader
-        handleChange={imageRegistHandler}
-        name="file"
-        types={fileTypes}
-        multiple={true}
-        hoverTitle="놓아주세요"
-      >
-        <button>
-          <MdLibraryAdd color="blue" size={32} />
-        </button>
-      </FileUploader>
-    </UploadImageBox>
+    <div>
+        <Button onClick={handleButtonClick} variant="outlined">사진 첨부</Button>
+      
+<InputImage
+        onChange={handleImageChange}
+        ref={inputRef}/>
+    </div>
   );
-}
+};
+
+export default AddGroupPicture;
