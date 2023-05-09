@@ -9,7 +9,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-export default function Recommended() {
+interface RecommendedProps {
+  doubleList: Array<any>;
+}
+export default function Recommended({ doubleList }: RecommendedProps) {
   const [recommendList , setRecommendList] = useState([1, 2, 3, 4, 5]);
   const cards = [
     {
@@ -54,13 +57,13 @@ export default function Recommended() {
 <Swiper
   slidesPerView={3}
   pagination={{ clickable: true }}>
-  {cards.map((card) => (
+  {doubleList.map((card) => (
     <SwiperSlide key={card.id}>
       <Card sx={{ maxWidth: 345 }}>
-        <CardMedia sx={{ height: 140 }} image={card.image} title={card.title} />
+        <CardMedia sx={{ height: 140 }} image={card.thumbnailUrl} title={card.title} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {card.title}
+            {card.clubName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {card.description}
