@@ -74,7 +74,6 @@ public class ReactionService {
 			// 삭제
 			diary.getReactions().remove(reaction);
 			reactionRepository.delete(reaction);
-			log.info("왜 안돼?");
 		} else {
 			throw new BadRequestException("요청자의 반응이 아닌 걸 취소할 수 없습니다.");
 		}

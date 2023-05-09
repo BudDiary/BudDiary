@@ -215,12 +215,13 @@ public class DiaryService {
 		diaryRepository.delete(diary);
 	}
 
+	@Transactional
 	public List<UsedStickerDto> addStickerToDiary(StickerToDiaryDto request) {
 		// log.info(request.getYCoordinate().toString());
 		// 소유자가 맞는지 확인
 		Diary diary = returnDiaryById(request.getDiaryId());
 		UnusedSticker unusedSticker = unusedStickerRepository.findById(request.getUnusedStickerId())
-			.orElseThrow(()-> new NotFoundException("미사용 스티커를 찾을 수 없습니다."));
+			.orElseThrow(() -> new NotFoundException("미사용 스티커를 찾을 수 없습니다."));
 		Member member = clubService.returnMemberByUsername(request.getUsername());
 		if (!unusedSticker.getMember().equals(member)) {
 			throw new BadRequestException("요청자와 소유자가 다릅니다.");
