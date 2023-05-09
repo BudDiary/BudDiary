@@ -17,6 +17,7 @@ module.exports = {
       berry: ["GoryeongStrawberry"],
       mf: ["KBIZHanmaumMyungjo"],
       inkLip: ["InkLipquid"],
+      hassam: ["KCCChassam"],
     },
   },
   variants: {

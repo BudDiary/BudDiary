@@ -29,7 +29,7 @@ export default function CSection() {
   }, [inView]);
   return (
     <SectionContainer ref={ref}>
-      <ImageContainer />
+      <ImageContainer></ImageContainer>
       <TextContainer>
         <FirstSection>
           <AppearText time={"0.1s"} run={run}>
@@ -73,7 +73,7 @@ export default function CSection() {
         </SeceondSection>
         <ThirdSection>
           <TypeText>
-            <TypeIt
+            {/* <TypeIt
               options={{
                 strings: ["반응을", "스티커를"],
                 lifeLike: true,
@@ -83,11 +83,11 @@ export default function CSection() {
                 waitUntilVisible: true,
                 deleteSpeed: 300,
                 breakLines: false,
-                html: false,
                 nextStringDelay: 2000,
               }}
-            />
+            /> */}
           </TypeText>
+
           {/* <ChangeBox time={"0.7s"} run={run}>
             <AppearText time={"0.7s"} run={run}>
               {text[0]}

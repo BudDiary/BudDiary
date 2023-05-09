@@ -86,9 +86,9 @@ export default function DSection() {
             </FirstBox>
           </ThirdSection>
           <ButtonSection>
-            <ButtonTextBox></ButtonTextBox>
-            <ButtonSubBox></ButtonSubBox>
-            <ButtonSSubBox></ButtonSSubBox>
+            <ButtonTextBox run={run}></ButtonTextBox>
+            <ButtonSubBox run={run}></ButtonSubBox>
+            <ButtonSSubBox run={run}></ButtonSSubBox>
             <ButtonText> 일기 작성하기 </ButtonText>
             <ButtonArrowBox>
               <ButtonArrow>➟</ButtonArrow>
