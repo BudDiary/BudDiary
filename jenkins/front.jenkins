@@ -29,7 +29,7 @@ pipeline {
             steps {
 				dir('front') {
                     echo 'hello'
-                    sshPublisher(publishers: [sshPublisherDesc(configName: 'front', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buddiary/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'front_build/')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                    sshPublisher(publishers: [sshPublisherDesc(configName: 'front', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/buddiary', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'front_build/')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 				}
             }
         }
