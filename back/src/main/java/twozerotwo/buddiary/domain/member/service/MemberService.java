@@ -29,7 +29,8 @@ public class MemberService {
 	private final AuthenticationUtil authenticationUtil;
 	private final S3Uploader s3Uploader;
 
-	private final String MEMBER_PROFILE_DIR ="memberProfile";
+	private static final  String MEMBER_PROFILE_DIR = "memberProfile";
+
 	@Transactional
 	public MemberDto signUp(MemberSignUpRequest userSignUpDto, HttpServletRequest request) throws IOException {
 		Member memberDtoFromRequest = authenticationUtil.getMemberEntityFromRequest(request);
@@ -54,7 +55,7 @@ public class MemberService {
 		if (nickname == null || nickname.trim().isEmpty()) {
 			throw new BadRequestException("닉네임이 비어 있습니다");
 		}
-		if(StringUtils.containsWhitespace(nickname)){
+		if (StringUtils.containsWhitespace(nickname)) {
 			throw new BadRequestException("닉네임은 공백을 포함하면안됩니다");
 		}
 
