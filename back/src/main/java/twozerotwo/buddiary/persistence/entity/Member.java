@@ -24,7 +24,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
@@ -35,7 +34,6 @@ import twozerotwo.buddiary.persistence.enums.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Slf4j
 public class Member {
 	@Id
 	@Column(name = "MEMBER_ID")
@@ -140,7 +138,6 @@ public class Member {
 	}
 
 	public Member signup(String nickname, String profilePath) {
-		log.info(profilePath);
 		this.nickname = nickname;
 		this.role = Role.USER;
 		this.profilePath = profilePath;
