@@ -1,6 +1,6 @@
 import React from "react";
 import {BiArrowBack} from 'react-icons/bi'
-import { ModalContainer, BackgroundContainer, ModalTopNavContainer, CloseModalButton, ModalTitle, SaveModalButton } from '../common/Modal.styles'
+import { ModalContainer, BackgroundContainer, ModalTopNavContainer, CloseModalButton, ModalTitle, SaveModalButton } from '../common/ModalWindow.styles'
 import { SurveyAgainButton } from "../common/Button.styles";
 import { SurveyLink } from "./ProfileEditModal.styles";
 
