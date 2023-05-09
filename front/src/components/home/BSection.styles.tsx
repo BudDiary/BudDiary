@@ -167,7 +167,7 @@ export const WordSection = styled.div<running>`
   }
 `;
 
-export const Excited = styled.div`
+export const Excited = styled.div<running>`
   ${tw`bg-no-repeat bg-top bg-contain`}
   background-image: url(${excited});
   width: 20%;
@@ -177,6 +177,7 @@ export const Excited = styled.div`
   animation-duration: 7s;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes FirstEmoji {
     0% {
@@ -213,7 +214,7 @@ export const Excited = styled.div`
   }
 `;
 
-export const Happy = styled.div`
+export const Happy = styled.div<running>`
   ${tw`bg-no-repeat bg-bottom bg-contain`}
   background-image: url(${happy});
   width: 20%;
@@ -223,6 +224,7 @@ export const Happy = styled.div`
   animation-duration: 7s;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes SecondEmoji {
     0% {
@@ -259,7 +261,7 @@ export const Happy = styled.div`
   }
 `;
 
-export const Normal = styled.div`
+export const Normal = styled.div<running>`
   ${tw`bg-no-repeat bg-bottom bg-contain`}
   background-image: url(${normal});
   width: 20%;
@@ -269,6 +271,7 @@ export const Normal = styled.div`
   animation-duration: 7s;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes ThirdEmoji {
     0% {
@@ -305,7 +308,7 @@ export const Normal = styled.div`
   }
 `;
 
-export const Sad = styled.div`
+export const Sad = styled.div<running>`
   ${tw`bg-no-repeat bg-bottom bg-contain`}
   background-image: url(${sad});
   width: 20%;
@@ -315,6 +318,7 @@ export const Sad = styled.div`
   animation-duration: 7s;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes FourthEmoji {
     0% {
@@ -351,7 +355,7 @@ export const Sad = styled.div`
   }
 `;
 
-export const Crying = styled.div`
+export const Crying = styled.div<running>`
   ${tw`bg-no-repeat bg-bottom bg-contain`}
   background-image: url(${crying});
   width: 20%;
@@ -361,6 +365,7 @@ export const Crying = styled.div`
   animation-duration: 7s;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
 
   @keyframes FifthEmoji {
     0% {
@@ -398,10 +403,248 @@ export const Crying = styled.div`
 `;
 
 export const WordsSection = styled.div`
-  ${tw`absolute text-center w-full z-20 text-3xl flex`}
+  ${tw`absolute text-center w-full z-20 text-3xl flex left-1/2`}
+  transform:translateX(-50%);
   padding-top: min(320px);
+  width: 90%;
+  min-height: 90%;
   @media screen and (min-width: 640px) {
     display: none;
+  }
+`;
+
+export const SExcited = styled.div<running>`
+  ${tw`bg-no-repeat bg-top bg-contain`}
+  background-image: url(${excited});
+  width: 20%;
+
+  animation-name: FirstEmoji;
+  animation-delay: 4s;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes FirstEmoji {
+    0% {
+      ${tw`bg-bottom`}
+    }
+    14.25% {
+      ${tw`bg-top`}
+      transform : translate(0px,0px);
+    }
+    28.5% {
+      ${tw`bg-top`}
+      transform : translateX(400%);
+    }
+    43% {
+      ${tw`bg-bottom`}
+      transform : translateX(400%);
+    }
+    55.25% {
+      ${tw`bg-bottom`}
+      transform : translateX(300%);
+    }
+    69.5% {
+      ${tw`bg-bottom`}
+      transform : translateX(200%);
+    }
+    83.75% {
+      ${tw`bg-bottom`}
+      transform : translateX(100%);
+    }
+    100% {
+      ${tw`bg-bottom`}
+      transform : translateX(0%);
+    }
+  }
+`;
+
+export const SHappy = styled.div<running>`
+  ${tw`bg-no-repeat bg-bottom bg-contain`}
+  background-image: url(${happy});
+  width: 20%;
+
+  animation-name: SecondEmoji;
+  animation-delay: 4s;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes SecondEmoji {
+    0% {
+      ${tw`bg-bottom`}
+    }
+    14.25% {
+      ${tw`bg-bottom`}
+      transform : translateX(-100%);
+    }
+    28.5% {
+      ${tw`bg-top`}
+      transform : translateX(-100%);
+    }
+    43% {
+      ${tw`bg-top`}
+      transform : translateX(300%);
+    }
+    55.25% {
+      ${tw`bg-bottom`}
+      transform : translateX(300%);
+    }
+    69.5% {
+      ${tw`bg-bottom`}
+      transform : translateX(200%);
+    }
+    83.75% {
+      ${tw`bg-bottom`}
+      transform : translateX(100%);
+    }
+    100% {
+      ${tw`bg-bottom`}
+      transform : translateX(0%);
+    }
+  }
+`;
+
+export const SNormal = styled.div<running>`
+  ${tw`bg-no-repeat bg-bottom bg-contain`}
+  background-image: url(${normal});
+  width: 20%;
+
+  animation-name: ThirdEmoji;
+  animation-delay: 4s;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes ThirdEmoji {
+    0% {
+      ${tw`bg-bottom`}
+    }
+    14.25% {
+      ${tw`bg-bottom`}
+      transform : translateX(-100%);
+    }
+    28.5% {
+      ${tw`bg-bottom`}
+      transform : translateX(-200%);
+    }
+    43% {
+      ${tw`bg-top`}
+      transform : translateX(-200%);
+    }
+    55.25% {
+      ${tw`bg-top`}
+      transform : translateX(200%);
+    }
+    69.5% {
+      ${tw`bg-bottom`}
+      transform : translateX(200%);
+    }
+    83.75% {
+      ${tw`bg-bottom`}
+      transform : translateX(100%);
+    }
+    100% {
+      ${tw`bg-bottom`}
+      transform : translateX(0%);
+    }
+  }
+`;
+
+export const SSad = styled.div<running>`
+  ${tw`bg-no-repeat bg-bottom bg-contain`}
+  background-image: url(${sad});
+  width: 20%;
+
+  animation-name: FourthEmoji;
+  animation-delay: 4s;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes FourthEmoji {
+    0% {
+      ${tw`bg-bottom`}
+    }
+    14.25% {
+      ${tw`bg-bottom`}
+      transform : translateX(-100%);
+    }
+    28.5% {
+      ${tw`bg-bottom`}
+      transform : translateX(-200%);
+    }
+    43% {
+      ${tw`bg-bottom`}
+      transform : translateX(-300%);
+    }
+    55.25% {
+      ${tw`bg-top`}
+      transform : translateX(-300%);
+    }
+    69.5% {
+      ${tw`bg-top`}
+      transform : translateX(100%);
+    }
+    83.75% {
+      ${tw`bg-bottom`}
+      transform : translateX(100%);
+    }
+    100% {
+      ${tw`bg-bottom`}
+      transform : translateX(0%);
+    }
+  }
+`;
+
+export const SCrying = styled.div<running>`
+  ${tw`bg-no-repeat bg-bottom bg-contain`}
+  background-image: url(${crying});
+  width: 20%;
+
+  animation-name: FifthEmoji;
+  animation-delay: 4s;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes FifthEmoji {
+    0% {
+      ${tw`bg-bottom`}
+    }
+    14.25% {
+      ${tw`bg-bottom`}
+      transform : translateX(-100%);
+    }
+    28.5% {
+      ${tw`bg-bottom`}
+      transform : translateX(-200%);
+    }
+    43% {
+      ${tw`bg-bottom`}
+      transform : translateX(-300%);
+    }
+    55.25% {
+      ${tw`bg-bottom`}
+      transform : translateX(-400%);
+    }
+    69.5% {
+      ${tw`bg-top`}
+      transform : translateX(-400%);
+    }
+    83.75% {
+      ${tw`bg-top`}
+      transform : translateX(0%);
+    }
+    100% {
+      ${tw`bg-bottom`}
+      transform : translateX(0%);
+    }
   }
 `;
 
