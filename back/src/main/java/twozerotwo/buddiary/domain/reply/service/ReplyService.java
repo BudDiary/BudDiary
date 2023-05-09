@@ -22,11 +22,11 @@ import twozerotwo.buddiary.persistence.repository.ReplyRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class ReplyService {
+	private static final Long ADD_REPLY_POINT = 5L;
 	private final ReplyRepository replyRepository;
 	private final CommentRepository commentRepository;
 	private final ClubService clubService;
 	private final CommentService commentService;
-	private static Long ADD_REPLY_POINT = 5l;
 
 	@Transactional
 	public ReplyResponse createReply(ReplyRequest request) {

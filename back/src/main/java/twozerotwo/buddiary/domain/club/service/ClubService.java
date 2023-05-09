@@ -37,12 +37,12 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class ClubService {
+	private static final Long CREATE_DOUBLE_POINT = 10L;
 	private final ClubRepository clubRepository;
 	private final DiaryRepository diaryRepository;
 	private final MemberRepository memberRepository;
 	private final MemberClubRepository memberClubRepository;
 	private final S3Uploader s3Uploader;
-	private static Long CREATE_DOUBLE_POINT = 10l;
 
 	@Transactional
 	public ClubCreateResponse createDouble(DoubleCreateRequest request) {

@@ -27,7 +27,6 @@ import twozerotwo.buddiary.domain.diary.dto.StickerToDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
 import twozerotwo.buddiary.domain.diary.service.DiaryService;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
-import twozerotwo.buddiary.persistence.entity.UsedSticker;
 
 @RequiredArgsConstructor
 @RestController
@@ -80,6 +79,7 @@ public class DiaryController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 	}
+
 	//---------------------------------------다이어리에 스티커 추가------------------------------------------
 	@PatchMapping("/stickers")
 	public ResponseEntity addStickerToDiary(@RequestBody @Valid StickerToDiaryDto request) {

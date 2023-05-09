@@ -2,7 +2,6 @@ package twozerotwo.buddiary.domain.sticker.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -45,11 +44,12 @@ public class StickerService {
 		log.info("uploadUrl" + uploadUrl);
 		return stickerRepository.save(sticker);
 	}
+
 	@Transactional
 	public void buySticker(Long stickerId, StickerBuyRequest request) {
 		Sticker sticker = returnStickerById(stickerId);
 		Member member = clubService.returnMemberByUsername(request.getUsername());
-		Long totalPrice = sticker.getPrice()* request.getCount();
+		Long totalPrice = sticker.getPrice() * request.getCount();
 		boolean canBuy = member.checkPoint(totalPrice);
 		if (canBuy) {
 			// unusedSticker에 맴버, 스티커 같은 거 있으면 거기 조회 후++

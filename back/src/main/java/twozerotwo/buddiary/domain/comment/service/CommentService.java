@@ -22,11 +22,11 @@ import twozerotwo.buddiary.persistence.repository.DiaryRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class CommentService {
+	private static final Long ADD_COMMENT_POINT = 5L;
 	private final ClubService clubService;
 	private final DiaryService diaryService;
 	private final DiaryRepository diaryRepository;
 	private final CommentRepository commentRepository;
-	private static Long ADD_COMMENT_POINT = 5l;
 
 	@Transactional
 	public CommentResponse createComment(CommentRequest request) {

@@ -37,18 +37,21 @@ public class StickerController {
 		Sticker response = stickerService.registerSticker(request);
 		return new ResponseEntity<Sticker>(response, HttpStatus.CREATED);
 	}
+
 	//---------------------------------------------------스티커 구매----------------------------------------------------
 	@PostMapping("/{stickerId}")
 	public ResponseEntity buySticker(@PathVariable Long stickerId, @RequestBody StickerBuyRequest request) {
 		stickerService.buySticker(stickerId, request);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
 	//---------------------------------------------------모든 스티커 조회----------------------------------------------------
 	@GetMapping
 	public ResponseEntity getAllSticker() {
 		List<Sticker> stickerList = stickerService.getAllSticker();
 		return new ResponseEntity<>(Map.of("stickerList", stickerList), HttpStatus.OK);
 	}
+
 	//---------------------------------------------------나의 스티커 조회----------------------------------------------------
 	@GetMapping("/mine")
 	public ResponseEntity getMineSticker(@RequestParam String username) {

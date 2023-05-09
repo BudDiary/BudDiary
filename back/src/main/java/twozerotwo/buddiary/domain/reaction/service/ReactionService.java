@@ -25,11 +25,11 @@ import twozerotwo.buddiary.persistence.repository.ReactionRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class ReactionService {
+	private static final Long ADD_REACTION_POINT = 5L;
 	private final DiaryService diaryService;
 	private final ClubService clubService;
 	private final MemberRepository memberRepository;
 	private final ReactionRepository reactionRepository;
-	private static Long ADD_REACTION_POINT = 5l;
 
 	@Transactional
 	public List<ReactionDto> createReaction(ReactionRequest request) {
