@@ -9,7 +9,6 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +80,7 @@ public class ClubService {
 	public ClubCreateResponse createPlural(PluralCreateRequest request) throws IOException {
 		Member captain = returnMemberByUsername(request.getCaptainUsername());
 
-		String imageUrl = uploadS3(request.getThumbnail(), "Club");
+		String imageUrl = s3Uploader.upload(request.getThumbnail(), "Club");
 
 		Club club = Club.builder()
 			.uuid(UUID.randomUUID().toString())
@@ -100,14 +99,6 @@ public class ClubService {
 			.build();
 	}
 
-	public String uploadS3(MultipartFile file, String dirName) throws IOException {
-		if (file.isEmpty()) {
-			throw new BadRequestException("업로드할 file이 없습니다.");
-		} else {
-			return s3Uploader.upload(file, dirName);
-		}
-	}
-
 	@Transactional
 	public MemberClub createMemberClub(Member member, Club club) {
 		MemberClub memberClub = MemberClub.builder()
@@ -120,7 +111,7 @@ public class ClubService {
 
 	public Member returnMemberByUsername(String username) {
 		Member member = memberRepository.findByUsername(username)
-			.orElseThrow(() -> new NotFoundException("해당 아이디의 회원을 찾을 수 없습니다."));
+			.orElseThrow(() -> new RuntimeException("dd"));
 		return member;
 	}
 

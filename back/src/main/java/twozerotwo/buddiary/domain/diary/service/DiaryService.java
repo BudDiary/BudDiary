@@ -84,7 +84,7 @@ public class DiaryService {
 
 		if (imgList != null) {
 			for (MultipartFile file : fileList) {
-				String imgUrl = clubService.uploadS3(file, "Diary");
+				String imgUrl = s3Uploader.upload(file, "Diary");
 				DiaryImage diaryImage = DiaryImage.builder()
 					.diary(diary)
 					.imgUrl(imgUrl)
