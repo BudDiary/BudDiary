@@ -43,3 +43,12 @@ export const ProfileItem = styled.button`
 export const MobileMenu = styled.button`
   ${tw`my-auto mr-4 text-2xl visible sm:hidden`}
 `;
+
+
+export const NavProfilePicContainer = styled.img`
+${tw`hover:cursor-pointer w-[36px] h-[36px] border-2 border-gray-200 rounded-full mb-10 ml-2 mt-1`}
+`;
+
+export const NickNameContainer = styled.div`
+${tw`hover:cursor-pointer font-bold mt-2`}
+`;

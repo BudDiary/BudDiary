@@ -5,26 +5,32 @@ import ProfileEditModal from "./ProfileEditModal";
 import { BsCoin } from 'react-icons/bs'
 import { userdummy } from "./userdummy";
 import { UserProfileContainer, IntroContainer, ProfilePicSection, ProfileInfoSection, PointsButton, ChangeProfileSection } from "./Profile.styles";
+import useMember from "../../hooks/memberHook";
 
 export default function Profile() {
   const [profileModalState, setProfileModalState] = useState(false);
+  const { memberData, isLoggedIn } = useMember();
+  const profilePic = memberData.profilePic
+  const nickname = memberData.nickname
+  const points = memberData.points
+  const intro = memberData.intro
   const showProfileModal = () => {
     setProfileModalState(true);
   }
   return (<UserProfileContainer>
     {profileModalState === false ? null : <ProfileEditModal />}
     <ProfilePicSection>
-      <img src={userdummy.profilePic} className="rounded-full h-32"></img>
+      <img src={profilePic? profilePic: "base_profile.jpg"} className="rounded-full h-32"></img>
     </ProfilePicSection>
     <ProfileInfoSection>
-      {userdummy.nickname}
+      {nickname}
       <PointsButton>
-        {userdummy.points}pts
+        {points}pts
       </PointsButton>
     </ProfileInfoSection>
     <ChangeProfileSection>
     <FullRoundedButton onClick={showProfileModal} >프로필수정</FullRoundedButton>
     </ChangeProfileSection>
-    <IntroContainer>{userdummy.intro}</IntroContainer>
+    <IntroContainer>{intro}</IntroContainer>
   </UserProfileContainer>);
 }
