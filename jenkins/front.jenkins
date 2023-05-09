@@ -27,7 +27,7 @@ pipeline {
         }
 		stage('publish') {
             steps {
-				dir('front/front_build') {
+				dir('front') {
                     echo 'hello'
                     sshPublisher(publishers: [sshPublisherDesc(configName: 'front', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buddiary/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'front_build/')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 				}
