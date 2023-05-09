@@ -166,10 +166,24 @@ public class ClubService {
 		for (Diary diary : diaries) {
 			diaryInfos.add(diary.toDiaryInfo());
 		}
+		String clubImgUrl = club.getThumbnailPath();
+		ClubInfo clubInfo;
+		if (club.getType().equals(ClubType.DOUBLE)) {
+			for (MemberClub memberClub : club.getClubMembers()) {
+				if (!memberClub.getMember().equals(member)) {
+					clubImgUrl = memberClub.getMember().getProfilePath();
+					break;
+				}
+			}
+			clubInfo = club.toDoubleDto(clubImgUrl);
+		} else {
+			clubInfo = club.toPluralDto();
+		}
 
 		return ClubDetail.builder()
 			.diaryList(diaryInfos)
-			.memberList(members).build();
+			.memberList(members)
+			.clubInfo(clubInfo).build();
 	}
 
 	@Transactional
@@ -183,8 +197,6 @@ public class ClubService {
 			if (memberClub.getMember().equals(member)) {
 				// 외래키 다 지우고 삭제해야 함
 				target = memberClub;
-				// memberClubRepository.deleteMemberClubByMemberAndClub(club, member);
-				// isClubMember = true;
 			}
 		}
 		if (target == null) {
