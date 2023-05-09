@@ -1,16 +1,20 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '../../components/common/Page.styles'
 import { SurveyAgainButton, ResetButton } from '../../components/common/Button.styles'
 import { SignupInfoInput, SignupPicInput } from '../../components/common/Input.styles'
 import { SignUpInfoInputSection,ProfilePicContainer, FlexedContainer, ImgInput } from './SignUpInfoPage.styles'
 import { firstSignUpApi } from '../../apis/userApi'
+import { getCookie, setCookie } from 'typescript-cookie'
 
 export default function SignUpInfoPage() {
   const [fileURL, setFileURL] = useState<string>("");
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
   const [nickname, setNickname] = useState('');
-
+  
+  // useEffect(() => {
+  //   setCookie('hey', 'hi', { path: "/"})
+  // }, []);
   // 기본이미지에서 내가 올린 이미지로 바꾸기
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -36,18 +40,18 @@ export default function SignUpInfoPage() {
     if (file) {
       formData.append("profilePic", file[0]);
       formData.append('nickname', nickname);
-      try {
-        // const response = await axios.post("/api/upload", formData, {
-        //   headers: { "content-type": "multipart/form-data" },
-        // });
-        firstSignUpApi(formData)
-        console.log('야호')
-      } catch (error: any) {
-        console.log("이미지업로드 에러 발생");
-        throw new Error(error);
+      // 폼 객체 key 와 value 값을 순회.
+      let entries = formData.entries();
+      for (const pair of entries) {
+          console.log(pair[0]+ ', ' + pair[1]); 
       }
-    } else {
-      alert("업로드할 이미지가 없습니다");
+      const response  = await firstSignUpApi(formData)
+
+      if (response === true) {
+        console.log('여기에서 설문 띄워주시면 됩니다~~~')
+      } else {
+        console.log('실패여')
+      }
     }
   };
   return (
