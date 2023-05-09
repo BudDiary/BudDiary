@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackgroundContainer } from '../common/Modal.styles'
+import { BackgroundContainer } from '../common/ModalWindow.styles'
 import { SideBarContainer, SideBarProfileSection, SideBarMenuItem, SideBarMenuBox, LogOutButton } from './MobileSidebar.styles'
 
 export default function MobileSidebar() {
