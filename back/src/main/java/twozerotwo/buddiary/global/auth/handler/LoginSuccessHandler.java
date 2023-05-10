@@ -40,10 +40,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		// 쿠키로 전달
 		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 		// 리프래쉬 기억
-		memberRepository.findByUsername(username).ifPresent(member -> {
-			member.updateRefreshToken(refreshToken);
-			memberRepository.saveAndFlush(member);
-		});
+		// memberRepository.findByUsername(username).ifPresent(member -> {
+		// 	member.updateRefreshToken(refreshToken);
+		// 	memberRepository.saveAndFlush(member);
+		// });
 		log.info("로그인에 성공하셨습니다. 아이디 : {}", username);
 		log.info("로그인에 성공하셨습니다. accessToken : {}", accessToken);
 		log.info("로그인에 성공하셨습니다. 만료기간 지금으로 부터: {}", accessTokenExpiration);
@@ -57,14 +57,14 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private String extractSocialIdFromAuthentication(Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		Member member = memberRepository.findByUsername(userDetails.getUsername())
-			.orElseThrow(() -> new NotFoundException("OAuth 성공 했지만 맴버 가 디비에 없습니다."));
+			.orElseThrow(() -> new NotFoundException("인증 성공 했지만 맴버 가 디비에 없습니다."));
 		return member.getSocialId();
 	}
 
 	private SocialType extractSocialTypeFromAuthentication(Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		Member member = memberRepository.findByUsername(userDetails.getUsername())
-			.orElseThrow(() -> new NotFoundException("OAuth 성공 했지만 맴버 가 디비에 없습니다."));
+			.orElseThrow(() -> new NotFoundException("인증 성공 했지만 맴버 가 디비에 없습니다."));
 		return member.getSocialType();
 	}
 
