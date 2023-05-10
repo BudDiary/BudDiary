@@ -76,6 +76,11 @@ public class SecurityConfig {
 			.disable() // csrf 보안 사용 X
 			.cors().configurationSource(corsConfigurationSource()).and()
 			.headers()
+			.httpStrictTransportSecurity()
+			.maxAgeInSeconds(31536000)
+			.includeSubDomains(true)
+			.preload(true)
+			.and()
 			.frameOptions()
 			.disable()
 			.and()
@@ -87,31 +92,31 @@ public class SecurityConfig {
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-			.antMatchers(HttpMethod.PATCH, "/api/members/**").hasRole("USER")
-			.antMatchers(HttpMethod.GET, "/api/members/signup/jwt-test/**").hasRole("USER")
-			.antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
+			// .antMatchers(HttpMethod.PATCH, "/api/members/**").hasRole("USER")
+			// .antMatchers(HttpMethod.GET, "/api/members/signup/jwt-test/**").hasRole("USER")
+			// .antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
 			.anyRequest()
-			.permitAll()// 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
-			.and()
-			//== 소셜 로그인 설정 ==//
-			.oauth2Login()
-			.authorizationEndpoint().baseUri("/oauth2/authorize")
-			.authorizationRequestRepository(cookieAuthorizationRequestRepository())
-			.and()
-			.redirectionEndpoint()
-			// .baseUri("/login/oauth2/code/kakao/code*")
-			.and()
-			.userInfoEndpoint()
-			.userService(customOAuth2UserService)
-			.and()
-			.successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
-			.failureHandler(oAuth2LoginFailureHandler); // 소셜 로그인 실패 시 핸들러 설정
+			.permitAll();// 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
+			// .and()
+			// //== 소셜 로그인 설정 ==//
+			// .oauth2Login()
+			// .authorizationEndpoint().baseUri("/oauth2/authorize")
+			// .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+			// .and()
+			// .redirectionEndpoint()
+			// // .baseUri("/login/oauth2/code/kakao/code*")
+			// .and()
+			// .userInfoEndpoint()
+			// .userService(customOAuth2UserService)
+			// .and()
+			// .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+			// .failureHandler(oAuth2LoginFailureHandler); // 소셜 로그인 실패 시 핸들러 설정
 
 		// 원래 스프링 시큐리티 필터 순서가 LogoutFilter 이후에 로그인 필터 동작
 		// 따라서, LogoutFilter 이후에 우리가 만든 필터 동작하도록 설정
-		// 순서 : LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
-		http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
-		http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
+		// // 순서 : LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
+		// http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+		// http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 
@@ -123,7 +128,7 @@ public class SecurityConfig {
 		corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
 		corsConfiguration.addAllowedHeader("*");
 		// corsConfiguration.addAllowedOrigin("http://localhost:3000");
-		// corsConfiguration.addAllowedOrigin("http://localhost:8080");
+		corsConfiguration.addAllowedOriginPattern("http://localhost:8080");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -179,10 +184,10 @@ public class SecurityConfig {
 	 * 로그인 성공 시 호출할 handler, 실패 시 호출할 handler로 위에서 등록한 handler 설정
 	 */
 
-	@Bean
-	public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
-		JwtAuthenticationProcessingFilter jwtAuthenticationFilter = new JwtAuthenticationProcessingFilter(jwtService,
-			memberRepository);
-		return jwtAuthenticationFilter;
-	}
+	// @Bean
+	// public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
+	// 	JwtAuthenticationProcessingFilter jwtAuthenticationFilter = new JwtAuthenticationProcessingFilter(jwtService,
+	// 		memberRepository);
+	// 	return jwtAuthenticationFilter;
+	// }
 }

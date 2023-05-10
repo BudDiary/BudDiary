@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.domain.club.service.ClubService;
 import twozerotwo.buddiary.domain.notification.service.NotificationService;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.persistence.entity.Member;
@@ -22,11 +23,13 @@ import twozerotwo.buddiary.persistence.entity.Member;
 public class NotificationController {
 	private final NotificationService notificationService;
 	private final AuthenticationUtil authenticationUtil;
+	public final ClubService clubService;
 
-	@PostMapping("/double")
+	@PostMapping("/double/{target}")
 	public ResponseEntity notifyDoubleInviteEvent(@PathVariable String target, HttpServletRequest request) {
-		Member inviter = authenticationUtil.getMemberEntityFromRequest(request);
-		notificationService.notifyDoubleInviteEvent(inviter, target);
+		// Member inviter = authenticationUtil.getMemberEntityFromRequest(request);
+		Member inviter = clubService.returnMemberByUsername("yeokyung502@naver.com");
+		notificationService.notifyDoubleInviteEvent(inviter, "yeokyung502@naver.com");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

@@ -4,6 +4,7 @@ import static twozerotwo.buddiary.domain.notification.api.SseController.*;
 
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
+// import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -27,15 +28,22 @@ public class RedisSubscriber implements MessageListener {
 		try {
 			String topic = (String)redisTemplate.getStringSerializer().deserialize(message.getChannel());
 			String publishMessage = (String)redisTemplate.getStringSerializer().deserialize(message.getBody());
+			log.info("[publishMessage]: " + publishMessage);
 			InviteMessageDto inviteMessageDto = objectMapper.readValue(publishMessage, InviteMessageDto.class);
-			SseEmitter sseEmitter = inviteMessageDto.getSseEmitter();
+
 
 			if (topic.equals(NoticeType.DOUBLE_INVITE.getCode())) {
-				log.info("DOUBLE_INVITE");
+
 
 				try {
-					sseEmitter.send(SseEmitter.event().name(NoticeType.DOUBLE_INVITE.getCode()).data(inviteMessageDto.getNotificationDto()));
+					// sseEmitter.send(SseEmitter.event().name("DOUBLE_INVITE").data(inviteMessageDto.getNotificationDto()));
+					SseEmitter sseEmitter = inviteMessageDto.getSseEmitter();
+					log.info("DOUBLE_INVITE" + sseEmitter);
+					// sseEmitter.send(SseEmitter.event().name("DOUBLE_INVITE").data(inviteMessageDto.getNotificationDto()));
+					sseEmitter.send(SseEmitter.event().name("DOUBLE_INVITE").data(publishMessage));
+					log.info("여기요");
 				} catch (Exception e) {
+					log.info("저기요");
 					sseEmitters.remove(inviteMessageDto.getUserId());
 				}
 				// messagingTemplate.convertAndSendToUser((String)sideMessageDto.getMessageBody().get("username"),

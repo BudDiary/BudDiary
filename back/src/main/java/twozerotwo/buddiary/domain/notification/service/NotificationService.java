@@ -40,6 +40,7 @@ public class NotificationService {
 		// 쏴주기
 		Long targetId = target.getId();
 		if (sseEmitters.containsKey(targetId)) {
+			log.info("[targetId]" + targetId);
 			// 이 객체를 레디스 템플릿으로 보낸다..?
 			SseEmitter sseEmitter = sseEmitters.get(targetId);
 			NotificationDto notificationDto = savedNotice.toDto();
@@ -49,6 +50,16 @@ public class NotificationService {
 				.userId(targetId)
 				.build();
 			redisPublisher.publishNotification(redisDoubleInviteRepository.getTopic(NoticeType.DOUBLE_INVITE.getCode()), inviteMessageDto);
+			// try {
+			// 	sseEmitter.send(SseEmitter.event().name("DOUBLE_INVITE").data(inviteMessageDto.getNotificationDto()));
+			// 	// sseEmitter.send(SseEmitter.event().name("message").data("ㅎㅎㄹ"));
+			// 	log.info("여기 맞아");
+			// 	// sseEmitter.send(SseEmitter.event().name("connect").data("연결 완료2"));
+			// } catch (Exception e) {
+			// 	log.info("여기 아니야");
+			// 	log.info("error : " + e);
+			// 	sseEmitters.remove(targetId);
+			// }
 
 		}
 

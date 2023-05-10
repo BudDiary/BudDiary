@@ -15,7 +15,8 @@ import twozerotwo.buddiary.domain.notification.dto.InviteMessageDto;
 @Service
 public class RedisPublisher {
 
-	private final RedisTemplate<String, Object> redisTemplate;
+	// private final RedisTemplate<String, Object> redisTemplate;
+	private final RedisTemplate<String, InviteMessageDto> redisInviteMessageDtoTemplate;
 	// private final ChatRoomRedisRepository chatRoomRedisRepository;
 	//
 	// @KafkaListener(topics="exam", groupId = "foo")
@@ -28,8 +29,8 @@ public class RedisPublisher {
 
 
 	public void publishNotification(ChannelTopic topic, InviteMessageDto inviteMessageDto) {
-		System.out.println("[publishTItlehakwon]"+ topic.getTopic());
-		redisTemplate.convertAndSend(topic.getTopic(), inviteMessageDto);
+		System.out.println("[notification]"+ topic.getTopic());
+		redisInviteMessageDtoTemplate.convertAndSend(topic.getTopic(), inviteMessageDto);
 	}
 
 	// public void pubLikes(ChannelTopic topic, LikeResponse likeResponse) {
