@@ -76,7 +76,6 @@ public class ClubController {
 		// 로그인 거치고 이 api를 받는다
 		// 할당하는 서비스
 		clubService.addMember(request, clubId);
-
 		return null;
 	}
 
