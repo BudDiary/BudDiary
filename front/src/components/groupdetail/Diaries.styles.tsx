@@ -37,15 +37,19 @@ export const DiaryHeader = styled.div`
   width: 40vw;
   height: 50px;
 
-  > div:first-child {
-    margin-inline: 2rem;
-  }
-
   img {
     border-radius: 100%;
     width: 50px;
     height: 50px;
     border: 1px solid black;
+    margin-right: 10px;
+  }
+  h2 {
+    ${tw`font-hassam`}
+    font-weight: bold;
+  }
+  h3 {
+    ${tw`font-hassam`}
   }
 `;
 
@@ -125,6 +129,7 @@ export const DiaryImage = styled.img`
 `;
 
 export const DiaryText = styled.div`
+  ${tw`font-berry`}
   display: "flex",
   justifyContent: "flex-start",
   margin: 0,
@@ -132,4 +137,28 @@ export const DiaryText = styled.div`
 
 export const EditContent = styled.div`
   ${tw`flex flex-col rounded-md w-full mt-2`}
+`;
+
+export const BlankNotice = styled.div`
+  ${tw`flex flex-row rounded-md mt-2`}
+  font-size: 50px;
+  font-weight: bold;
+`;
+export const BlankDiary = styled.div`
+  ${tw`flex flex-col rounded-md mt-2 font-berry`}
+  font-size: 28px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const DiaryDetailBlank = styled.div`
+  ${tw`sm:col-span-2 bg-white rounded-md flex flex-col justify-center items-center`}
+  width: 45vw;
+  margin: 30px 0;
+  padding-block: 150px;
+  border: 5px solid #c3cfe3;
+
+  > * {
+    margin: auto;
+  }
 `;
