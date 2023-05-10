@@ -51,6 +51,7 @@ export default function SignUpInfoPage() {
         setModalOpen(true)
       } else {
         console.log('실패여')
+        setModalOpen(true)
       }
     }
   };
