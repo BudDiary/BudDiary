@@ -15,10 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -164,16 +160,20 @@ public class Member {
 	}
 
 	public String updateIntro(String intro) {
+
 		this.intro = intro;
 		return this.intro;
 	}
 
 	public String updateNickname(String nickname) {
+		if (nickname == null) {
+			throw new BadRequestException("닉네임이 널입니다.");
+		}
 		this.nickname = nickname;
 		return this.nickname;
 	}
 
-	public String setProfilePath(String profilePath) {
+	public String updateProfilePath(String profilePath) {
 		this.profilePath = profilePath;
 		return this.profilePath;
 	}

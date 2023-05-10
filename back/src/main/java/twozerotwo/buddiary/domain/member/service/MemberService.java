@@ -29,7 +29,7 @@ public class MemberService {
 	private final AuthenticationUtil authenticationUtil;
 	private final S3Uploader s3Uploader;
 
-	private static final String MEMBER_PROFILE_DIR = "memberProfile";
+	private static final String MEMBER_PROFILE_DIR = "Profile";
 
 	@Transactional
 	public MemberDto signUp(MemberSignUpRequest userSignUpDto, HttpServletRequest request) throws IOException {
@@ -49,13 +49,11 @@ public class MemberService {
 
 	@Transactional
 	public Optional<String> updateNickname(String nickname, HttpServletRequest request) {
-		if (!(nickname.length() >= 2 && nickname.length() <= 8)) {
-			throw new BadRequestException("닉네임 의 길이는 2이상 8 이하입니다.");
-		}
 		if (nickname == null || nickname.trim().isEmpty()) {
 			throw new BadRequestException("닉네임이 비어 있습니다");
-		}
-		if (StringUtils.containsWhitespace(nickname)) {
+		} else if (!(nickname.length() >= 2 && nickname.length() <= 8)) {
+			throw new BadRequestException("닉네임 의 길이는 2이상 8 이하입니다.");
+		} else if (StringUtils.containsWhitespace(nickname)) {
 			throw new BadRequestException("닉네임은 공백을 포함하면안됩니다");
 		}
 
@@ -82,10 +80,10 @@ public class MemberService {
 		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
 		if (!updateProfile.getOriginalFilename().isEmpty()) {
 			String uploadedFile = s3Uploader.upload(updateProfile, MEMBER_PROFILE_DIR);
-			String updatedFile = targetMember.setProfilePath(uploadedFile);
+			String updatedFile = targetMember.updateProfilePath(uploadedFile);
 			return Optional.of(updatedFile);
 		} else {
-			String updatedFile = targetMember.setProfilePath(null);
+			String updatedFile = targetMember.updateProfilePath(null);
 			return Optional.of(updatedFile);
 		}
 
