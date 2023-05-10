@@ -88,7 +88,7 @@ public class SecurityConfig {
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 			.antMatchers(HttpMethod.PATCH, "/api/members/**").hasRole("USER")
-			.antMatchers(HttpMethod.GET, "/api/members/signup/jwt-test/**").hasRole("USER")
+			.antMatchers(HttpMethod.GET, "/api/members/jwt-test").hasRole("USER")
 			.antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
 			.anyRequest()
 			.permitAll()// 위의 경로 이외에는 모두 인증된 사용자만 접근 가능

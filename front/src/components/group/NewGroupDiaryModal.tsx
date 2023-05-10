@@ -55,7 +55,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           console.log(pair[0]+ ', ' + pair[1]); 
       }
       // const response  = await makeClubApi(formData)
-      // if (response === true) {
+      // if (response === true ) {
       //   console.log('여기에서 설문 띄워주시면 됩니다~~~')
       // } else {
       //   console.log('실패여')

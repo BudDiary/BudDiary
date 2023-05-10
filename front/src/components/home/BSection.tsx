@@ -15,6 +15,8 @@ import {
   SNormal,
   SectionContainer,
   ImageSection,
+  FirstImageBox,
+  SecondImageBox,
   TextSection,
   WordSection,
   FirstDetail,
@@ -41,7 +43,10 @@ export default function BSection() {
   return (
     <Container ref={ref}>
       <SectionContainer>
-        <ImageSection Image={img} run={run}></ImageSection>
+        <ImageSection run={run}>
+          <FirstImageBox></FirstImageBox>
+          <SecondImageBox></SecondImageBox>
+        </ImageSection>
         <TextContainer>
           <TextSection>
             <FirstDetail run={run}>일기 분석을 통해</FirstDetail>
@@ -86,7 +91,7 @@ export default function BSection() {
           </WordSection>
         </TextContainer>
       </SectionContainer>
-      <WordsSection>
+      <WordsSection run={run}>
         <SExcited run={run} />
         <SHappy run={run} />
         <SNormal run={run} />

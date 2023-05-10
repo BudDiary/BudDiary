@@ -7,7 +7,6 @@ import normal from "../../assets/normal.png";
 import sad from "../../assets/sad.png";
 
 interface ImageSectionProps {
-  Image: string;
   run: string;
 }
 
@@ -36,9 +35,9 @@ export const SectionContainer = styled.div`
   }
 `;
 
-export const ImageSection = styled.div<ImageSectionProps>`
-  background-image: url(${(props) => props.Image});
-  ${tw`bg-contain bg-no-repeat bg-left rounded-md`}
+/* background-image: url(${(props) => props.Image}); */
+export const ImageSection = styled.div<running>`
+  ${tw`rounded-md flex`}
   width: 50%;
   height: 80%;
   min-height: calc(220px + 40%);
@@ -70,6 +69,16 @@ export const ImageSection = styled.div<ImageSectionProps>`
       transform: translateY(0px);
     }
   }
+`;
+
+export const FirstImageBox = styled.div`
+  ${tw`border-2`}
+  width:45%;
+`;
+
+export const SecondImageBox = styled.div`
+  ${tw`border-2`}
+  width:50%;
 `;
 
 export const TextContainer = styled.div`
@@ -164,6 +173,23 @@ export const WordSection = styled.div<running>`
 
   @media screen and (max-width: 640px) {
     display: none;
+  }
+
+  animation-name: showEmoji;
+  animation-duration: 4s;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes showEmoji {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 
@@ -402,7 +428,7 @@ export const Crying = styled.div<running>`
   }
 `;
 
-export const WordsSection = styled.div`
+export const WordsSection = styled.div<running>`
   ${tw`absolute text-center w-full z-20 text-3xl flex left-1/2`}
   transform:translateX(-50%);
   padding-top: min(320px);
@@ -410,6 +436,23 @@ export const WordsSection = styled.div`
   min-height: 90%;
   @media screen and (min-width: 640px) {
     display: none;
+  }
+
+  animation-name: showEmoji;
+  animation-duration: 4s;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes showEmoji {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 
@@ -649,9 +692,9 @@ export const SCrying = styled.div<running>`
 `;
 
 export const UnderLine = styled.p<timer>`
-  ${tw`absolute border border-bud-green`}
+  ${tw`absolute border-bud-green`}
   height: 2px;
-  width: 100%;
+  width: 0%;
 
   animation-name: BunderLine;
   animation-delay: ${(props) => props.time};
@@ -663,10 +706,14 @@ export const UnderLine = styled.p<timer>`
   @keyframes BunderLine {
     0% {
       ${tw`border`}
+    }
+    1% {
+      ${tw`border-2`}
       width: 0%;
     }
     100% {
       width: 100%;
+      ${tw`border-2`}
     }
   }
 `;

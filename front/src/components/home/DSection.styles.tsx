@@ -1,6 +1,14 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-import dimg from "./assets/DSectionimg916.jpg";
+
+interface randomImage {
+  image: string;
+  run: string;
+}
+
+interface ranImg {
+  image: string;
+}
 
 interface timer {
   time: string;
@@ -11,10 +19,33 @@ interface animationrun {
   run: string;
 }
 
-export const SectionContainer = styled.div`
-  ${tw`relative bg-bud-blue `}
+export const SectionContainer = styled.div<randomImage>`
+  ${tw`relative bg-cover`}
+  background-image: url(${(props) => props.image});
   height: 100vh;
   scroll-snap-align: start;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(50px);
+  }
+`;
+
+export const ImageContainer = styled.div<ranImg>`
+  background-image: url(${(props) => props.image});
+  ${tw`bg-cover bg-no-repeat bg-center rounded-md border sm:mr-4`}
+  z-index: 1;
+  width: 30%;
+  height: 80%;
+  min-height: calc(220px + 40%);
+
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 export const ContentSection = styled.div`
@@ -110,18 +141,6 @@ export const FirstBox = styled.div`
 export const SeceondSection = styled.div``;
 
 export const ThirdSection = styled.div``;
-
-export const ImageContainer = styled.div`
-  background-image: url(${dimg});
-  ${tw`bg-cover bg-no-repeat bg-center rounded-md border sm:mr-4`}
-  width: 30%;
-  height: 80%;
-  min-height: calc(220px + 40%);
-
-  @media screen and (max-width: 640px) {
-    display: none;
-  }
-`;
 
 export const ButtonSection = styled.div`
   ${tw`border mx-auto relative border-bud-green`}

@@ -79,5 +79,16 @@ const patchProfileApi = (payload: any) => {
     });
 }
 
+// 로그아웃 시 쿠키의 토큰 삭제
+const deleteTokenApi = () => {
+  return api.delete(`api/members/token`, { withCredentials: true })
+  .then((res) => {
+    console.log(res)
+    return res.data
+  })
+  .catch((err) => {
+    console.log(err, 'deleteTokenApi 오류')
+  })
+} 
 
-export { kakaoSignUpApi, firstSignUpApi, patchNicknameApi, patchIntroApi, patchProfileApi };
+export { kakaoSignUpApi, firstSignUpApi, patchNicknameApi, patchIntroApi, patchProfileApi, deleteTokenApi };

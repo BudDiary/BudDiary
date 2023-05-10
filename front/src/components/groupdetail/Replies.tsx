@@ -8,7 +8,8 @@ import {
   InputBox,
   CommentWrapper,
 } from "./DiaryComment.style";
-import { CreateReply } from "./groupdetailapis/groupdetailapis";
+
+import { postReplyApi } from "../../apis/replyAPI";
 import { EditButton, DeleteButton } from "../common/Button.styles";
 import { userdummy } from "../mypage/userdummy";
 
@@ -25,13 +26,13 @@ export default function Replies({ replies, commentId }: RepliesProps) {
 
   // 대댓글 작성
   const handleReplySubmit = async () => {
-    console.log("답글 요청", replyText, commentId, userdummy.username);
     try {
-      const response = await CreateReply(
-        replyText,
+      const response = await postReplyApi(
         commentId,
+        replyText,
         userdummy.username
       );
+
       // console.log(response);
       setReplyText("");
       console.log(response);
@@ -109,6 +110,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                     <DeleteReply
                       key={reply.id}
                       isOpen={false}
+                      commentId={commentId}
                       reply={reply}
                       onClose={handleCloseModal}
                     />
