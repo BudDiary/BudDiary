@@ -4,18 +4,11 @@ import { kakaoSignUpApi } from '../../apis/userApi';
 import { useNavigate } from "react-router-dom";
 import useMember from '../../hooks/memberHook';
 import Swal from 'sweetalert2';
-import { useCookies } from 'react-cookie'; 
 export default function SignUpPage() {
   const navigate = useNavigate();
   const { login } = useMember();
-  const [cookies, setCookie, removeCookie] = useCookies(['AccessToken', 'RefreshToken']);
-
-  // const [RefreshToken, setRefreshToken, removeRefreshToken] = useCookies(['RefreshToken']);
-  // const [AccessToken, setAccessToken, removeAccessToken] = useCookies(['AccessToken']);
   useEffect(() => {
     async function fetchData() {
-      removeCookie('AccessToken')
-      removeCookie('RefreshToken')
       const currentUrl: string = window.location.href;
       const code = currentUrl.split('localhost:3000/')[1];
       const response = await kakaoSignUpApi(code)
