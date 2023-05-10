@@ -7,6 +7,8 @@ import json
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 class myAnswer(BaseModel):
     id: int
@@ -81,3 +83,37 @@ def survey(items: myAnswer):
     return {"message": "json_update success"}
 
 
+@app.get("/fastapi/recommend/survey/{member_id}")
+def recommend_by_survey(member_id: int):
+    def get_similarity_scores(filename, member_id):
+        # 파일에서 데이터 로드
+        if os.path.exists(filename):
+            with open(filename) as f:
+                data = json.load(f)
+
+        # id와 preference 추출
+        ids = []
+        preferences = []
+        for entry in data:
+            ids.append(entry['id'])
+            preferences.append(' '.join([str(p) for p in entry['preference']]))
+
+        # TF-IDF 특성 행렬 생성
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(preferences)
+
+        # 코사인 유사도 계산
+        cosine_similarities = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+        # 결과 리스트 생성
+        result = []
+        target_index = ids.index(member_id)
+        for i, sim in sorted(enumerate(cosine_similarities[target_index]), key=lambda x: x[1], reverse=True):
+            if i != target_index:
+                result.append((ids[i], sim))
+
+        return result
+    recommend_list = get_similarity_scores('survey.json', 1)
+    recommend_object = [{"id" : id, "rate": round(rate, 2)} for id, rate in recommend_list]
+
+    return recommend_object
