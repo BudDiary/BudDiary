@@ -12,12 +12,17 @@ import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
 import { Comment } from "../../types/group";
 
 interface CommentEditProps {
+  diaryId: number;
   isOpen: boolean;
   onClose: () => void;
   comment: Comment;
 }
 
-export default function CommentEdit({ comment, onClose }: CommentEditProps) {
+export default function CommentEdit({
+  comment,
+  onClose,
+  diaryId,
+}: CommentEditProps) {
   const [commentState, setCommentState] = useState(comment.text);
   const [height, setHeight] = useState("30px");
   const closeCommentModal = () => {

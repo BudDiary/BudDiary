@@ -2,7 +2,7 @@
   "clubDetail": {
     "diaryList": [
       {
-        "diaryId": 7,
+        "diaryId": 1,
         "writer": {
           "id": 1,
           "username": "yeokyung502@naver.com",
@@ -13,29 +13,50 @@
         "text": "이러지마 제발..",
         "imgList": [
           {
-            "id": 5,
+            "id": 1,
             "imgUrl": "https://picsum.photos/640/480/?random&category=animal"
           },
           {
-            "id": 6,
+            "id": 2,
             "imgUrl": "https://picsum.photos/640/480/?random&category=dog"
           }
         ],
         "positiveRate": 0,
         "negativeRate": 0,
-        "reactionList": [],
+        "reactionList": [
+          {
+            "id": 1,
+            "username": "yeokyung",
+            "actionType": "SURPRISED"
+          },
+          {
+            "id": 2,
+            "username": "gio",
+            "actionType": "BEST"
+          },
+          {
+            "id": 3,
+            "username": "ymoon1@gmail.com",
+            "actionType": "SURPRISED"
+          },
+          {
+            "id": 4,
+            "username": "gio",
+            "actionType": "SURPRISED"
+          }
+        ],
         "commentList": [
           {
             "id": 1,
             "writer": {
-              "id": 1,
+              "id": 4,
               "username": "gio",
               "nickname": "김지오",
               "profilePath": "https://picsum.photos/56"
             },
             "replies": [
               {
-                "id": 2,
+                "id": 1,
                 "writer": {
                   "id": 5,
                   "username": "ymoon1@gmail.com",
@@ -46,9 +67,9 @@
                 "text": "대댓1"
               },
               {
-                "id": 3,
+                "id": 2,
                 "writer": {
-                  "id": 1,
+                  "id": 4,
                   "username": "gio",
                   "nickname": "김지오",
                   "profilePath": "https://picsum.photos/56"
@@ -98,7 +119,7 @@
         ]
       },
       {
-        "diaryId": 8,
+        "diaryId": 2,
         "writer": {
           "id": 5,
           "username": "ymoon1@gmail.com",
@@ -115,12 +136,48 @@
         ],
         "positiveRate": 0,
         "negativeRate": 0,
-        "reactionList": [],
+        "reactionList": [
+          {
+            "id": 5,
+            "username": "yeokyung",
+            "actionType": "SURPRISED"
+          },
+          {
+            "id": 6,
+            "username": "gio",
+            "actionType": "BEST"
+          },
+          {
+            "id": 7,
+            "username": "ymoon1@gmail.com",
+            "actionType": "SURPRISED"
+          },
+          {
+            "id": 8,
+            "username": "gio",
+            "actionType": "SURPRISED"
+          },
+          {
+            "id": 9,
+            "username": "gio",
+            "actionType": "BEST"
+          },
+          {
+            "id": 10,
+            "username": "MinuJeong@naver.com",
+            "actionType": "ANGRY"
+          },
+          {
+            "id": 11,
+            "username": "JunYeong@naver.com",
+            "actionType": "SURPRISED"
+          }
+        ],
         "commentList": [
           {
             "id": 3,
             "writer": {
-              "id": 1,
+              "id": 4,
               "username": "gio",
               "nickname": "김지오",
               "profilePath": "https://picsum.photos/56"
@@ -129,7 +186,7 @@
               {
                 "id": 4,
                 "writer": {
-                  "id": 1,
+                  "id": 4,
                   "username": "gio",
                   "nickname": "김지오",
                   "profilePath": "https://picsum.photos/56"
@@ -156,7 +213,7 @@
         ]
       },
       {
-        "diaryId": 9,
+        "diaryId": 3,
         "writer": {
           "id": 1,
           "username": "gio",
@@ -170,14 +227,31 @@
         "negativeRate": 0,
         "reactionList": [
           {
-            "type": "SURPRISED"
+            "id": 12,
+            "username": "gio",
+            "actionType": "ANGRY"
+          },
+          {
+            "id": 13,
+            "username": "yeokyung502@naver.com",
+            "actionType": "BEST"
+          },
+          {
+            "id": 14,
+            "username": "ymoon1@gmail.com",
+            "actionType": "SURPRISED"
+          },
+          {
+            "id": 15,
+            "username": "MyeongJin.com",
+            "actionType": "SURPRISED"
           }
         ],
         "commentList": [
           {
             "id": 5,
             "writer": {
-              "id": 1,
+              "id": 4,
               "username": "gio",
               "nickname": "김지오",
               "profilePath": "https://picsum.photos/56"
@@ -186,7 +260,7 @@
               {
                 "id": 1,
                 "writer": {
-                  "id": 1,
+                  "id": 4,
                   "username": "gio",
                   "nickname": "김지오",
                   "profilePath": "https://picsum.photos/56"
@@ -197,7 +271,7 @@
               {
                 "id": 2,
                 "writer": {
-                  "id": 2,
+                  "id": 4,
                   "username": "gio",
                   "nickname": "김지오",
                   "profilePath": "https://picsum.photos/56"
@@ -261,10 +335,10 @@
         "profilePath": "https://picsum.photos/55"
       }
     ],
-    "myclubList": {
-      "clubUuid": "6892719f-2d87-43b5-96db-a620816146dd",
-      "thumbnailUrl": "https://buddiary-bucket.s3.ap-northeast-2.amazonaws.com/Club/09d9bd3e-a926-474f-b983-ee6e83fcfacc-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-04-01%20200847.png",
-      "clubName": "C202 Buddiary"
+    "clubInfo": {
+      "clubUuid": "6ddf77ba-1c85-41b1-9047-a5abd1374f9b",
+      "thumbnailUrl": "https://buddiary-bucket.s3.ap-northeast-2.amazonaws.com/Club/7fb552ab-325c-4e75-ba83-45777706a3bc-20210608_60bf28e569961.gif",
+      "clubName": "3학년 1반 함 뭉치자"
     }
   }
 }

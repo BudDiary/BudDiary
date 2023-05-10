@@ -8,22 +8,29 @@ import {
 import { UserInfo } from "./DiaryComment.style";
 import { timeAgo } from "./GroupDetailFunction";
 import { DeleteContent } from "./DiaryComment.style";
-import { ReplyDelete } from "./groupdetailapis/groupdetailapis";
+import { deleteReplyApi } from "../../apis/replyAPI";
 import { Divider } from "@mui/material";
 import { Reply } from "../../types/group";
+import { userdummy } from "../mypage/userdummy";
 interface RepliesProps {
   isOpen: boolean;
   reply: Reply;
+  commentId: number;
   onClose: () => void;
 }
-export default function DeleteReply({ reply, onClose }: RepliesProps) {
+export default function DeleteReply({
+  reply,
+  commentId,
+  onClose,
+}: RepliesProps) {
   const [commentState, setCommentState] = useState(reply.text);
   const closeCommentModal = () => {
     onClose();
   };
+  const username = userdummy.username;
 
   const handleDeleteReply = () => {
-    ReplyDelete(reply.id);
+    deleteReplyApi(reply.id, commentId, username);
     onClose();
   };
 

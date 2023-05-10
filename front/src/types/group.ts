@@ -11,7 +11,9 @@ export interface Image {
 }
 
 export interface Reaction {
-  type: string;
+  id: number;
+  username: string;
+  actionType: string;
 }
 
 export interface Reply {
@@ -57,7 +59,7 @@ export interface Info {
 export interface ClubDetail {
   diaryList: Diary[];
   memberList: Member[];
-  myclubList: Info;
+  clubInfo: Info;
 }
 
 export interface Club {

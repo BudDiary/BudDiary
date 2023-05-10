@@ -1,23 +1,34 @@
 import React from "react";
+import { Reaction } from "../../../types/group";
 
-type Props = {
-  emojis: string[];
+type EmojiCountProps = {
+  reactionList: Reaction[];
 };
 
-const EmojiCount = ({ emojis }: Props) => {
-  const emojiCounts = emojis.reduce(
-    (counts: Record<string, number>, emoji: string) => {
-      counts[emoji] = counts[emoji] ? counts[emoji] + 1 : 1;
-      return counts;
-    },
-    {}
-  );
+const emojiActionTypes: { [key: string]: string } = {
+  LIKED: "😀",
+  BEST: "👍",
+  ANGRY: "😡",
+  SAD: "😢",
+  SURPRISED: "😲",
+};
 
+const EmojiCount = ({ reactionList }: EmojiCountProps) => {
+  const countActionTypes = (reactionList: Reaction[]) => {
+    const counts: Record<string, number> = {};
+    reactionList.forEach((reaction) => {
+      counts[reaction.actionType] = counts[reaction.actionType]
+        ? counts[reaction.actionType] + 1
+        : 1;
+    });
+    return counts;
+  };
+  const actionTypesCount = countActionTypes(reactionList);
   return (
     <div style={{ display: "flex" }}>
-      {Object.keys(emojiCounts).map((emoji) => (
-        <p key={emoji} style={{ marginRight: "0.5rem" }}>
-          {emoji} {emojiCounts[emoji]}
+      {Object.keys(actionTypesCount).map((actionType) => (
+        <p key={actionType} style={{ marginRight: "0.5rem" }}>
+          {emojiActionTypes[actionType]} {actionTypesCount[actionType]}
         </p>
       ))}
     </div>
