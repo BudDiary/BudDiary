@@ -26,7 +26,7 @@ public class WithAuthUserSecurityContextFactory implements WithSecurityContextFa
 		UserDetails userDetailsUser = User.builder()
 			.username(userName)
 			.password("test")
-			.roles(role)
+			.roles("ROLE_"+role)
 			.build();
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetailsUser, null,
 			authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
