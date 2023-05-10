@@ -1,19 +1,34 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Navigation } from "swiper";
+import { useNavigate } from "react-router-dom";
 import Modal from '@mui/joy/Modal';
 import Sheet from '@mui/joy/Sheet';
 import {BiArrowBack} from 'react-icons/bi'
 import Button from '@mui/joy/Button';
-
-
-import { useSwiper, Swiper, SwiperSlide } from "swiper/react";
+import { useSwiper } from "swiper/react";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import "swiper/swiper-bundle.css";
-import { SwiperNavButtons } from "./SwiperNavButton";
 import { CloseModalButton, ModalTitle, ModalTopNavContainer } from '../../components/common/ModalWindow.styles';
 import { MoveIndex, Tag } from "./SurveyModal.styles";
+// import { fastApi } from "./axiosConfig";
+
+// // 다수 클럽 생성
+// const postPluralClubApi = (payload: any) => {
+//   return formApi.post(`api/clubs/plural`,payload,  { withCredentials: true })
+//   .then((res) => {
+//       console.log(res)
+//       return res.data;
+//     })
+//     .catch((err) => {
+//       Swal.fire({
+//         icon: 'error',
+//         text: 'postPluralClubApi 오류가 발생했어요.'
+//       })
+//       console.log(err);
+//       return err;
+//     });
+// }
 
 interface Props {
     closeModal: any;
@@ -23,9 +38,30 @@ export default function SurveyModal({ closeModal }: Props) {
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
   const swiper = useSwiper();
+  const navigate = useNavigate();
   const closeSurvey = () => {
     closeModal();
+    navigate('/')
+    
   };
+
+
+
+// const postPluralClubApi = (payload: any) => {
+//   return formApi.post(`api/clubs/plural`,payload,  { withCredentials: true })
+//   .then((res) => {
+//       console.log(res)
+//       return res.data;
+//     })
+//     .catch((err) => {
+//       Swal.fire({
+//         icon: 'error',
+//         text: 'postPluralClubApi 오류가 발생했어요.'
+//       })
+//       console.log(err);
+//       return err;
+//     });
+// }
   useEffect(() => {
     if (swiper) {
       swiper.slideNext();
@@ -133,7 +169,6 @@ export default function SurveyModal({ closeModal }: Props) {
       )}
 
         
-
          <MoveIndex>
           {<Button onClick={outputPrevSentence}>Prev</Button>}
           {<Button onClick={outputNextSentence}>Next</Button>}
