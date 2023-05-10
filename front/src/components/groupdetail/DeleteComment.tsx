@@ -10,23 +10,27 @@ import { timeAgo } from "./GroupDetailFunction";
 import { DeleteContent } from "./DiaryComment.style";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
-import { CommentDelete } from "./groupdetailapis/groupdetailapis";
+import { deleteCommentApi } from "../../apis/commentApi";
+import { userdummy } from "../mypage/userdummy";
 interface CommentDeleteProps {
   isOpen: boolean;
   onClose: () => void;
   comment: Comment;
+  diaryId: number;
 }
 export default function DeleteComment({
   comment,
+  diaryId,
   onClose,
 }: CommentDeleteProps) {
   const [commentState, setCommentState] = useState(comment.text);
+  const username = userdummy.username;
   const closeCommentModal = () => {
     onClose();
   };
 
   const handleDeleteComment = () => {
-    CommentDelete(comment.id);
+    deleteCommentApi(diaryId, comment.id, username);
     onClose();
   };
   return (

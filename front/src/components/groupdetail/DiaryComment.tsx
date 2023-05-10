@@ -9,13 +9,10 @@ import {
   InputSet,
   CommentWrapper,
 } from "./DiaryComment.style";
-import { CreateComment } from "./groupdetailapis/groupdetailapis";
+import { postCommentApi } from "../../apis/commentApi";
 import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
 import { EditButton, DeleteButton } from "../common/Button.styles";
-
 import { userdummy } from "../mypage/userdummy";
-import EmojiPicker from "./emoji/EmojiPicker";
-import EmojiCount from "./emoji/EmojiCount";
 import { timeAgo } from "./GroupDetailFunction";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
@@ -58,9 +55,9 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
     console.log("댓글 요청", commentText, diaryId, userdummy.username);
     setHeight("35px");
     try {
-      const response = await CreateComment(
-        commentText,
+      const response = await postCommentApi(
         diaryId,
+        commentText,
         userdummy.username
       );
       setCommentText("");
@@ -70,54 +67,8 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
     }
   };
 
-  // 이모티콘 추가 제거
-
-  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
-  const [showEmojiPopup, setShowEmojiPopup] = useState(false);
-
-  const handleSelectEmoji = (emoji: string) => {
-    if (selectedEmojis.includes(emoji)) {
-      setSelectedEmojis(selectedEmojis.filter((e) => e !== emoji));
-    } else {
-      setSelectedEmojis([...selectedEmojis, emoji]);
-    }
-  };
-
-  // const filteredComments = CommentList.filter(
-  //   (comment) => comment.diaryId === diaryId
-  // );
-
   return (
     <CommentWrapper>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "baseline",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            position: "relative",
-          }}
-        >
-          <EmojiCount emojis={selectedEmojis} />
-          <BasicButton onClick={() => setShowEmojiPopup((prev) => !prev)}>
-            +😀
-          </BasicButton>
-        </div>
-        {showEmojiPopup && (
-          <EmojiPicker
-            onSelect={handleSelectEmoji}
-            selectedEmojis={selectedEmojis}
-            diaryId={diaryId}
-          />
-        )}
-      </div>
-
       <p style={{ fontWeight: "bold" }}>댓글 {commentList.length}</p>
       {commentList
         .slice(0, showAllComments ? commentList.length : 2)
@@ -154,6 +105,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                     <CommentEdit
                       key={comment.id}
                       comment={comment}
+                      diaryId={diaryId}
                       isOpen={false}
                       onClose={handleCloseModal}
                     />
@@ -162,6 +114,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                     <DeleteComment
                       key={comment.id}
                       comment={comment}
+                      diaryId={diaryId}
                       isOpen={false}
                       onClose={handleCloseModal}
                     />
