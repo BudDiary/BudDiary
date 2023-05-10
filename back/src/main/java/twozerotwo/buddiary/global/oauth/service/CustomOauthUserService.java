@@ -88,10 +88,9 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 	private Member getUser(OAuthAttributes attributes, SocialType socialType) {
 		// log.info("유저가 없으면 저장하고 있으면 던져준다", attributes.getOauth2UserInfo().getNickname());
 		log.info("getUser 소셜타입 {}", socialType);
-		String socialId = attributes.getOauth2UserInfo().getId();
-		log.info("getUser 유저 정보 {}", socialId);
-		Member findUser = memberRepository.findBySocialTypeAndSocialId(socialType, socialId
-		).orElse(null);
+		String email = attributes.getOauth2UserInfo().getEmail();
+		log.info("email 유저 정보 {}", email);
+		Member findUser = memberRepository.findBySocialTypeAndUsername(socialType, email).orElse(null);
 
 		if (findUser == null) {
 			// 없으면 저장한다.
