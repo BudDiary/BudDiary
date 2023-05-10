@@ -14,7 +14,7 @@ export default function ModalWindow({ page, setModalOpen }: Props) {
   return (
     <>
     {(page === 1) && (<NewGroupDiaryModal closeModal={closeModal}/>)}
-    {(page === 2) && (<ProfileEditModal />)}
+    {(page === 2) && (<ProfileEditModal closeModal={closeModal}/>)}
     {(page === 3) && (<SurveyModal closeModal={closeModal}/>)}
     </>
     

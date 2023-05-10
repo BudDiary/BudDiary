@@ -2,7 +2,7 @@ import { api, formApi } from "./axiosConfig";
 import Swal from 'sweetalert2';
 
 // 스티커 등록
-const postDiarySticker = ( payload: any ) => {
+const postDiaryStickerApi = ( payload: any ) => {
     return formApi.post(`api/stickers`, payload,  { withCredentials: true })
     .then((res) => {
         console.log(res)
@@ -18,7 +18,7 @@ const postDiarySticker = ( payload: any ) => {
 }
 
 // 모든 스티커 조회
-const getAllStickers = () => {
+const getAllStickersApi = () => {
     return api.get(`api/stickers`, { withCredentials: true })
     .then((res) => {
       console.log(res)
@@ -34,7 +34,7 @@ const getAllStickers = () => {
 }
 
 // 내가 가진 스티커 조회
-const getMyStickers = ( payload: string ) => {
+const getMyStickersApi = ( payload: string ) => {
   return api.get(`api/stickers/mine?username=${payload}`, { withCredentials: true })
   .then((res) => {
       console.log(res)
@@ -49,4 +49,4 @@ const getMyStickers = ( payload: string ) => {
     });
 }
 
-export { postDiarySticker, getAllStickers, getMyStickers };
+export { postDiaryStickerApi, getAllStickersApi , getMyStickersApi };

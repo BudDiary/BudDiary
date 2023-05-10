@@ -4,8 +4,9 @@ import { FullRoundedButton } from "../common/Button.styles";
 import ProfileEditModal from "./ProfileEditModal";
 import { BsCoin } from 'react-icons/bs'
 import { userdummy } from "./userdummy";
-import { UserProfileContainer, IntroContainer, ProfilePicSection, ProfileInfoSection, PointsButton, ChangeProfileSection } from "./Profile.styles";
+import { NicknameBox, UserProfileContainer, IntroContainer, ProfilePicSection, ProfileInfoSection, PointsButton, ChangeProfileSection } from "./Profile.styles";
 import useMember from "../../hooks/memberHook";
+import ModalWindow from '../common/ModalWindow';
 
 export default function Profile() {
   const [profileModalState, setProfileModalState] = useState(false);
@@ -18,12 +19,11 @@ export default function Profile() {
     setProfileModalState(true);
   }
   return (<UserProfileContainer>
-    {profileModalState === false ? null : <ProfileEditModal />}
-    <ProfilePicSection>
-      <img src={profilePic? profilePic: "base_profile.jpg"} className="rounded-full h-32"></img>
-    </ProfilePicSection>
+    {profileModalState && <ModalWindow page={2} setModalOpen={setProfileModalState}/>}
+    {/* {profileModalState === false ? null : <ProfileEditModal/>} */}
+    <ProfilePicSection src={profilePic? profilePic: "base_profile.jpg"}></ProfilePicSection>
     <ProfileInfoSection>
-      {nickname}
+      <NicknameBox>{nickname}</NicknameBox>
       <PointsButton>
         {points}pts
       </PointsButton>
@@ -31,6 +31,9 @@ export default function Profile() {
     <ChangeProfileSection>
     <FullRoundedButton onClick={showProfileModal} >프로필수정</FullRoundedButton>
     </ChangeProfileSection>
-    <IntroContainer>{intro}</IntroContainer>
+    <IntroContainer>
+      <div>소개글</div>
+      {intro}
+    </IntroContainer>
   </UserProfileContainer>);
 }

@@ -57,7 +57,6 @@ export default function SignUpInfoPage() {
   return (
     <PageContainer>
       {modalOpen && <ModalWindow page={3} setModalOpen={setModalOpen}/>}
-
       <FlexedContainer>
         <SignUpInfoInputSection>
         <FlexedContainer>
