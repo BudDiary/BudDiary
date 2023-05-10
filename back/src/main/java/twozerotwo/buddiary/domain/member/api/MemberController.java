@@ -1,7 +1,6 @@
 package twozerotwo.buddiary.domain.member.api;
 
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -20,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.domain.member.dto.MemberSignUpRequest;
 import twozerotwo.buddiary.domain.member.service.MemberService;
-import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.ConflictException;
 
 @RestController
@@ -60,7 +58,6 @@ public class MemberController {
 	//-------------------------------------------맴버 인트러 변경----------------------------------------------
 	@PatchMapping("/intro")
 	public ResponseEntity<?> patchIntro(@RequestBody Map<String, String> introReq, HttpServletRequest request) {
-		log.info("컨트롤러 진입");
 		String nickname = introReq.get("intro");
 		String updatedNickname = memberService.updateIntro(nickname, request).orElseThrow(
 			() -> new ConflictException("소개말 변경을 실패 했습니다.")
