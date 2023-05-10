@@ -44,7 +44,8 @@ export default function SurveyModal({ closeModal }: Props) {
 
   const navigate = useNavigate();
   const closeSurvey = () => {
-    firstSurveyApi({id : Number(memberData.id), myAnswer: myAnswer})
+    console.log({id : memberData.id, favor_list: myAnswer})
+    firstSurveyApi({id : memberData.id, favor_list: myAnswer})
     closeModal();
     navigate('/')
   };

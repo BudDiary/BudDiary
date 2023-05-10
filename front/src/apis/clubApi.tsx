@@ -1,4 +1,4 @@
-import { api, formApi } from "./axiosConfig";
+import { api, fastApi, formApi } from "./axiosConfig";
 import Swal from 'sweetalert2';
 
 // 다수 클럽 생성
@@ -52,7 +52,20 @@ const getMyClubListApi = (payload: string ) => {
     });
 }
 
+const getRecommendBySurveyApi = (payload: number) => {
+  return fastApi.get(`/fastapi/recommend/survey/${payload}`, { withCredentials: true })
+  .then((res) => {
+      console.log(res)
+      return res;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: 'error',
+        text: 'getRecommendBySurveyApi 오류가 발생했어요.'
+      })
+      return err;
+    });
+}
 
 
-
-export { postPluralClubApi, postDoubleClubApi, getMyClubListApi };
+export { postPluralClubApi, postDoubleClubApi, getMyClubListApi, getRecommendBySurveyApi };

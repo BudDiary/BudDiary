@@ -28,7 +28,7 @@ export default function GroupPage() {
     <>
     <SubNavContainer>나의 그룹</SubNavContainer>
     <PageContainer>
-      <Recommended doubleList={doubleList}/>
+      <Recommended/>
       <br />
       <MyTab/>
     </PageContainer>
