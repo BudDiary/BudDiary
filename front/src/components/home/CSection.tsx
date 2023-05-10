@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import TypeIt from "typeit-react";
 import { useInView } from "react-intersection-observer";
 import {
+  ChangeBox,
+  AfterChangeBox,
   SectionContainer,
   ImageContainer,
   TextContainer,
@@ -88,23 +90,24 @@ export default function CSection() {
             /> */}
           </TypeText>
 
-          {/* <ChangeBox time={"0.7s"} run={run}>
+          <ChangeBox time={"0.7s"} run={run}>
             <AppearText time={"0.7s"} run={run}>
-              {text[0]}
+              반
             </AppearText>
             <AppearText time={"0.75s"} run={run}>
-              {text[1]}
+              응
             </AppearText>
             <AppearText time={"0.8s"} run={run}>
-              {text[2]}
+              을
             </AppearText>
-            <AppearText time={"0.85s"} run={run}>
-              {text[3]}
-            </AppearText>
-          </ChangeBox> */}
+            <AppearText time={"0.85s"} run={run}></AppearText>
+          </ChangeBox>
+          <AfterChangeBox time={"0.7s"} run={run}>
+            스티커를
+          </AfterChangeBox>
           <TextBox time={"0.9s"} run={run}>
             <AppearText time={"0.9s"} run={run}>
-              &nbsp; 남
+              &nbsp; &nbsp; 남
             </AppearText>
             <AppearText time={"0.95s"} run={run}>
               겨

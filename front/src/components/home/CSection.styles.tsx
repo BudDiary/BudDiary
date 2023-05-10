@@ -85,27 +85,77 @@ export const TypeText = styled.span`
 `;
 
 export const ChangeBox = styled.div<timer>`
-  ${tw``}
-  animation-name: ${(props) => props.run}1;
-  animation-duration: 3.01s;
-  animation-iteration-count: infinite;
-  animation-play-state: ${(props) => props.run};
+  ${tw`relative`}
 
-  @keyframes running1 {
+  animation-name: changeBox;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+  @keyframes changeBox {
     0% {
       transform: translate(0px, 0px);
     }
-    50% {
-      ${tw`opacity-100`}
+    40% {
       transform: translate(0px, 0px);
     }
-    60% {
-      ${tw`opacity-100`}
-      transform: translate(0px, -10%);
+    50% {
+      transform: perspective(500px) rotateX(-90deg);
+      opacity: 1;
+    }
+    51% {
+      transform: perspective(500px) rotateX(-90deg);
+      opacity: 0;
+    }
+    90% {
+      transform: perspective(500px) rotateX(-270deg);
+      opacity: 0;
+    }
+    90.1% {
+      transform: perspective(500px) rotateX(-270deg);
+      opacity: 1;
     }
     100% {
-      ${tw`opacity-0`}
-      transform: translate(0px, 70%);
+      transform: translate(0px, 0px);
+    }
+  }
+`;
+
+export const AfterChangeBox = styled.div<timer>`
+  ${tw`absolute`}
+  animation-name: changeBox2;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+  @keyframes changeBox2 {
+    0% {
+      transform: perspective(500px) rotateX(-270deg);
+      opacity: 0;
+    }
+    45% {
+      transform: perspective(500px) rotateX(-270deg);
+      opacity: 1;
+    }
+    55% {
+      transform: translate(0px, 0px);
+      opacity: 1;
+    }
+    85% {
+      transform: translate(0px, 0px);
+      opacity: 1;
+    }
+    95% {
+      transform: perspective(500px) rotateX(90deg);
+      opacity: 1;
+    }
+    95.1% {
+      transform: perspective(500px) rotateX(90deg);
+      opacity: 0;
+    }
+    100% {
+      transform: perspective(500px) rotateX(-270deg);
+      opacity: 0;
     }
   }
 `;
