@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -81,6 +80,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		Member findMember = memberRepository.findByUsername(oAuth2User.getUsername())
 			.orElseThrow(() -> new UsernameNotFoundException("유저 가 존제 하지 않습니다"));
 		LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+			.id(findMember.getId())
 			.isNewBe(false)
 			.username(findMember.getUsername())
 			.nickname(findMember.getNickname())
