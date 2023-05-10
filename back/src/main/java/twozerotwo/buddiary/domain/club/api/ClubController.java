@@ -80,6 +80,9 @@ public class ClubController {
 	@PostMapping("/invitation/{clubId}")
 	public ResponseEntity inviteClub(@PathVariable("clubId") String clubId, @PathVariable String username) {
 		// 로그인 안한친구는 로그인 하고 응해야한다.
+		// 로그인 안한 친구가 온다면
+		// 로그인 한 친구가 온다면
+		
 		return null;
 	}
 
