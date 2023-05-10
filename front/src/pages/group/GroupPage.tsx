@@ -8,6 +8,7 @@ import useMember from "../../hooks/memberHook";
 export default function GroupPage() {
   const {memberData} = useMember();
   const username = memberData.username
+  
   const [pluralList, setPluralList] = useState<string[]>([]);
   const [doubleList, setDoubleList] = useState<string[]>([]);
   useEffect(() => {
