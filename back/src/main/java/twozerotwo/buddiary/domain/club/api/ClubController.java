@@ -69,20 +69,11 @@ public class ClubController {
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
-	//------------------------------------------클럽 초대 링크 생성----------------------------------------------
-	@GetMapping("/invitation/{clubId}")
-	public ResponseEntity inviteClub(@PathVariable("clubId") String clubId) {
-		// /invitation/{clubId} 형태로 제공
-		return null;
-	}
-
 	//------------------------------------------클럽 초대 링크 수신----------------------------------------------
-	@PostMapping("/invitation/{clubId}")
+	@PostMapping("/invitation/{clubId}/{username}")
 	public ResponseEntity inviteClub(@PathVariable("clubId") String clubId, @PathVariable String username) {
-		// 로그인 안한친구는 로그인 하고 응해야한다.
-		// 로그인 안한 친구가 온다면
-		// 로그인 한 친구가 온다면
-		
+		// 로그인 거치고 이 api를 받는다
+
 		return null;
 	}
 
