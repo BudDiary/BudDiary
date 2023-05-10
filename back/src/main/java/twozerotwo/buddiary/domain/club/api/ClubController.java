@@ -3,6 +3,7 @@ package twozerotwo.buddiary.domain.club.api;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -70,9 +71,11 @@ public class ClubController {
 	}
 
 	//------------------------------------------클럽 초대 링크 수신----------------------------------------------
-	@PostMapping("/invitation/{clubId}/{username}")
-	public ResponseEntity inviteClub(@PathVariable("clubId") String clubId, @PathVariable String username) {
+	@PostMapping("/invitation/{clubId}")
+	public ResponseEntity inviteClub(HttpServletRequest request, @PathVariable("clubId") String clubId) {
 		// 로그인 거치고 이 api를 받는다
+		// 할당하는 서비스
+		clubService.addMember(request, clubId);
 
 		return null;
 	}
