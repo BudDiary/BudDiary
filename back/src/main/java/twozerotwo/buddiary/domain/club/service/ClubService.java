@@ -204,14 +204,16 @@ public class ClubService {
 
 	@Transactional
 	public void addMember(HttpServletRequest request, String clubId) {
+
 		Member memberFromToken = util.getMemberEntityFromRequest(request);
-		Club club = clubRepository.findById(clubId)
-			.orElseThrow(() -> new NotFoundException("해당 클럽을 찾을 수 없습니다."));
+		log.info("그룹참여를 시도하는 회원 아이디 {}", memberFromToken.getId());
+		Club club = clubRepository.findById(clubId).orElseThrow(() -> new NotFoundException("해당 클럽을 찾을 수 없습니다."));
 		Set<MemberClub> clubMembers = club.getClubMembers();
-		MemberClub buildMemberClub = MemberClub.builder()
-			.member(memberFromToken)
-			.club(club)
-			.build();
+		MemberClub buildMemberClub = MemberClub.builder().member(memberFromToken).club(club).build();
+		MemberClub memberClub = memberClubRepository.findMemberClubByClubAndMember(club, memberFromToken).orElse(null);
+		if (memberClub != null) {
+			throw new BadRequestException("중복된 회원입니다");
+		}
 		clubMembers.add(buildMemberClub);
 	}
 }

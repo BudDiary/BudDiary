@@ -72,7 +72,7 @@ public class ClubController {
 
 	//------------------------------------------클럽 초대 링크 수신----------------------------------------------
 	@PostMapping("/invitation")
-	public ResponseEntity inviteClub(HttpServletRequest request, Map<String, String>clubIdReq) {
+	public ResponseEntity inviteClub(HttpServletRequest request, @RequestBody Map<String, String> clubIdReq) {
 		// 로그인 거치고 이 api를 받는다
 		// 할당하는 서비스
 		String clubId = clubIdReq.get("clubId");
