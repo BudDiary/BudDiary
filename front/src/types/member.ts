@@ -1,4 +1,5 @@
 export type MemberLoginType = {
+  id: number,
   username: string,
   nickname: string,
   profilePic : string | null ,

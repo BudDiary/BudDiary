@@ -24,12 +24,34 @@ interface Props {
   closeModal: any;
 }
 
+interface FormData {
+  clubname: string;
+  thumbnail: File | null;
+  captainUsername: string;
+}
+
 
 export default function NewGroupDiaryModal({ closeModal }: Props) {
-  const {memberData, isLoggedIn} = useMember();
+
+  const {memberData} = useMember();
   const username = memberData.username
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+
+  const [formData, setFormData] = useState<FormData>({
+    clubname: "",
+    thumbnail: null,
+    captainUsername: "",
+  });
+
   
+  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    setFormData({
+      ...formData,
+      thumbnail: file,
+    });
+  };
+
   const closeDiaryModal = () => {
     closeModal();
   };
@@ -38,7 +60,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
   const handleClear = () => {
     setClubName('');
   }
-
+  
   const submitMakeClub = async (event: any) => {
     
 
@@ -49,19 +71,16 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       formData.append("thumbnail", image);
       formData.append('captainUsername', username);
       formData.append('clubName', clubName);
+      // postPluralClubApi({ clubName: clubName, captainUsername: username, image: image })
+      postPluralClubApi(formData)
       // 폼 객체 key 와 value 값을 순회.
       let entries = formData.entries();
       for (const pair of entries) {
           console.log(pair[0]+ ', ' + pair[1]); 
       }
-      // const response  = await makeClubApi(formData)
-      // if (response === true) {
-      //   console.log('여기에서 설문 띄워주시면 됩니다~~~')
-      // } else {
-      //   console.log('실패여')
-      // }
     }
   };
+  
 
 
   function ChildModal() {
@@ -85,6 +104,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           event.preventDefault();
           handleOpen()
           submitMakeClub(event)
+
           }}> 다음 </Button>
         <Modal
           open={open}

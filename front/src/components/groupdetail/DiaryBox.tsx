@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-
 import {
   DiaryDetail,
   DiaryHeader,
   DiaryContent,
   DiaryImageSlider,
   DiaryText,
+  BlankNotice,
+  BlankDiary,
+  BasicButton,
+  DiaryDetailBlank,
 } from "./Diaries.styles";
-import { DiaryDelete } from "./groupdetailapis/groupdetailapis";
 import { LogoBlue, LogoGreen } from "../navbar/NavBar.styles";
 import DiaryComment from "./DiaryComment";
 import { DeleteButton } from "../common/Button.styles";
@@ -15,7 +17,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.css";
 import { userdummy } from "../mypage/userdummy";
+import EmojiCount from "./emoji/EmojiCount";
+import EmojiPicker from "./emoji/EmojiPicker";
 import { Diary, Image } from "../../types/group";
+import { deleteDiaryApi } from "../../apis/diaryApi";
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 interface DiaryBoxProps {
@@ -30,37 +35,34 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
     setDiaryData(diaryList ?? []);
   }, []);
 
+  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
+  const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
+
+  const handleSelectEmoji = (emoji: string, diaryId: number) => {
+    if (selectedEmojis.includes(emoji)) {
+      setSelectedEmojis(selectedEmojis.filter((e) => e !== emoji));
+    } else {
+      setSelectedEmojis([...selectedEmojis, emoji]);
+    }
+  };
+
   return (
     <>
       {diaryData.length === 0 ? (
-        <DiaryDetail
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            paddingBlock: "150px",
-          }}
-        >
-          <div>
-            <LogoBlue style={{ fontSize: "50px", fontWeight: "bold" }}>
-              Bud
-            </LogoBlue>
-            <LogoGreen style={{ fontSize: "50px", fontWeight: "bold" }}>
-              :(
-            </LogoGreen>
-            <LogoBlue style={{ fontSize: "50px", fontWeight: "bold" }}>
-              iary
-            </LogoBlue>
-          </div>
-          <div>
+        <DiaryDetailBlank>
+          <BlankNotice>
+            <LogoBlue>Bud</LogoBlue>
+            <LogoGreen>:(</LogoGreen>
+            <LogoBlue>iary</LogoBlue>
+          </BlankNotice>
+          <BlankDiary>
             <h1>공유하고 있는 다이어리가 없습니다.</h1>
             <div style={{ display: "flex", alignItems: "center" }}>
               <h1>다이어리를 작성해주세요.</h1>
-              <LogoGreen style={{ fontWeight: "bold" }}>:D</LogoGreen>
+              <LogoGreen>:D</LogoGreen>
             </div>
-          </div>
-        </DiaryDetail>
+          </BlankDiary>
+        </DiaryDetailBlank>
       ) : (
         <>
           {diaryData.length > 0 &&
@@ -74,7 +76,9 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                       {userdummy.nickname === diary.writer.nickname && (
                         <DeleteButton
                           style={{ fontSize: "12px" }}
-                          onClick={() => DiaryDelete(diary.diaryId)}
+                          onClick={() =>
+                            deleteDiaryApi(diary.diaryId, userdummy.username)
+                          }
                         >
                           삭제
                         </DeleteButton>
@@ -105,6 +109,44 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     <p style={{ marginTop: 0 }}>{diary.text}</p>
                   </DiaryText>
                 </DiaryContent>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "baseline",
+                    position: "relative",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      position: "relative",
+                    }}
+                  >
+                    <EmojiCount reactionList={diary.reactionList} />
+                    <BasicButton
+                      onClick={() =>
+                        setSelectedDiaryId((prev) =>
+                          prev === diary.diaryId ? null : diary.diaryId
+                        )
+                      }
+                    >
+                      +😀
+                    </BasicButton>
+                  </div>
+                  {selectedDiaryId === diary.diaryId && (
+                    <EmojiPicker
+                      reactionList={diary.reactionList}
+                      onSelect={(emoji) =>
+                        handleSelectEmoji(emoji, diary.diaryId)
+                      }
+                      selectedEmojis={selectedEmojis}
+                      diaryId={diary.diaryId}
+                    />
+                  )}
+                </div>
                 <DiaryComment
                   key={diary.diaryId}
                   diaryId={diary.diaryId}

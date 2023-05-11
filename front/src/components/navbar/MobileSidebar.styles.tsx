@@ -22,9 +22,9 @@ export const SideBarMenuItem = styled(Link)`
 `
 
 export const LogOutButton = styled.button`
-  position: fixed;
+  /* position: fixed;
   bottom: 15px;
   right: 15px;
-  z-index: 15;
+  z-index: 15; */
   ${tw``}
 `

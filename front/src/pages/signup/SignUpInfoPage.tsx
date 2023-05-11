@@ -4,6 +4,7 @@ import { SurveyAgainButton, ResetButton } from '../../components/common/Button.s
 import { SignupInfoInput, SignupPicInput } from '../../components/common/Input.styles'
 import { SignUpInfoInputSection,ProfilePicContainer, FlexedContainer, ImgInput } from './SignUpInfoPage.styles'
 import { firstSignUpApi } from '../../apis/userApi'
+import useMember from '../../hooks/memberHook';
 import ModalWindow from '../../components/common/ModalWindow'
 export default function SignUpInfoPage() {
   const [fileURL, setFileURL] = useState<string>("");
@@ -11,7 +12,7 @@ export default function SignUpInfoPage() {
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
   const [nickname, setNickname] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-
+  const { login } = useMember();
 
   // useEffect(() => {
   //   setCookie('hey', 'hi', { path: "/"})
@@ -46,11 +47,13 @@ export default function SignUpInfoPage() {
       // for (const pair of entries) {
       //     console.log(pair[0]+ ', ' + pair[1]); 
       // }
-      const response  = await firstSignUpApi(formData)
+      const response = await firstSignUpApi(formData)
       if (response === true) {
+        login(response)
         setModalOpen(true)
       } else {
         console.log('실패여')
+        setModalOpen(true)
       }
     }
   };

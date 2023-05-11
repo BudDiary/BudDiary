@@ -4,7 +4,6 @@ import { kakaoSignUpApi } from '../../apis/userApi';
 import { useNavigate } from "react-router-dom";
 import useMember from '../../hooks/memberHook';
 import Swal from 'sweetalert2';
-
 export default function SignUpPage() {
   const navigate = useNavigate();
   const { login } = useMember();
@@ -13,8 +12,8 @@ export default function SignUpPage() {
       const currentUrl: string = window.location.href;
       const code = currentUrl.split('localhost:3000/')[1];
       const response = await kakaoSignUpApi(code)
-      // 처음 가입한 사람이면 signup 으로 보내고, 아니면 메인페이지로
       console.log(response)
+      // 처음 가입한 사람이면 signup 으로 보내고, 아니면 메인페이지로
       if (response.newBe === true ) {
         navigate('/signup-info')
       } else if (response.newBe === false) {

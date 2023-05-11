@@ -4,7 +4,6 @@ import static twozerotwo.buddiary.domain.notification.api.SseController.*;
 
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
-// import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -22,7 +21,6 @@ import twozerotwo.buddiary.persistence.enums.NoticeType;
 public class RedisSubscriber implements MessageListener {
 	private final ObjectMapper objectMapper;
 	private final RedisTemplate redisTemplate;
-
 
 	@Override
 	public void onMessage(Message message, byte[] pattern) {
@@ -42,12 +40,12 @@ public class RedisSubscriber implements MessageListener {
 				SseEmitter sseEmitter = sseEmitters.get(sseMessageDto.getTargetId());
 				// SseEmitter sseEmitter = savedSseEntity.getSseEmitter();
 				try {
-					sseEmitter.send(SseEmitter.event().name(NoticeType.DOUBLE_INVITE.getCode()).data(sseMessageDto.getNotificationDto()));
+					sseEmitter.send(SseEmitter.event()
+						.name(NoticeType.DOUBLE_INVITE.getCode())
+						.data(sseMessageDto.getNotificationDto()));
 				} catch (Exception e) {
 					sseEmitters.remove(sseMessageDto.getTargetId());
 				}
-
-
 
 				// messagingTemplate.convertAndSendToUser((String)sideMessageDto.getMessageBody().get("username"),
 				// 	"/sub/side-bar", sideMessageDto);

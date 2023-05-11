@@ -9,31 +9,28 @@ import {
   GroupInfoContainer,
 } from "./GroupDetailPage.styles";
 import GroupInfo from "../../components/groupdetail/GroupInfo";
+import { userdummy } from "../../components/mypage/userdummy";
 import Diaries from "../../components/groupdetail/Diaries";
-import { GetClubData } from "../../components/groupdetail/groupdetailapis/groupdetailapis";
+import { getClubDetailApi } from "../../apis/clubApi";
 import { Club } from "../../types/group";
 const clubDetailJson = require("../../components/groupdetail/clubDetail.json");
 
 const GroupDetailPage = () => {
-  const [scrollY, setScrollY] = useState(0);
-
+  const [scrollY, setScrollY] = useState(100);
   const [groupDetail, setGroupDetail] = useState<Club | null>(null);
   const [clubData, setClubData] = useState<Club | null>(null);
-
   const clubId = "club_key";
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await GetClubData(clubId);
+        const data = await getClubDetailApi(clubId, userdummy.username);
         setClubData(data);
       } catch (error) {
         console.error(error);
       }
     }
-
     fetchData();
-    console.log(clubData);
   }, [clubId]);
 
   useEffect(() => {
@@ -43,17 +40,17 @@ const GroupDetailPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const newY = Math.max(window.scrollY, 120);
+      setScrollY(newY);
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const subNavStyle = {
-    backgroundImage: `url(${groupDetail?.clubDetail.myclubList.thumbnailUrl})`,
+    backgroundImage: `url(${groupDetail?.clubDetail.clubInfo.thumbnailUrl})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: "black",
@@ -62,9 +59,9 @@ const GroupDetailPage = () => {
 
   return (
     <>
-      {groupDetail?.clubDetail.myclubList.clubName && (
+      {groupDetail?.clubDetail.clubInfo.clubName && (
         <SubNavContainer style={subNavStyle}>
-          {groupDetail?.clubDetail.myclubList.clubName}
+          {groupDetail?.clubDetail.clubInfo.clubName}
         </SubNavContainer>
       )}
       <PageContainer>
@@ -73,11 +70,10 @@ const GroupDetailPage = () => {
             <Diaries />
           </DiariesContainer>
           <GroupInfoContainer style={{ position: "relative" }}>
-            <div></div>
             <GroupInfo
-              myclubList={groupDetail?.clubDetail.myclubList}
+              clubInfo={groupDetail?.clubDetail.clubInfo}
               memberList={groupDetail?.clubDetail.memberList}
-              style={{ position: "absolute", top: `${scrollY - 20}px` }}
+              style={{ position: "absolute", top: `${scrollY - 100}px` }}
             />
           </GroupInfoContainer>
         </DetailPageContainer>

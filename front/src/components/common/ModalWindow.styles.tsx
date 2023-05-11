@@ -19,7 +19,7 @@ export const ModalContainer = styled.div`
 `;
 // 모달창 위에있는 상단바
 export const ModalTopNavContainer = styled.div`
-  ${tw`bg-bud-blue h-[42px] flex justify-between`}
+  ${tw`bg-bud-blue h-[42px] flex justify-between px-4`}
 `;
 
 // 모달창 나가기버튼
