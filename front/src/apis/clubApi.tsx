@@ -46,10 +46,10 @@ const getMyClubListApi = (payload: string) => {
       return res.data.myClubList;
     })
     .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        text: "getMyClubListApi 오류가 발생했어요.",
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "getMyClubListApi 오류가 발생했어요.",
+      // });
       return err;
     });
 };
