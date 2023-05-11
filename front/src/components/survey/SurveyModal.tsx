@@ -17,6 +17,7 @@ import {
 import { MoveIndex, Tag } from "./SurveyModal.styles";
 import { firstSurveyApi } from "../../apis/surveyApi";
 import useMember from "../../hooks/memberHook";
+import { LinearProgress } from "@mui/material";
 // import { fastApi } from "./axiosConfig";
 
 // // 다수 클럽 생성
@@ -173,6 +174,7 @@ export default function SurveyModal({ closeModal }: Props) {
   }, [myAnswer]);
   return (
     <Modal
+      className="font-mf text-2xl"
       aria-labelledby="modal-title"
       aria-describedby="modal-desc"
       open={true}
@@ -181,10 +183,9 @@ export default function SurveyModal({ closeModal }: Props) {
     >
       <Sheet
         variant="outlined"
+        style={{ width: "50%", minWidth: "360px" }}
         sx={{
           minHeight: 300,
-          minWidth: 500,
-          maxWidth: 500,
           borderRadius: "md",
           // p: 5,
           boxShadow: "lg",
@@ -196,30 +197,46 @@ export default function SurveyModal({ closeModal }: Props) {
           </CloseModalButton>
           <ModalTitle style={{ textAlign: "center" }}>초기 설문조사</ModalTitle>
           {currentSentenceIndex < allSentences.length - 1 ? (
-            <Button disabled onClick={closeSurvey}>
+            <Button disabled onClick={closeSurvey} className="w-20">
               완료
             </Button>
           ) : (
-            <Button onClick={closeSurvey}>완료</Button>
+            <Button onClick={closeSurvey} className="w-20">
+              완료
+            </Button>
           )}
         </ModalTopNavContainer>
         <div>
-          <p>{allSentences[currentSentenceIndex]}</p>
-          {allAnswers[currentSentenceIndex].map((element, index) => {
-            return (
-              <Tag
-                key={index}
-                onClick={() => addMyAnswer(element)}
-                select={myAnswer.indexOf(element) !== -1 ? true : false}
-              >
-                {element}
-              </Tag>
-            );
-          })}
+          <p className="w-full text-center my-2 text-bold">
+            {allSentences[currentSentenceIndex]}
+          </p>
+
+          <LinearProgress
+            className="mx-4"
+            variant="determinate"
+            value={currentSentenceIndex * 14.28}
+          />
+          <div
+            className="mx-4 my-4 flex flex-wrap justify-center"
+            style={{ minHeight: "100px" }}
+          >
+            {allAnswers[currentSentenceIndex].map((element, index) => {
+              return (
+                <Tag
+                  style={{ minWidth: "100px" }}
+                  key={index}
+                  onClick={() => addMyAnswer(element)}
+                  select={myAnswer.indexOf(element) !== -1 ? true : false}
+                >
+                  {element}
+                </Tag>
+              );
+            })}
+          </div>
 
           <MoveIndex>
-            {<Button onClick={outputPrevSentence}>Prev</Button>}
-            {<Button onClick={outputNextSentence}>Next</Button>}
+            {<Button onClick={outputPrevSentence}>이전</Button>}
+            {<Button onClick={outputNextSentence}>다음</Button>}
           </MoveIndex>
         </div>
       </Sheet>
