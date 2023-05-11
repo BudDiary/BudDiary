@@ -105,7 +105,8 @@ public class ClubService {
 	}
 
 	public Member returnMemberByUsername(String username) {
-		Member member = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("dd"));
+		Member member = memberRepository.findByUsername(username)
+			.orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
 		return member;
 	}
 

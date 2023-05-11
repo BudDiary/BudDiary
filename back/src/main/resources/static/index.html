@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<!--<script src="./js/index.js"></script>-->
+<body>
+<h1>ㅎㅎ</h1>
+
+</body>
+<script>
+    let subscribeUrl = "http://localhost:8080/sub";
+
+    let eventSource = new EventSource(subscribeUrl);
+
+    eventSource.addEventListener("DOUBLE_INVITE", function(event) {
+        let message = event.data;
+        alert(message);
+        console.log(message);
+    })
+
+    eventSource.addEventListener("error", function(event) {
+        console.log("error");
+        console.log(event.data);
+        // eventSource.close()
+    })
+    eventSource.addEventListener("connect", function(event) {
+        let message = event.data;
+        console.log(message);
+        // eventSource.close()
+    })
+</script>
+</html>
