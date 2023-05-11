@@ -53,7 +53,7 @@ export default function DSection() {
       setselectImg(images[currentImageIndex]);
     };
 
-    const interval = setInterval(changeImage, 5000);
+    const interval = setInterval(changeImage, 8000);
 
     return () => {
       clearInterval(interval);

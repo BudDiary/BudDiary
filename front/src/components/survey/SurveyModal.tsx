@@ -1,18 +1,23 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Modal from '@mui/joy/Modal';
-import Sheet from '@mui/joy/Sheet';
-import {BiArrowBack} from 'react-icons/bi'
-import Button from '@mui/joy/Button';
+import Modal from "@mui/joy/Modal";
+import Sheet from "@mui/joy/Sheet";
+import { BiArrowBack } from "react-icons/bi";
+import Button from "@mui/joy/Button";
 import { useSwiper } from "swiper/react";
-import 'swiper/css';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/pagination";
 import "swiper/swiper-bundle.css";
-import { CloseModalButton, ModalTitle, ModalTopNavContainer } from '../../components/common/ModalWindow.styles';
+import {
+  CloseModalButton,
+  ModalTitle,
+  ModalTopNavContainer,
+} from "../../components/common/ModalWindow.styles";
 import { MoveIndex, Tag } from "./SurveyModal.styles";
 import { firstSurveyApi } from "../../apis/surveyApi";
 import useMember from "../../hooks/memberHook";
+import { LinearProgress } from "@mui/material";
 // import { fastApi } from "./axiosConfig";
 
 // // 다수 클럽 생성
@@ -33,9 +38,9 @@ import useMember from "../../hooks/memberHook";
 // }
 
 interface Props {
-    closeModal: any;
-  }
-  
+  closeModal: any;
+}
+
 export default function SurveyModal({ closeModal }: Props) {
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
@@ -44,29 +49,27 @@ export default function SurveyModal({ closeModal }: Props) {
 
   const navigate = useNavigate();
   const closeSurvey = () => {
-    console.log({id : memberData.id, favor_list: myAnswer})
-    firstSurveyApi({id : memberData.id, favor_list: myAnswer})
+    console.log({ id: memberData.id, favor_list: myAnswer });
+    firstSurveyApi({ id: memberData.id, favor_list: myAnswer });
     closeModal();
-    navigate('/')
+    navigate("/");
   };
 
-
-
-// const postPluralClubApi = (payload: any) => {
-//   return formApi.post(`api/clubs/plural`,payload,  { withCredentials: true })
-//   .then((res) => {
-//       console.log(res)
-//       return res.data;
-//     })
-//     .catch((err) => {
-//       Swal.fire({
-//         icon: 'error',
-//         text: 'postPluralClubApi 오류가 발생했어요.'
-//       })
-//       console.log(err);
-//       return err;
-//     });
-// }
+  // const postPluralClubApi = (payload: any) => {
+  //   return formApi.post(`api/clubs/plural`,payload,  { withCredentials: true })
+  //   .then((res) => {
+  //       console.log(res)
+  //       return res.data;
+  //     })
+  //     .catch((err) => {
+  //       Swal.fire({
+  //         icon: 'error',
+  //         text: 'postPluralClubApi 오류가 발생했어요.'
+  //       })
+  //       console.log(err);
+  //       return err;
+  //     });
+  // }
   useEffect(() => {
     if (swiper) {
       swiper.slideNext();
@@ -95,13 +98,43 @@ export default function SurveyModal({ closeModal }: Props) {
       "발라드",
       "R&B",
     ],
-    ["INFP", "INFJ", "INTP", "INTJ", "ISTP", "ISTJ", "ISFP", "ISFJ","ENFP", "ENFJ", "ENTP", "ENTJ", "ESTP", "ESTJ", "ESFP", "ESFJ"],
+    [
+      "INFP",
+      "INFJ",
+      "INTP",
+      "INTJ",
+      "ISTP",
+      "ISTJ",
+      "ISFP",
+      "ISFJ",
+      "ENFP",
+      "ENFJ",
+      "ENTP",
+      "ENTJ",
+      "ESTP",
+      "ESTJ",
+      "ESFP",
+      "ESFJ",
+    ],
     ["축구", "농구", "조깅", "헬스", "클라이밍", "골프", "야구", "배드민턴"],
-    ["액션", "스릴러", "로맨스", "코미디", "SF", "판타지", "호러", "드라마", "가족", "범죄", "음악", "애니메이션"],
+    [
+      "액션",
+      "스릴러",
+      "로맨스",
+      "코미디",
+      "SF",
+      "판타지",
+      "호러",
+      "드라마",
+      "가족",
+      "범죄",
+      "음악",
+      "애니메이션",
+    ],
     ["한식", "양식", "중식", "일식"],
     ["화날 때", "기쁠 때"],
     ["여행", "집", "게임", "요리", "독서", "유튜브 시청"],
-    ["캐주얼", "스트릿", "빈티지", "댄디", "스포티"]
+    ["캐주얼", "스트릿", "빈티지", "댄디", "스포티"],
   ];
   // 1. 좋아하는 음악 장르는? (다중선택 가능) 클래식, 힙합, 락, kpop, 팝송, jpop, cpop, 오페라, 발라드, r&b
   // 2. MBTI: 16개 중 택 1
@@ -120,70 +153,93 @@ export default function SurveyModal({ closeModal }: Props) {
     }
   };
   const outputPrevSentence = () => {
-    if (currentSentenceIndex < allSentences.length && currentSentenceIndex > 0) {
-      setCurrentSentenceIndex(currentSentenceIndex -1);
+    if (
+      currentSentenceIndex < allSentences.length &&
+      currentSentenceIndex > 0
+    ) {
+      setCurrentSentenceIndex(currentSentenceIndex - 1);
     }
   };
   const outputNextSentence = () => {
-    if (currentSentenceIndex < allSentences.length - 1 && currentSentenceIndex >= 0 ) {
+    if (
+      currentSentenceIndex < allSentences.length - 1 &&
+      currentSentenceIndex >= 0
+    ) {
       setCurrentSentenceIndex(currentSentenceIndex + 1);
     }
   };
 
-
   useEffect(() => {
-    console.log(myAnswer)
-  }, [myAnswer])
+    console.log(myAnswer);
+  }, [myAnswer]);
   return (
-
-      <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={true}
-        onClose={() => closeSurvey()}
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+    <Modal
+      className="font-mf text-2xl"
+      aria-labelledby="modal-title"
+      aria-describedby="modal-desc"
+      open={true}
+      // onClose={() => closeSurvey()}
+      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    >
+      <Sheet
+        variant="outlined"
+        style={{ width: "50%", minWidth: "360px" }}
+        sx={{
+          minHeight: 300,
+          borderRadius: "md",
+          // p: 5,
+          boxShadow: "lg",
+        }}
       >
-                <Sheet
-          variant="outlined"
-          sx={{
-            minHeight: 300,
-            minWidth: 500,
-            maxWidth: 500,
-            borderRadius: 'md',
-            // p: 5,
-            boxShadow: 'lg',
-          }}
-          >
-                      <ModalTopNavContainer>
+        <ModalTopNavContainer>
           <CloseModalButton onClick={closeSurvey}>
             <BiArrowBack />
-            </CloseModalButton>
-          <ModalTitle style={{textAlign: "center"
-        }}>초기 설문조사</ModalTitle>
-          {currentSentenceIndex < allSentences.length - 1 ? (<Button disabled onClick={closeSurvey}>완료</Button>) :(<Button onClick={closeSurvey}>완료</Button>) }
+          </CloseModalButton>
+          <ModalTitle style={{ textAlign: "center" }}>초기 설문조사</ModalTitle>
+          {currentSentenceIndex < allSentences.length - 1 ? (
+            <Button disabled onClick={closeSurvey} className="w-20">
+              완료
+            </Button>
+          ) : (
+            <Button onClick={closeSurvey} className="w-20">
+              완료
+            </Button>
+          )}
+        </ModalTopNavContainer>
+        <div>
+          <p className="w-full text-center my-2 text-bold">
+            {allSentences[currentSentenceIndex]}
+          </p>
 
-          </ModalTopNavContainer>
-    <div>
-      <p>{allSentences[currentSentenceIndex]}</p>
-      {allAnswers[currentSentenceIndex].map((element, index) => {
-        return <Tag key={index} onClick={()=> addMyAnswer(element) } select={myAnswer.indexOf(element) !== -1 ? true : false}>{ element }</Tag>
-      }
-      
-      
-      
-      )}
-
-        
-         <MoveIndex>
-          {<Button onClick={outputPrevSentence}>Prev</Button>}
-          {<Button onClick={outputNextSentence}>Next</Button>}
-          
-         </MoveIndex>
-          
+          <LinearProgress
+            className="mx-4"
+            variant="determinate"
+            value={currentSentenceIndex * 14.28}
+          />
+          <div
+            className="mx-4 my-4 flex flex-wrap justify-center"
+            style={{ minHeight: "100px" }}
+          >
+            {allAnswers[currentSentenceIndex].map((element, index) => {
+              return (
+                <Tag
+                  style={{ minWidth: "100px" }}
+                  key={index}
+                  onClick={() => addMyAnswer(element)}
+                  select={myAnswer.indexOf(element) !== -1 ? true : false}
+                >
+                  {element}
+                </Tag>
+              );
+            })}
           </div>
-          </Sheet>
-        </Modal>
 
-  )
-
+          <MoveIndex>
+            {<Button onClick={outputPrevSentence}>이전</Button>}
+            {<Button onClick={outputNextSentence}>다음</Button>}
+          </MoveIndex>
+        </div>
+      </Sheet>
+    </Modal>
+  );
 }
