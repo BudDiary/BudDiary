@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   PageContainer,
-  SubNavContainer,
+  DetailSubNavContainer,
 } from "../../components/common/Page.styles";
 import {
   DetailPageContainer,
@@ -60,9 +60,9 @@ const GroupDetailPage = () => {
   return (
     <>
       {groupDetail?.clubDetail.clubInfo.clubName && (
-        <SubNavContainer style={subNavStyle}>
+        <DetailSubNavContainer style={subNavStyle}>
           {groupDetail?.clubDetail.clubInfo.clubName}
-        </SubNavContainer>
+        </DetailSubNavContainer>
       )}
       <PageContainer>
         <DetailPageContainer>

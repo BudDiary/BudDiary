@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
-export const TitleSection = styled.div`
-  ${tw`my-2`}
-
+export const Container = styled.div`
   animation-name: AppearText;
-  animation-delay: 0s;
+  animation-delay: 1s;
   animation-duration: 1.5s;
   animation-fill-mode: both;
 
@@ -19,13 +17,4 @@ export const TitleSection = styled.div`
       transform: translateY(0px);
     }
   }
-`;
-
-export const ProfileSection = styled.div`
-  ${tw``}
-
-  animation-name: AppearText;
-  animation-delay: 0.5s;
-  animation-duration: 1.5s;
-  animation-fill-mode: both;
 `;
