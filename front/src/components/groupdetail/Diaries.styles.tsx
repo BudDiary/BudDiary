@@ -2,7 +2,8 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const BasicButton = styled.button`
-  ${tw`bg-bud-blue rounded-full px-3 py-1 font-bold`}
+  ${tw`bg-bud-blue rounded-full px-5 py-1 font-berry`}
+  letter-spacing: 0.1rem;
 `;
 
 export const DeleteButton = styled.button`
@@ -12,7 +13,7 @@ export const DeleteButton = styled.button`
 `;
 
 export const WideButton = styled.button`
-  ${tw`bg-bud-blue py-2 px-4 rounded-md font-bold text-black flex items-center justify-center`}
+  ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center`}
   width: 45vw;
   border: 5px solid #c3cfe3;
 
@@ -49,7 +50,7 @@ export const DiaryHeader = styled.div`
     font-weight: bold;
   }
   h3 {
-    ${tw`font-hassam`}
+    ${tw`font-hassam text-gray-400 font-bold`}
   }
 `;
 
@@ -136,7 +137,10 @@ export const DiaryText = styled.div`
 `;
 
 export const EditContent = styled.div`
-  ${tw`flex flex-col rounded-md w-full mt-2`}
+  ${tw`flex flex-col rounded-md w-full mt-2 px-2 px-4 `}
+  p {
+    ${tw`mb-2 ml-4`}
+  }
 `;
 
 export const BlankNotice = styled.div`
@@ -160,5 +164,13 @@ export const DiaryDetailBlank = styled.div`
 
   > * {
     margin: auto;
+  }
+`;
+
+export const ReactionSet = styled.div`
+  ${tw`flex flex-col items-baseline relative`}
+
+  div {
+    ${tw`flex items-baseline`}
   }
 `;
