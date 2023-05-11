@@ -204,10 +204,8 @@ public class ClubService {
 
 	@Transactional
 	public void addMember(HttpServletRequest request, String clubId) {
-
 		Member memberFromToken = util.getMemberEntityFromRequest(request);
-		log.info("그룹참여를 시도하는 회원 아이디 {}", memberFromToken.getId());
-		Club club = clubRepository.findById(clubId).orElseThrow(() -> new NotFoundException("해당 클럽을 찾을 수 없습니다."));
+		Club club = returnClubById(clubId);
 		Set<MemberClub> clubMembers = club.getClubMembers();
 		MemberClub buildMemberClub = MemberClub.builder().member(memberFromToken).club(club).build();
 		MemberClub memberClub = memberClubRepository.findMemberClubByClubAndMember(club, memberFromToken).orElse(null);
