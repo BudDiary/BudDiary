@@ -1,6 +1,5 @@
 package twozerotwo.buddiary;
 
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
@@ -23,11 +22,7 @@ public class WithAuthUserSecurityContextFactory implements WithSecurityContextFa
 	public SecurityContext createSecurityContext(WithAuthUser annotation) {
 		String userName = annotation.username();
 		String role = annotation.role();
-		UserDetails userDetailsUser = User.builder()
-			.username(userName)
-			.password("test")
-			.roles("ROLE_"+role)
-			.build();
+		UserDetails userDetailsUser = User.builder().username(userName).password("test").roles("ROLE_" + role).build();
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetailsUser, null,
 			authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
 		SecurityContext context = SecurityContextHolder.getContext();
