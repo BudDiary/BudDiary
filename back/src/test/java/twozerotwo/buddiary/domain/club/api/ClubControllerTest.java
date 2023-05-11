@@ -18,11 +18,10 @@ public class ClubControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-
 	@Test
 	@WithAuthUser(username = "kroce@naver.com", role = "USER")
-	// TODO: 2023/05/10 유저 방식 oauth로 변경 
-	public void jwtTest() throws Exception{
+	// TODO: 2023/05/10 유저 방식 커스텀 소셜 객체로  변경
+	public void jwtTest() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/members/jwt-test"))
 			.andExpect(status().isOk())
 			.andExpect(content().string("jwtTest 요청 성공"))
