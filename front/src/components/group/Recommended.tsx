@@ -9,41 +9,30 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-interface RecommendedProps {
-  doubleList: Array<any>;
+import { getRecommendBySurveyApi } from "../../apis/clubApi";
+import useMember from "../../hooks/memberHook";
+
+interface Recommendation {
+  id: number;
+  rate: number;
 }
-export default function Recommended({ doubleList }: RecommendedProps) {
-  const [recommendList , setRecommendList] = useState([1, 2, 3, 4, 5]);
-  const cards = [
-    {
-      id: 1,
-      image: '/static/images/cards/contemplative-reptile.jpg',
-      title: 'Lizard',
-      description:
-        '나와 87% 비슷한 사람이에요',
-    },
-    {
-      id: 2,
-      image: '/static/images/cards/contemplative-reptile.jpg',
-      title: 'second',
-      description:
-        '나와 70% 비슷한 사람이에요',
-    },
-    {
-      id: 3,
-      image: '/static/images/cards/contemplative-reptile.jpg',
-      title: 'third',
-      description:
-        '나와 50% 비슷한 사람이에요.',
-    },
-    {
-      id: 4,
-      image: '/static/images/cards/contemplative-reptile.jpg',
-      title: 'fourth',
-      description:
-        '나와 35% 비슷한 사람이에요.',
-    },
-  ];
+export default function Recommended() {
+  const { memberData } = useMember();
+
+  const [recommendList, setRecommendList] = useState<Recommendation[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getRecommendBySurveyApi(memberData.id);
+        console.log(data.data)
+        setRecommendList(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+  
   
 
   return (
@@ -54,19 +43,21 @@ export default function Recommended({ doubleList }: RecommendedProps) {
       </Typography>
 </div>
 <br />
+
 <Swiper
   slidesPerView={3}
   pagination={{ clickable: true }}>
-  {doubleList.map((card) => (
-    <SwiperSlide key={card.id}>
+
+  {recommendList.map((el, idx) => (
+    <SwiperSlide key={idx}>
       <Card sx={{ maxWidth: 345 }}>
-        <CardMedia sx={{ height: 140 }} image={card.thumbnailUrl} title={card.title} />
+        <CardMedia sx={{ height: 140 }} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {card.clubName}
+            {el.id}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {card.description}
+            {el.rate}
           </Typography>
         </CardContent>
         <CardActions>

@@ -11,6 +11,8 @@ import 'swiper/css/pagination';
 import "swiper/swiper-bundle.css";
 import { CloseModalButton, ModalTitle, ModalTopNavContainer } from '../../components/common/ModalWindow.styles';
 import { MoveIndex, Tag } from "./SurveyModal.styles";
+import { firstSurveyApi } from "../../apis/surveyApi";
+import useMember from "../../hooks/memberHook";
 // import { fastApi } from "./axiosConfig";
 
 // // 다수 클럽 생성
@@ -38,11 +40,14 @@ export default function SurveyModal({ closeModal }: Props) {
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
   const swiper = useSwiper();
+  const { memberData } = useMember();
+
   const navigate = useNavigate();
   const closeSurvey = () => {
+    console.log({id : memberData.id, favor_list: myAnswer})
+    firstSurveyApi({id : memberData.id, favor_list: myAnswer})
     closeModal();
     navigate('/')
-    
   };
 
 
