@@ -1,62 +1,87 @@
 import React from "react";
-
 import { PickerContainer, EmojiButton } from "./Emoji.style";
-import {
-  sendEmojiReaction,
-  cancelReaction,
-} from "../groupdetailapis/groupdetailapis";
+import { postReactionApi, deleteReactionApi } from "../../../apis/reactionApi";
 import { userdummy } from "../../mypage/userdummy";
+import { Reaction } from "../../../types/group";
 
 type Props = {
   onSelect: (emoji: string) => void;
   selectedEmojis: string[];
   diaryId: number;
+  reactionList: Reaction[];
 };
 
-const EmojiPicker = ({ onSelect, selectedEmojis, diaryId }: Props) => {
+const EmojiPicker = ({
+  onSelect,
+  selectedEmojis,
+  diaryId,
+  reactionList,
+}: Props) => {
   const emojiActionTypes: { [key: string]: string } = {
     "😀": "LIKED",
     "👍": "BEST",
     "😡": "ANGRY",
     "😢": "SAD",
-    "😲": "SUPRISED",
+    "😲": "SURPRISED",
   };
   const emojis = ["😀", "👍", "😡", "😢", "😲"];
 
   const handleSelectEmoji = (emoji: string) => {
     const actionType = emojiActionTypes[emoji];
-    if (actionType) {
-      sendEmojiReaction(diaryId, userdummy.nickname, actionType);
+    const emojiReaction = reactionList.find(
+      (reaction) =>
+        userdummy.username === reaction.username &&
+        actionType === reaction.actionType
+    );
+    if (emojiReaction) {
+      handleCancelEmoji(emoji);
+    } else {
+      postReactionApi(diaryId, userdummy.username, actionType);
+      onSelect(emoji);
     }
-    onSelect(emoji);
   };
 
   const handleCancelEmoji = (emoji: string) => {
     const actionType = emojiActionTypes[emoji];
-    if (actionType) {
-      const actionId = selectedEmojis.indexOf(emoji);
-      cancelReaction(diaryId, userdummy.nickname, actionId);
-    }
-    const updatedEmojis = selectedEmojis.filter(
-      (selectedEmoji) => selectedEmoji !== emoji
+    const emojiReaction = reactionList.find(
+      (reaction) =>
+        userdummy.username === reaction.username &&
+        actionType === reaction.actionType
     );
-    onSelect(updatedEmojis.length ? updatedEmojis[0] : "");
+    if (emojiReaction) {
+      const actionId = emojiReaction.id;
+      deleteReactionApi(diaryId, actionId, userdummy.username);
+    }
+    onSelect("");
   };
+
+  const checkEmoji = () => {
+    return emojis.map((emoji) => {
+      const actionType = emojiActionTypes[emoji];
+      const emojiReaction = reactionList.find(
+        (reaction) =>
+          userdummy.username === reaction.username &&
+          actionType === reaction.actionType
+      );
+      return { emoji, selected: Boolean(emojiReaction) };
+    });
+  };
+
   return (
     <PickerContainer style={{ display: "flex", flexWrap: "wrap" }}>
-      {emojis.map((emoji) => (
+      {checkEmoji().map((emojiData) => (
         <EmojiButton
-          key={emoji}
+          key={emojiData.emoji}
           onClick={() => {
-            if (selectedEmojis.includes(emoji)) {
-              handleCancelEmoji(emoji);
+            if (selectedEmojis.includes(emojiData.emoji)) {
+              handleCancelEmoji(emojiData.emoji);
             } else {
-              handleSelectEmoji(emoji);
+              handleSelectEmoji(emojiData.emoji);
             }
           }}
-          selected={selectedEmojis.includes(emoji)}
+          selected={emojiData.selected}
         >
-          {emoji}
+          {emojiData.emoji}
         </EmojiButton>
       ))}
     </PickerContainer>

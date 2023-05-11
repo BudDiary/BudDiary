@@ -11,12 +11,12 @@ export const InputBox = styled.textarea`
   }
 `;
 export const UserInfo = styled.div`
-  ${tw`flex items-start`}
-
+  ${tw`flex items-start font-hassam`}
+  margin-top : 10px;
   > div:first-child {
     display: flex;
     align-items: center;
-    margin-right: 2rem;
+    margin-right: 0.8rem;
   }
 
   img {
@@ -28,6 +28,7 @@ export const UserInfo = styled.div`
 
   h2 {
     margin-bottom: 0;
+    font-weight: bold;
   }
 
   h3 {

@@ -4,20 +4,20 @@ import { BasicButton } from "./Diaries.styles";
 // import groupData from "./groupInfo.json";
 import { Member, Info } from "../../types/group";
 interface GroupInfoProps {
-  myclubList?: Info;
+  clubInfo?: Info;
   memberList?: Member[];
   style?: React.CSSProperties;
 }
 
 export default function GroupInfo({
-  myclubList,
+  clubInfo,
   memberList,
   style,
 }: GroupInfoProps) {
   return (
     <GroupList style={style}>
-      <img src={myclubList?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
-      <p style={{ fontWeight: "bold" }}>{myclubList?.clubName}</p>
+      <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
+      <p style={{ fontWeight: "bold" }}>{clubInfo?.clubName}</p>
       <div
         style={{
           display: "flex",
