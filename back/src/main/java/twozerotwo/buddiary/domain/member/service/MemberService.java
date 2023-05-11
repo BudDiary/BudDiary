@@ -65,9 +65,12 @@ public class MemberService {
 
 	@Transactional
 	public Optional<String> updateIntro(String intro, HttpServletRequest request) {
-		if (!(intro.length() <= 200)) {
+		if (intro == null) {
+			throw new BadRequestException(" intro 가 null 입니다.");
+		} else if (!(intro.length() <= 200)) {
 			throw new BadRequestException("소개 의 길이는 200 자 이하입니다.");
 		}
+
 		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
 		String updatedIntro = targetMember.updateIntro(intro);
 		return Optional.of(updatedIntro);

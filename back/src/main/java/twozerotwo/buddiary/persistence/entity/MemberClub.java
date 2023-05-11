@@ -33,5 +33,4 @@ public class MemberClub {
 	@JoinColumn(name = "CLUB_ID")
 	private Club club;
 
-
 }
