@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { InputImage } from './AddGroupPicture.styles'
+import { InputImage } from './AddGroupPicture.styles';
 import Button from '@mui/material/Button';
+
 interface AddGroupPictureProps {
-  setImage: (image: string | null) => void;
+  setImage: (image: File | null) => void;
 }
 
 const AddGroupPicture: React.FC<AddGroupPictureProps> = ({ setImage }) => {
@@ -20,20 +21,17 @@ const AddGroupPicture: React.FC<AddGroupPictureProps> = ({ setImage }) => {
     if (selectedImage) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImage(reader.result?.toString() ?? null);
+        setImageFile(selectedImage);
+        setImage(selectedImage);
       };
       reader.readAsDataURL(selectedImage);
-      setImageFile(selectedImage);
     }
   };
 
   return (
     <div>
-        <Button onClick={handleButtonClick} variant="outlined">사진 첨부</Button>
-      
-<InputImage
-        onChange={handleImageChange}
-        ref={inputRef}/>
+      <Button onClick={handleButtonClick} variant="outlined">사진 첨부</Button>
+      <InputImage onChange={handleImageChange} ref={inputRef} />
     </div>
   );
 };
