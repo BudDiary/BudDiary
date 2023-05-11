@@ -30,7 +30,6 @@ public class RedisSubscriber implements MessageListener {
 			SseMessageDto sseMessageDto = objectMapper.readValue(publishMessage, SseMessageDto.class);
 
 			if (topic.equals(NoticeType.DOUBLE_INVITE.getCode())) {
-				// SseEntity savedSseEntity = redisSseEntityRepository.findById(sseMessageDto.getTargetId())
 				// 	.orElseThrow(() -> new NotFoundException("해당 sseEntity를 찾을 수 없습니다."));
 				// if (sseEmitters.containsKey(sseMessageDto.getTargetId())) {
 				// 	log.info("[userID]" + sseMessageDto.getTargetId());

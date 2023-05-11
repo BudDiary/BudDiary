@@ -18,17 +18,17 @@ import twozerotwo.buddiary.persistence.enums.NoticeType;
 public class RedisDoubleInviteRepository {
 	private final RedisMessageListenerContainer redisMessageListener;
 	private final RedisSubscriber redisSubscriber;
-	private Map<String, ChannelTopic> roomTopics;
+	private Map<String, ChannelTopic> doubleTopics;
 
 	@PostConstruct
 	private void init() {
-		roomTopics = new HashMap<>();
-		roomTopics.put(NoticeType.DOUBLE_INVITE.getCode(), new ChannelTopic(NoticeType.DOUBLE_INVITE.getCode()));
-		redisMessageListener.addMessageListener(redisSubscriber, roomTopics.get(NoticeType.DOUBLE_INVITE.getCode()));
+		doubleTopics = new HashMap<>();
+		doubleTopics.put(NoticeType.DOUBLE_INVITE.getCode(), new ChannelTopic(NoticeType.DOUBLE_INVITE.getCode()));
+		redisMessageListener.addMessageListener(redisSubscriber, doubleTopics.get(NoticeType.DOUBLE_INVITE.getCode()));
 	}
 
 	public ChannelTopic getTopic(String topic) {
-		return roomTopics.get(topic);
+		return doubleTopics.get(topic);
 	}
 
 }

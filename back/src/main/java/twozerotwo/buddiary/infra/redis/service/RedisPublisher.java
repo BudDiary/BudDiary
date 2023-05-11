@@ -13,7 +13,6 @@ public class RedisPublisher {
 	private final RedisTemplate<String, SseMessageDto> redisInviteMessageDtoTemplate;
 
 	public void publishNotification(ChannelTopic topic, SseMessageDto sseMessageDto) {
-		System.out.println("[notification]" + topic.getTopic());
 		redisInviteMessageDtoTemplate.convertAndSend(topic.getTopic(), sseMessageDto);
 	}
 }

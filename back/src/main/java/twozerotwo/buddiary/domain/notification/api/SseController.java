@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.persistence.entity.Member;
-import twozerotwo.buddiary.persistence.entity.SseEntity;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,12 +40,6 @@ public class SseController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// user의 pk값을 key값으로 해서 SseEmitter를 저장
-		SseEntity sseEntity = SseEntity.builder()
-			.id(member.getId())
-			.sseEmitter(sseEmitter)
-			.build();
-
 
 		sseEmitters.put(member.getId(), sseEmitter);
 
