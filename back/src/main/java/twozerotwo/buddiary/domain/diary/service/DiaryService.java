@@ -64,6 +64,8 @@ public class DiaryService {
 			.club(club)
 			.writer(member)
 			.text(request.getText())
+			.positiveRate(request.getPositiveRate())
+			.negativeRate(request.getNegativeRate())
 			.build();
 		Diary savedDiary = diaryRepository.save(diary);
 		// 이미지 리스트 만들고
@@ -134,6 +136,8 @@ public class DiaryService {
 		Diary diary = Diary.builder()
 			.writer(member)
 			.text(request.getText())
+			.positiveRate(request.getPositiveRate())
+			.negativeRate(request.getNegativeRate())
 			.build();
 		Diary savedDiary = diaryRepository.save(diary);
 		// 이미지 첨부
