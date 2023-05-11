@@ -5,7 +5,10 @@ import {
   DiaryContent,
   DiaryImageSlider,
   DiaryText,
+  BlankNotice,
+  BlankDiary,
   BasicButton,
+  DiaryDetailBlank,
 } from "./Diaries.styles";
 import { LogoBlue, LogoGreen } from "../navbar/NavBar.styles";
 import DiaryComment from "./DiaryComment";
@@ -46,34 +49,20 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   return (
     <>
       {diaryData.length === 0 ? (
-        <DiaryDetail
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            paddingBlock: "150px",
-          }}
-        >
-          <div>
-            <LogoBlue style={{ fontSize: "50px", fontWeight: "bold" }}>
-              Bud
-            </LogoBlue>
-            <LogoGreen style={{ fontSize: "50px", fontWeight: "bold" }}>
-              :(
-            </LogoGreen>
-            <LogoBlue style={{ fontSize: "50px", fontWeight: "bold" }}>
-              iary
-            </LogoBlue>
-          </div>
-          <div>
+        <DiaryDetailBlank>
+          <BlankNotice>
+            <LogoBlue>Bud</LogoBlue>
+            <LogoGreen>:(</LogoGreen>
+            <LogoBlue>iary</LogoBlue>
+          </BlankNotice>
+          <BlankDiary>
             <h1>공유하고 있는 다이어리가 없습니다.</h1>
             <div style={{ display: "flex", alignItems: "center" }}>
               <h1>다이어리를 작성해주세요.</h1>
-              <LogoGreen style={{ fontWeight: "bold" }}>:D</LogoGreen>
+              <LogoGreen>:D</LogoGreen>
             </div>
-          </div>
-        </DiaryDetail>
+          </BlankDiary>
+        </DiaryDetailBlank>
       ) : (
         <>
           {diaryData.length > 0 &&

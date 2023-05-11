@@ -11,6 +11,7 @@ export type Member = {
 const initialState: MemberStateType = {
   isLoggedIn: false,
   memberData: {
+    id: 0,
     username: '',
     nickname: '',
     profilePic : '',
@@ -32,6 +33,7 @@ const memberSlice = createSlice({
     logoutAction(state: MemberStateType) {
       state.isLoggedIn = false;
       state.memberData = {
+        id: 0,
         username: '',
         nickname: '',
         profilePic : '',

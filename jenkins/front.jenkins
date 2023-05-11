@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+				checkout scmGit(branches: [[name: '*/develop']],
+				 extensions: [],
+				  userRemoteConfigs: [[credentialsId: 'mj',
+				   url: 'https://lab.ssafy.com/s08-final/S08P31C202.git']])
+            }
+        }
+		stage('build') {
+            steps {
+				dir('front') {
+                    withEnv(['CI=false']) {
+                        nodejs('nodejs-18.12.1') {
+                        sh 'npm i --force'
+                        sh 'npm run build'
+                        sh 'pwd'
+                        sh 'rm -rf front_build'
+                        sh 'mv build front_build'
+                        }
+                    }				
+				}
+            }
+        }
+		stage('publish') {
+            steps {
+				dir('front') {
+                    echo 'hello'
+                    sshPublisher(publishers: [sshPublisherDesc(configName: 'front', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/buddiary', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'front_build/')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+				}
+            }
+        }
+    }
+}

@@ -4,6 +4,7 @@ import axios from "axios";
 
 // 로그인된 사용자
 const BASE_URL = "http://localhost:8080";
+const FASTAPI_BASE_URL = "http://localhost:9000"
 // const BASE_URL = "http://3.35.197.93:8080";
 // const BASE_URL = "http://172.31.144.1:8080";
 // const BASE_URL = "http://192.168.100.175:8080";
@@ -18,7 +19,6 @@ const api = axios.create({
 const authApi = axios.create({
   baseURL: BASE_URL,
   headers: {
-    
   }
 });
 
@@ -31,7 +31,7 @@ const formApi = axios.create({
 
 // fastApi
 const fastApi = axios.create({
-  baseURL: BASE_URL,
+  baseURL: FASTAPI_BASE_URL,
 });
 
 // 카카오톡 로그인
