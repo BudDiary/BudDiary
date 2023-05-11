@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.persistence.entity.Member;
-import twozerotwo.buddiary.persistence.repository.MemberRepository;
+import twozerotwo.buddiary.persistence.entity.SseEntity;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,11 +26,12 @@ public class SseController {
 	public final ClubService clubService;
 	private final AuthenticationUtil authenticationUtil;
 
+
 	// 구독 요청
 	@GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
 	public SseEmitter subscribe(HttpServletRequest request) {
-		// Member member = authenticationUtil.getMemberEntityFromRequest(request);
-		Member member = clubService.returnMemberByUsername("yeokyung502@naver.com");
+		Member member = authenticationUtil.getMemberEntityFromRequest(request);
+		// Member member = clubService.returnMemberByUsername("yeokyung502@naver.com");
 		// 현재 클라이언트를 위한 SseEmitter 생성
 		SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
 		try {
@@ -41,6 +42,12 @@ public class SseController {
 			e.printStackTrace();
 		}
 		// user의 pk값을 key값으로 해서 SseEmitter를 저장
+		SseEntity sseEntity = SseEntity.builder()
+			.id(member.getId())
+			.sseEmitter(sseEmitter)
+			.build();
+
+
 		sseEmitters.put(member.getId(), sseEmitter);
 
 		sseEmitter.onCompletion(() -> sseEmitters.remove(member.getId()));

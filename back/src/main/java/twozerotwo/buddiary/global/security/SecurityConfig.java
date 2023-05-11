@@ -76,11 +76,6 @@ public class SecurityConfig {
 			.disable() // csrf 보안 사용 X
 			.cors().configurationSource(corsConfigurationSource()).and()
 			.headers()
-			.httpStrictTransportSecurity()
-			.maxAgeInSeconds(31536000)
-			.includeSubDomains(true)
-			.preload(true)
-			.and()
 			.frameOptions()
 			.disable()
 			.and()

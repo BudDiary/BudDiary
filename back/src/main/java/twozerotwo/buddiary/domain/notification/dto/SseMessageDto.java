@@ -1,7 +1,5 @@
 package twozerotwo.buddiary.domain.notification.dto;
 
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class InviteMessageDto {
-	SseEmitter sseEmitter;
+public class SseMessageDto {
 	NotificationDto notificationDto;
-	Long userId;
+	Long targetId;
 }

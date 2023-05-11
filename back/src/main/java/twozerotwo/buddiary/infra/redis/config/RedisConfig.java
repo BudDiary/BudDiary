@@ -19,7 +19,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import twozerotwo.buddiary.domain.notification.dto.InviteMessageDto;
+import twozerotwo.buddiary.domain.notification.dto.SseMessageDto;
 
 @Configuration
 @EnableCaching
@@ -58,12 +58,12 @@ public class RedisConfig {
 	}
 
 	@Bean
-	public RedisTemplate<String, InviteMessageDto> redisInviteMessageDtoTemplate(
+	public RedisTemplate<String, SseMessageDto> redisInviteMessageDtoTemplate(
 		RedisConnectionFactory connectionFactory) {
-		RedisTemplate<String, InviteMessageDto> redisTemplate = new RedisTemplate<>();
+		RedisTemplate<String, SseMessageDto> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(connectionFactory);
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(InviteMessageDto.class));
+		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(SseMessageDto.class));
 		return redisTemplate;
 	}
 

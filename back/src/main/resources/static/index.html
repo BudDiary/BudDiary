@@ -22,6 +22,7 @@
 
     eventSource.addEventListener("error", function(event) {
         console.log("error");
+        console.log(event.data);
         // eventSource.close()
     })
     eventSource.addEventListener("connect", function(event) {

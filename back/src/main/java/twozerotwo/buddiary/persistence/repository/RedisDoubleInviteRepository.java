@@ -26,10 +26,6 @@ public class RedisDoubleInviteRepository {
 		roomTopics.put(NoticeType.DOUBLE_INVITE.getCode(), new ChannelTopic(NoticeType.DOUBLE_INVITE.getCode()));
 		redisMessageListener.addMessageListener(redisSubscriber, roomTopics.get(NoticeType.DOUBLE_INVITE.getCode()));
 	}
-	// public void createTopic(String roomId) {
-	// 	roomTopics.put(roomId, new ChannelTopic(roomId));
-	// 	redisMessageListener.addMessageListener(redisSubscriber, roomTopics.get(roomId));
-	// }
 
 	public ChannelTopic getTopic(String topic) {
 		return roomTopics.get(topic);

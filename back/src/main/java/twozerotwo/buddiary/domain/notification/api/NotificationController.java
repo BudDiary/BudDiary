@@ -18,7 +18,7 @@ import twozerotwo.buddiary.persistence.entity.Member;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/notice")
+@RequestMapping("/event")
 @Slf4j
 public class NotificationController {
 	private final NotificationService notificationService;
@@ -27,9 +27,9 @@ public class NotificationController {
 
 	@PostMapping("/double/{target}")
 	public ResponseEntity notifyDoubleInviteEvent(@PathVariable String target, HttpServletRequest request) {
-		// Member inviter = authenticationUtil.getMemberEntityFromRequest(request);
-		Member inviter = clubService.returnMemberByUsername("yeokyung502@naver.com");
-		notificationService.notifyDoubleInviteEvent(inviter, "yeokyung502@naver.com");
+		Member inviter = authenticationUtil.getMemberEntityFromRequest(request);
+		// Member inviter = clubService.returnMemberByUsername("yeokyung502@naver.com");
+		notificationService.notifyDoubleInviteEvent(inviter, target);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

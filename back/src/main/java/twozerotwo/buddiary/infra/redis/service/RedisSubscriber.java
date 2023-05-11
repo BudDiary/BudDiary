@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.domain.notification.dto.InviteMessageDto;
+import twozerotwo.buddiary.domain.notification.dto.SseMessageDto;
 import twozerotwo.buddiary.persistence.enums.NoticeType;
 
 @Slf4j
@@ -23,29 +23,32 @@ public class RedisSubscriber implements MessageListener {
 	private final ObjectMapper objectMapper;
 	private final RedisTemplate redisTemplate;
 
+
 	@Override
 	public void onMessage(Message message, byte[] pattern) {
 		try {
 			String topic = (String)redisTemplate.getStringSerializer().deserialize(message.getChannel());
 			String publishMessage = (String)redisTemplate.getStringSerializer().deserialize(message.getBody());
-			log.info("[publishMessage]: " + publishMessage);
-			InviteMessageDto inviteMessageDto = objectMapper.readValue(publishMessage, InviteMessageDto.class);
-
+			SseMessageDto sseMessageDto = objectMapper.readValue(publishMessage, SseMessageDto.class);
 
 			if (topic.equals(NoticeType.DOUBLE_INVITE.getCode())) {
-
-
+				// SseEntity savedSseEntity = redisSseEntityRepository.findById(sseMessageDto.getTargetId())
+				// 	.orElseThrow(() -> new NotFoundException("해당 sseEntity를 찾을 수 없습니다."));
+				// if (sseEmitters.containsKey(sseMessageDto.getTargetId())) {
+				// 	log.info("[userID]" + sseMessageDto.getTargetId());
+				// 	// 이 객체를 레디스 템플릿으로 보낸다..?
+				//
+				// }
+				SseEmitter sseEmitter = sseEmitters.get(sseMessageDto.getTargetId());
+				// SseEmitter sseEmitter = savedSseEntity.getSseEmitter();
 				try {
-					// sseEmitter.send(SseEmitter.event().name("DOUBLE_INVITE").data(inviteMessageDto.getNotificationDto()));
-					SseEmitter sseEmitter = inviteMessageDto.getSseEmitter();
-					log.info("DOUBLE_INVITE" + sseEmitter);
-					// sseEmitter.send(SseEmitter.event().name("DOUBLE_INVITE").data(inviteMessageDto.getNotificationDto()));
-					sseEmitter.send(SseEmitter.event().name("DOUBLE_INVITE").data(publishMessage));
-					log.info("여기요");
+					sseEmitter.send(SseEmitter.event().name(NoticeType.DOUBLE_INVITE.getCode()).data(sseMessageDto.getNotificationDto()));
 				} catch (Exception e) {
-					log.info("저기요");
-					sseEmitters.remove(inviteMessageDto.getUserId());
+					sseEmitters.remove(sseMessageDto.getTargetId());
 				}
+
+
+
 				// messagingTemplate.convertAndSendToUser((String)sideMessageDto.getMessageBody().get("username"),
 				// 	"/sub/side-bar", sideMessageDto);
 			}
