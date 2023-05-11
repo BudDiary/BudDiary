@@ -38,4 +38,3 @@ export default function Addpicture({ originFiles, setOriginFiles }: Props) {
     </UploadImageBox>
   );
 }
-

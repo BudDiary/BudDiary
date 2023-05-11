@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CalendarContainer, DateControlContainer, ChangeDateButton, TodayMonthYear, CalendarSection, WeekDaySection } from "./Calendar.styles";
 import DateItem from "./DateItem";
-
-
 
 export default function Calendar() {
   const [todayDate, setTodayDate] = useState<Date>(new Date());
@@ -42,8 +40,11 @@ export default function Calendar() {
   
     return result;
   };
-  const allDaysInMonth: Date[] = daysInMonth(todayDate);
-
+  const [allDaysInMonth, setAllDaysInMonth] = useState<Date[]>([]);
+  useEffect(() => {
+    setAllDaysInMonth(daysInMonth(todayDate));
+  }, [todayDate]);
+  
   return (
     <CalendarContainer>
       <DateControlContainer>
@@ -53,7 +54,7 @@ export default function Calendar() {
       </DateControlContainer>
       <CalendarSection>
         {weekDays.map((weekDay) => {
-          return <WeekDaySection  isSaturday={weekDay === "토"} isSunday={weekDay === "일"}>{weekDay}</WeekDaySection>;
+          return <WeekDaySection key={weekDay} isSaturday={weekDay === "토"} isSunday={weekDay === "일"}>{weekDay}</WeekDaySection>;
         })}
         {allDaysInMonth.map((day: Date) => {
         return (

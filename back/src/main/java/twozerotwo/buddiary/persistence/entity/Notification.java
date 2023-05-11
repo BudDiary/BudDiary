@@ -14,10 +14,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.notification.dto.NotificationDto;
 import twozerotwo.buddiary.persistence.enums.NoticeType;
 import twozerotwo.buddiary.persistence.enums.NoticeTypeConverter;
 
@@ -42,6 +45,7 @@ public class Notification {
 	// receiver, senderG, senderM
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
+	@JsonIgnore
 	private Member receiver;
 
 	// 보낸 그룹의 uuid
@@ -53,4 +57,14 @@ public class Notification {
 	@Column(nullable = true)
 	@Builder.Default
 	private String senderM = null;
+
+	public NotificationDto toDto() {
+		return NotificationDto.builder()
+			.id(this.id)
+			.type(this.type.getCode())
+			.isChecked(this.isChecked)
+			.senderG(this.senderG)
+			.senderM(this.senderM)
+			.build();
+	}
 }

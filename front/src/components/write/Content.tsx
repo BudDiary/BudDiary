@@ -7,7 +7,7 @@ interface Props {
 
 export default function Content({ setContent }: Props) {
   return (
-    <div className="border">
+    <div className="border w-full mx-4">
       <TextareaAutosize
         style={{ width: "100%", fontSize: "16px" }}
         minRows={8}
