@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Addpicture from "../../components/write/Addpicture";
 import Pictures from "../../components/write/Pictures";
 import Content from "../../components/write/Content";
@@ -17,10 +17,15 @@ import {
   StyledPopper,
 } from "./WritePage.styles";
 import { SurveyAgainButton } from "../../components/common/Button.styles";
+import { postTodayDiaryApi } from "../../apis/diaryApi";
 
-interface Props {
-  onFilesChanged: (files: File[]) => void;
+interface GroupData {
+  clubUuid: string;
+  thumbnailUrl: string;
+  clubName: string;
 }
+
+type Group = GroupData[];
 
 export default function WritePage() {
   const { memberData } = useMember();
@@ -29,7 +34,18 @@ export default function WritePage() {
   const [content, setContent] = useState<string>("");
   const [originFiles, setOriginFiles] = useState<File[]>([]);
   const [selectGroup, setSelectGroup] = useState<string[]>([]);
-  const mygroup = getMyClubListApi(username);
+  const [mygroup, setMygroup] = useState<GroupData[]>([]);
+
+  useEffect(() => {
+    async function fetchMyGroup() {
+      const myGroupObject = await getMyClubListApi(username);
+      const pluralList = myGroupObject.pluralList;
+      const doubleList = myGroupObject.doubleList;
+      const combinedList = [...pluralList, ...doubleList];
+      setMygroup(combinedList);
+    }
+    fetchMyGroup();
+  }, [username]);
 
   const CustomMultiSelect = React.forwardRef(function CustomMultiSelect(
     props: SelectProps<number, true>,
@@ -56,8 +72,8 @@ export default function WritePage() {
       stickerList: [],
       memberUsername: nickname,
     };
-
     console.log(data, "RequestBody", mygroup);
+    // postTodayDiaryApi(data)
   };
 
   const consolelog = (e: any) => {
@@ -70,6 +86,8 @@ export default function WritePage() {
       console.log("추가함", selectGroup);
     }
   };
+
+
   return (
     <>
       <SubNavContainer>일기 작성하기</SubNavContainer>
@@ -83,15 +101,14 @@ export default function WritePage() {
           <Pictures originFiles={originFiles} setOriginFiles={setOriginFiles} />
         </span>
         <div className="w-full flex justify-center mb-8">
-          <CustomMultiSelect onChange={(e: any) => consolelog(e)}>
-            <StyledOption value={1}>개인일기</StyledOption>
-            <StyledOption value={2}>그룹일기1</StyledOption>
-            <StyledOption value={3}>그룹일기2</StyledOption>
-            <StyledOption value={4}>그룹일기3</StyledOption>
-            <StyledOption value={5}>그룹일기4</StyledOption>
-          </CustomMultiSelect>
+        <CustomMultiSelect onChange={consolelog}>
+  {mygroup.map((group: GroupData, index: number) => (
+    <StyledOption key={index} value={group.clubUuid}>
+      {group.clubName}
+    </StyledOption>
+  ))}
+</CustomMultiSelect>
         </div>
-
         <Content setContent={setContent} />
         <div className="w-full flex justify-center my-8">
           <SurveyAgainButton onClick={goData}>등록</SurveyAgainButton>
