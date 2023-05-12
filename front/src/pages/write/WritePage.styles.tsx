@@ -1,4 +1,5 @@
 import styledComponents from "styled-components";
+import tw from "twin.macro";
 import { styled } from "@mui/system";
 import Option, { optionClasses } from "@mui/base/Option";
 import { selectClasses } from "@mui/base/Select";
@@ -137,4 +138,17 @@ export const StyledListbox = styled("ul")(
 
 export const StyledPopper = styled(Popper)`
   z-index: 1;
+`;
+
+// -------------------------------------------------------------------------------
+// 스티커페이지 CSS
+
+export const StageContainer = styledComponents.div`
+  ${tw`max-w-[1152px] mx-auto`};
+`;
+
+export const ContentBox = styledComponents.div`
+  ${tw`w-full border my-8`};
+  white-space: pre-wrap;
+  word-wrap: break-word;
 `;
