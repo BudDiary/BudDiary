@@ -64,7 +64,6 @@ public class MemberController {
 	//-------------------------------------------맴버 인트러 변경----------------------------------------------
 	@PatchMapping("/intro")
 	public ResponseEntity<?> patchIntro(@RequestBody Map<String, String> introReq, HttpServletRequest request) {
-		log.info("컨트롤러 진입");
 		String nickname = introReq.get("intro");
 		String updatedNickname = memberService.updateIntro(nickname, request)
 			.orElseThrow(() -> new ConflictException("소개말 변경을 실패 했습니다."));

@@ -9,6 +9,7 @@ import {
   BlankDiary,
   BasicButton,
   DiaryDetailBlank,
+  ReactionSet,
 } from "./Diaries.styles";
 import { LogoBlue, LogoGreen } from "../navbar/NavBar.styles";
 import DiaryComment from "./DiaryComment";
@@ -20,6 +21,7 @@ import { userdummy } from "../mypage/userdummy";
 import EmojiCount from "./emoji/EmojiCount";
 import EmojiPicker from "./emoji/EmojiPicker";
 import { Diary, Image } from "../../types/group";
+import DiaryDelete from "./DiaryDelete";
 import { deleteDiaryApi } from "../../apis/diaryApi";
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -30,13 +32,23 @@ interface DiaryBoxProps {
 export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
 
+  // 일기 삭제 모달
+  const [diaryDelete, setDiaryDelete] = useState(false);
+  const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
+  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
+
+  const showDeleteModal = (diaryId: number) => {
+    setSelectedDiaryId(diaryId);
+    setDiaryDelete(true);
+  };
+  const handleCloseModal = () => {
+    setDiaryDelete(false);
+  };
+
   useEffect(() => {
     // 다이어리 데이터 로드
     setDiaryData(diaryList ?? []);
   }, []);
-
-  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
-  const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
 
   const handleSelectEmoji = (emoji: string, diaryId: number) => {
     if (selectedEmojis.includes(emoji)) {
@@ -73,12 +85,19 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                   <div>
                     <h2>
                       {diary.writer.nickname}
+                      {diaryDelete && selectedDiaryId === diary.diaryId && (
+                        <DiaryDelete
+                          key={diary.diaryId}
+                          isOpen={false}
+                          diary={diary}
+                          diaryId={diary.diaryId}
+                          onClose={handleCloseModal}
+                        />
+                      )}
                       {userdummy.nickname === diary.writer.nickname && (
                         <DeleteButton
                           style={{ fontSize: "12px" }}
-                          onClick={() =>
-                            deleteDiaryApi(diary.diaryId, userdummy.username)
-                          }
+                          onClick={() => showDeleteModal(diary.diaryId)}
                         >
                           삭제
                         </DeleteButton>
@@ -110,21 +129,8 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                   </DiaryText>
                 </DiaryContent>
 
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "baseline",
-                    position: "relative",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      position: "relative",
-                    }}
-                  >
+                <ReactionSet>
+                  <div>
                     <EmojiCount reactionList={diary.reactionList} />
                     <BasicButton
                       onClick={() =>
@@ -146,7 +152,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                       diaryId={diary.diaryId}
                     />
                   )}
-                </div>
+                </ReactionSet>
                 <DiaryComment
                   key={diary.diaryId}
                   diaryId={diary.diaryId}

@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { BasicButton } from "./Diaries.styles";
 import Replies from "./Replies";
 import CommentEdit from "./CommentEdit";
 import DeleteComment from "./DeleteComment";
+import { BasicButton } from "./Diaries.styles";
+import { ClubList } from "./GroupInfo.styles";
 import {
   InputBox,
   UserInfo,
   InputSet,
   CommentWrapper,
+  CommentBox,
+  ExpansionButton,
+  CommentError,
 } from "./DiaryComment.style";
 import { postCommentApi } from "../../apis/commentApi";
-import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
+import {
+  handleCommentChange,
+  handleCommentBlur,
+  handleCheckComment,
+} from "./GroupDetailFunction";
 import { EditButton, DeleteButton } from "../common/Button.styles";
 import { userdummy } from "../mypage/userdummy";
 import { timeAgo } from "./GroupDetailFunction";
@@ -26,6 +34,8 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
   const [commentText, setCommentText] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
   const [height, setHeight] = useState("35px");
+  const [checkComment, setCheckComment] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   // 댓글 수정 & 삭제 모달
   const [commentUpdate, setCommentUpdate] = useState(false);
@@ -52,6 +62,10 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
   // 댓글 작성
 
   const handleCommentSubmit = async () => {
+    // 에러가 나오면 버튼이 눌리지 않습니다.
+    if (error) {
+      return;
+    }
     console.log("댓글 요청", commentText, diaryId, userdummy.username);
     setHeight("35px");
     try {
@@ -69,7 +83,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
 
   return (
     <CommentWrapper>
-      <p style={{ fontWeight: "bold" }}>댓글 {commentList.length}</p>
+      <ClubList>댓글 {commentList.length}</ClubList>
       {commentList
         .slice(0, showAllComments ? commentList.length : 2)
         .map((comment) => (
@@ -77,27 +91,17 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
             <div>
               <img src={comment.writer.profilePath ?? ""} alt="프로필" />
             </div>
-            <div
-              style={{
-                width: "55%",
-              }}
-            >
+            <CommentBox>
               <div
                 style={{
                   display: "flex",
                   alignItems: "baseline",
+                  marginBlock: "10px",
+                  marginBottom: "10px",
                 }}
               >
-                <h2 style={{ fontWeight: "bold" }}>
-                  {comment.writer.nickname}
-                </h2>
-                <h3
-                  style={{
-                    marginLeft: "0.5rem",
-                    color: "gray",
-                    fontSize: "0.75rem",
-                  }}
-                >
+                <h2>{comment.writer.nickname}</h2>
+                <h3 style={{ marginInline: "8px" }}>
                   {timeAgo(comment.writeDate)}
                 </h3>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
@@ -138,36 +142,35 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                   )}
                 </div>
               </div>
-              <p>{comment.text}</p>
+
+              <div style={{ width: "145%" }}>
+                <p>{comment.text}</p>
+              </div>
               <Replies
                 key={comment.id}
                 commentId={comment.id}
                 replies={comment.replies}
               />
-            </div>
+            </CommentBox>
           </UserInfo>
         ))}
-      <Divider />
+
+      <Divider style={{ border: "solid 2px #BFDBFE", marginTop: "10px" }} />
       {commentList.length > 2 && (
         <div style={{ textAlign: "center" }}>
-          <button
-            style={{
-              fontSize: "12px",
-              fontWeight: "700",
-              marginBlock: "10px",
-              color: "#ABC4FF",
-            }}
-            onClick={() => setShowAllComments((prev) => !prev)}
-          >
+          <ExpansionButton onClick={() => setShowAllComments((prev) => !prev)}>
             {showAllComments ? "▲ 닫기" : "▼ 전체 댓글 보기"}
-          </button>
+          </ExpansionButton>
         </div>
       )}
       <InputSet>
         <InputBox
           key={commentText}
           defaultValue={commentText}
-          onChange={(e) => handleCommentChange(e, setHeight)}
+          onChange={(e) => {
+            handleCommentChange(e, setHeight);
+            handleCheckComment(e, setCheckComment, setError);
+          }}
           onBlur={(e) => handleCommentBlur(e, setCommentText)}
           style={{ height }}
         />
@@ -175,6 +178,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
           댓글달기
         </BasicButton>
       </InputSet>
+      {error && <CommentError>{error}</CommentError>}
     </CommentWrapper>
   );
 }

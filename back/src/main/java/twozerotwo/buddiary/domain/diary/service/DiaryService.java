@@ -64,6 +64,8 @@ public class DiaryService {
 			.club(club)
 			.writer(member)
 			.text(request.getText())
+			.positiveRate(request.getPositiveRate())
+			.negativeRate(request.getNegativeRate())
 			.build();
 		Diary savedDiary = diaryRepository.save(diary);
 		// 이미지 리스트 만들고
@@ -82,7 +84,7 @@ public class DiaryService {
 	public void makeDiaryImage(Diary diary, List<MultipartFile> fileList) throws IOException {
 		List<DiaryImage> imgList = diary.getDiaryImages();
 
-		if (imgList != null) {
+		if (imgList.size() != 0) {
 			for (MultipartFile file : fileList) {
 				String imgUrl = s3Uploader.upload(file, "Diary");
 				DiaryImage diaryImage = DiaryImage.builder()
@@ -134,6 +136,8 @@ public class DiaryService {
 		Diary diary = Diary.builder()
 			.writer(member)
 			.text(request.getText())
+			.positiveRate(request.getPositiveRate())
+			.negativeRate(request.getNegativeRate())
 			.build();
 		Diary savedDiary = diaryRepository.save(diary);
 		// 이미지 첨부

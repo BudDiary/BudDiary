@@ -1,9 +1,9 @@
-import { api } from "./axiosConfig";
+import { formApi, api } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 다이어리 작성 API
 const postTodayDiaryApi = (payload: any) => {
-  return api
+  return formApi
     .post(`/api/diaries`, payload, { withCredentials: true })
     .then((res) => {
       console.log(res);

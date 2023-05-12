@@ -9,10 +9,11 @@ export const InputBox = styled.textarea`
   ::-webkit-scrollbar {
     display: none;
   }
+  vertical-align: middle;
 `;
+
 export const UserInfo = styled.div`
-  ${tw`flex items-start font-hassam`}
-  margin-top : 10px;
+  ${tw`flex items-start font-hassam my-2 mt-1 p-2 pl-4`}
   > div:first-child {
     display: flex;
     align-items: center;
@@ -33,17 +34,8 @@ export const UserInfo = styled.div`
 
   h3 {
     margin-top: 0.25rem;
-    margin-left: 0.5rem;
     color: gray;
     font-size: 0.75rem;
-  }
-
-  .comment {
-    margin-top: 0.5rem;
-  }
-
-  .comment p {
-    margin-bottom: 0.5rem;
   }
 `;
 
@@ -62,6 +54,32 @@ export const EmojiPickerWrapper = styled.div`
 `;
 
 export const DeleteContent = styled.div`
-  ${tw`bg-blue-200 text-gray-700 mx-6`}
+  ${tw`bg-blue-200 text-gray-700 mx-6 p-4`}
   height: 150px;
+  border-radius: 15px;
+`;
+
+export const CommentBox = styled.div`
+  width: 55%;
+
+  h2 {
+    ${tw`font-bold`}
+  }
+
+  h3 {
+    ${tw`font-bold text-gray-500 text-sm`}
+  }
+`;
+
+export const ExpansionButton = styled.div`
+  ${tw`text-xs font-bold my-4 text-blue-700 text-bud-blue font-hassam`}
+`;
+
+export const CommentError = styled.div`
+  ${tw`text-red-400 text-bud-pink ml-3 mt-2 font-hassam text-sm`}
+`;
+
+export const EditTitle = styled.div`
+  ${tw`text-lg font-berry`}
+  letter-spacing: 0.5px;
 `;

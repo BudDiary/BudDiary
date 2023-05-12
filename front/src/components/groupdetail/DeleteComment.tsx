@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { BiLeftArrowCircle } from "react-icons/bi";
 import { EditContent, DeleteButton } from "./Diaries.styles";
 import {
   EditContainer,
   ModalTopNavContainer,
 } from "../common/ModalWindow.styles";
-import { UserInfo } from "./DiaryComment.style";
+import { UserInfo, EditTitle } from "./DiaryComment.style";
 import { timeAgo } from "./GroupDetailFunction";
-import { DeleteContent } from "./DiaryComment.style";
+import { DeleteContent, CommentBox } from "./DiaryComment.style";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
 import { deleteCommentApi } from "../../apis/commentApi";
 import { userdummy } from "../mypage/userdummy";
+import close from "../../assets/modal/close.png";
+
 interface CommentDeleteProps {
   isOpen: boolean;
   onClose: () => void;
@@ -39,46 +40,58 @@ export default function DeleteComment({
         style={{
           display: "flex",
           alignItems: "center",
-          padding: "15px",
         }}
       >
-        <BiLeftArrowCircle onClick={closeCommentModal} />
-        <div>댓글 삭제하기</div>
-        <div></div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src={close}
+            alt=""
+            onClick={closeCommentModal}
+            style={{
+              height: "25px",
+              width: "25px",
+              border: "none",
+              marginLeft: "10px",
+            }}
+          />
+        </div>
+        <EditTitle>댓글 삭제하기</EditTitle>
+        <div
+          style={{
+            height: "25px",
+            width: "25px",
+            border: "none",
+            marginRight: "15px",
+          }}
+        ></div>
       </ModalTopNavContainer>
 
-      <UserInfo style={{ padding: "15px" }}>
+      <UserInfo>
         <div>
           <img src={comment.writer.profilePath ?? ""} alt="프로필" />
         </div>
-        <div
-          style={{
-            width: "55%",
-          }}
-        >
+        <CommentBox>
           <div
             style={{
               display: "flex",
               alignItems: "baseline",
             }}
           >
-            <h2 style={{ fontWeight: "bold" }}>{comment.writer.nickname}</h2>
-            <h3
-              style={{
-                marginLeft: "0.2rem",
-                color: "gray",
-                fontSize: "0.75rem",
-              }}
-            >
-              {timeAgo(comment.writeDate)}
-            </h3>
+            <h2>{comment.writer.nickname}</h2>
+            <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
           </div>
-        </div>
+        </CommentBox>
       </UserInfo>
       <Divider style={{ border: "solid 2px #BFDBFE" }} />
       <EditContent>
-        <div style={{ textAlign: "center", marginBlock: "5px" }}>
-          <p>댓글 삭제하기</p>
+        <div style={{ textAlign: "center", marginTop: "5px" }}>
+          <EditTitle>댓글 삭제하기</EditTitle>
         </div>
         <p>다음 댓글을 삭제하시겠습니까?</p>
         <DeleteContent>{commentState}</DeleteContent>

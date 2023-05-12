@@ -19,13 +19,15 @@ import {
 import { SurveyAgainButton } from "../../components/common/Button.styles";
 import { postTodayDiaryApi } from "../../apis/diaryApi";
 import GroupSelect from "../../components/write/GroupSelect";
+import navimg from "../../assets/subnav/WirteDiary.jpg";
+import TypeIt from "typeit-react";
 // import GroupSelect from '../../components/write/GroupSelect'
 interface GroupData {
   clubUuid: string;
   thumbnailUrl: string;
   clubName: string;
-}
 
+}
 
 export default function WritePage() {
   const { memberData } = useMember();
@@ -84,7 +86,16 @@ export default function WritePage() {
 
   return (
     <>
-      <SubNavContainer>일기 작성하기</SubNavContainer>
+      <SubNavContainer img={navimg}>
+        <TypeIt
+          options={{
+            strings: ["일기 작성하기"],
+            cursor: false,
+            breakLines: false,
+            speed: 100,
+          }}
+        />
+      </SubNavContainer>
 
       <PageContainer>
         <span className="flex h-full">

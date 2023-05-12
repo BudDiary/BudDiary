@@ -5,6 +5,7 @@ import { SignupInfoInput, SignupPicInput } from '../../components/common/Input.s
 import { SignUpInfoInputSection,ProfilePicContainer, FlexedContainer, ImgInput } from './SignUpInfoPage.styles'
 import { firstSignUpApi } from '../../apis/userApi'
 import useMember from '../../hooks/memberHook';
+import { useLocation } from 'react-router-dom';
 import ModalWindow from '../../components/common/ModalWindow'
 export default function SignUpInfoPage() {
   const [fileURL, setFileURL] = useState<string>("");
@@ -13,7 +14,8 @@ export default function SignUpInfoPage() {
   const [nickname, setNickname] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const { login } = useMember();
-
+  const location = useLocation();
+  const loginResponse = location.state;
   // useEffect(() => {
   //   setCookie('hey', 'hi', { path: "/"})
   // }, []);
@@ -49,7 +51,8 @@ export default function SignUpInfoPage() {
       // }
       const response = await firstSignUpApi(formData)
       if (response === true) {
-        login(response)
+        // 프로필과 닉네임 설정 완료 시 로그인 상태로 전환
+        login(loginResponse)
         setModalOpen(true)
       } else {
         console.log('실패여')
