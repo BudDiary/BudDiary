@@ -52,3 +52,7 @@ ${tw`hover:cursor-pointer w-[36px] h-[36px] border-2 border-gray-200 rounded-ful
 export const NickNameContainer = styled.div`
 ${tw`hover:cursor-pointer font-bold mt-2`}
 `;
+
+export const AlarmContainer = styled.div`
+${tw`hover:cursor-pointer ml-4  my-auto`}
+`;

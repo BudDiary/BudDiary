@@ -61,26 +61,28 @@ export default function Recommended() {
             },
           }}
         >
-          {recommendList.map((el, idx) => (
-            <SwiperSlide key={idx} className="p-2">
-              <Card sx={{ width: 200 }}>
-                <CardMedia sx={{ height: 100 }} />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {el.id}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {el.rate}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button variant="contained" size="large">
-                    그룹일기 신청하기
-                  </Button>
-                </CardActions>
-              </Card>
-            </SwiperSlide>
-          ))}
+          {recommendList.length >= 1
+            ? recommendList.map((el, idx) => (
+                <SwiperSlide key={idx} className="p-2">
+                  <Card sx={{ width: 200 }}>
+                    <CardMedia sx={{ height: 100 }} />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {el.id}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {el.rate}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button variant="contained" size="large">
+                        그룹일기 신청하기
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </SwiperSlide>
+              ))
+            : null}
         </Swiper>
       </ProfileSection>
     </>
