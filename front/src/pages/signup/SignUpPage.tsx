@@ -6,7 +6,7 @@ import useMember from '../../hooks/memberHook';
 import Swal from 'sweetalert2';
 export default function SignUpPage() {
   const navigate = useNavigate();
-  const { login } = useMember();
+  const { login, memberData } = useMember();
   useEffect(() => {
     async function fetchData() {
       const currentUrl: string = window.location.href;
@@ -16,8 +16,11 @@ export default function SignUpPage() {
       console.log(response)
       // 처음 가입한 사람이면 signup 으로 보내고, 아니면 메인페이지로
       if (response.newBe === true ) {
+        login(response)
         navigate('/signup-info', {state:response})
+
       } else if (response.newBe === false) {
+          
         // 이미 가입된 사용자이면
         login(response)
         // if (response.)

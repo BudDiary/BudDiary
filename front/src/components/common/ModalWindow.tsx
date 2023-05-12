@@ -8,6 +8,7 @@ interface Props {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function ModalWindow({ page, setModalOpen }: Props) {
+
   const closeModal = () => {
     setModalOpen(false);
   };
