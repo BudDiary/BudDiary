@@ -213,6 +213,9 @@ public class ClubService {
 		if (memberClub != null) {
 			throw new BadRequestException("중복된 회원입니다");
 		}
+		if (club.isMaxClubMembersSize()) {
+			throw new BadRequestException("회원이 가득찬 클럽입니다.");
+		}
 		clubMembers.add(buildMemberClub);
 	}
 }

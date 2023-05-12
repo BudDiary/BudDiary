@@ -65,4 +65,11 @@ public class Club {
 	public void deleteMember(Member member) {
 		this.getClubMembers().remove(member);
 	}
+
+	public boolean isMaxClubMembersSize(){
+		if(this.clubMembers.size() < 3){
+			return true;
+		}
+		return false;
+	}
 }
