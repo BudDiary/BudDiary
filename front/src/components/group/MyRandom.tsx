@@ -34,9 +34,26 @@ const data = [
 
 export default function MyRandom() {
   return (
-    <Swiper spaceBetween={50} slidesPerView={3}>
+    <Swiper
+      spaceBetween={20}
+      slidesPerView={1}
+      breakpoints={{
+        360: {
+          slidesPerView: 1,
+        },
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+        1440: {
+          slidesPerView: 4,
+        },
+      }}
+    >
       {data.map((item, index) => (
-        <SwiperSlide key={index}>
+        <SwiperSlide key={index} className="py-4 px-1">
           <Paper elevation={3} sx={{ p: 2 }}>
             <Typography variant="h5" component="div" sx={{ mb: 1 }}>
               {item.title}
@@ -44,7 +61,7 @@ export default function MyRandom() {
             <img
               src={item.image}
               alt={item.title}
-              style={{ width: "100%", marginBottom: "50%" }}
+              style={{ width: "100%", height: "100px" }}
             />
             <Typography component="div">{item.description}</Typography>
           </Paper>

@@ -193,7 +193,7 @@ export default function SurveyModal({ closeModal }: Props) {
       >
         <ModalTopNavContainer>
           <CloseModalButton onClick={closeSurvey}>
-            <BiArrowBack />
+            {/* <BiArrowBack /> */}
           </CloseModalButton>
           <ModalTitle style={{ textAlign: "center" }}>초기 설문조사</ModalTitle>
           {currentSentenceIndex < allSentences.length - 1 ? (
