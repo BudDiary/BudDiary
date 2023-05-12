@@ -75,9 +75,7 @@ public class DiaryService {
 		// 이미지 리스트 만들고
 		makeDiaryImage(savedDiary, request.getFileList());
 		// 스티커 리스트 만들고
-		if (request.getStickerDtoList() != null) {
-			makeStickerList(savedDiary, request.getStickerDtoList());
-		}
+		makeStickerList(savedDiary, request.getStickerDtoList());
 
 	}
 
@@ -91,7 +89,7 @@ public class DiaryService {
 	public void makeDiaryImage(Diary diary, List<MultipartFile> fileList) throws IOException {
 		List<DiaryImage> imgList = diary.getDiaryImages();
 
-		if (imgList.size() != 0) {
+		if (imgList.size() > 0) {
 			for (MultipartFile file : fileList) {
 				String imgUrl = s3Uploader.upload(file, "Diary");
 				DiaryImage diaryImage = DiaryImage.builder()
@@ -108,12 +106,10 @@ public class DiaryService {
 		List<UsedSticker> usedStickerList = diary.getUsedStickers();
 		// List<UnusedSticker> memberStickers = member.getStickers();
 		Member member = diary.getWriter();
-		log.info("stickerDtoList {}", Arrays.toString(stickerDtoList.toArray()));
 
-		if (stickerDtoList.size() > 0 && stickerDtoList != null) {
+		if (stickerDtoList != null && !stickerDtoList.isEmpty()) {
 			for (StickerDto stickerDto : stickerDtoList) {
 				/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
-				log.info("stickerDto{}", stickerDto.getStickerId());
 				Boolean stickerOwned = false;
 				for (UnusedSticker ownedSticker : member.getStickers()) {
 					if (ownedSticker.getSticker().getId().equals(stickerDto.getStickerId())) {
