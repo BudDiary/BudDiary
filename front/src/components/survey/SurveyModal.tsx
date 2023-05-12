@@ -46,15 +46,13 @@ export default function SurveyModal({ closeModal }: Props) {
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
   const swiper = useSwiper();
   const { memberData } = useMember();
-
+  // const [isDone, setIsDone] = useState(false);
   const navigate = useNavigate();
   const closeSurvey = () => {
     console.log({ id: memberData.id, favor_list: myAnswer });
     firstSurveyApi({ id: memberData.id, favor_list: myAnswer });
     closeModal();
-    navigate("/");
   };
-
   // const postPluralClubApi = (payload: any) => {
   //   return formApi.post(`api/clubs/plural`,payload,  { withCredentials: true })
   //   .then((res) => {
