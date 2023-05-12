@@ -46,15 +46,13 @@ export default function SurveyModal({ closeModal }: Props) {
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
   const swiper = useSwiper();
   const { memberData } = useMember();
-
+  // const [isDone, setIsDone] = useState(false);
   const navigate = useNavigate();
   const closeSurvey = () => {
     console.log({ id: memberData.id, favor_list: myAnswer });
     firstSurveyApi({ id: memberData.id, favor_list: myAnswer });
     closeModal();
-    navigate("/");
   };
-
   // const postPluralClubApi = (payload: any) => {
   //   return formApi.post(`api/clubs/plural`,payload,  { withCredentials: true })
   //   .then((res) => {
@@ -193,7 +191,7 @@ export default function SurveyModal({ closeModal }: Props) {
       >
         <ModalTopNavContainer>
           <CloseModalButton onClick={closeSurvey}>
-            <BiArrowBack />
+            {/* <BiArrowBack /> */}
           </CloseModalButton>
           <ModalTitle style={{ textAlign: "center" }}>초기 설문조사</ModalTitle>
           {currentSentenceIndex < allSentences.length - 1 ? (

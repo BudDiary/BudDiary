@@ -36,7 +36,7 @@ export default function DSection() {
   useEffect(() => {
     if (inView) {
       setRun("running");
-      console.log(inView);
+
       setTimeout(() => {
         setText("와");
       }, 6500);

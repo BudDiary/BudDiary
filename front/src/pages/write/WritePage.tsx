@@ -1,77 +1,83 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Addpicture from "../../components/write/Addpicture";
 import Pictures from "../../components/write/Pictures";
+import Checkbox from "@mui/joy/Checkbox";
 import Content from "../../components/write/Content";
-import Select, { SelectProps } from "@mui/base/Select";
 import { getMyClubListApi } from "../../apis/clubApi";
-import { PostingTabType } from "../../types/write";
 import useMember from "../../hooks/memberHook";
 import {
   PageContainer,
   SubNavContainer,
 } from "../../components/common/Page.styles";
-import {
-  StyledOption,
-  StyledButton,
-  StyledListbox,
-  StyledPopper,
-} from "./WritePage.styles";
 import { SurveyAgainButton } from "../../components/common/Button.styles";
+import { postTodayDiaryApi } from "../../apis/diaryApi";
+import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
+import { useNavigate } from "react-router-dom";
+import { ContentBox, StageContainer } from "./WritePage.styles";
 
-interface Props {
-  onFilesChanged: (files: File[]) => void;
+// asdadasd
+
+interface GroupData {
+  clubUuid: string;
+  thumbnailUrl: string;
+  clubName: string;
 }
 
 export default function WritePage() {
+  const navigate = useNavigate();
+
   const { memberData } = useMember();
   const username = memberData.username;
   const nickname = memberData.nickname;
   const [content, setContent] = useState<string>("");
   const [originFiles, setOriginFiles] = useState<File[]>([]);
   const [selectGroup, setSelectGroup] = useState<string[]>([]);
-  const mygroup = getMyClubListApi(username);
+  const [mygroup, setMygroup] = useState<GroupData[]>([]);
+  const [personalChecked, setPersonalChecked] = useState<boolean>(false);
+  const [stage, setStage] = useState<number>(0);
 
-  const CustomMultiSelect = React.forwardRef(function CustomMultiSelect(
-    props: SelectProps<number, true>,
-    ref: React.ForwardedRef<any>
-  ) {
-    const slots: SelectProps<number, true>["slots"] = {
-      root: StyledButton,
-      listbox: StyledListbox,
-      popper: StyledPopper,
-      ...props.slots,
-    };
+  useEffect(() => {
+    async function fetchMyGroup() {
+      const myGroupObject = await getMyClubListApi(username);
+      const pluralList = myGroupObject.pluralList;
+      const doubleList = myGroupObject.doubleList;
+      const combinedList = [...pluralList, ...doubleList];
+      setMygroup(combinedList);
+    }
+    fetchMyGroup();
+  }, [username]);
 
-    return <Select {...props} multiple ref={ref} slots={slots} />;
-  });
+  useEffect(
+    () => console.log(selectGroup, "this is selectGroup"),
+    [selectGroup]
+  );
 
-  const goData = () => {
-    console.log(content);
-    console.log(originFiles);
+  const handleChange = () => {
+    setPersonalChecked(!personalChecked);
+  };
+
+  const handleSelectGroupChange = (newSelectGroup: string[]) => {
+    setSelectGroup(newSelectGroup);
+  };
+
+  const sendData = async () => {
     const data = {
       text: content,
-      originFiles: originFiles,
+      fileList: originFiles,
       clubList: selectGroup,
-      isPersonal: true,
-      stickerList: [],
-      memberUsername: nickname,
+      isPersonal: personalChecked,
+      memberUsername: username,
     };
-
-    console.log(data, "RequestBody", mygroup);
+    // await postTodayDiaryApi(data);
+    setStage(1);
   };
 
-  const consolelog = (e: any) => {
-    if (selectGroup.includes(e.target.textContent)) {
-      const idx = selectGroup.indexOf(e.target.textContent);
-      selectGroup.splice(idx, 1);
-      console.log("취소함", selectGroup);
-    } else {
-      selectGroup.push(e.target.textContent);
-      console.log("추가함", selectGroup);
-    }
+  const backSpace = () => {
+    setStage(0);
   };
+
   return (
     <>
       <SubNavContainer img={navimg}>
@@ -85,29 +91,58 @@ export default function WritePage() {
         />
       </SubNavContainer>
 
-      <PageContainer>
-        <span className="flex h-full">
-          <Addpicture
-            originFiles={originFiles}
-            setOriginFiles={setOriginFiles}
-          />
-          <Pictures originFiles={originFiles} setOriginFiles={setOriginFiles} />
-        </span>
-        <div className="w-full flex justify-center mb-8">
-          <CustomMultiSelect onChange={(e: any) => consolelog(e)}>
-            <StyledOption value={1}>개인일기</StyledOption>
-            <StyledOption value={2}>그룹일기1</StyledOption>
-            <StyledOption value={3}>그룹일기2</StyledOption>
-            <StyledOption value={4}>그룹일기3</StyledOption>
-            <StyledOption value={5}>그룹일기4</StyledOption>
-          </CustomMultiSelect>
-        </div>
-
-        <Content setContent={setContent} />
-        <div className="w-full flex justify-center my-8">
-          <SurveyAgainButton onClick={goData}>등록</SurveyAgainButton>
-        </div>
-      </PageContainer>
+      {stage === 0 ? (
+        <PageContainer>
+          <span className="flex h-full">
+            <Addpicture
+              originFiles={originFiles}
+              setOriginFiles={setOriginFiles}
+            />
+            <Pictures
+              originFiles={originFiles}
+              setOriginFiles={setOriginFiles}
+            />
+          </span>
+          <div className="flex justify-evenly items-center mb-4 flex-col sm:flex-row">
+            <GroupSelect
+              mygroup={mygroup}
+              selectGroup={selectGroup}
+              onChange={handleSelectGroupChange}
+            />
+            <Checkbox
+              label="개인일기에 저장"
+              size="lg"
+              defaultChecked
+              onChange={handleChange}
+            />
+          </div>
+          <Content setContent={setContent} content={content} />
+          <div className="w-full flex justify-center my-8">
+            <SurveyAgainButton
+              disabled={content === "" ? true : false}
+              onClick={sendData}
+            >
+              다음
+            </SurveyAgainButton>
+          </div>
+        </PageContainer>
+      ) : (
+        <StageContainer>
+          <div>스티커 들어올 자리</div>
+          <ContentBox>{content}</ContentBox>
+          <div className="flex justify-evenly">
+            <button
+              className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"
+              onClick={backSpace}
+            >
+              이전
+            </button>
+            <button className="bg-bud-green text-white w-[120px] h-[45px] rounded-md">
+              완료
+            </button>
+          </div>
+        </StageContainer>
+      )}
     </>
   );
 }

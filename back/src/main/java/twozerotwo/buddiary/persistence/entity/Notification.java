@@ -39,6 +39,7 @@ public class Notification {
 	private NoticeType type = NoticeType.CLUB_WRITE;
 
 	@Builder.Default
+	@JsonIgnore
 	private Boolean isChecked = false;
 
 	// null 가능한 외래키 설정 필요
@@ -51,20 +52,32 @@ public class Notification {
 	// 보낸 그룹의 uuid
 	@Column(nullable = true)
 	@Builder.Default
-	private String senderG = null;
-
-	// 보낸 Member username
+	private String clubUuid = null;
 	@Column(nullable = true)
 	@Builder.Default
-	private String senderM = null;
+	private String clubName = null;
+
+	// 보낸 Member username
+	@Builder.Default
+	private String username = null;
+
+
+	@Builder.Default
+	private String nickname = null;
 
 	public NotificationDto toDto() {
 		return NotificationDto.builder()
 			.id(this.id)
 			.type(this.type.getCode())
 			.isChecked(this.isChecked)
-			.senderG(this.senderG)
-			.senderM(this.senderM)
+			.clubUuid(this.clubUuid)
+			.clubName(this.clubName)
+			.username(this.username)
+			.nickname(this.nickname)
 			.build();
+	}
+
+	public void changeState() {
+		this.isChecked = true;
 	}
 }
