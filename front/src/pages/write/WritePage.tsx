@@ -10,7 +10,7 @@ import {
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import { SurveyAgainButton } from "../../components/common/Button.styles";
-import { postTodayDiaryApi } from "../../apis/diaryApi";
+import { postSentimentApi, postTodayDiaryApi } from "../../apis/diaryApi";
 import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
@@ -63,6 +63,8 @@ export default function WritePage() {
   };
 
   const sendData = async () => {
+    postSentimentApi({'content' : content})
+    
     const data = {
       text: content,
       fileList: originFiles,
@@ -70,6 +72,8 @@ export default function WritePage() {
       isPersonal: personalChecked,
       memberUsername: username,
     };
+
+
     // await postTodayDiaryApi(data);
     setStage(1);
   };

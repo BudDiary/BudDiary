@@ -25,7 +25,6 @@ export default function CSection() {
       setRun("running");
       if (text === "    ") {
         setText("반응을 ");
-        console.log(inView, "ㅈㅣ금부터터");
       }
     }
   }, [inView]);
