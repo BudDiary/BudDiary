@@ -1,4 +1,4 @@
-import { formApi, api } from "./axiosConfig";
+import { formApi, api, sentimentApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 다이어리 작성 API
@@ -87,10 +87,27 @@ const patchDiaryStickerApi = (payload: any) => {
     });
 };
 
+const postSentimentApi = (payload: any) => {
+  return sentimentApi
+  .post(`/`, payload)
+  .then((res) => {
+    console.log(res)
+    return res.data
+  })
+  .catch((err) => {
+    console.log(err, "postSentimentApi 오류");
+    Swal.fire({
+      icon: "error",
+      text: "postSentimentApi 오류",
+    });
+  });
+}
+
 export {
   postTodayDiaryApi,
   getDateDiaryListApi,
   getDiaryDetailApi,
   deleteDiaryApi,
   patchDiaryStickerApi,
+  postSentimentApi
 };
