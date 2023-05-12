@@ -10,7 +10,7 @@ export default function SignUpPage() {
   useEffect(() => {
     async function fetchData() {
       const currentUrl: string = window.location.href;
-      const code = currentUrl.split('buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com/')[1];
+      const code = currentUrl.split('ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com/')[1];
       // const code = currentUrl.split('localhost:3000/')[1];
       const response = await kakaoSignUpApi(code)
       console.log(response)
