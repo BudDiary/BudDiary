@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class ElbHealthCheck {
 	@GetMapping("/actuator/health")
-	public ResponseEntity<?> healthcheck(){
+	public ResponseEntity<?> healthcheck() {
 		return ResponseEntity.ok().body("");
 	}
 
 	@GetMapping("/actuator/info")
-	public ResponseEntity<?> infocheck(){
+	public ResponseEntity<?> infocheck() {
 		return ResponseEntity.ok().body("");
 	}
 
