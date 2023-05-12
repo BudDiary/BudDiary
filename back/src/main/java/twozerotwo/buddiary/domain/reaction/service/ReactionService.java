@@ -3,6 +3,7 @@ package twozerotwo.buddiary.domain.reaction.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
 import twozerotwo.buddiary.domain.reaction.dto.ReactionRequest;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.ConflictException;
+import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.persistence.entity.Diary;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.entity.Reaction;
@@ -26,16 +28,16 @@ import twozerotwo.buddiary.persistence.repository.ReactionRepository;
 @Slf4j
 public class ReactionService {
 	private static final Long ADD_REACTION_POINT = 5L;
-	private final DiaryService diaryService;
-	private final ClubService clubService;
-	private final MemberRepository memberRepository;
 	private final ReactionRepository reactionRepository;
+	private final AuthenticationUtil authenticationUtil;
+	private final DiaryService diaryService;
 
 	@Transactional
-	public List<ReactionDto> createReaction(ReactionRequest request) {
+	public List<ReactionDto> createReaction(ReactionRequest request, HttpServletRequest servlet) {
 		// 다이어리 조회
 		Diary diary = diaryService.returnDiaryById(request.getDiaryId());
-		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+		// Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 
 		/// 중복 처리
 		if (reactionRepository.existsReactionsByDiaryAndMemberAndType(diary, member, request.getActionType())) {
@@ -48,23 +50,21 @@ public class ReactionService {
 			.diary(diary)
 			.build();
 		reactionRepository.save(newReaction);
-		List<Reaction> reactions = diary.getReactions();
-
-		List<ReactionDto> reactionDtos = new ArrayList<>();
-		for (Reaction reaction : reactions) {
-			reactionDtos.add(reaction.toDto());
-		}
+		List<ReactionDto> reactionDtos = diaryService.returnReactionDtoList(diary);
 		// member point 추가
 		member.addPoint(ADD_REACTION_POINT);
 		return reactionDtos;
 	}
 
+
+
 	@Transactional
-	public void deleteReaction(String username, Long diaryId, Long actionId) {
+	public void deleteReaction(HttpServletRequest servlet, Long diaryId, Long actionId) {
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		// 리액션 조회 후 memberId랑 일치하는지 확인
 		Reaction reaction = reactionRepository.findById(actionId)
 			.orElseThrow(() -> new BadRequestException("해당 리액션을 조회할 수 없습니다."));
-		Member member = clubService.returnMemberByUsername(username);
+		// Member member = clubService.returnMemberByUsername(username);
 		Diary diary = diaryService.returnDiaryById(diaryId);
 		// 다이어리의 반응이 맞는지 확인
 		if (!diary.getReactions().contains(reaction)) {

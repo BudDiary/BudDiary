@@ -15,4 +15,5 @@ public class ClubInfo {
 	private String clubUuid;
 	private String thumbnailUrl;
 	private String clubName;
+	private String captainUsername;
 }

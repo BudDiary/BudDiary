@@ -1,6 +1,5 @@
 package twozerotwo.buddiary.global.jwt.service;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -10,7 +9,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
@@ -113,10 +110,11 @@ public class JwtService {
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
 		response.setStatus(HttpServletResponse.SC_OK);
 		Cookie cookie = new Cookie(REFRESH_TOKEN_SUBJECT, "" + refreshToken);
-		if (envName == "local") {
-
-			cookie.setDomain("local");
-		}
+		// if (envName == "local") {
+		// 	cookie.setDomain("localhost");
+		// } else if() {
+		// 	cookie.setDomain("ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com");
+		// }
 		cookie.setPath("/");
 		cookie.setMaxAge(1209600000);
 		cookie.setHttpOnly(true);
@@ -238,8 +236,7 @@ public class JwtService {
 			Optional<String> socialType = Optional.ofNullable(
 				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
 					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
-					.getClaim(SOCIAL_TYPE)
-					.asString());
+					.getClaim(SOCIAL_TYPE).asString());
 			return socialType;
 		} catch (Exception e) {
 			log.error("액세스 토큰이 유효하지 않습니다.");
@@ -251,8 +248,9 @@ public class JwtService {
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
+		log.info("socialType {}",  socialType);
+		log.info("socialId {}", socialId);
 		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
-		log.info(member.getUsername());
 		if (member == null) {
 			log.error("맴버 정보가 없습니다. 빈값을 return 합니다.");
 			return new UsernamePasswordAuthenticationToken(null, "", null);

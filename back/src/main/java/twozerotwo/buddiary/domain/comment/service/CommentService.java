@@ -1,5 +1,6 @@
 package twozerotwo.buddiary.domain.comment.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import twozerotwo.buddiary.domain.comment.dto.CommentResponse;
 import twozerotwo.buddiary.domain.diary.service.DiaryService;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
+import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.persistence.entity.Comment;
 import twozerotwo.buddiary.persistence.entity.Diary;
 import twozerotwo.buddiary.persistence.entity.Member;
@@ -23,14 +25,15 @@ import twozerotwo.buddiary.persistence.repository.DiaryRepository;
 @Slf4j
 public class CommentService {
 	private static final Long ADD_COMMENT_POINT = 5L;
-	private final ClubService clubService;
+	private final AuthenticationUtil authenticationUtil;
 	private final DiaryService diaryService;
-	private final DiaryRepository diaryRepository;
+
 	private final CommentRepository commentRepository;
 
 	@Transactional
-	public CommentResponse createComment(CommentRequest request) {
-		Member member = clubService.returnMemberByUsername(request.getUsername());
+	public CommentResponse createComment(CommentRequest request, HttpServletRequest servlet) {
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
+		// Member member = clubService.returnMemberByUsername(request.getUsername());
 		Diary diary = diaryService.returnDiaryById(request.getDiaryId());
 		Comment comment = Comment.builder()
 			.text(request.getText())
@@ -48,8 +51,8 @@ public class CommentService {
 	}
 
 	@Transactional
-	public void deleteComment(String username, Long diaryId, Long commentId) {
-		Member member = clubService.returnMemberByUsername(username);
+	public void deleteComment(Long diaryId, Long commentId, HttpServletRequest servlet) {
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		Diary diary = diaryService.returnDiaryById(diaryId);
 		Comment comment = returnCommentById(commentId);
 		if (!comment.getWriter().equals(member)) {

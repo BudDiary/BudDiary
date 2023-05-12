@@ -34,11 +34,9 @@ interface FormData {
   captainUsername: string;
 }
 
-
 export default function NewGroupDiaryModal({ closeModal }: Props) {
-
-  const {memberData} = useMember();
-  const username = memberData.username
+  const { memberData } = useMember();
+  const username = memberData.username;
   const [image, setImage] = useState<File | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
@@ -47,8 +45,9 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
     captainUsername: "",
   });
 
-  
-  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files && event.target.files[0];
     setFormData({
       ...formData,
@@ -62,19 +61,19 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
   const [clubName, setClubName] = useState("");
 
   const handleClear = () => {
-    setClubName('');
-  }
-  
+    setClubName("");
+  };
+
   const submitMakeClub = async (event: any) => {
     /** 서버통신 */
     const formData = new FormData();
 
     if (image && clubName && username) {
       formData.append("thumbnail", image);
-      formData.append('captainUsername', username);
-      formData.append('clubName', clubName);
+      formData.append("captainUsername", username);
+      formData.append("clubName", clubName);
       // postPluralClubApi({ clubName: clubName, captainUsername: username, image: image })
-      postPluralClubApi(formData)
+      postPluralClubApi(formData);
       // 폼 객체 key 와 value 값을 순회.
       let entries = formData.entries();
       for (const pair of entries) {
@@ -82,7 +81,6 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       }
     }
   };
-  
 
   function ChildModal() {
     const [open, setOpen] = React.useState(false);
@@ -100,12 +98,16 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
 
     return (
       <React.Fragment>
-        <Button onClick={(event) => {
-          event.preventDefault();
-          handleOpen()
-          submitMakeClub(event)
-
-          }}> 다음 </Button>
+        <Button
+          onClick={(event) => {
+            event.preventDefault();
+            handleOpen();
+            submitMakeClub(event);
+          }}
+        >
+          {" "}
+          다음{" "}
+        </Button>
         <Modal
           open={open}
           onClose={handleClose}
@@ -158,7 +160,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           variant="outlined"
           sx={{
             minHeight: 300,
-            minWidth: 500,
+            minWidth: 360,
             maxWidth: 500,
             borderRadius: "md",
             // p: 5,
@@ -169,7 +171,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
             <CloseModalButton onClick={closeDiaryModal}>
               <BiArrowBack />
             </CloseModalButton>
-            <ModalTitle>새 교환일기</ModalTitle>
+            <ModalTitle>새로운 교환일기 만들기</ModalTitle>
 
             {/* <ModalClose
             variant="outlined"
@@ -196,8 +198,9 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           >
             방 이름
           </Typography>
-          <StyledBox marginLeft={3}>
+          <StyledBox>
             <TextField
+              className="w-full"
               value={clubName}
               onChange={(e: any) => setClubName(e.target.value)}
               InputProps={{
@@ -213,9 +216,8 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           </StyledBox>
           <Box m={2}>
             <Paper elevation={6}>
-              <AddGroupPicture setImage={setImage} />
-              <br />
               <GroupPicture image={image} />
+              <AddGroupPicture setImage={setImage} />
             </Paper>
           </Box>
         </Sheet>

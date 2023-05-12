@@ -44,26 +44,49 @@ export default function MyGroup() {
       {modalOpen && <ModalWindow page={1} setModalOpen={setModalOpen} />}
 
       {/* {NewDiaryModal === false ? null : <NewGroupDiaryModal setNewDiaryModal={setNewDiaryModal}/>} */}
-      <span className="flex h-80">
+      <span className="flex">
         <Paper
+          className="cursor-pointer"
           elevation={3}
-          sx={{ p: 3, width: "30%", height: "80%", mr: "10%" }}
+          sx={{
+            p: 3,
+            minWidth: "150px",
+            width: "30%",
+            height: "220px",
+            mr: "5%",
+            mt: "1rem",
+          }}
+          onClick={createNewDiary}
         >
-          <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-            새 일기 추가하기
-          </Typography>
-          <button onClick={createNewDiary}>
-            <MdLibraryAdd color="blue" size={32} />
-          </button>
+          <div className="w-full h-full flex flex-col items-center justify-evenly">
+            <button>
+              <MdLibraryAdd color="blue" size={32} />
+            </button>
+            <Typography variant="h5" component="div">
+              <p className="text-lg">새로운 교환일기</p>
+            </Typography>
+          </div>
           {/* <img
               src=''
               alt= '대체'
               style={{ width: '100%', marginBottom: '10%' }}
             /> */}
         </Paper>
-        <Swiper spaceBetween={50} slidesPerView={3}>
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            // 화면 크기가 1024px 이상일 때
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
+        >
           {data.map((item, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className="py-4 px-1">
               <Paper elevation={3} sx={{ p: 2 }}>
                 <Typography variant="h5" component="div" sx={{ mb: 1 }}>
                   {item.title}
@@ -71,7 +94,7 @@ export default function MyGroup() {
                 <img
                   src={item.image}
                   alt={item.title}
-                  style={{ width: "100%", marginBottom: "50%" }}
+                  style={{ width: "100%", height: "100px" }}
                 />
                 <Typography component="div">{item.description}</Typography>
               </Paper>

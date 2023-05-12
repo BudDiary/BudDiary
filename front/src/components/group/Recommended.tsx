@@ -44,7 +44,23 @@ export default function Recommended() {
       <hr />
       <br />
       <ProfileSection>
-        <Swiper slidesPerView={5}>
+        <Swiper
+          slidesPerView={0}
+          breakpoints={{
+            // 화면 크기가 640px 이상일 때
+            640: {
+              slidesPerView: 3,
+            },
+            // 화면 크기가 768px 이상일 때
+            768: {
+              slidesPerView: 4,
+            },
+            // 화면 크기가 1024px 이상일 때
+            1024: {
+              slidesPerView: 5,
+            },
+          }}
+        >
           {recommendList.map((el, idx) => (
             <SwiperSlide key={idx} className="p-2">
               <Card sx={{ width: 200 }}>
