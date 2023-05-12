@@ -27,7 +27,7 @@ public class SseController {
 
 
 	// 구독 요청
-	@GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "/event/sub", consumes = MediaType.ALL_VALUE)
 	public SseEmitter subscribe(HttpServletRequest request) {
 		Member member = authenticationUtil.getMemberEntityFromRequest(request);
 		// Member member = clubService.returnMemberByUsername("yeokyung502@naver.com");

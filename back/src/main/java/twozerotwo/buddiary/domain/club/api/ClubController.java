@@ -36,37 +36,37 @@ public class ClubController {
 
 	//-------------------------------------------클럽 생성----------------------------------------------
 	@PostMapping("/double")
-	public ResponseEntity<ClubCreateResponse> createDoubleClub(@RequestBody DoubleCreateRequest request) {
+	public ResponseEntity<ClubCreateResponse> createDoubleClub(@RequestBody DoubleCreateRequest request, HttpServletRequest servlet) {
 
-		return new ResponseEntity<ClubCreateResponse>(clubService.createDouble(request), HttpStatus.CREATED);
+		return new ResponseEntity<ClubCreateResponse>(clubService.createDouble(request, servlet), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/plural")
 	public ResponseEntity<ClubCreateResponse> createPluralClub(
-		@ModelAttribute @Valid PluralCreateRequest request) throws
+		@ModelAttribute @Valid PluralCreateRequest request, HttpServletRequest servlet) throws
 		IOException {
 
-		return new ResponseEntity<ClubCreateResponse>(clubService.createPlural(request), HttpStatus.CREATED);
+		return new ResponseEntity<ClubCreateResponse>(clubService.createPlural(request, servlet), HttpStatus.CREATED);
 	}
 
 	//-------------------------------------------내가 속한 클럽 조회----------------------------------------------
 	@GetMapping
-	public ResponseEntity getMyClub(@RequestParam("username") String username) {
-		MyClubDto myClubDto = clubService.getMyClub(username);
+	public ResponseEntity getMyClub(HttpServletRequest servlet) {
+		MyClubDto myClubDto = clubService.getMyClub(servlet);
 		return new ResponseEntity<>(Map.of("myClubList", myClubDto), HttpStatus.OK);
 	}
 
 	//-------------------------------------------클럽 디테일----------------------------------------------
-	@GetMapping("/{clubId}/{username}")
-	public ResponseEntity getClubDetail(@PathVariable("clubId") String clubUuid, @PathVariable String username) {
-		ClubDetail clubDetail = clubService.getClubDetail(clubUuid, username);
+	@GetMapping("/{clubId}")
+	public ResponseEntity getClubDetail(@PathVariable("clubId") String clubUuid, HttpServletRequest servlet) {
+		ClubDetail clubDetail = clubService.getClubDetail(clubUuid, servlet);
 		return new ResponseEntity<>(Map.of("clubDetail", clubDetail), HttpStatus.OK);
 	}
 
 	//------------------------------------------클럽 나가기----------------------------------------------
-	@DeleteMapping("/{clubId}/{username}")
-	public ResponseEntity deleteMemberAtClub(@PathVariable("clubId") String clubUuid, @PathVariable String username) {
-		clubService.deleteMemberAtClub(clubUuid, username);
+	@DeleteMapping("/{clubId}")
+	public ResponseEntity deleteMemberAtClub(@PathVariable("clubId") String clubUuid, HttpServletRequest servlet) {
+		clubService.deleteMemberAtClub(clubUuid, servlet);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 

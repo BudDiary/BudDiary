@@ -14,5 +14,5 @@ public class StickerBuyRequest {
 	private Long stickerId;
 	@NotNull(message = "스티커 수량을 입력해주세요.")
 	private Long count;
-	private String username;
+	// private String username;
 }
