@@ -3,8 +3,8 @@ import axios from "axios";
 // import { getCookie, setCookie } from 'typescript-cookie'
 
 // 로그인된 사용자
-// const BASE_URL = "http://localhost:8080";
-const BASE_URL = "http://buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com";
+const BASE_URL = "http://localhost:8080";
+// const BASE_URL = "http://buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com";
 const FASTAPI_BASE_URL = "http://localhost:9000"
 const NAVER_CLOVA_URL = "https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze"
 // const BASE_URL = "http://3.35.197.93:8080";
