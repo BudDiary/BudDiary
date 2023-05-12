@@ -10,8 +10,8 @@ export default function SignUpPage() {
   useEffect(() => {
     async function fetchData() {
       const currentUrl: string = window.location.href;
-      const code = currentUrl.split('buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com/')[1];
-      // const code = currentUrl.split('localhost:3000/')[1];
+      // const code = currentUrl.split('buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com/')[1];
+      const code = currentUrl.split('localhost:3000/')[1];
       const response = await kakaoSignUpApi(code)
       console.log(response)
       // 처음 가입한 사람이면 signup 으로 보내고, 아니면 메인페이지로

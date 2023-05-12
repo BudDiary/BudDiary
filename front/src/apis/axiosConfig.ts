@@ -36,10 +36,10 @@ const fastApi = axios.create({
 });
 
 // 카카오톡 로그인
-// const REDIRECT_URI = "http://localhost:3000/login/oauth2/code/kakao";
-const REDIRECT_URI = "http://ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com/login/oauth2/code/kakao";
-// const KAKAO_AUTH_URL = `http://localhost:8080/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URI}`;
-const KAKAO_AUTH_URL = `http://buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URI}`;
+const REDIRECT_URI = "http://localhost:3000/login/oauth2/code/kakao";
+// const REDIRECT_URI = "http://ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com/login/oauth2/code/kakao";
+const KAKAO_AUTH_URL = `http://localhost:8080/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URI}`;
+// const KAKAO_AUTH_URL = `http://buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URI}`;
 console.log(KAKAO_AUTH_URL)
 const kakaoApi = axios.create({
   baseURL: KAKAO_AUTH_URL,
