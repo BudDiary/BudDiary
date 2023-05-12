@@ -33,9 +33,8 @@ const firstSignUpApi = (payload: any) => {
 
 // 닉네임 업데이트
 const patchNicknameApi = (payload: any) => {
-  return api.patch(`api/members/nickname`, payload,  { withCredentials: true })
+  return api.patch(`api/members/nickname`, {nickname: payload },  { withCredentials: true })
   .then((res) => {
-      console.log(res)
       return res.data;
     })
     .catch((err) => {
@@ -49,15 +48,11 @@ const patchNicknameApi = (payload: any) => {
 
 // intro 업데이트
 const patchIntroApi = (payload: any) => {
-  console.log(payload)
-  return api.patch(`api/members/intro`, {data: {payload}} ,  { withCredentials: true })
-  
+  return api.patch(`api/members/intro`, {intro: payload} ,  { withCredentials: true })
   .then((res) => {
-      console.log(res)
       return res.data;
     })
     .catch((err) => {
-      console.log(err)
       Swal.fire({
         icon: 'error',
         text: 'intro 업데이트 에러'
@@ -70,7 +65,6 @@ const patchIntroApi = (payload: any) => {
 const patchProfileApi = (payload: any) => {
   return formApi.patch(`api/members/profile`, payload,  { withCredentials: true })
   .then((res) => {
-      console.log(res)
       return res.data;
     })
     .catch((err) => {
@@ -86,7 +80,10 @@ const patchProfileApi = (payload: any) => {
 const deleteTokenApi = () => {
   return api.delete(`api/members/token`, { withCredentials: true })
   .then((res) => {
-    console.log(res)
+    Swal.fire({
+      icon: 'success',
+      text: '로그아웃 성공'
+    })
     return res.data
   })
   .catch((err) => {

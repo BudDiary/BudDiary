@@ -45,7 +45,7 @@ export default function Recommended() {
       <br />
       <ProfileSection>
         <Swiper slidesPerView={5}>
-          {recommendList.map((el, idx) => (
+          {recommendList.length >=1 ? recommendList.map((el, idx) => (
             <SwiperSlide key={idx} className="p-2">
               <Card sx={{ width: 200 }}>
                 <CardMedia sx={{ height: 100 }} />
@@ -64,7 +64,7 @@ export default function Recommended() {
                 </CardActions>
               </Card>
             </SwiperSlide>
-          ))}
+          )): null}
         </Swiper>
       </ProfileSection>
     </>

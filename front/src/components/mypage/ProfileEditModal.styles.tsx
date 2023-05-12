@@ -17,3 +17,19 @@ export const ProfilePicBox = styled.img`
 export const ImgInput = styled.input`
   display: none;
 `;
+
+export const ProfileContainer = styled.div`
+  ${tw`flex justify-center mt-4`}
+`
+
+export const ProfileEditButtonsContainer = styled.div`
+  ${tw`flex justify-between mb-16`}
+`
+
+export const EditInputContainer = styled.div`
+  ${tw`flex justify-between`}
+`
+
+export const ModalContentContainer = styled.div`
+  ${tw`min-w-[320px] mx-4`}
+`

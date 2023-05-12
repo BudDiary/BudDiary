@@ -6,6 +6,7 @@ import { SignUpInfoInputSection,ProfilePicContainer, FlexedContainer, ImgInput }
 import { firstSignUpApi } from '../../apis/userApi'
 import useMember from '../../hooks/memberHook';
 import ModalWindow from '../../components/common/ModalWindow'
+import Swal from 'sweetalert2'
 export default function SignUpInfoPage() {
   const [fileURL, setFileURL] = useState<string>("");
   const [file, setFile] = useState<FileList | null>();
@@ -38,9 +39,15 @@ export default function SignUpInfoPage() {
 
     /** 서버통신 */
     const formData = new FormData();
-
-    if (file) {
-      formData.append("profilePic", file[0]);
+    if (nickname==='') {
+      Swal.fire({
+        icon: "error",
+        text: "닉네임은 필수로 입력해야 합니다.",
+      });
+    } else {
+      if (file) {
+        formData.append("profilePic", file[0]);
+      } 
       formData.append('nickname', nickname);
       // 폼 객체 key 와 value 값을 순회.
       // let entries = formData.entries();
@@ -56,6 +63,7 @@ export default function SignUpInfoPage() {
         setModalOpen(true)
       }
     }
+
   };
   return (
     <PageContainer>

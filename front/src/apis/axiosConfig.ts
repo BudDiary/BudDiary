@@ -14,6 +14,7 @@ axios.defaults.baseURL = BASE_URL;
 
 const api = axios.create({
   baseURL: BASE_URL,
+
 });
 
 const authApi = axios.create({
@@ -28,6 +29,7 @@ const formApi = axios.create({
     'Content-Type': 'multipart/form-data',
   }
 });
+
 
 // fastApi
 const fastApi = axios.create({
