@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Addpicture from "../../components/write/Addpicture";
 import Pictures from "../../components/write/Pictures";
 import Content from "../../components/write/Content";
@@ -17,11 +17,16 @@ import {
   StyledPopper,
 } from "./WritePage.styles";
 import { SurveyAgainButton } from "../../components/common/Button.styles";
+import { postTodayDiaryApi } from "../../apis/diaryApi";
+import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
+// import GroupSelect from '../../components/write/GroupSelect'
+interface GroupData {
+  clubUuid: string;
+  thumbnailUrl: string;
+  clubName: string;
 
-interface Props {
-  onFilesChanged: (files: File[]) => void;
 }
 
 export default function WritePage() {
@@ -31,35 +36,38 @@ export default function WritePage() {
   const [content, setContent] = useState<string>("");
   const [originFiles, setOriginFiles] = useState<File[]>([]);
   const [selectGroup, setSelectGroup] = useState<string[]>([]);
-  const mygroup = getMyClubListApi(username);
+  
+  const [mygroup, setMygroup] = useState<GroupData[]>([]);
+  useEffect(() => {
+    async function fetchMyGroup() {
+      const myGroupObject = await getMyClubListApi(username);
+      const pluralList = myGroupObject.pluralList;
+      const doubleList = myGroupObject.doubleList;
+      const combinedList = [...pluralList, ...doubleList];
+      setMygroup(combinedList);
+    }
+    fetchMyGroup();
+  }, [username]);
+  useEffect (() => 
+  console.log(selectGroup, 'this is selectGroup')
+  , [selectGroup])
 
-  const CustomMultiSelect = React.forwardRef(function CustomMultiSelect(
-    props: SelectProps<number, true>,
-    ref: React.ForwardedRef<any>
-  ) {
-    const slots: SelectProps<number, true>["slots"] = {
-      root: StyledButton,
-      listbox: StyledListbox,
-      popper: StyledPopper,
-      ...props.slots,
-    };
-
-    return <Select {...props} multiple ref={ref} slots={slots} />;
-  });
-
+  const handleSelectGroupChange = (newSelectGroup: string[]) => {
+    setSelectGroup(newSelectGroup);
+  };
   const goData = () => {
-    console.log(content);
-    console.log(originFiles);
+    // console.log(content);
+    // console.log(originFiles);
     const data = {
       text: content,
-      originFiles: originFiles,
+      fileList: originFiles,
       clubList: selectGroup,
       isPersonal: true,
-      stickerList: [],
-      memberUsername: nickname,
+      // stickerList: [],
+      memberUsername: username,
     };
-
     console.log(data, "RequestBody", mygroup);
+    postTodayDiaryApi(data)
   };
 
   const consolelog = (e: any) => {
@@ -71,7 +79,11 @@ export default function WritePage() {
       selectGroup.push(e.target.textContent);
       console.log("추가함", selectGroup);
     }
+
   };
+  
+
+
   return (
     <>
       <SubNavContainer img={navimg}>
@@ -93,16 +105,17 @@ export default function WritePage() {
           />
           <Pictures originFiles={originFiles} setOriginFiles={setOriginFiles} />
         </span>
-        <div className="w-full flex justify-center mb-8">
-          <CustomMultiSelect onChange={(e: any) => consolelog(e)}>
-            <StyledOption value={1}>개인일기</StyledOption>
-            <StyledOption value={2}>그룹일기1</StyledOption>
-            <StyledOption value={3}>그룹일기2</StyledOption>
-            <StyledOption value={4}>그룹일기3</StyledOption>
-            <StyledOption value={5}>그룹일기4</StyledOption>
-          </CustomMultiSelect>
-        </div>
+        <GroupSelect mygroup={mygroup} selectGroup={selectGroup} onChange={handleSelectGroupChange} />
 
+        {/* <div className="w-full flex justify-center mb-8">
+        <CustomMultiSelect onChange={consolelog}>
+  {mygroup.map((group: GroupData, index: number) => (
+    <StyledOption key={index} value={group.clubUuid}>
+      {group.clubName}
+    </StyledOption>
+  ))}
+</CustomMultiSelect>
+        </div> */}
         <Content setContent={setContent} />
         <div className="w-full flex justify-center my-8">
           <SurveyAgainButton onClick={goData}>등록</SurveyAgainButton>
