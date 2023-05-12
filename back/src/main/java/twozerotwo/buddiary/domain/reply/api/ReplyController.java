@@ -26,12 +26,14 @@ public class ReplyController {
 	private final ReplyService replyService;
 
 	@PostMapping("/comments/replies")
-	public ResponseEntity<ReplyResponse> createReply(@RequestBody @Valid ReplyRequest request, HttpServletRequest servlet) {
+	public ResponseEntity<ReplyResponse> createReply(@RequestBody @Valid ReplyRequest request,
+		HttpServletRequest servlet) {
 		return new ResponseEntity<ReplyResponse>(replyService.createReply(request, servlet), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/comments/{commentId}/replies/{replyId}")
-	public ResponseEntity deleteReply(@PathVariable Long commentId, @PathVariable Long replyId, HttpServletRequest servlet) {
+	public ResponseEntity deleteReply(@PathVariable Long commentId, @PathVariable Long replyId,
+		HttpServletRequest servlet) {
 		replyService.deleteReply(servlet, commentId, replyId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
