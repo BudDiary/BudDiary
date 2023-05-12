@@ -1,5 +1,6 @@
 package twozerotwo.buddiary.domain.comment.api;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,14 @@ public class CommentController {
 	private final CommentService commentService;
 
 	@PostMapping("/comments")
-	public ResponseEntity<CommentResponse> createComment(@RequestBody @Valid CommentRequest request) {
-		return new ResponseEntity<CommentResponse>(commentService.createComment(request), HttpStatus.CREATED);
+	public ResponseEntity<CommentResponse> createComment(@RequestBody @Valid CommentRequest request, HttpServletRequest servlet) {
+		return new ResponseEntity<CommentResponse>(commentService.createComment(request, servlet), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/{diaryId}/comments/{commentId}/{username}")
+	@DeleteMapping("/{diaryId}/comments/{commentId}")
 	public ResponseEntity deleteComment(@PathVariable Long diaryId, @PathVariable Long commentId,
-		@PathVariable String username) {
-		commentService.deleteComment(username, diaryId, commentId);
+		HttpServletRequest servlet) {
+		commentService.deleteComment(diaryId, commentId, servlet);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

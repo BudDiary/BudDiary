@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class ReplyRequest {
 	private Long commentId;
 	private String text;
-	private String username;
 
 }

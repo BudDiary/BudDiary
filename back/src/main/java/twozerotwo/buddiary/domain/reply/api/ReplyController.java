@@ -1,5 +1,6 @@
 package twozerotwo.buddiary.domain.reply.api;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,13 @@ public class ReplyController {
 	private final ReplyService replyService;
 
 	@PostMapping("/comments/replies")
-	public ResponseEntity<ReplyResponse> createReply(@RequestBody @Valid ReplyRequest request) {
-		return new ResponseEntity<ReplyResponse>(replyService.createReply(request), HttpStatus.CREATED);
+	public ResponseEntity<ReplyResponse> createReply(@RequestBody @Valid ReplyRequest request, HttpServletRequest servlet) {
+		return new ResponseEntity<ReplyResponse>(replyService.createReply(request, servlet), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/comments/{commentId}/replies/{replyId}/{username}")
-	public ResponseEntity deleteReply(@PathVariable Long commentId, @PathVariable Long replyId,
-		@PathVariable String username) {
-		replyService.deleteReply(username, commentId, replyId);
+	@DeleteMapping("/comments/{commentId}/replies/{replyId}")
+	public ResponseEntity deleteReply(@PathVariable Long commentId, @PathVariable Long replyId, HttpServletRequest servlet) {
+		replyService.deleteReply(servlet, commentId, replyId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
