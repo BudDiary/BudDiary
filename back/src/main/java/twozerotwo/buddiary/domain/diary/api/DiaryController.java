@@ -42,7 +42,7 @@ public class DiaryController {
 		IOException {
 		List<String> clubList = request.getClubList();
 		Boolean isSelected = false;
-		if (request.getClubList().size() > 0) {
+		if (request.getClubList() != null && request.getClubList().size() > 0) {
 			isSelected = true;
 			for (String clubUuid : clubList) {
 				diaryService.createClubDiary(request, clubUuid, servlet);
