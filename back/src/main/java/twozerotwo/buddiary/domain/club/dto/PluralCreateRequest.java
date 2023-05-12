@@ -20,6 +20,5 @@ public class PluralCreateRequest {
 	private String clubName;
 	@NotNull(message = "그룹 썸네일을 등록해주세요.")
 	private MultipartFile thumbnail;
-	private String captainUsername;
 
 }
