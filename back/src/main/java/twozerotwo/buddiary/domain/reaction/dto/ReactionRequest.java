@@ -13,7 +13,6 @@ import twozerotwo.buddiary.persistence.enums.ActionType;
 @AllArgsConstructor
 public class ReactionRequest {
 	private Long diaryId;
-	private String memberUsername;
 	private ActionType actionType;
 
 }

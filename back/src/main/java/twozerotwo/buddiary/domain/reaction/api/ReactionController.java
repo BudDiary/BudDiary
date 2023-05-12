@@ -34,7 +34,7 @@ public class ReactionController {
 		return new ResponseEntity<>(Map.of("reactionList", reactions), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/{diaryId}/reactions/{actionId}/{username}")
+	@DeleteMapping("/{diaryId}/reactions/{actionId}")
 	public ResponseEntity deleteReaction(@PathVariable Long diaryId, @PathVariable Long actionId,
 		HttpServletRequest servlet) {
 		reactionService.deleteReaction(servlet, diaryId, actionId);
