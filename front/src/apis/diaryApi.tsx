@@ -1,4 +1,4 @@
-import { formApi, api, sentimentApi } from "./axiosConfig";
+import { formApi, api, fastApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 다이어리 작성 API
@@ -88,8 +88,8 @@ const patchDiaryStickerApi = (payload: any) => {
 };
 
 const postSentimentApi = (payload: any) => {
-  return sentimentApi
-  .post(`/`, payload)
+  return fastApi
+  .post(`/fastapi/sentiment`, payload)
   .then((res) => {
     console.log(res)
     return res.data

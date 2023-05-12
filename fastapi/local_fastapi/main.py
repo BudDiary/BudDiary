@@ -4,7 +4,8 @@
 
 import os
 import json
-from fastapi import FastAPI
+import requests
+from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -13,6 +14,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 class myAnswer(BaseModel):
     id: int
     favor_list: list[str]
+
+class diaryContnet(BaseModel):
+    content: str
 
 app = FastAPI()
 origins = [
@@ -117,3 +121,29 @@ def recommend_by_survey(member_id: int):
     recommend_object = [{"id" : id, "rate": round(rate, 2)} for id, rate in recommend_list]
 
     return recommend_object
+
+@app.post("/fastapi/sentiment")
+async def analyze_sentiment(content: diaryContnet):
+    headers = {
+        'Content-Type': 'application/json',
+        'X-NCP-APIGW-API-KEY-ID': 'vrdjgx8oxa',
+        'X-NCP-APIGW-API-KEY': 'T6W3dtfPEqKkPwr8vDbDdpU6GdNS62bce6NtVLo6',
+    }
+    
+    data = {
+        'content': content.content
+    }
+    response = requests.post('https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze', headers=headers, json=data)
+    if response.status_code == 200:
+            result = response.json()
+            doc_confidence = result["document"]["confidence"]
+            doc_neg = doc_confidence["negative"]
+            doc_pos = doc_confidence["positive"]
+            result_json = {
+                "negative": round(doc_neg, 2),
+                "positive": round(doc_pos, 2)
+            }
+
+            return result_json
+    else:
+        return {'error': response.status_code, 'message': response.text}

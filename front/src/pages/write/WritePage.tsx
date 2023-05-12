@@ -63,7 +63,7 @@ export default function WritePage() {
   };
 
   const sendData = async () => {
-    postSentimentApi({'content' : content})
+    postSentimentApi({content : content})
     
     const data = {
       text: content,

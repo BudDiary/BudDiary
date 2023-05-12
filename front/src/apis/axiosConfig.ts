@@ -6,7 +6,7 @@ import axios from "axios";
 const BASE_URL = "http://localhost:8080";
 // const BASE_URL = "http://buddiaryALB-1250245218.ap-northeast-2.elb.amazonaws.com";
 const FASTAPI_BASE_URL = "http://localhost:9000"
-const NAVER_CLOVA_URL = "https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze"
+// const NAVER_CLOVA_URL = "https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze"
 // const BASE_URL = "http://3.35.197.93:8080";
 // const BASE_URL = "http://172.31.144.1:8080";
 // const BASE_URL = "http://192.168.100.175:8080";
@@ -39,16 +39,6 @@ const fastApi = axios.create({
 });
 
 
-// naver Clova 감정분석APi
-// Key Id 와 KEY env 파일에 보관하기
-const sentimentApi = axios.create({
-  baseURL: NAVER_CLOVA_URL,
-  headers: {
-    'X-NCP-APIGW-API-KEY-ID' : 'vrdjgx8oxa',
-    'X-NCP-APIGW-API-KEY' : 'T6W3dtfPEqKkPwr8vDbDdpU6GdNS62bce6NtVLo6',
-    'Content-Type' : 'application/json'
-  }
-})
 
 // 카카오톡 로그인
 const REDIRECT_URI = "http://localhost:3000/login/oauth2/code/kakao";
@@ -60,4 +50,4 @@ const kakaoApi = axios.create({
   baseURL: KAKAO_AUTH_URL,
 });
 
-export { axios, api, formApi, kakaoApi,fastApi, KAKAO_AUTH_URL, authApi, sentimentApi};
+export { axios, api, formApi, kakaoApi,fastApi, KAKAO_AUTH_URL, authApi};
