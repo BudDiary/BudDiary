@@ -1,17 +1,18 @@
 package twozerotwo.buddiary.domain.notification.service;
 
-import static twozerotwo.buddiary.domain.notification.api.SseController.*;
+import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
-import twozerotwo.buddiary.domain.notification.dto.SseMessageDto;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.infra.redis.service.RedisPublisher;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.entity.Notification;
-import twozerotwo.buddiary.persistence.enums.NoticeType;
 import twozerotwo.buddiary.persistence.repository.NotificationRepository;
 import twozerotwo.buddiary.persistence.repository.RedisDoubleInviteRepository;
 
@@ -24,27 +25,24 @@ public class NotificationService {
 	private final RedisPublisher redisPublisher;
 	private final RedisDoubleInviteRepository redisDoubleInviteRepository;
 
-	public void notifyDoubleInviteEvent(Member inviter, String targetName) {
-		Member target = clubService.returnMemberByUsername(targetName);
-		// DB 저장
-		Notification notification = Notification.builder()
-			.type(NoticeType.DOUBLE_INVITE)
-			.receiver(target)
-			.senderM(inviter.getUsername())
-			.build();
-		Notification savedNotice = notificationRepository.save(notification);
+	public List<Notification> getAllNotification(String username) {
+		Member member = clubService.returnMemberByUsername(username);
+		List<Notification> notifications = notificationRepository.findByReceiverAndIsChecked(member, false);
+		return notifications;
+	}
 
-		// 쏴주기
-		Long targetId = target.getId();
-		if (sseEmitters.containsKey(targetId)) {
-			// 이 객체를 레디스 템플릿으로 보낸다..?
-		// if (redisSseEntityRepository.existsById(targetId)) {
-			SseMessageDto sseMessageDto = SseMessageDto.builder()
-				.notificationDto(savedNotice.toDto())
-				.targetId(targetId)
-				.build();
-			redisPublisher.publishNotification(redisDoubleInviteRepository.getTopic(NoticeType.DOUBLE_INVITE.getCode()),
-				sseMessageDto);
+	@Transactional
+	public void deleteNotification(Long noticeId, String username) {
+		Member member = clubService.returnMemberByUsername(username);
+		Notification notification = notificationRepository.findById(noticeId)
+			.orElseThrow(() -> new BadRequestException("해당 알림을 찾을 수 없습니다."));
+		if (notification.getIsChecked().equals(true)) {
+			throw new BadRequestException("이미 확인한 알람입니다.");
 		}
+		if (!notification.getReceiver().equals(member)) {
+			throw new BadRequestException("자신의 알림이 아닌 것은 지울 수 없습니다.");
+		}
+		notification.changeState();
+		notificationRepository.save(notification);
 	}
 }

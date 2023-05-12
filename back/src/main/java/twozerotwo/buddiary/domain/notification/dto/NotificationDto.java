@@ -15,7 +15,11 @@ public class NotificationDto {
 	private String type;
 	private Boolean isChecked;
 	@Builder.Default
-	private String senderG = null;
+	private String clubUuid = null;
 	@Builder.Default
-	private String senderM = null;
+	private String clubName = null;
+	@Builder.Default
+	private String username = null;
+	@Builder.Default
+	private String nickname = null;
 }
