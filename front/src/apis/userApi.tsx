@@ -49,12 +49,15 @@ const patchNicknameApi = (payload: any) => {
 
 // intro 업데이트
 const patchIntroApi = (payload: any) => {
-  return api.patch(`api/members/intro`, payload,  { withCredentials: true })
+  console.log(payload)
+  return api.patch(`api/members/intro`, {data: {payload}} ,  { withCredentials: true })
+  
   .then((res) => {
       console.log(res)
       return res.data;
     })
     .catch((err) => {
+      console.log(err)
       Swal.fire({
         icon: 'error',
         text: 'intro 업데이트 에러'
