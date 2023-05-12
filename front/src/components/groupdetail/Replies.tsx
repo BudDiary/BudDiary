@@ -14,7 +14,7 @@ import {
 
 import { postReplyApi } from "../../apis/replyAPI";
 import { EditButton, DeleteButton } from "../common/Button.styles";
-import { userdummy } from "../mypage/userdummy";
+import useMember from "../../hooks/memberHook";
 import {
   handleReplyBlur,
   handleCheckReply,
@@ -28,6 +28,7 @@ interface RepliesProps {
 }
 
 export default function Replies({ replies, commentId }: RepliesProps) {
+  const { memberData } = useMember();
   const [replyText, setReplyText] = useState("");
   const [showReply, setShowReply] = useState(false);
   const [height, setHeight] = useState("35px");
@@ -43,7 +44,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
       const response = await postReplyApi(
         commentId,
         replyText,
-        userdummy.username
+        memberData.username
       );
 
       // console.log(response);
@@ -118,7 +119,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                       onClose={handleCloseModal}
                     />
                   )}
-                  {userdummy.nickname === reply.writer.nickname && (
+                  {memberData.username === reply.writer.username && (
                     <EditButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showUpdateModal(reply.id)}
@@ -126,7 +127,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                       수정
                     </EditButton>
                   )}
-                  {userdummy.nickname === reply.writer.nickname && (
+                  {memberData.username === reply.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showDeleteModal(reply.id)}

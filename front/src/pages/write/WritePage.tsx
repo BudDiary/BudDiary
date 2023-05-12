@@ -23,6 +23,7 @@ interface GroupData {
   clubUuid: string;
   thumbnailUrl: string;
   clubName: string;
+  captainUsername: string;
 }
 
 export default function WritePage() {
@@ -63,8 +64,8 @@ export default function WritePage() {
   };
 
   const sendData = async () => {
-    postSentimentApi({'content' : content})
-    
+    postSentimentApi({ content: content });
+
     const data = {
       text: content,
       fileList: originFiles,
@@ -72,7 +73,6 @@ export default function WritePage() {
       isPersonal: personalChecked,
       memberUsername: username,
     };
-
 
     // await postTodayDiaryApi(data);
     setStage(1);

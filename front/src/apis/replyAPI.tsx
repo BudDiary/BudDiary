@@ -34,12 +34,13 @@ const deleteReplyApi = (
   username: string
 ) => {
   return api
-    .delete(`api/diaries/comments/${commentId}/comments/${replyId}/${username}`)
+    .delete(`/api/diaries/comments/${commentId}/replies/${replyId}/${username}`)
     .then((res) => {
       console.log(res);
       return res;
     })
     .catch((err) => {
+      console.log(err);
       console.log("댓글삭제", commentId, replyId, username);
       Swal.fire({
         icon: "error",

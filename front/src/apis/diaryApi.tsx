@@ -55,7 +55,7 @@ const getDiaryDetailApi = (payload: number) => {
 // 다이어리 삭제
 const deleteDiaryApi = (diary_id: number, username: string) => {
   return api
-    .get(`/api/diaries/{diary_id}/{username}`)
+    .delete(`/api/diaries/${diary_id}/${username}`)
     .then((res) => {
       console.log(res);
       return res.data;
