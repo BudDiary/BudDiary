@@ -1,8 +1,9 @@
 import React from "react";
-import { GroupList, MemberList } from "./GroupInfo.styles";
+import { GroupList, MemberList, ClubList } from "./GroupInfo.styles";
 import { BasicButton } from "./Diaries.styles";
 // import groupData from "./groupInfo.json";
 import { Member, Info } from "../../types/group";
+import { MouseWheel } from "../home/ASection.styles";
 interface GroupInfoProps {
   clubInfo?: Info;
   memberList?: Member[];
@@ -17,7 +18,7 @@ export default function GroupInfo({
   return (
     <GroupList style={style}>
       <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
-      <p style={{ fontWeight: "bold" }}>{clubInfo?.clubName}</p>
+      <p>{clubInfo?.clubName}</p>
       <div
         style={{
           display: "flex",
@@ -25,7 +26,7 @@ export default function GroupInfo({
           width: "100%",
         }}
       >
-        <span style={{ fontWeight: "bold" }}>멤버 {memberList?.length}</span>
+        <ClubList>멤버 {memberList?.length}</ClubList>
         <BasicButton>초대하기</BasicButton>
       </div>
 
@@ -33,7 +34,7 @@ export default function GroupInfo({
         {memberList?.map((member) => (
           <div key={member.id}>
             <img src={member.profilePath ?? ""} alt="프로필" />
-            <p style={{ fontWeight: "bold" }}>{member.nickname}</p>
+            <p>{member.nickname}</p>
           </div>
         ))}
       </MemberList>

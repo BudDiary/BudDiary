@@ -7,12 +7,19 @@ import {
   InputSet,
   InputBox,
   CommentWrapper,
+  ExpansionButton,
+  CommentError,
+  CommentBox,
 } from "./DiaryComment.style";
 
 import { postReplyApi } from "../../apis/replyAPI";
 import { EditButton, DeleteButton } from "../common/Button.styles";
 import { userdummy } from "../mypage/userdummy";
-
+import {
+  handleReplyBlur,
+  handleCheckReply,
+  handleCommentChange,
+} from "./GroupDetailFunction";
 import { timeAgo } from "./GroupDetailFunction";
 import { Reply } from "../../types/group";
 interface RepliesProps {
@@ -23,9 +30,15 @@ interface RepliesProps {
 export default function Replies({ replies, commentId }: RepliesProps) {
   const [replyText, setReplyText] = useState("");
   const [showReply, setShowReply] = useState(false);
+  const [height, setHeight] = useState("35px");
+  const [checkReply, setCheckReply] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   // 대댓글 작성
   const handleReplySubmit = async () => {
+    if (!replyText || error) {
+      return;
+    }
     try {
       const response = await postReplyApi(
         commentId,
@@ -66,17 +79,9 @@ export default function Replies({ replies, commentId }: RepliesProps) {
     : "▼ 답글 입력";
   return (
     <CommentWrapper>
-      <button
-        onClick={() => setShowReply(!showReply)}
-        style={{
-          fontSize: "12px",
-          fontWeight: "700",
-          marginBlock: "10px",
-          color: "#ABC4FF",
-        }}
-      >
+      <ExpansionButton onClick={() => setShowReply(!showReply)}>
         {replyButtonText}
-      </button>
+      </ExpansionButton>
       {showReply && (
         <div style={{ width: "160%" }}>
           {replies.map((reply) => (
@@ -84,18 +89,16 @@ export default function Replies({ replies, commentId }: RepliesProps) {
               <div>
                 <img src={reply.writer.profilePath ?? ""} alt="프로필" />
               </div>
-              <div>
-                <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <h2 style={{ fontWeight: "bold" }}>
-                    {reply.writer.nickname}
-                  </h2>
-                  <h3
-                    style={{
-                      marginLeft: "0.5rem",
-                      color: "gray",
-                      fontSize: "0.75rem",
-                    }}
-                  >
+              <CommentBox>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    width: "100%",
+                  }}
+                >
+                  <h2>{reply.writer.nickname}</h2>
+                  <h3 style={{ marginInline: "8px" }}>
                     {timeAgo(reply.writeDate)}
                   </h3>
                   {replyUpdate && selectedReplyId === reply.id && (
@@ -132,15 +135,24 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                     </DeleteButton>
                   )}
                 </div>
-                <p>{reply.text}</p>
-              </div>
+                <div style={{ width: "145%" }}>
+                  <p>{reply.text}</p>
+                </div>
+              </CommentBox>
             </UserInfo>
           ))}
           <InputSet>
             <InputBox
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
+              key={replyText}
+              defaultValue={replyText}
+              onChange={(e) => {
+                handleCommentChange(e, setHeight);
+                handleCheckReply(e, setCheckReply, setError);
+              }}
+              onBlur={(e) => handleReplyBlur(e, setReplyText)}
+              style={{ height }}
             />
+
             <BasicButton
               onClick={handleReplySubmit}
               style={{ fontSize: "12px" }}
@@ -148,6 +160,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
               댓글달기
             </BasicButton>
           </InputSet>
+          {error && <CommentError>{error}</CommentError>}
         </div>
       )}
     </CommentWrapper>

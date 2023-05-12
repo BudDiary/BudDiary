@@ -4,36 +4,37 @@ import {
   EditContainer,
   ModalTopNavContainer,
 } from "../common/ModalWindow.styles";
-import { UserInfo, EditTitle } from "./DiaryComment.style";
-import { timeAgo } from "./GroupDetailFunction";
-import { DeleteContent, CommentBox } from "./DiaryComment.style";
+import {
+  UserInfo,
+  DeleteContent,
+  CommentBox,
+  EditTitle,
+} from "./DiaryComment.style";
+
+import { deleteDiaryApi } from "../../apis/diaryApi";
 import { Divider } from "@mui/material";
-import { Comment } from "../../types/group";
-import { deleteCommentApi } from "../../apis/commentApi";
+import { Diary } from "../../types/group";
 import { userdummy } from "../mypage/userdummy";
 import close from "../../assets/modal/close.png";
-
-interface CommentDeleteProps {
+interface DiaryProps {
   isOpen: boolean;
-  onClose: () => void;
-  comment: Comment;
+  diary: Diary;
   diaryId: number;
+  onClose: () => void;
 }
-export default function DeleteComment({
-  comment,
-  diaryId,
-  onClose,
-}: CommentDeleteProps) {
-  const [commentState, setCommentState] = useState(comment.text);
-  const username = userdummy.username;
+export default function DiaryDelete({ diary, diaryId, onClose }: DiaryProps) {
+  const [commentState, setCommentState] = useState(diary.text);
+
   const closeCommentModal = () => {
     onClose();
   };
+  const username = userdummy.username;
 
-  const handleDeleteComment = () => {
-    deleteCommentApi(diaryId, comment.id, username);
+  const handleDeleteDiary = () => {
+    deleteDiaryApi(diaryId, username);
     onClose();
   };
+
   return (
     <EditContainer>
       <ModalTopNavContainer
@@ -61,20 +62,20 @@ export default function DeleteComment({
             }}
           />
         </div>
-        <EditTitle>댓글 삭제하기</EditTitle>
+        <EditTitle>일기 삭제하기</EditTitle>
         <div
           style={{
             height: "25px",
             width: "25px",
             border: "none",
-            marginRight: "15px",
+            marginLeft: "10px",
           }}
         ></div>
       </ModalTopNavContainer>
 
       <UserInfo>
         <div>
-          <img src={comment.writer.profilePath ?? ""} alt="프로필" />
+          <img src={diary.writer.profilePath ?? ""} alt="프로필" />
         </div>
         <CommentBox>
           <div
@@ -83,20 +84,20 @@ export default function DeleteComment({
               alignItems: "baseline",
             }}
           >
-            <h2>{comment.writer.nickname}</h2>
-            <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
+            <h2>{diary.writer.nickname}</h2>
           </div>
+          <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
       <Divider style={{ border: "solid 2px #BFDBFE" }} />
       <EditContent>
         <div style={{ textAlign: "center", marginTop: "5px" }}>
-          <EditTitle>댓글 삭제하기</EditTitle>
+          <EditTitle>일기 삭제하기</EditTitle>
         </div>
-        <p>다음 댓글을 삭제하시겠습니까?</p>
+        <p style={{ marginBottom: "10px" }}>다음 일기를 삭제하시겠습니까?</p>
         <DeleteContent>{commentState}</DeleteContent>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <DeleteButton onClick={handleDeleteComment}>댓글 삭제</DeleteButton>
+          <DeleteButton onClick={handleDeleteDiary}>일기 삭제</DeleteButton>
         </div>
       </EditContent>
     </EditContainer>
