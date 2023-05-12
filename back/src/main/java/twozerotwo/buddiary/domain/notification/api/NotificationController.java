@@ -3,6 +3,8 @@ package twozerotwo.buddiary.domain.notification.api;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,17 +30,17 @@ public class NotificationController {
 	public final ClubService clubService;
 
 	//----------------------------------------------나의 알림 조회-----------------------------------------------
-	@GetMapping("/api/notices/{username}")
-	public ResponseEntity getAllNotification(@PathVariable String username) {
+	@GetMapping("/api/notices")
+	public ResponseEntity getAllNotification(@PathVariable String username, HttpServletRequest servlet) {
 
-		List<Notification> noticeList = notificationService.getAllNotification(username);
+		List<Notification> noticeList = notificationService.getAllNotification(servlet);
 		return new ResponseEntity<>(Map.of("noticeList", noticeList), HttpStatus.OK);
 	}
 
 	//-------------------------------------------나의 알림 삭제-----------------------------------------------
-	@DeleteMapping("/api/notices/{noticeId}/{username}")
-	public ResponseEntity deleteNotification(@PathVariable Long noticeId, @PathVariable String username) {
-		notificationService.deleteNotification(noticeId, username);
+	@DeleteMapping("/api/notices")
+	public ResponseEntity deleteNotification(@PathVariable Long noticeId, HttpServletRequest servlet) {
+		notificationService.deleteNotification(noticeId, servlet);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
