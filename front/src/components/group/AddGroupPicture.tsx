@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { InputImage } from './AddGroupPicture.styles';
-import Button from '@mui/material/Button';
+import React, { useState, useRef } from "react";
+import { InputImage } from "./AddGroupPicture.styles";
+import Button from "@mui/material/Button";
 
 interface AddGroupPictureProps {
   setImage: (image: File | null) => void;
@@ -29,9 +29,11 @@ const AddGroupPicture: React.FC<AddGroupPictureProps> = ({ setImage }) => {
   };
 
   return (
-    <div>
-      <Button onClick={handleButtonClick} variant="outlined">사진 첨부</Button>
+    <div className="flex w-full justify-center items-center my-4 h-12">
       <InputImage onChange={handleImageChange} ref={inputRef} />
+      <Button onClick={handleButtonClick} variant="outlined">
+        사진 첨부
+      </Button>
     </div>
   );
 };
