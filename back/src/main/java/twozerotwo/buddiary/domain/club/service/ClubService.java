@@ -210,11 +210,11 @@ public class ClubService {
 		Set<MemberClub> clubMembers = club.getClubMembers();
 		MemberClub buildMemberClub = MemberClub.builder().member(memberFromToken).club(club).build();
 		MemberClub memberClub = memberClubRepository.findMemberClubByClubAndMember(club, memberFromToken).orElse(null);
-		if (memberClub != null) {
-			throw new BadRequestException("중복된 회원입니다");
-		}
 		if (club.isMaxClubMembersSize()) {
 			throw new BadRequestException("회원이 가득찬 클럽입니다.");
+		}
+		if (memberClub != null) {
+			throw new BadRequestException("중복된 회원입니다");
 		}
 		clubMembers.add(buildMemberClub);
 	}
