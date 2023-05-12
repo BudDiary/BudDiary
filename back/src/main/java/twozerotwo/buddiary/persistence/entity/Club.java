@@ -53,6 +53,7 @@ public class Club {
 			.clubUuid(this.uuid)
 			.thumbnailUrl(this.thumbnailPath)
 			.clubName(this.name)
+			.captainUsername(this.captainUsername)
 			.build();
 	}
 
@@ -61,6 +62,7 @@ public class Club {
 			.clubUuid(this.uuid)
 			.thumbnailUrl(clubImgUrl)
 			.clubName(this.name)
+			.captainUsername(this.captainUsername)
 			.build();
 	}
 

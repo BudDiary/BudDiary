@@ -3,6 +3,7 @@ package twozerotwo.buddiary.domain.reaction.api;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -28,15 +29,15 @@ public class ReactionController {
 	private final ReactionService reactionService;
 
 	@PostMapping("/reactions")
-	public ResponseEntity createReaction(@RequestBody @Valid ReactionRequest request) {
-		List<ReactionDto> reactions = reactionService.createReaction(request);
+	public ResponseEntity createReaction(@RequestBody @Valid ReactionRequest request, HttpServletRequest servlet) {
+		List<ReactionDto> reactions = reactionService.createReaction(request, servlet);
 		return new ResponseEntity<>(Map.of("reactionList", reactions), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{diaryId}/reactions/{actionId}/{username}")
 	public ResponseEntity deleteReaction(@PathVariable Long diaryId, @PathVariable Long actionId,
-		@PathVariable String username) {
-		reactionService.deleteReaction(username, diaryId, actionId);
+		HttpServletRequest servlet) {
+		reactionService.deleteReaction(servlet, diaryId, actionId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

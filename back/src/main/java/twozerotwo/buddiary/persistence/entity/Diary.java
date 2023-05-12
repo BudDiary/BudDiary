@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
+import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
 import twozerotwo.buddiary.persistence.enums.ClubType;
 
 @Entity
@@ -99,11 +100,11 @@ public class Diary {
 
 	}
 
-	public DiaryInfo toDiaryInfo() {
+	public DiaryInfo toDiaryInfo(List<ReactionDto> reactionDtos) {
 		return DiaryInfo.builder()
 			.diaryId(this.getId()).writer(this.getWriter()).writeDate(this.getWriteDate()).text(this.getText())
 			.imgList(this.getDiaryImages()).positiveRate(this.getPositiveRate()).negativeRate(this.getNegativeRate())
-			.reactionList(this.getReactions()).commentList(this.getComments())
+			.reactionList(reactionDtos).commentList(this.getComments())
 			.build();
 	}
 }

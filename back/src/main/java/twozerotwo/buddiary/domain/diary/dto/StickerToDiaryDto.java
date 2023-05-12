@@ -31,9 +31,7 @@ public class StickerToDiaryDto {
 	// @NotNull(message = "y좌표를 입력해주세요.")
 	@JsonProperty("yCoordinate")
 	private double yCoordinate;
-	@NotBlank(message = "사용자 아이디를 입력해주세요.")
-	private String username;
-
-
+	// @NotBlank(message = "사용자 아이디를 입력해주세요.")
+	// private String username;
 
 }

@@ -12,6 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class DoubleCreateRequest {
-	private String firstUsername;
-	private String secondUsername;
+	private String targetName;
+
 }

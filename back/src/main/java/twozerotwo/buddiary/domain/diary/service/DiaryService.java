@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -21,21 +23,24 @@ import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerToDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
+import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
+import twozerotwo.buddiary.domain.reaction.service.ReactionService;
 import twozerotwo.buddiary.domain.sticker.service.StickerService;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
+import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
 import twozerotwo.buddiary.persistence.entity.Diary;
 import twozerotwo.buddiary.persistence.entity.DiaryImage;
 import twozerotwo.buddiary.persistence.entity.Member;
+import twozerotwo.buddiary.persistence.entity.Reaction;
 import twozerotwo.buddiary.persistence.entity.Sticker;
 import twozerotwo.buddiary.persistence.entity.UnusedSticker;
 import twozerotwo.buddiary.persistence.entity.UsedSticker;
 import twozerotwo.buddiary.persistence.repository.ClubRepository;
 import twozerotwo.buddiary.persistence.repository.DiaryRepository;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
-import twozerotwo.buddiary.persistence.repository.StickerRepository;
 import twozerotwo.buddiary.persistence.repository.UnusedStickerRepository;
 import twozerotwo.buddiary.persistence.repository.UsedStickerRepository;
 
@@ -43,22 +48,21 @@ import twozerotwo.buddiary.persistence.repository.UsedStickerRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class DiaryService {
-	private final MemberRepository memberRepository;
 	private final DiaryRepository diaryRepository;
 	private final ClubRepository clubRepository;
-	private final StickerRepository stickerRepository;
+	private final AuthenticationUtil authenticationUtil;
 	private final UnusedStickerRepository unusedStickerRepository;
 	private final UsedStickerRepository usedStickerRepository;
 	private final S3Uploader s3Uploader;
-	private final ClubService clubService;
 	private final StickerService stickerService;
 	private static Long WRITE_DIARY_POINT = 5L;
 
 	@Transactional
-	public void createClubDiary(DiaryPostRequest request, String clubUuid) throws IOException {
+	public void createClubDiary(DiaryPostRequest request, String clubUuid, HttpServletRequest servlet) throws
+		IOException {
 		/// TODO: 2023-05-02 요청한 사람이 클럽원인지 확인
 		Club club = returnClubById(clubUuid);
-		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		// 다이어리 포스트 생성 > 저장
 		Diary diary = Diary.builder()
 			.club(club)
@@ -71,7 +75,10 @@ public class DiaryService {
 		// 이미지 리스트 만들고
 		makeDiaryImage(savedDiary, request.getFileList());
 		// 스티커 리스트 만들고
-		makeStickerList(savedDiary, request.getStickerDtoList());
+		if (request.getStickerDtoList() != null) {
+			makeStickerList(savedDiary, request.getStickerDtoList());
+		}
+
 	}
 
 	private Club returnClubById(String clubUuid) {
@@ -101,10 +108,12 @@ public class DiaryService {
 		List<UsedSticker> usedStickerList = diary.getUsedStickers();
 		// List<UnusedSticker> memberStickers = member.getStickers();
 		Member member = diary.getWriter();
+		log.info("stickerDtoList {}", Arrays.toString(stickerDtoList.toArray()));
 
-		if (stickerDtoList != null) {
+		if (stickerDtoList.size() > 0 && stickerDtoList != null) {
 			for (StickerDto stickerDto : stickerDtoList) {
 				/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
+				log.info("stickerDto{}", stickerDto.getStickerId());
 				Boolean stickerOwned = false;
 				for (UnusedSticker ownedSticker : member.getStickers()) {
 					if (ownedSticker.getSticker().getId().equals(stickerDto.getStickerId())) {
@@ -130,8 +139,9 @@ public class DiaryService {
 	}
 
 	@Transactional
-	public void createPersonalDiary(DiaryPostRequest request) throws IOException {
-		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+	public void createPersonalDiary(DiaryPostRequest request, HttpServletRequest servlet) throws IOException {
+		// Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		// 다이어리 포스트 생성 > 저장
 		Diary diary = Diary.builder()
 			.writer(member)
@@ -148,8 +158,8 @@ public class DiaryService {
 	}
 
 	@Transactional
-	public void minusStickerCnt(DiaryPostRequest request) {
-		Member member = clubService.returnMemberByUsername(request.getMemberUsername());
+	public void minusStickerCnt(DiaryPostRequest request, HttpServletRequest servlet) {
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		// 5 point 추가
 		member.addPoint(WRITE_DIARY_POINT);
 
@@ -167,8 +177,9 @@ public class DiaryService {
 		}
 	}
 
-	public List<SimpleDiaryDto> getDayDiaryList(String username, String date) {
-		Member member = clubService.returnMemberByUsername(username);
+	public List<SimpleDiaryDto> getDayDiaryList(HttpServletRequest servlet, String date) {
+		// Member member = clubService.returnMemberByUsername(username);
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		LocalDate targetDay = LocalDate.of(Integer.parseInt(date.substring(0, 4)),
 			Integer.parseInt(date.substring(5, 7)),
 			Integer.parseInt(date.substring(8, 10)));
@@ -181,12 +192,14 @@ public class DiaryService {
 		for (Diary diary : personalDiaries) {
 			// log.info("확인: " + diary.getClub());
 			//다이어리 > diaryInfo로 바꾸는 메소드 필요
-			DiaryInfo diaryInfo = diary.toDiaryInfo();
+			List<ReactionDto> reactionDtos = returnReactionDtoList(diary);
+			DiaryInfo diaryInfo = diary.toDiaryInfo(reactionDtos);
 			//diaryInfo 인자로 바꿈
 			simpleDtoList.add(diary.toPersonalDto(diaryInfo));
 		}
 		for (Diary diary : clubDiaries) {
-			DiaryInfo diaryInfo = diary.toDiaryInfo();
+			List<ReactionDto> reactionDtos = returnReactionDtoList(diary);
+			DiaryInfo diaryInfo = diary.toDiaryInfo(reactionDtos);
 			// log.info("확인: " + diary.getClub());
 			simpleDtoList.add(diary.toClubDto(diaryInfo));
 		}
@@ -210,9 +223,11 @@ public class DiaryService {
 	}
 
 	@Transactional
-	public void deleteDiary(Long diaryId, String username) {
-		Member member = clubService.returnMemberByUsername(username);
+	public void deleteDiary(Long diaryId, HttpServletRequest servlet) {
+		// Member member = clubService.returnMemberByUsername(username);
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		Diary diary = returnDiaryById(diaryId);
+
 		if (!diary.getWriter().equals(member)) {
 			throw new BadRequestException("해당 글의 작성자가 아닙니다.");
 		}
@@ -220,13 +235,14 @@ public class DiaryService {
 	}
 
 	@Transactional
-	public List<UsedStickerDto> addStickerToDiary(StickerToDiaryDto request) {
+	public List<UsedStickerDto> addStickerToDiary(StickerToDiaryDto request, HttpServletRequest servlet) {
 		// log.info(request.getYCoordinate().toString());
 		// 소유자가 맞는지 확인
 		Diary diary = returnDiaryById(request.getDiaryId());
 		UnusedSticker unusedSticker = unusedStickerRepository.findById(request.getUnusedStickerId())
 			.orElseThrow(() -> new NotFoundException("미사용 스티커를 찾을 수 없습니다."));
-		Member member = clubService.returnMemberByUsername(request.getUsername());
+		// Member member = clubService.returnMemberByUsername(request.getUsername());
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		if (!unusedSticker.getMember().equals(member)) {
 			throw new BadRequestException("요청자와 소유자가 다릅니다.");
 		}
@@ -245,5 +261,16 @@ public class DiaryService {
 			unusedStickerRepository.delete(unusedSticker);
 		}
 		return getDiarySticker(diary.getId());
+	}
+
+	public List<ReactionDto> returnReactionDtoList(Diary diary) {
+		List<Reaction> reactions = diary.getReactions();
+		List<ReactionDto> reactionDtos = new ArrayList<>();
+		for (Reaction reaction : reactions) {
+			reactionDtos.add(reaction.toDto());
+		}
+		// member point 추가
+		return reactionDtos;
+
 	}
 }
