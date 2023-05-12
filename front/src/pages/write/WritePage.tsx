@@ -37,6 +37,7 @@ export default function WritePage() {
   const [mygroup, setMygroup] = useState<GroupData[]>([]);
   const [personalChecked, setPersonalChecked] = useState<boolean>(false);
   const [stage, setStage] = useState<number>(0);
+  const [sentiment, setSentiment] = useState<{negative: number, positive: number}>({ negative: 0, positive: 0 });
 
   useEffect(() => {
     async function fetchMyGroup() {
@@ -63,15 +64,19 @@ export default function WritePage() {
   };
 
   const sendData = async () => {
-    postSentimentApi({content : content})
-    
-    const data = {
-      text: content,
-      fileList: originFiles,
-      clubList: selectGroup,
-      isPersonal: personalChecked,
-      memberUsername: username,
-    };
+    postSentimentApi({content : content}).then((result) => {
+      setSentiment(result)
+      const data = {
+        text: content,
+        fileList: originFiles,
+        clubList: selectGroup,
+        isPersonal: personalChecked,
+        memberUsername: username,
+        negativeRate: sentiment.negative,
+        positiveRate: sentiment.positive
+      };
+      console.log(data, 'this is data')
+    });
 
 
     // await postTodayDiaryApi(data);
