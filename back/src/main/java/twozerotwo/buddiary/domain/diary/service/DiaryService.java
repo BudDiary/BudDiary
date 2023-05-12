@@ -57,9 +57,9 @@ public class DiaryService {
 	private final StickerService stickerService;
 	private static Long WRITE_DIARY_POINT = 5L;
 
-
 	@Transactional
-	public void createClubDiary(DiaryPostRequest request, String clubUuid, HttpServletRequest servlet) throws IOException {
+	public void createClubDiary(DiaryPostRequest request, String clubUuid, HttpServletRequest servlet) throws
+		IOException {
 		/// TODO: 2023-05-02 요청한 사람이 클럽원인지 확인
 		Club club = returnClubById(clubUuid);
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
@@ -108,7 +108,7 @@ public class DiaryService {
 		List<UsedSticker> usedStickerList = diary.getUsedStickers();
 		// List<UnusedSticker> memberStickers = member.getStickers();
 		Member member = diary.getWriter();
-		log.info("stickerDtoList {}" , Arrays.toString(stickerDtoList.toArray()));
+		log.info("stickerDtoList {}", Arrays.toString(stickerDtoList.toArray()));
 
 		if (stickerDtoList.size() > 0 && stickerDtoList != null) {
 			for (StickerDto stickerDto : stickerDtoList) {
@@ -262,6 +262,7 @@ public class DiaryService {
 		}
 		return getDiarySticker(diary.getId());
 	}
+
 	public List<ReactionDto> returnReactionDtoList(Diary diary) {
 		List<Reaction> reactions = diary.getReactions();
 		List<ReactionDto> reactionDtos = new ArrayList<>();

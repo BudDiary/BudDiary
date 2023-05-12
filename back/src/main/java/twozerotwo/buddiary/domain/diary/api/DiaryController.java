@@ -38,7 +38,8 @@ public class DiaryController {
 
 	//----------------------------------------------다이어리 작성------------------------------------------------
 	@PostMapping
-	public ResponseEntity createDiary(@ModelAttribute DiaryPostRequest request, HttpServletRequest servlet) throws IOException {
+	public ResponseEntity createDiary(@ModelAttribute DiaryPostRequest request, HttpServletRequest servlet) throws
+		IOException {
 		List<String> clubList = request.getClubList();
 		Boolean isSelected = false;
 		if (request.getClubList().size() > 0 && request.getClubList() != null) {

@@ -36,7 +36,8 @@ public class ClubController {
 
 	//-------------------------------------------클럽 생성----------------------------------------------
 	@PostMapping("/double")
-	public ResponseEntity<ClubCreateResponse> createDoubleClub(@RequestBody DoubleCreateRequest request, HttpServletRequest servlet) {
+	public ResponseEntity<ClubCreateResponse> createDoubleClub(@RequestBody DoubleCreateRequest request,
+		HttpServletRequest servlet) {
 
 		return new ResponseEntity<ClubCreateResponse>(clubService.createDouble(request, servlet), HttpStatus.CREATED);
 	}

@@ -63,7 +63,7 @@ public class ClubService {
 		Club club = Club.builder()
 			.uuid(UUID.randomUUID().toString())
 			.type(ClubType.DOUBLE)
-			.name(target.getNickname()+"님과 " + me.getNickname()+"님의 교환일기")
+			.name(target.getNickname() + "님과 " + me.getNickname() + "님의 교환일기")
 			.maximumMember(2)
 			.build();
 		//맴버들 반환

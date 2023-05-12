@@ -42,7 +42,8 @@ public class StickerController {
 
 	//---------------------------------------------------스티커 구매----------------------------------------------------
 	@PostMapping("/{stickerId}")
-	public ResponseEntity buySticker(@PathVariable Long stickerId, @RequestBody StickerBuyRequest request, HttpServletRequest servlet) {
+	public ResponseEntity buySticker(@PathVariable Long stickerId, @RequestBody StickerBuyRequest request,
+		HttpServletRequest servlet) {
 		stickerService.buySticker(stickerId, request, servlet);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
