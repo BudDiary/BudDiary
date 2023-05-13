@@ -20,6 +20,8 @@ const postCommentApi = (diaryId: number, text: string) => {
       return res;
     })
     .catch((err) => {
+      console.log("댓글입력", data);
+      console.log(err);
       return err;
     });
 };

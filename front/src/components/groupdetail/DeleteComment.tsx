@@ -10,7 +10,7 @@ import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
 import { deleteCommentApi } from "../../apis/commentApi";
 import close from "../../assets/modal/close.png";
-
+import useMember from "../../hooks/memberHook";
 interface CommentDeleteProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,6 +22,7 @@ export default function DeleteComment({
   diaryId,
   onClose,
 }: CommentDeleteProps) {
+  const { memberData } = useMember();
   const [commentState, setCommentState] = useState(comment.text);
   const closeCommentModal = () => {
     onClose();

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-
+import close from "../../assets/modal/close.png";
 export const BasicButton = styled.button`
   ${tw`bg-bud-blue rounded-full px-5 py-1 font-berry`}
   letter-spacing: 0.1rem;
@@ -106,13 +106,20 @@ export const DiaryImageSlider = styled.div`
     height: 50px;
     transform: translateY(-50%);
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-image: url("../../assets/prev_button.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
     z-index: 0;
+  }
+
+  & > .swiper-button-next {
+    background-image: url("../../assets/next_button.png");
   }
 
   .swiper-button-prev:hover,

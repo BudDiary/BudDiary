@@ -1,4 +1,4 @@
-import { api, fastApi, formApi } from "./axiosConfig";
+import { api, fastApi, formApi, authApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 다수 클럽 생성

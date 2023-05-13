@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PickerContainer, EmojiButton } from "./Emoji.style";
 import { postReactionApi, deleteReactionApi } from "../../../apis/reactionApi";
 import { Reaction, ActionType } from "../../../types/group";
@@ -67,6 +67,10 @@ const EmojiPicker = ({
       return { emoji, selected: Boolean(emojiReaction) };
     });
   };
+
+  useEffect(() => {
+    console.log(reactionList);
+  }, []);
 
   return (
     <PickerContainer style={{ display: "flex", flexWrap: "wrap" }}>
