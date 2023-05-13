@@ -5,12 +5,10 @@ import {
   ModalTopNavContainer,
 } from "../common/ModalWindow.styles";
 import { UserInfo, EditTitle } from "./DiaryComment.style";
-import { timeAgo } from "./GroupDetailFunction";
 import { DeleteContent, CommentBox } from "./DiaryComment.style";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
 import { deleteCommentApi } from "../../apis/commentApi";
-import { userdummy } from "../mypage/userdummy";
 import close from "../../assets/modal/close.png";
 
 interface CommentDeleteProps {
@@ -25,13 +23,12 @@ export default function DeleteComment({
   onClose,
 }: CommentDeleteProps) {
   const [commentState, setCommentState] = useState(comment.text);
-  const username = userdummy.username;
   const closeCommentModal = () => {
     onClose();
   };
 
   const handleDeleteComment = () => {
-    deleteCommentApi(diaryId, comment.id, username);
+    deleteCommentApi(diaryId, comment.id);
     onClose();
   };
   return (

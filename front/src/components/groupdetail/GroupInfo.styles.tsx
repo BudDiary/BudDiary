@@ -11,9 +11,9 @@ export const GroupList = styled.div`
 
   img {
     border: 1px solid black;
-    height: 200px;
+    height: 150px;
     width: 95%;
-    ${tw`rounded-lg`}
+    ${tw`rounded-lg`};
   }
 
   p {
@@ -21,7 +21,7 @@ export const GroupList = styled.div`
   }
 
   div {
-    ${tw`flex items-center justify-start gap-8`}
+    ${tw`flex items-center justify-start gap-6`}
     width: 100%;
   }
 `;
@@ -34,13 +34,17 @@ export const MemberList = styled.div`
     display: none;
   }
   div {
-    ${tw`flex items-center justify-start gap-6`}
+    ${tw`flex items-center justify-start gap-6 font-berry`}
 
     img {
       height: 35px;
       width: 35px;
       border: 1px solid black;
       ${tw`rounded-full`}
+    }
+
+    p {
+      ${tw`text-bud-blue`}
     }
   }
 `;

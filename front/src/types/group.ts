@@ -1,3 +1,5 @@
+export type ActionType = "LIKED" | "BEST" | "ANGRY" | "SAD" | "SURPRISED";
+
 export interface Writer {
   id: number;
   username: string;
@@ -54,6 +56,7 @@ export interface Info {
   clubUuid: string;
   thumbnailUrl: string | null;
   clubName: string;
+  captainUsername: string | null;
 }
 
 export interface ClubDetail {

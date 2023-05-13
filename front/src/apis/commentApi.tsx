@@ -1,45 +1,40 @@
-import { api, formApi } from "./axiosConfig";
+import { api } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 댓글 작성
 
-const postCommentApi = (diaryId: number, text: string, username: string) => {
+const postCommentApi = (diaryId: number, text: string) => {
   const data = {
-    diaryId: diaryId,
-    text: text,
-    username: username,
+    diaryId,
+    text,
   };
+
   return api
-    .post(`api/diaries/comments`, data)
+    .post("/api/diaries/comments", data, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
-      console.log("댓글입력", data);
-      Swal.fire({
-        icon: "error",
-        text: "postCommentApi 오류가 발생했어요.",
-      });
       return err;
     });
 };
 
 // 댓글 삭제
 
-const deleteCommentApi = (
-  diaryId: number,
-  commentId: number,
-  username: string
-) => {
+const deleteCommentApi = (diaryId: number, commentId: number) => {
   return api
-    .delete(`/api/diaries/${diaryId}/comments/${commentId}/${username}`)
+    .delete(`/api/diaries/${diaryId}/comments/${commentId}`, {
+      withCredentials: true,
+    })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
-      console.log("댓글삭제", diaryId, commentId, username);
       Swal.fire({
         icon: "error",
         text: "deleteCommentApi 오류가 발생했어요.",
