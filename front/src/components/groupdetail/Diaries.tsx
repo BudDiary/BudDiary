@@ -3,7 +3,7 @@ import { WideButton } from "./Diaries.styles";
 import { MdLibraryAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import DiaryBox from "./DiaryBox";
-import { Club, Diary } from "../../types/group";
+import { Diary } from "../../types/group";
 
 interface DiaryBoxProps {
   diaryList?: Diary[];

@@ -14,7 +14,7 @@ import {
 import { deleteDiaryApi } from "../../apis/diaryApi";
 import { Divider } from "@mui/material";
 import { Diary } from "../../types/group";
-import useMember from "../../hooks/memberHook";
+
 import close from "../../assets/modal/close.png";
 interface DiaryProps {
   isOpen: boolean;
@@ -24,13 +24,12 @@ interface DiaryProps {
 }
 export default function DiaryDelete({ diary, diaryId, onClose }: DiaryProps) {
   const [commentState, setCommentState] = useState(diary.text);
-  const { memberData } = useMember();
   const closeCommentModal = () => {
     onClose();
   };
 
   const handleDeleteDiary = () => {
-    deleteDiaryApi(diaryId, memberData.username);
+    deleteDiaryApi(diaryId);
     onClose();
   };
 

@@ -41,11 +41,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
       return;
     }
     try {
-      const response = await postReplyApi(
-        commentId,
-        replyText,
-        memberData.username
-      );
+      const response = await postReplyApi(commentId, replyText);
 
       // console.log(response);
       setReplyText("");

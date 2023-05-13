@@ -21,7 +21,7 @@ export const GroupList = styled.div`
   }
 
   div {
-    ${tw`flex items-center justify-start gap-8`}
+    ${tw`flex items-center justify-start gap-6`}
     width: 100%;
   }
 `;

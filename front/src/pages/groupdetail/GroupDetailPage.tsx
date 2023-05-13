@@ -28,7 +28,7 @@ const GroupDetailPage = () => {
       }
     }
     fetchData();
-  }, []);
+  });
 
   useEffect(() => {
     const handleScroll = () => {

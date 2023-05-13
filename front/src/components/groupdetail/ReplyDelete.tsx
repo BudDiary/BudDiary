@@ -34,7 +34,7 @@ export default function DeleteReply({
   const username = memberData.username;
 
   const handleDeleteReply = () => {
-    deleteReplyApi(commentId, reply.id, username);
+    deleteReplyApi(commentId, reply.id);
     onClose();
   };
 

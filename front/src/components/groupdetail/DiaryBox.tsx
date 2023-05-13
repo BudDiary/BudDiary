@@ -29,6 +29,11 @@ interface DiaryBoxProps {
   diaryList?: Diary[];
   imgList?: Image[];
 }
+
+interface SelectedEmojis {
+  [diaryId: number]: string[] | undefined;
+}
+
 export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
 
@@ -36,7 +41,8 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   // 일기 삭제 모달
   const [diaryDelete, setDiaryDelete] = useState(false);
   const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
-  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
+  const [selectedDiaryEmojis, setSelectedDiaryEmojis] =
+    useState<SelectedEmojis>({});
 
   const showDeleteModal = (diaryId: number) => {
     setSelectedDiaryId(diaryId);
@@ -51,13 +57,20 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   }, [diaryList]);
 
   const handleSelectEmoji = (emoji: string, diaryId: number) => {
-    if (selectedEmojis.includes(emoji)) {
-      setSelectedEmojis(selectedEmojis.filter((e) => e !== emoji));
-    } else {
-      setSelectedEmojis([...selectedEmojis, emoji]);
-    }
+    setSelectedDiaryEmojis((prevState) => {
+      const newSelectedEmojis = { ...prevState };
+      if (newSelectedEmojis[diaryId]?.includes(emoji)) {
+        newSelectedEmojis[diaryId] =
+          newSelectedEmojis[diaryId]?.filter((e) => e !== emoji) || [];
+      } else {
+        newSelectedEmojis[diaryId] = [
+          ...(newSelectedEmojis[diaryId] || []),
+          emoji,
+        ];
+      }
+      return newSelectedEmojis;
+    });
   };
-
   return (
     <>
       {diaryData.length === 0 ? (
@@ -148,7 +161,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                       onSelect={(emoji) =>
                         handleSelectEmoji(emoji, diary.diaryId)
                       }
-                      selectedEmojis={selectedEmojis}
+                      selectedEmojis={selectedDiaryEmojis[diary.diaryId] || []}
                       diaryId={diary.diaryId}
                     />
                   )}

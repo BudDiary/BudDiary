@@ -15,13 +15,10 @@ export default function GroupInfo({
   memberList,
   style,
 }: GroupInfoProps) {
-  const { memberData, isLoggedIn } = useMember();
+  const { memberData } = useMember();
   const username = memberData.username;
-  // const captain = clubInfo.captain_username;
-  useEffect(() => {
-    // console.log(clubInfo);
-    // console.log(memberList);
-  });
+
+  useEffect(() => {});
   return (
     <GroupList style={style}>
       <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
@@ -43,7 +40,7 @@ export default function GroupInfo({
             <img src={member.profilePath ?? ""} alt="프로필" />
             <div style={{ display: "flex", alignItems: "center" }}>
               {member.nickname}
-              {member.username === username ? (
+              {member.username === clubInfo?.captainUsername ? (
                 <img
                   src={crown}
                   alt=""

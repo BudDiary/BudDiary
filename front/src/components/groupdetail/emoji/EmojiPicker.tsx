@@ -16,7 +16,7 @@ const EmojiPicker = ({
   diaryId,
   reactionList,
 }: Props) => {
-  const { memberData, isLoggedIn } = useMember();
+  const { memberData } = useMember();
   const emojiActionTypes: { [key: string]: ActionType } = {
     "😀": "LIKED",
     "👍": "BEST",

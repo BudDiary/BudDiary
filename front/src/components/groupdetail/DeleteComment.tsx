@@ -24,13 +24,12 @@ export default function DeleteComment({
 }: CommentDeleteProps) {
   const { memberData } = useMember();
   const [commentState, setCommentState] = useState(comment.text);
-  const username = memberData.username;
   const closeCommentModal = () => {
     onClose();
   };
 
   const handleDeleteComment = () => {
-    deleteCommentApi(diaryId, comment.id, username);
+    deleteCommentApi(diaryId, comment.id);
     onClose();
   };
   return (

@@ -23,7 +23,7 @@ interface GroupData {
   clubUuid: string;
   thumbnailUrl: string;
   clubName: string;
-  captainUsername: string;
+  captainUsername: string | null;
 }
 
 export default function WritePage() {
@@ -38,6 +38,10 @@ export default function WritePage() {
   const [mygroup, setMygroup] = useState<GroupData[]>([]);
   const [personalChecked, setPersonalChecked] = useState<boolean>(false);
   const [stage, setStage] = useState<number>(0);
+  const [sentiment, setSentiment] = useState<{
+    negative: number;
+    positive: number;
+  }>({ negative: 0, positive: 0 });
 
   useEffect(() => {
     async function fetchMyGroup() {

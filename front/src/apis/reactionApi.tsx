@@ -9,18 +9,20 @@ const postReactionApi = (diaryId: number, actionType: ActionType) => {
     diaryId,
     actionType,
   };
+  console.log("!!!");
   return api
     .post(`api/diaries/reactions`, data, { withCredentials: true })
     .then((res) => {
-      return res.data;
+      return res;
     })
+
     .catch((err) => {
-      console.log(data);
+      console.log("???");
       Swal.fire({
         icon: "error",
         text: "postReactionApi 오류가 발생했어요.",
       });
-      console.log(err);
+
       return err;
     });
 };
@@ -28,14 +30,13 @@ const postReactionApi = (diaryId: number, actionType: ActionType) => {
 // 리액션 삭제
 const deleteReactionApi = (diaryId: number, actionId: number) => {
   return api
-    .delete(`/api/diaries/${diaryId}/reactions/${actionId}`)
+    .delete(`/api/diaries/${diaryId}/reactions/${actionId}`, {
+      withCredentials: true,
+    })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
-      console.log("이모티콘 삭제", diaryId, actionId);
-      console.log(err);
       Swal.fire({
         icon: "error",
         text: "deleteReactionApi 오류가 발생했어요.",
