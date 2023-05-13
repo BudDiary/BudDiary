@@ -19,9 +19,9 @@ const postTodayDiaryApi = (payload: any) => {
 };
 
 // 특정 날짜 다이어리 리스트 조회
-const getDateDiaryListApi = (date: string, email: string) => {
+const getDateDiaryListApi = (date: string) => {
   return api
-    .get(`/api/diaries?date=${date}&username=${email}`)
+    .get(`/api/diaries?date=${date}`, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res.data;
@@ -89,19 +89,19 @@ const patchDiaryStickerApi = (payload: any) => {
 
 const postSentimentApi = (payload: any) => {
   return sentimentApi
-  .post(`/`, payload)
-  .then((res) => {
-    console.log(res)
-    return res.data
-  })
-  .catch((err) => {
-    console.log(err, "postSentimentApi 오류");
-    Swal.fire({
-      icon: "error",
-      text: "postSentimentApi 오류",
+    .post(`/`, payload)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err, "postSentimentApi 오류");
+      Swal.fire({
+        icon: "error",
+        text: "postSentimentApi 오류",
+      });
     });
-  });
-}
+};
 
 export {
   postTodayDiaryApi,
@@ -109,5 +109,5 @@ export {
   getDiaryDetailApi,
   deleteDiaryApi,
   patchDiaryStickerApi,
-  postSentimentApi
+  postSentimentApi,
 };
