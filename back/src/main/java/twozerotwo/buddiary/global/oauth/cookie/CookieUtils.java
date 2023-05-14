@@ -7,13 +7,15 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.SerializationUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CookieUtils {
-
+	@Value("${server.name}")
+	private static String envName;
 	public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 		Cookie[] cookies = request.getCookies();
 
@@ -29,9 +31,14 @@ public class CookieUtils {
 	}
 
 	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-		log.info("쿠키 생성 했습니다 ");
+
 		Cookie cookie = new Cookie(name, value);
-		// cookie.setPath("/");
+		cookie.setPath("/");
+		if (envName.equals("local")) {
+			cookie.setDomain("localhost");
+		}else {
+			cookie.setDomain("buddiary.site");
+		}
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(maxAge);
 		cookie.setSecure(false);

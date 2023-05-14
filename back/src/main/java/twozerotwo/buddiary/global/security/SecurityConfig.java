@@ -98,7 +98,7 @@ public class SecurityConfig {
 			//== 소셜 로그인 설정 ==//
 			.oauth2Login()
 			.authorizationEndpoint().baseUri("/oauth2/authorize")
-			// .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+			.authorizationRequestRepository(cookieAuthorizationRequestRepository())
 			.and()
 			.redirectionEndpoint()
 			// .baseUri("/login/oauth2/code/kakao/code*")
