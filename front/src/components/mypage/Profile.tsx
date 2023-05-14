@@ -45,7 +45,7 @@ export default function Profile() {
       ></ProfilePicSection>
       <ProfileInfoSection>
         <NicknameBox>{nickname}</NicknameBox>
-        <PointsButton>{points}pts</PointsButton>
+        <PointsButton to="/stickers">{points}pts</PointsButton>
       </ProfileInfoSection>
       <ChangeProfileSection>
         <FullRoundedButton onClick={showProfileModal}>

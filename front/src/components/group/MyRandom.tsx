@@ -4,7 +4,6 @@ import "swiper/swiper-bundle.css";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { getMyClubListApi } from "../../apis/clubApi";
-import useMember from "../../hooks/memberHook";
 
 interface DoubleList {
   captainUsername: string | null;
@@ -12,44 +11,14 @@ interface DoubleList {
   clubUuid: string;
   thumbnailUrl: string | undefined;
 }
-const data = [
-  {
-    title: "Paper 1",
-    description: "This is the description for Paper 1.",
-    image: "/path/to/image1.jpg",
-  },
-  {
-    title: "Paper 2",
-    description: "This is the description for Paper 2.",
-    image: "/path/to/image2.jpg",
-  },
-  {
-    title: "Paper 3",
-    description: "This is the description for Paper 3.",
-    image: "/path/to/image3.jpg",
-  },
-  {
-    title: "Paper 4",
-    description: "This is the description for Paper 3.",
-    image: "/path/to/image3.jpg",
-  },
-  {
-    title: "Paper 5",
-    description: "This is the description for Paper 3.",
-    image: "/path/to/image3.jpg",
-  },
-];
 
 export default function MyRandom() {
-  // const { memberData } = useMember();
-  // const username = memberData.username;
   const [doubleList, setDoubleList] = useState<DoubleList[]>([]);
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getMyClubListApi();
         setDoubleList(data.doubleList);
-        console.log(data.doubleList, "ndjvb");
       } catch (error) {
         console.error(error);
       }
@@ -92,7 +61,7 @@ export default function MyRandom() {
               </Paper>
             </SwiperSlide>
           ))
-        : " dididid"}
+        : null}
     </Swiper>
   );
 }

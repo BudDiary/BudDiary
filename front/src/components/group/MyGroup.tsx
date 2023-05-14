@@ -7,7 +7,6 @@ import { MdLibraryAdd } from "react-icons/md";
 import NewGroupDiaryModal from "./NewGroupDiaryModal";
 import ModalWindow from "../common/ModalWindow";
 import { getMyClubListApi } from "../../apis/clubApi";
-import useMember from "../../hooks/memberHook";
 
 interface PluralList {
   captainUsername: string | null;
@@ -27,7 +26,6 @@ export default function MyGroup() {
     async function fetchData() {
       try {
         const data = await getMyClubListApi();
-        console.log(data.pluralList, "gg");
         setPluralList(data.pluralList);
       } catch (error) {
         console.error(error);

@@ -42,7 +42,6 @@ const getMyClubListApi = () => {
   return api
     .get(`api/clubs`, { withCredentials: true })
     .then((res) => {
-      console.log(res.data.myClubList);
       return res.data.myClubList;
     })
     .catch((err) => {

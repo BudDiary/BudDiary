@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import tw from "twin.macro";
+import { Link } from "react-router-dom";
 
 export const UserProfileContainer = styled.div`
   ${tw`grid grid-cols-2 sm:grid-cols-3 m-6`}
@@ -24,7 +25,7 @@ export const IntroTitle = styled.div`
   ${tw`font-bold`}
 `;
 
-export const PointsButton = styled.div`
+export const PointsButton = styled(Link)`
   ${tw`bg-bud-blue text-white w-[100px] h-[30px] rounded-md flex justify-center my-6`}
 `;
 

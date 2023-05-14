@@ -23,7 +23,6 @@ const getAllStickersApi = () => {
   return api
     .get(`api/stickers`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
@@ -36,9 +35,9 @@ const getAllStickersApi = () => {
 };
 
 // 내가 가진 스티커 조회
-const getMyStickersApi = (payload: string) => {
+const getMyStickersApi = () => {
   return api
-    .get(`api/stickers/mine?username=${payload}`, { withCredentials: true })
+    .get(`api/stickers/mine`, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res.data;
