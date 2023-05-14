@@ -123,6 +123,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
+		corsConfiguration.addAllowedOriginPattern("http://www.buddiary.site");
 		corsConfiguration.addAllowedHeader("*");
 		// corsConfiguration.addAllowedOrigin("http://localhost:3000");
 		// corsConfiguration.addAllowedOrigin("http://localhost:8080");
