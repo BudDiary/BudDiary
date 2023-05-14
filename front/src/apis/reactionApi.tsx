@@ -5,11 +5,12 @@ type ActionType = "LIKED" | "SURPRISED" | "SAD" | "ANGRY" | "BEST";
 
 // 리액션 등록
 const postReactionApi = (diaryId: number, actionType: ActionType) => {
+  console.log("???");
   const data = {
     diaryId,
     actionType,
   };
-  console.log("!!!");
+
   return api
     .post(`api/diaries/reactions`, data, { withCredentials: true })
     .then((res) => {
@@ -17,7 +18,6 @@ const postReactionApi = (diaryId: number, actionType: ActionType) => {
     })
 
     .catch((err) => {
-      console.log("???");
       Swal.fire({
         icon: "error",
         text: "postReactionApi 오류가 발생했어요.",

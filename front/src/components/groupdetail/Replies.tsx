@@ -9,7 +9,7 @@ import {
   CommentWrapper,
   ExpansionButton,
   CommentError,
-  CommentBox,
+  ReplyBox,
 } from "./DiaryComment.style";
 
 import { postReplyApi } from "../../apis/replyAPI";
@@ -80,13 +80,13 @@ export default function Replies({ replies, commentId }: RepliesProps) {
         {replyButtonText}
       </ExpansionButton>
       {showReply && (
-        <div style={{ width: "160%" }}>
+        <div>
           {replies.map((reply) => (
             <UserInfo key={reply.id}>
               <div>
                 <img src={reply.writer.profilePath ?? ""} alt="프로필" />
               </div>
-              <CommentBox>
+              <ReplyBox>
                 <div
                   style={{
                     display: "flex",
@@ -132,10 +132,10 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                     </DeleteButton>
                   )}
                 </div>
-                <div style={{ width: "145%" }}>
+                <div style={{ width: "100%" }}>
                   <p>{reply.text}</p>
                 </div>
-              </CommentBox>
+              </ReplyBox>
             </UserInfo>
           ))}
           <InputSet>
@@ -150,12 +150,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
               style={{ height }}
             />
 
-            <BasicButton
-              onClick={handleReplySubmit}
-              style={{ fontSize: "12px" }}
-            >
-              댓글달기
-            </BasicButton>
+            <BasicButton onClick={handleReplySubmit}>댓글달기</BasicButton>
           </InputSet>
           {error && <CommentError>{error}</CommentError>}
         </div>
