@@ -122,6 +122,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.addAllowedOriginPattern("http://localhost:8000");
 		corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
 		corsConfiguration.addAllowedOriginPattern("http://www.buddiary.site");
 		corsConfiguration.addAllowedOriginPattern("http://ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com");
