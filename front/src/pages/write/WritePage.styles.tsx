@@ -148,7 +148,7 @@ export const StageContainer = styledComponents.div`
 `;
 
 export const ContentBox = styledComponents.div`
-  ${tw`w-full border my-8`};
+  ${tw`w-full border my-8 px-4 pt-8 pb-32`};
   white-space: pre-wrap;
   word-wrap: break-word;
 `;

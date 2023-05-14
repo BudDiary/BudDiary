@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Addpicture from "../../components/write/Addpicture";
 import Pictures from "../../components/write/Pictures";
 import Checkbox from "@mui/joy/Checkbox";
@@ -15,11 +15,9 @@ import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
 import { useNavigate } from "react-router-dom";
-import { ContentBox, StageContainer } from "./WritePage.styles";
+import Sticker from "./StickerPage";
 
 // asdadasd
-
-import interact from "interactjs";
 
 interface GroupData {
   clubUuid: string;
@@ -29,29 +27,6 @@ interface GroupData {
 }
 
 export default function WritePage() {
-  interact(".item").draggable({
-    onmove: (event: any) => {
-      const target = event.target;
-      const dataX = target.getAttribute("data-x");
-      const dataY = target.getAttribute("data-y");
-      console.log(dataX, dataY);
-      const initialX = parseFloat(dataX) || 0;
-      const initialY = parseFloat(dataY) || 0;
-
-      const deltaX = event.dx;
-      const deltaY = event.dy;
-
-      const newX = initialX + deltaX;
-      const newY = initialY + deltaY;
-
-      target.style.transform = `translate(${newX}px, ${newY}px)`;
-
-      target.setAttribute("data-x", newX);
-      target.setAttribute("data-y", newY);
-      console.log("new", newX, newY);
-    },
-  });
-
   const navigate = useNavigate();
 
   const { memberData } = useMember();
@@ -107,12 +82,10 @@ export default function WritePage() {
     setStage(1);
   };
 
-  const backSpace = () => {
-    setStage(0);
-  };
+  // 스티커 이동
 
   return (
-    <>
+    <div className="font-mf">
       <SubNavContainer img={navimg}>
         <TypeIt
           options={{
@@ -160,25 +133,8 @@ export default function WritePage() {
           </div>
         </PageContainer>
       ) : (
-        <StageContainer>
-          <div>
-            <img src={navimg} alt="" className="item" />
-            스티커 들어올 자리
-          </div>
-          <ContentBox>{content}</ContentBox>
-          <div className="flex justify-evenly">
-            <button
-              className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"
-              onClick={backSpace}
-            >
-              이전
-            </button>
-            <button className="bg-bud-green text-white w-[120px] h-[45px] rounded-md">
-              완료
-            </button>
-          </div>
-        </StageContainer>
+        <Sticker setStage={setStage} content={content} />
       )}
-    </>
+    </div>
   );
 }
