@@ -41,8 +41,34 @@ export const SaveModalButton = styled.button`
 
 export const EditContainer = styled.div`
   position: fixed;
-  top: 15%;
-  left: 20%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 15;
   ${tw`bg-white h-[55%] w-[320px] sm:w-[60%] border-2`}
+
+  @media screen and (max-width: 640px) {
+    ${tw`bg-white h-[65%] w-[320px] sm:w-[60%] border-2`}
+  }
+`;
+
+// 그룹 정보 모달
+
+export const GroupModal = styled.div`
+  ${tw`bg-white h-[65%] w-[320px] sm:w-[60%] border-4 border-bud-green `}
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  border-radius: 10px;
+
+  p {
+    ${tw`font-berry my-3`}
+    text-align: center;
+  }
+
+  div {
+    ${tw`px-2 my-1`}
+  }
 `;

@@ -139,7 +139,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                 </div>
               </div>
 
-              <div style={{ width: "145%" }}>
+              <div>
                 <p>{comment.text}</p>
               </div>
               <Replies
@@ -170,9 +170,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
           onBlur={(e) => handleCommentBlur(e, setCommentText)}
           style={{ height }}
         />
-        <BasicButton onClick={handleCommentSubmit} style={{ fontSize: "12px" }}>
-          댓글달기
-        </BasicButton>
+        <BasicButton onClick={handleCommentSubmit}>댓글달기</BasicButton>
       </InputSet>
       {error && <CommentError>{error}</CommentError>}
     </CommentWrapper>

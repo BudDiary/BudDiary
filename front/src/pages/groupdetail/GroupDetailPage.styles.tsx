@@ -3,6 +3,10 @@ import tw from "twin.macro";
 
 export const DetailPageContainer = styled.div`
   ${tw`grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10`}
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const DiariesContainer = styled.div`
@@ -19,4 +23,9 @@ export const GroupInfoContainer = styled.div`
   ${tw`flex justify-center pt-20`}
   position: sticky;
   top: 10;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
