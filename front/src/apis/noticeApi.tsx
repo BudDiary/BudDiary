@@ -5,7 +5,7 @@ const getSSEAlarmsApi = () => {
   return api
     .get(`/api/notices`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
+      console.log(res, "알람오냐");
       // return res.data
     })
     .catch((err) => {

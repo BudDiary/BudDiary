@@ -20,6 +20,10 @@ export const IntroContainer = styled.div`
   ${tw`col-span-3`}
 `;
 
+export const IntroTitle = styled.div`
+  ${tw`font-bold`}
+`;
+
 export const PointsButton = styled.div`
   ${tw`bg-bud-blue text-white w-[100px] h-[30px] rounded-md flex justify-center my-6`}
 `;

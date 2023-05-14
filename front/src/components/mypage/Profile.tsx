@@ -13,6 +13,7 @@ import {
   PointsButton,
   ChangeProfileSection,
   LogoutButtonContainer,
+  IntroTitle,
 } from "./Profile.styles";
 import useMember from "../../hooks/memberHook";
 import ModalWindow from "../common/ModalWindow";
@@ -52,7 +53,7 @@ export default function Profile() {
         </FullRoundedButton>
       </ChangeProfileSection>
       <IntroContainer>
-        <div>소개글</div>
+        <IntroTitle>소개글</IntroTitle>
         {intro}
       </IntroContainer>
       <LogoutButtonContainer>

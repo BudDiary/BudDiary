@@ -25,7 +25,7 @@ export default function Recommended() {
     const fetchData = async () => {
       try {
         const data = await getRecommendBySurveyApi(memberData.id);
-        console.log(data.data);
+        console.log(data.data, "recommend");
         setRecommendList(data.data);
       } catch (error) {
         console.error(error);
