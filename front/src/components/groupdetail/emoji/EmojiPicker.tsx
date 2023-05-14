@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PickerContainer, EmojiButton } from "./Emoji.style";
 import { postReactionApi, deleteReactionApi } from "../../../apis/reactionApi";
-import { userdummy } from "../../mypage/userdummy";
-import { Reaction } from "../../../types/group";
-
+import { Reaction, ActionType } from "../../../types/group";
+import useMember from "../../../hooks/memberHook";
 type Props = {
   onSelect: (emoji: string) => void;
   selectedEmojis: string[];
@@ -17,26 +16,28 @@ const EmojiPicker = ({
   diaryId,
   reactionList,
 }: Props) => {
-  const emojiActionTypes: { [key: string]: string } = {
+  const { memberData } = useMember();
+  const emojiActionTypes: { [key: string]: ActionType } = {
     "😀": "LIKED",
     "👍": "BEST",
     "😡": "ANGRY",
     "😢": "SAD",
     "😲": "SURPRISED",
   };
+
   const emojis = ["😀", "👍", "😡", "😢", "😲"];
 
   const handleSelectEmoji = (emoji: string) => {
-    const actionType = emojiActionTypes[emoji];
+    const actionType: ActionType = emojiActionTypes[emoji];
     const emojiReaction = reactionList.find(
       (reaction) =>
-        userdummy.username === reaction.username &&
+        memberData.username === reaction.username &&
         actionType === reaction.actionType
     );
     if (emojiReaction) {
       handleCancelEmoji(emoji);
     } else {
-      postReactionApi(diaryId, userdummy.username, actionType);
+      postReactionApi(diaryId, actionType);
       onSelect(emoji);
     }
   };
@@ -45,12 +46,12 @@ const EmojiPicker = ({
     const actionType = emojiActionTypes[emoji];
     const emojiReaction = reactionList.find(
       (reaction) =>
-        userdummy.username === reaction.username &&
+        memberData.username === reaction.username &&
         actionType === reaction.actionType
     );
     if (emojiReaction) {
       const actionId = emojiReaction.id;
-      deleteReactionApi(diaryId, actionId, userdummy.username);
+      deleteReactionApi(diaryId, actionId);
     }
     onSelect("");
   };
@@ -60,12 +61,16 @@ const EmojiPicker = ({
       const actionType = emojiActionTypes[emoji];
       const emojiReaction = reactionList.find(
         (reaction) =>
-          userdummy.username === reaction.username &&
+          memberData.username === reaction.username &&
           actionType === reaction.actionType
       );
       return { emoji, selected: Boolean(emojiReaction) };
     });
   };
+
+  useEffect(() => {
+    console.log(reactionList);
+  }, []);
 
   return (
     <PickerContainer style={{ display: "flex", flexWrap: "wrap" }}>

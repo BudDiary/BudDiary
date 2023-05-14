@@ -18,3 +18,7 @@ export const DeleteButton = styled.button`
 export const ResetButton = styled.button`
   ${tw`bg-bud-pink text-white h-10 rounded-sm px-4`}
 `;
+
+export const EditSubmitButton = styled.button`
+  ${tw`bg-bud-blue text-white h-10 rounded-sm px-4 w-[200px] ml-3`}
+`;

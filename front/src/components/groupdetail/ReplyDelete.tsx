@@ -13,7 +13,7 @@ import {
 import { deleteReplyApi } from "../../apis/replyAPI";
 import { Divider } from "@mui/material";
 import { Reply } from "../../types/group";
-import { userdummy } from "../mypage/userdummy";
+import useMember from "../../hooks/memberHook";
 import close from "../../assets/modal/close.png";
 interface RepliesProps {
   isOpen: boolean;
@@ -30,10 +30,11 @@ export default function DeleteReply({
   const closeCommentModal = () => {
     onClose();
   };
-  const username = userdummy.username;
+  const { memberData } = useMember();
+  const username = memberData.username;
 
   const handleDeleteReply = () => {
-    deleteReplyApi(reply.id, commentId, username);
+    deleteReplyApi(commentId, reply.id);
     onClose();
   };
 

@@ -36,7 +36,6 @@ export default function BSection() {
   useEffect(() => {
     if (inView) {
       setRun("running");
-      console.log(inView);
     } else {
     }
   }, [inView]);

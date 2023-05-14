@@ -17,25 +17,32 @@ import { DeleteButton } from "../common/Button.styles";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.css";
-import { userdummy } from "../mypage/userdummy";
+import useMember from "../../hooks/memberHook";
 import EmojiCount from "./emoji/EmojiCount";
 import EmojiPicker from "./emoji/EmojiPicker";
 import { Diary, Image } from "../../types/group";
 import DiaryDelete from "./DiaryDelete";
-import { deleteDiaryApi } from "../../apis/diaryApi";
+
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 interface DiaryBoxProps {
   diaryList?: Diary[];
   imgList?: Image[];
 }
+
+interface SelectedEmojis {
+  [diaryId: number]: string[] | undefined;
+}
+
 export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
 
+  const { memberData } = useMember();
   // 일기 삭제 모달
   const [diaryDelete, setDiaryDelete] = useState(false);
   const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
-  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
+  const [selectedDiaryEmojis, setSelectedDiaryEmojis] =
+    useState<SelectedEmojis>({});
 
   const showDeleteModal = (diaryId: number) => {
     setSelectedDiaryId(diaryId);
@@ -46,18 +53,24 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   };
 
   useEffect(() => {
-    // 다이어리 데이터 로드
     setDiaryData(diaryList ?? []);
-  }, []);
+  }, [diaryList]);
 
   const handleSelectEmoji = (emoji: string, diaryId: number) => {
-    if (selectedEmojis.includes(emoji)) {
-      setSelectedEmojis(selectedEmojis.filter((e) => e !== emoji));
-    } else {
-      setSelectedEmojis([...selectedEmojis, emoji]);
-    }
+    setSelectedDiaryEmojis((prevState) => {
+      const newSelectedEmojis = { ...prevState };
+      if (newSelectedEmojis[diaryId]?.includes(emoji)) {
+        newSelectedEmojis[diaryId] =
+          newSelectedEmojis[diaryId]?.filter((e) => e !== emoji) || [];
+      } else {
+        newSelectedEmojis[diaryId] = [
+          ...(newSelectedEmojis[diaryId] || []),
+          emoji,
+        ];
+      }
+      return newSelectedEmojis;
+    });
   };
-
   return (
     <>
       {diaryData.length === 0 ? (
@@ -94,7 +107,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                           onClose={handleCloseModal}
                         />
                       )}
-                      {userdummy.nickname === diary.writer.nickname && (
+                      {memberData.username === diary.writer.username && (
                         <DeleteButton
                           style={{ fontSize: "12px" }}
                           onClick={() => showDeleteModal(diary.diaryId)}
@@ -125,7 +138,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     </DiaryImageSlider>
                   )}
                   <DiaryText>
-                    <p style={{ marginTop: 0 }}>{diary.text}</p>
+                    <p>{diary.text}</p>
                   </DiaryText>
                 </DiaryContent>
 
@@ -148,7 +161,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                       onSelect={(emoji) =>
                         handleSelectEmoji(emoji, diary.diaryId)
                       }
-                      selectedEmojis={selectedEmojis}
+                      selectedEmojis={selectedDiaryEmojis[diary.diaryId] || []}
                       diaryId={diary.diaryId}
                     />
                   )}
