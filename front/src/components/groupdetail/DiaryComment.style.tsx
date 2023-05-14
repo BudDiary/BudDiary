@@ -2,7 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const InputBox = styled.textarea`
-  ${tw`bg-blue-200 text-gray-700 border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal`}
+  ${tw`bg-blue-200 text-gray-700 border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal font-hassam`}
   width: 80%;
   height: 30px;
   resize: none;
@@ -10,42 +10,64 @@ export const InputBox = styled.textarea`
     display: none;
   }
   vertical-align: middle;
+  @media (max-width: 640px) {
+    ${tw`bg-blue-200 text-gray-700 border border-gray-300 rounded-lg py-2 px-3 mr-2 block appearance-none leading-normal font-hassam`}
+    width: 70%;
+  }
 `;
 
 export const UserInfo = styled.div`
-  ${tw`flex items-start font-hassam my-2 mt-1 p-2 pl-4`}
-  > div:first-child {
-    display: flex;
-    align-items: center;
-    margin-right: 0.8rem;
-  }
+  ${tw`flex items-start font-hassam my-1 p-2 pl-4`}
 
+  > div:first-child {
+    ${tw`flex items-center mr-2`}
+  }
+  > div:last-child {
+    ${tw` mr-1`}
+    width: 90%;
+  }
+  @media (max-width: 640px) {
+    ${tw`flex items-start font-hassam my-2 p-2 pl-2`}
+  }
   img {
     border-radius: 100%;
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 2px solid #abc4ff;
+
+    @media (max-width: 640px) {
+      width: 40px;
+      height: 40px;
+    }
   }
 
   h2 {
-    margin-bottom: 0;
-    font-weight: bold;
+    ${tw`mb-0 font-bold`}
+
+    @media (max-width: 640px) {
+      font-size: 1.2rem;
+    }
   }
 
   h3 {
-    margin-top: 0.25rem;
-    color: gray;
-    font-size: 0.75rem;
+    ${tw`mt-0.5 text-gray-500 text-xs`}
+
+    @media (max-width: 640px) {
+      font-size: 0.9rem;
+    }
   }
 `;
 
 export const InputSet = styled.div`
-  ${tw`flex justify-around w-full mt-4`}
+  ${tw`flex justify-between w-full mt-4`}
 `;
 
 export const CommentWrapper = styled.div`
   ${tw`mx-auto`}
-  width: 95%;
+  width: 100%;
+  @media (max-width: 640px) {
+    font-size: 0.9rem;
+  }
 `;
 export const EmojiPickerWrapper = styled.div`
   position: relative;
@@ -68,6 +90,19 @@ export const CommentBox = styled.div`
 
   h3 {
     ${tw`font-bold text-gray-500 text-sm`}
+  }
+`;
+export const ReplyBox = styled.div`
+  width: 40%;
+
+  h2 {
+    ${tw`font-bold`}
+    font-size: 14px;
+  }
+
+  h3 {
+    ${tw`font-bold text-gray-500`}
+    font-size: 12px;
   }
 `;
 

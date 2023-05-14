@@ -55,22 +55,28 @@ export default function DeleteComment({
               height: "25px",
               width: "25px",
               border: "none",
-              marginLeft: "10px",
             }}
           />
         </div>
-        <EditTitle>댓글 삭제하기</EditTitle>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <EditTitle>댓글 삭제하기</EditTitle>
+        </div>
         <div
           style={{
             height: "25px",
             width: "25px",
             border: "none",
-            marginRight: "15px",
           }}
         ></div>
       </ModalTopNavContainer>
 
-      <UserInfo>
+      <UserInfo style={{ padding: "10px" }}>
         <div>
           <img src={comment.writer.profilePath ?? ""} alt="프로필" />
         </div>
@@ -82,13 +88,13 @@ export default function DeleteComment({
             }}
           >
             <h2>{comment.writer.nickname}</h2>
-            <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
           </div>
+          <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
       <Divider style={{ border: "solid 2px #BFDBFE" }} />
       <EditContent>
-        <div style={{ textAlign: "center", marginTop: "5px" }}>
+        <div style={{ textAlign: "center", marginBlock: "3px" }}>
           <EditTitle>댓글 삭제하기</EditTitle>
         </div>
         <p>다음 댓글을 삭제하시겠습니까?</p>

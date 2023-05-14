@@ -81,7 +81,7 @@ export default function CommentEdit({
           }}
         ></div>
       </ModalTopNavContainer>
-      <UserInfo style={{ padding: "20px" }}>
+      <UserInfo style={{ padding: "10px" }}>
         <div>
           <img src={comment.writer.profilePath ?? ""} alt="프로필" />
         </div>
