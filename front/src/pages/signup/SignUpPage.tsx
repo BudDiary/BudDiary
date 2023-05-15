@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
 import { kakaoSignUpApi } from "../../apis/userApi";
+import { useDispatch } from "react-redux";
 // import { REDIRECT_URI } from '../../apis/axiosConfig';
 import { useNavigate } from "react-router-dom";
 import useMember from "../../hooks/memberHook";
 import Swal from "sweetalert2";
+import { getMyStickersApi } from "../../apis/stickerApi";
+import { getStickerList } from "../../store/modules/member";
+
 export default function SignUpPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { login, memberData } = useMember();
   useEffect(() => {
     async function fetchData() {
@@ -23,7 +28,9 @@ export default function SignUpPage() {
       } else if (response.newBe === false) {
         // 이미 가입된 사용자이면
         login(response);
-        // if (response.)
+        const sticker = await getMyStickersApi();
+        dispatch(getStickerList(sticker));
+        console.log("이미 가입한사람이예용", sticker);
         Swal.fire({
           icon: "success",
           text: "로그인 성공!",

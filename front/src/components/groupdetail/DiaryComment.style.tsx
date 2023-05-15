@@ -4,7 +4,7 @@ import tw from "twin.macro";
 export const InputBox = styled.textarea`
   ${tw`bg-blue-200 text-gray-700 border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal font-hassam`}
   width: 80%;
-  height: 30px;
+  height: 100%;
   resize: none;
   ::-webkit-scrollbar {
     display: none;
@@ -76,9 +76,18 @@ export const EmojiPickerWrapper = styled.div`
 `;
 
 export const DeleteContent = styled.div`
-  ${tw`bg-blue-200 text-gray-700 mx-6 p-4`}
+  ${tw`bg-blue-200 text-gray-700 mx-3 p-5`}
   height: 150px;
   border-radius: 15px;
+  overflow-y: auto; /* 수직 스크롤 적용 */
+`;
+export const EditContentBox = styled.textarea`
+  ${tw`bg-blue-200 text-gray-700 mx-3 p-5`}
+  height: 180px;
+  width: 90%;
+  border-radius: 15px;
+  overflow-y: auto;
+  resize: none;
 `;
 
 export const CommentBox = styled.div`

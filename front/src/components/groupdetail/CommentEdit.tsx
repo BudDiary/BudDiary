@@ -7,7 +7,7 @@ import {
 import { UserInfo } from "./DiaryComment.style";
 import { timeAgo } from "./GroupDetailFunction";
 import {
-  InputBox,
+  EditContentBox,
   InputSet,
   CommentBox,
   CommentError,
@@ -34,7 +34,7 @@ export default function CommentEdit({
   diaryId,
 }: CommentEditProps) {
   const [commentState, setCommentState] = useState(comment.text);
-  const [height, setHeight] = useState("33px");
+
   const [checkComment, setCheckComment] = useState("");
   const [error, setError] = useState<string | null>(null);
   const closeCommentModal = () => {
@@ -101,15 +101,13 @@ export default function CommentEdit({
       <EditContent>
         <EditTitle>댓글 수정하기</EditTitle>
         <InputSet>
-          <InputBox
+          <EditContentBox
             key={commentState}
             defaultValue={commentState}
             onChange={(e) => {
-              handleCommentChange(e, setHeight);
               handleCheckComment(e, setCheckComment, setError);
             }}
             onBlur={(e) => handleCommentBlur(e, setCommentState)}
-            style={{ height }}
           />
           <BasicButton style={{ fontSize: "12px" }}>댓글달기</BasicButton>
         </InputSet>
