@@ -88,10 +88,26 @@ const getClubDetailApi = (clubId: string, username: string) => {
     });
 };
 
+const PostRecommendBykeyWordApi = (payload: any) => {
+  return fastApi
+    .post(`/fastapi/recommend/keyword`, { withCredentials: true })
+    .then((res) => {
+      console.log(res);
+      return res;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "error",
+        text: "PostRecommendBykeyWordApi 오류가 발생했어요.",
+      });
+      return err;
+    });
+};
 export {
   postPluralClubApi,
   postDoubleClubApi,
   getMyClubListApi,
   getClubDetailApi,
   getRecommendBySurveyApi,
+  PostRecommendBykeyWordApi,
 };

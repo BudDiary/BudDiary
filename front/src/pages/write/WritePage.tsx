@@ -10,7 +10,7 @@ import {
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import { SurveyAgainButton } from "../../components/common/Button.styles";
-import { postSentimentApi, postTodayDiaryApi } from "../../apis/diaryApi";
+import { postKeywordApi, postSentimentApi, postTodayDiaryApi } from "../../apis/diaryApi";
 import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
@@ -64,7 +64,10 @@ export default function WritePage() {
   };
 
   const sendData = async () => {
-    postSentimentApi({content : content}).then((result) => {
+    Promise.all([
+      postSentimentApi({content : content}),
+      postKeywordApi({userId : username, content: content})
+    ]).then(([result, kewordSend]) => {
       setSentiment(result)
       const data = {
         text: content,

@@ -103,11 +103,28 @@ const postSentimentApi = (payload: any) => {
   });
 }
 
+const postKeywordApi = (payload: any) => {
+  return fastApi
+  .post(`/fastapi/keyword`, payload)
+  .then((res) => {
+    console.log(res)
+    return res.data
+  })
+  .catch((err) => {
+    console.log(err, "postKeywordApi 오류");
+    Swal.fire({
+      icon: "error",
+      text: "postKeywordApi 오류",
+    });
+  });
+}
+
 export {
   postTodayDiaryApi,
   getDateDiaryListApi,
   getDiaryDetailApi,
   deleteDiaryApi,
   patchDiaryStickerApi,
-  postSentimentApi
+  postSentimentApi,
+  postKeywordApi,
 };
