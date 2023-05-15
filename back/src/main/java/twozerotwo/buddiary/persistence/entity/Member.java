@@ -135,6 +135,7 @@ public class Member {
 	public MemberDto toDto() {
 		return MemberDto.builder()
 			.username(this.username)
+			.nickname(this.nickname)
 			.profilePath(this.profilePath)
 			.intro(this.intro)
 			.point(this.point)
