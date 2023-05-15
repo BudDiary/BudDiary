@@ -137,8 +137,10 @@ public class Member {
 			.profilePath(this.profilePath)
 			.intro(this.intro)
 			.point(this.point)
-			.sociaId(this.socialId)
+			.socialId(this.socialId)
 			.socialType(this.socialType)
+			.gender(this.gender)
+			.ageRange(this.ageRange)
 			.build();
 	}
 
