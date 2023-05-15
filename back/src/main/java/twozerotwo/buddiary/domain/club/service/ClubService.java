@@ -144,6 +144,7 @@ public class ClubService {
 		return MyClubDto.builder().doubleList(doubleList).pluralList(pluralList).build();
 	}
 
+	@Transactional
 	public ClubDetail getClubDetail(String clubUuid, HttpServletRequest servlet) {
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 
