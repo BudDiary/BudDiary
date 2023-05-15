@@ -53,16 +53,16 @@ const getMyClubListApi = () => {
     });
 };
 
-const getRecommendBySurveyApi = (payload: number) => {
+const postRecommendBySurveyApi = (payload: any) => {
   return fastApi
-    .get(`/fastapi/recommend/survey/${payload}`, { withCredentials: true })
+    .post(`/fastapi/recommend/survey/`, payload, { withCredentials: true })
     .then((res) => {
       return res;
     })
     .catch((err) => {
       Swal.fire({
         icon: "error",
-        text: "getRecommendBySurveyApi 오류가 발생했어요.",
+        text: "postRecommendBySurveyApi 오류가 발생했어요.",
       });
       return err;
     });
@@ -87,7 +87,7 @@ const getClubDetailApi = (clubId: string) => {
 
 const PostRecommendBykeyWordApi = (payload: any) => {
   return fastApi
-    .post(`/fastapi/recommend/keyword`, { withCredentials: true })
+    .post(`/fastapi/recommend/keyword`, payload, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res;
@@ -105,6 +105,6 @@ export {
   postDoubleClubApi,
   getMyClubListApi,
   getClubDetailApi,
-  getRecommendBySurveyApi,
+  postRecommendBySurveyApi,
   PostRecommendBykeyWordApi,
 };
