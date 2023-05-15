@@ -68,5 +68,5 @@ export const AlarmListContainer = styled.div`
   top: 42px;
   right: 0%;
   z-index: 15;
-  ${tw`bg-white h-[75%] w-[320px] border-2 rounded-xl`}
+  ${tw`bg-white h-[75%] w-[320px] border-2 rounded-xl overflow-y-scroll`}
 `;

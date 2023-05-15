@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   OneAlarmContainer,
@@ -26,16 +26,18 @@ export default function AlarmSSE(props: Props) {
   const navigate = useNavigate();
   const { id, clubName, clubUuid, nickname, type, username } = props;
   const handleDeleteAlarm = async () => {
-    const response = await deleteSSEAlarmsApi(id);
-    console.log(response);
+    await deleteSSEAlarmsApi(id);
   };
   const handleAcceptAlarm = async () => {
     const response = await postDoubleClubApi(username);
-    console.log(response.uuid);
+    if (response) {
+      deleteSSEAlarmsApi(id);
+    }
     navigate(`/group/${response.uuid}`);
   };
+
   return (
-    <OneAlarmContainer>
+    <OneAlarmContainer id="my-component">
       <NickNameSection>
         {nickname}님의
         {type === "DOUBLE_INVITE" ? " 랜덤일기 " : ` ${clubName} 그룹일기 `}

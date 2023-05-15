@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { EditTitle } from "./DiaryComment.style";
 import { ModalTopNavContainer, GroupModal } from "../common/ModalWindow.styles";
 import { MemberList, ClubList } from "./GroupInfo.styles";
@@ -28,7 +28,6 @@ export default function GroupInfoModal({
 
   const diaryType = "DOUBLE";
 
-  useEffect(() => {});
   return (
     <GroupModal style={{ padding: "10px" }}>
       <ModalTopNavContainer

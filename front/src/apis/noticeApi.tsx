@@ -15,10 +15,9 @@ const getSSEAlarmsApi = () => {
 
 const deleteSSEAlarmsApi = (payload: number) => {
   return api
-    .delete(`/api/notices/${payload}`)
+    .delete(`/api/notices/${payload}`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
-      // return res.data
+      return res.data;
     })
     .catch((err) => {
       console.log(err, "deleteSSEAlarmsAPI 오류");

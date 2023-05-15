@@ -6,7 +6,6 @@ const getAllStickersApi = () => {
   return api
     .get(`api/stickers`, { withCredentials: true })
     .then((res) => {
-      console.log(res.data);
       return res.data;
     })
     .catch((err) => {
@@ -19,13 +18,13 @@ const getAllStickersApi = () => {
 };
 
 // 스티커 구매
-const postBuyDiaryStickerApi = (id: number, price: number) => {
-  return formApi
+const postBuyDiaryStickerApi = (id: number, count: number) => {
+  return api
     .post(
       `api/stickers/${id}`,
       {
         stickerId: id,
-        count: price,
+        count: count,
       },
       { withCredentials: true }
     )
