@@ -16,6 +16,7 @@ import {
   ProfileSection,
   ApplyButton,
 } from "./Recommended.styles";
+import { postUserInfoApi } from "../../apis/userApi";
 
 interface Recommendation {
   userId: string;
@@ -29,6 +30,7 @@ export default function Recommended() {
     const fetchData = async () => {
       try {
         const data = await postRecommendBySurveyApi({userId : memberData.username});
+        // const userdata = await postUserInfoApi({userId : memberData.username})
         setRecommendList(data.data);
       } catch (error) {
         console.error(error);
