@@ -163,9 +163,6 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                         onSelect={(emoji) =>
                           handleSelectEmoji(emoji, diary.diaryId)
                         }
-                        selectedEmojis={
-                          selectedDiaryEmojis[diary.diaryId] || []
-                        }
                         diaryId={diary.diaryId}
                       />
                     </div>

@@ -62,7 +62,6 @@ export const GroupModal = styled.div`
   transform: translate(-50%, -50%);
   z-index: 15;
   border-radius: 10px;
-
   p {
     ${tw`font-berry my-3`}
     text-align: center;
