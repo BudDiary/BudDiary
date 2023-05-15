@@ -82,6 +82,8 @@ public class OAuthAttributes {
 		log.info("member 로 변환 중  image 정보를 출력합니다." + oauth2UserInfo.getImageUrl());
 		return Member.builder()
 			.username(oauth2UserInfo.getEmail()) //userName JWT 토큰 발급 위한 용도뿐
+			.gender(oauth2UserInfo.getGender())
+			.ageRange(oauth2UserInfo.getAgeRange())
 			.socialType(socialType).socialId(oauth2UserInfo.getId()).role(Role.GUEST).build();
 	}
 }

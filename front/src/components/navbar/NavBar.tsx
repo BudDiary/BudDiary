@@ -20,6 +20,7 @@ import useMember from "../../hooks/memberHook";
 import { useNavigate } from "react-router-dom";
 import { AiFillBell } from "react-icons/ai";
 import AlarmSSE from "./AlarmSSE";
+import { getSSEAlarmsApi } from "../../apis/noticeApi";
 
 export default function NavBar() {
   const [sideBarState, setSidebarState] = useState(false);
@@ -47,6 +48,17 @@ export default function NavBar() {
       console.log(message);
       // eventSource.close()
     });
+
+    const fetchData = async () => {
+      try {
+        const data = await getSSEAlarmsApi();
+        console.log(data, "알람");
+        // setRecommendList(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
   }, []);
 
   const showSidebar = () => {

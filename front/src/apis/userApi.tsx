@@ -42,6 +42,10 @@ const patchNicknameApi = (payload: any) => {
       { withCredentials: true }
     )
     .then((res) => {
+      Swal.fire({
+        icon: "success",
+        text: "닉네임 변경 완료!",
+      });
       return res.data;
     })
     .catch((err) => {
@@ -58,6 +62,10 @@ const patchIntroApi = (payload: any) => {
   return api
     .patch(`api/members/intro`, { intro: payload }, { withCredentials: true })
     .then((res) => {
+      Swal.fire({
+        icon: "success",
+        text: "소개글 업데이트 완료!",
+      });
       return res.data;
     })
     .catch((err) => {
@@ -74,6 +82,10 @@ const patchProfileApi = (payload: any) => {
   return formApi
     .patch(`api/members/profile`, payload, { withCredentials: true })
     .then((res) => {
+      Swal.fire({
+        icon: "success",
+        text: "프로필 사진 변경 완료!",
+      });
       return res.data;
     })
     .catch((err) => {

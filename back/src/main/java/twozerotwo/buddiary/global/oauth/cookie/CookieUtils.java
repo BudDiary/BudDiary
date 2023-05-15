@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CookieUtils {
 	@Value("${server.name}")
 	private static String envName;
+
 	public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 		Cookie[] cookies = request.getCookies();
 
@@ -36,7 +37,7 @@ public class CookieUtils {
 		cookie.setPath("/");
 		if (envName.equals("local")) {
 			cookie.setDomain("localhost");
-		}else {
+		} else {
 			cookie.setDomain("buddiary.site");
 		}
 		cookie.setHttpOnly(true);

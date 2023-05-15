@@ -31,14 +31,14 @@ public class NotificationController {
 
 	//----------------------------------------------나의 알림 조회-----------------------------------------------
 	@GetMapping("/api/notices")
-	public ResponseEntity getAllNotification(@PathVariable String username, HttpServletRequest servlet) {
+	public ResponseEntity getAllNotification(HttpServletRequest servlet) {
 
 		List<Notification> noticeList = notificationService.getAllNotification(servlet);
 		return new ResponseEntity<>(Map.of("noticeList", noticeList), HttpStatus.OK);
 	}
 
 	//-------------------------------------------나의 알림 삭제-----------------------------------------------
-	@DeleteMapping("/api/notices")
+	@DeleteMapping("/api/notices/{noticeId}")
 	public ResponseEntity deleteNotification(@PathVariable Long noticeId, HttpServletRequest servlet) {
 		notificationService.deleteNotification(noticeId, servlet);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

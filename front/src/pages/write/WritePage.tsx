@@ -45,7 +45,7 @@ export default function WritePage() {
 
   useEffect(() => {
     async function fetchMyGroup() {
-      const myGroupObject = await getMyClubListApi(username);
+      const myGroupObject = await getMyClubListApi();
       const pluralList = myGroupObject.pluralList;
       const doubleList = myGroupObject.doubleList;
       const combinedList = [...pluralList, ...doubleList];

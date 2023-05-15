@@ -66,6 +66,16 @@ public class Member {
 	private Role role;
 	//민우 요청사항 추가 설문조사
 	// @JsonProperty("checkPreference")
+
+	@Builder.Default
+	@Column(length = 2000)
+	private String phoneNumber = null;
+
+	@Builder.Default
+	private String gender = null;
+
+	@Builder.Default
+	private String ageRange = null;
 	@JsonIgnore
 	@Builder.Default
 	private boolean checkPreference = false;
@@ -111,16 +121,10 @@ public class Member {
 	@Column(unique = true)
 	private String socialId = null; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 	// @JsonProperty("refreshToken")
-	@JsonIgnore
-	private String refreshToken;
 
 	// 비밀번호 암호화 메소드
 	public void passwordEncode(PasswordEncoder passwordEncoder) {
 		this.password = passwordEncoder.encode(this.password);
-	}
-
-	public void updateRefreshToken(String updateRefreshToken) {
-		this.refreshToken = updateRefreshToken;
 	}
 
 	public void addPoint(Long point) {
@@ -133,8 +137,10 @@ public class Member {
 			.profilePath(this.profilePath)
 			.intro(this.intro)
 			.point(this.point)
-			.sociaId(this.socialId)
+			.socialId(this.socialId)
 			.socialType(this.socialType)
+			.gender(this.gender)
+			.ageRange(this.ageRange)
 			.build();
 	}
 

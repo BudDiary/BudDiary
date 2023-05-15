@@ -29,3 +29,7 @@ export const ProfileSection = styled.div`
   animation-duration: 1.5s;
   animation-fill-mode: both;
 `;
+
+export const ApplyButton = styled.button`
+  ${tw`bg-bud-blue text-white w-[100%] py-2 rounded-md`}
+`;

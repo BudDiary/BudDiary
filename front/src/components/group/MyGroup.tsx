@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import Typography from "@mui/material/Typography";
@@ -6,39 +6,34 @@ import Paper from "@mui/material/Paper";
 import { MdLibraryAdd } from "react-icons/md";
 import NewGroupDiaryModal from "./NewGroupDiaryModal";
 import ModalWindow from "../common/ModalWindow";
-const data = [
-  {
-    title: "Paper 1",
-    description: "This is the description for Paper 1.",
-    image: "/path/to/image1.jpg",
-  },
-  {
-    title: "Paper 2",
-    description: "This is the description for Paper 2.",
-    image: "/path/to/image2.jpg",
-  },
-  {
-    title: "Paper 3",
-    description: "This is the description for Paper 3.",
-    image: "/path/to/image3.jpg",
-  },
-  {
-    title: "Paper 4",
-    description: "This is the description for Paper 3.",
-    image: "/path/to/image3.jpg",
-  },
-  {
-    title: "Paper 5",
-    description: "This is the description for Paper 3.",
-    image: "/path/to/image3.jpg",
-  },
-];
+import { getMyClubListApi } from "../../apis/clubApi";
+
+interface PluralList {
+  captainUsername: string | null;
+  clubName: string;
+  clubUuid: string;
+  thumbnailUrl: string | undefined;
+}
 
 export default function MyGroup() {
   const [modalOpen, setModalOpen] = useState(false);
   const createNewDiary = () => {
     setModalOpen(true);
   };
+
+  const [pluralList, setPluralList] = useState<PluralList[]>([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getMyClubListApi();
+        setPluralList(data.pluralList);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
   return (
     <>
       {modalOpen && <ModalWindow page={1} setModalOpen={setModalOpen} />}
@@ -85,18 +80,17 @@ export default function MyGroup() {
             },
           }}
         >
-          {data.map((item, index) => (
-            <SwiperSlide key={index} className="py-4 px-1">
+          {pluralList?.map((group) => (
+            <SwiperSlide key={group.clubUuid} className="py-4 px-1">
               <Paper elevation={3} sx={{ p: 2 }}>
                 <Typography variant="h5" component="div" sx={{ mb: 1 }}>
-                  {item.title}
+                  {group.clubName}
                 </Typography>
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={group.thumbnailUrl}
+                  alt={group.clubName}
                   style={{ width: "100%", height: "100px" }}
                 />
-                <Typography component="div">{item.description}</Typography>
               </Paper>
             </SwiperSlide>
           ))}

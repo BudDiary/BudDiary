@@ -19,9 +19,9 @@ const postTodayDiaryApi = (payload: any) => {
 };
 
 // 특정 날짜 다이어리 리스트 조회
-const getDateDiaryListApi = (date: string, email: string) => {
+const getDateDiaryListApi = (date: string) => {
   return api
-    .get(`/api/diaries?date=${date}&username=${email}`)
+    .get(`/api/diaries?date=${date}`, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res.data;
