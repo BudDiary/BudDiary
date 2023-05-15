@@ -58,7 +58,6 @@ export default function DeleteReply({
               height: "25px",
               width: "25px",
               border: "none",
-              marginLeft: "10px",
             }}
           />
         </div>
@@ -76,7 +75,6 @@ export default function DeleteReply({
             height: "25px",
             width: "25px",
             border: "none",
-            marginLeft: "10px",
           }}
         ></div>
       </ModalTopNavContainer>
