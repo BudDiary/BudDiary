@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetMemberDetailResponse {
 
-	private String username;
+	private String nickname;
 	private String imgUrl;
 	private String gender;
 	private String ageRange;
