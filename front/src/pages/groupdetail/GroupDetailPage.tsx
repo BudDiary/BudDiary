@@ -22,7 +22,7 @@ interface GroupDetailProps {
 const GroupDetailPage = ({ clubUuid }: GroupDetailProps) => {
   const [scrollY, setScrollY] = useState(100);
   const [clubData, setClubData] = useState<Club | null>(null);
-
+  // console.log(clubData);
   // 그룹정보 모달
   const [showModal, setShowModal] = useState(false);
 
@@ -36,9 +36,9 @@ const GroupDetailPage = ({ clubUuid }: GroupDetailProps) => {
 
   // clubUuid를 받으면 clubUuid으로 변경한다.
   // 데이터가 있는 예시
-  // const clubId = "5db3c604-0c38-41e7-aa57-8174085f9b95";
+  const clubId = "5db3c604-0c38-41e7-aa57-8174085f9b95";
   // 데이터가 없는 예시
-  const clubId = "a4bdd372-5ac9-4419-834b-b24479f7ff8b";
+  // const clubId = "a4bdd372-5ac9-4419-834b-b24479f7ff8b";
 
   useEffect(() => {
     async function fetchData() {
