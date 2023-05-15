@@ -76,6 +76,10 @@ export default function NavBar() {
   const showSidebar = () => {
     setSidebarState(true);
   };
+
+  const handleCloseSidebar = () => {
+    setSidebarState(false);
+  };
   const handleUser = () => {
     if (isLoggedIn === true) {
       navigate("/mypage");
@@ -88,7 +92,9 @@ export default function NavBar() {
   };
   return (
     <div>
-      {sideBarState === true ? <MobileSidebar /> : null}
+      {sideBarState === true ? (
+        <MobileSidebar onClose={handleCloseSidebar} />
+      ) : null}
       <NavbarContainer>
         <NavbarBox>
           <LogoContainer to="/">
