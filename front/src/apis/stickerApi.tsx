@@ -1,34 +1,42 @@
 import { api, formApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
-// 스티커 등록
-const postDiaryStickerApi = (payload: any) => {
-  return formApi
-    .post(`api/stickers`, payload, { withCredentials: true })
-    .then((res) => {
-      console.log(res);
-      return res.data;
-    })
-    .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        text: "postDiarySticker 오류가 발생했어요.",
-      });
-      return err;
-    });
-};
-
 // 모든 스티커 조회
 const getAllStickersApi = () => {
   return api
     .get(`api/stickers`, { withCredentials: true })
     .then((res) => {
+      console.log(res.data);
       return res.data;
     })
     .catch((err) => {
       Swal.fire({
         icon: "error",
         text: "getAllStickers 오류가 발생했어요.",
+      });
+      return err;
+    });
+};
+
+// 스티커 구매
+const postBuyDiaryStickerApi = (id: number, price: number) => {
+  return formApi
+    .post(
+      `api/stickers/${id}`,
+      {
+        stickerId: id,
+        count: price,
+      },
+      { withCredentials: true }
+    )
+    .then((res) => {
+      console.log(res.data, "잘삼?");
+      return res.data;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "error",
+        text: "postDiarySticker 오류가 발생했어요.",
       });
       return err;
     });
@@ -51,4 +59,4 @@ const getMyStickersApi = () => {
     });
 };
 
-export { postDiaryStickerApi, getAllStickersApi, getMyStickersApi };
+export { postBuyDiaryStickerApi, getAllStickersApi, getMyStickersApi };
