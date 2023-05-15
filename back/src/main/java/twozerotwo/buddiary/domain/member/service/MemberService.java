@@ -95,7 +95,7 @@ public class MemberService {
 
 	public MemberDto findMemberUsername(String username) {
 		Member member = memberRepository.findByUsername(username)
-			.orElseThrow(() -> new NotFoundException("유저가 존제하지 않습니다."));
+			.orElseThrow(() -> new NotFoundException("유저가 존재하지 않습니다."));
 		return member.toDto();
 	}
 }
