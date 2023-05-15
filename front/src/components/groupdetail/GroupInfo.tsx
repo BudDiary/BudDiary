@@ -19,14 +19,13 @@ export default function GroupInfo({
 }: GroupInfoProps) {
   const { memberData } = useMember();
   const username = memberData.username;
-
-  const diaryType = "DOUBLE";
+  const clubType = clubInfo?.clubType;
 
   return (
     <GroupList style={style}>
-      <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
       <p>{clubInfo?.clubName}</p>
-      {diaryType !== "DOUBLE" && diaryType === "PLURAL" ? (
+      <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
+      {clubType !== "DOUBLE" && clubType === "PLURAL" ? (
         <div
           style={{
             display: "flex",

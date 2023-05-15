@@ -92,9 +92,9 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
                 <div style={{ display: "flex", justifyContent: "start" }}>
                   <LogoBlue>Bud</LogoBlue>
                   <LogoGreen>:D</LogoGreen>
-                  <LogoBlue>iary</LogoBlue>
+                  <LogoBlue>iary</LogoBlue> 에서
                 </div>
-                에서 공유해보세요
+                공유해보세요
               </h3>
               <img src={kakaoLogin} alt="로그인" onClick={handleUser} />
             </SideNotice>
