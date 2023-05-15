@@ -1,4 +1,4 @@
-import { api, fastApi, formApi, authApi } from "./axiosConfig";
+import { api, fastApi, formApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 다수 클럽 생성
@@ -20,11 +20,14 @@ const postPluralClubApi = (payload: any) => {
 };
 
 // 1:1 클럽 생성
-const postDoubleClubApi = (payload: any) => {
+const postDoubleClubApi = (payload: string) => {
   return api
-    .post(`api/clubs/double`, payload, { withCredentials: true })
+    .post(
+      `api/clubs/double`,
+      { targetName: payload },
+      { withCredentials: true }
+    )
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
@@ -55,7 +58,8 @@ const getMyClubListApi = () => {
 
 const getRecommendBySurveyApi = (payload: number) => {
   return fastApi
-    .get(`/fastapi/recommend/survey/${payload}`, { withCredentials: true })
+    .get(`fastapi/recommend/survey/${payload}`, { withCredentials: true })
+
     .then((res) => {
       return res;
     })

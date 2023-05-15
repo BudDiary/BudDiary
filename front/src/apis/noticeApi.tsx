@@ -5,8 +5,7 @@ const getSSEAlarmsApi = () => {
   return api
     .get(`/api/notices`, { withCredentials: true })
     .then((res) => {
-      console.log(res, "알람오냐");
-      // return res.data
+      return res.data.noticeList;
     })
     .catch((err) => {
       console.log(err, "getSSEAlarmsAPI 오류");
@@ -14,9 +13,9 @@ const getSSEAlarmsApi = () => {
     });
 };
 
-const deleteSSEAlarmsApi = () => {
+const deleteSSEAlarmsApi = (payload: number) => {
   return api
-    .delete(``)
+    .delete(`/api/notices/${payload}`)
     .then((res) => {
       console.log(res);
       // return res.data

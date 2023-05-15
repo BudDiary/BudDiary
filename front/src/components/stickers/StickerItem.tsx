@@ -1,19 +1,25 @@
 import React from "react";
+import { StickerImageBox, StickerPriceBox } from "./StickerItem.styles";
+import { postBuyDiaryStickerApi } from "../../apis/stickerApi";
 
 interface Props {
-  id: number;
+  stickerId: number;
   imageUrl: string | undefined;
   name: string;
   price: number;
 }
 
 export default function StickerItem(props: Props) {
-  const { id, imageUrl, name, price } = props;
+  const { stickerId, imageUrl, name, price } = props;
+  const buySticker = async () => {
+    const response = await postBuyDiaryStickerApi(stickerId, price);
+    console.log(response);
+  };
+
   return (
-    <div>
-      <img src={imageUrl} alt={name} />
-      <div>{name}</div>
-      <div>{price}</div>
+    <div onClick={buySticker}>
+      <StickerImageBox src={imageUrl} alt={name} />
+      <StickerPriceBox>{price}포인트</StickerPriceBox>
     </div>
   );
 }
