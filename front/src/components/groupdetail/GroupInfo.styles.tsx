@@ -16,7 +16,7 @@ export const GroupList = styled.div`
   }
 
   p {
-    ${tw`font-berry`}
+    ${tw`font-berry mb-4`}
   }
 
   div {

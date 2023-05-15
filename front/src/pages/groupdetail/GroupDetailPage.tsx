@@ -18,7 +18,7 @@ import { GroupButton } from "../../components/groupdetail/Diaries.styles";
 const GroupDetailPage = () => {
   const [scrollY, setScrollY] = useState(100);
   const [clubData, setClubData] = useState<Club | null>(null);
-
+  // console.log(clubData);
   // 그룹정보 모달
   const [showModal, setShowModal] = useState(false);
 
