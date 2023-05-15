@@ -72,11 +72,9 @@ public class Member {
 	private String phoneNumber = null;
 
 	@Builder.Default
-	@Column(length = 10)
 	private String gender = null;
 
 	@Builder.Default
-	@Column(length = 10)
 	private String ageRange = null;
 	@JsonIgnore
 	@Builder.Default
