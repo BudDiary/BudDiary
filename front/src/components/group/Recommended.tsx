@@ -11,7 +11,11 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { getRecommendBySurveyApi } from "../../apis/clubApi";
 import useMember from "../../hooks/memberHook";
-import { TitleSection, ProfileSection } from "./Recommended.styles";
+import {
+  TitleSection,
+  ProfileSection,
+  ApplyButton,
+} from "./Recommended.styles";
 
 interface Recommendation {
   id: number;
@@ -25,7 +29,6 @@ export default function Recommended() {
     const fetchData = async () => {
       try {
         const data = await getRecommendBySurveyApi(memberData.id);
-        console.log(data.data);
         setRecommendList(data.data);
       } catch (error) {
         console.error(error);
@@ -71,13 +74,11 @@ export default function Recommended() {
                         {el.id}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {el.rate}
+                        나와 {el.rate * 100}% 유사한 사람이에요!
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button variant="contained" size="large">
-                        그룹일기 신청하기
-                      </Button>
+                      <ApplyButton>그룹일기 신청하기</ApplyButton>
                     </CardActions>
                   </Card>
                 </SwiperSlide>

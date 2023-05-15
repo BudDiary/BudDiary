@@ -24,4 +24,8 @@ public abstract class OAuth2UserInfo {
 
 	public abstract String getEmail();
 
+	public abstract String getGender();
+
+	public abstract String getAgeRange();
+
 }

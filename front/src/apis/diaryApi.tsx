@@ -19,9 +19,9 @@ const postTodayDiaryApi = (payload: any) => {
 };
 
 // 특정 날짜 다이어리 리스트 조회
-const getDateDiaryListApi = (date: string, email: string) => {
+const getDateDiaryListApi = (date: string) => {
   return api
-    .get(`/api/diaries?date=${date}&username=${email}`)
+    .get(`/api/diaries?date=${date}`, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res.data;
@@ -53,16 +53,13 @@ const getDiaryDetailApi = (payload: number) => {
 };
 
 // 다이어리 삭제
-const deleteDiaryApi = (diary_id: number, username: string) => {
+const deleteDiaryApi = (diary_id: number) => {
   return api
-    .get(`/api/diaries/{diary_id}/{username}`)
+    .delete(`/api/diaries/${diary_id}`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
-      console.log(err, "deleteDiaryApi 오류");
-      console.log(diary_id, username);
       Swal.fire({
         icon: "error",
         text: "deleteDiaryApi 오류",
@@ -100,7 +97,7 @@ const postSentimentApi = (payload: any) => {
       icon: "error",
       text: "postSentimentApi 오류",
     });
-  });
+})
 }
 
 const postKeywordApi = (payload: any) => {

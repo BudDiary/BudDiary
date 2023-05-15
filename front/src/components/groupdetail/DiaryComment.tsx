@@ -20,7 +20,7 @@ import {
   handleCheckComment,
 } from "./GroupDetailFunction";
 import { EditButton, DeleteButton } from "../common/Button.styles";
-import { userdummy } from "../mypage/userdummy";
+import useMember from "../../hooks/memberHook";
 import { timeAgo } from "./GroupDetailFunction";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
@@ -31,6 +31,7 @@ interface CommentProps {
 }
 
 export default function DiaryComment({ commentList, diaryId }: CommentProps) {
+  const { memberData } = useMember();
   const [commentText, setCommentText] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
   const [height, setHeight] = useState("35px");
@@ -62,18 +63,13 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
   // 댓글 작성
 
   const handleCommentSubmit = async () => {
-    // 에러가 나오면 버튼이 눌리지 않습니다.
-    if (error) {
+    if (error || commentText === "") {
       return;
     }
-    console.log("댓글 요청", commentText, diaryId, userdummy.username);
+    console.log("댓글 요청", commentText, diaryId);
     setHeight("35px");
     try {
-      const response = await postCommentApi(
-        diaryId,
-        commentText,
-        userdummy.username
-      );
+      const response = await postCommentApi(diaryId, commentText);
       setCommentText("");
       console.log(response);
     } catch (error) {
@@ -123,8 +119,8 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                       onClose={handleCloseModal}
                     />
                   )}
-                  {/* {userdummy.nickname}은 나중에 users.user_id 등으로 교체할 것 */}
-                  {userdummy.nickname === comment.writer.nickname && (
+
+                  {memberData.username === comment.writer.username && (
                     <EditButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showUpdateModal(comment.id)}
@@ -132,7 +128,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                       수정
                     </EditButton>
                   )}
-                  {userdummy.nickname === comment.writer.nickname && (
+                  {memberData.username === comment.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showDeleteModal(comment.id)}
@@ -143,7 +139,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                 </div>
               </div>
 
-              <div style={{ width: "145%" }}>
+              <div>
                 <p>{comment.text}</p>
               </div>
               <Replies
@@ -174,9 +170,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
           onBlur={(e) => handleCommentBlur(e, setCommentText)}
           style={{ height }}
         />
-        <BasicButton onClick={handleCommentSubmit} style={{ fontSize: "12px" }}>
-          댓글달기
-        </BasicButton>
+        <BasicButton onClick={handleCommentSubmit}>댓글달기</BasicButton>
       </InputSet>
       {error && <CommentError>{error}</CommentError>}
     </CommentWrapper>

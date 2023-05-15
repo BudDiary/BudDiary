@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GroupList, MemberList, ClubList } from "./GroupInfo.styles";
 import { BasicButton } from "./Diaries.styles";
-// import groupData from "./groupInfo.json";
+import useMember from "../../hooks/memberHook";
+import { Divider } from "@mui/material";
 import { Member, Info } from "../../types/group";
-import { MouseWheel } from "../home/ASection.styles";
+import crown from "../../assets/group/crown.png";
 interface GroupInfoProps {
   clubInfo?: Info;
   memberList?: Member[];
@@ -15,6 +16,10 @@ export default function GroupInfo({
   memberList,
   style,
 }: GroupInfoProps) {
+  const { memberData } = useMember();
+  const username = memberData.username;
+
+  useEffect(() => {});
   return (
     <GroupList style={style}>
       <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
@@ -29,12 +34,24 @@ export default function GroupInfo({
         <ClubList>멤버 {memberList?.length}</ClubList>
         <BasicButton>초대하기</BasicButton>
       </div>
-
+      <Divider style={{ border: "solid 2px #BFDBFE", width: "100%" }} />
       <MemberList>
         {memberList?.map((member) => (
           <div key={member.id}>
             <img src={member.profilePath ?? ""} alt="프로필" />
-            <p>{member.nickname}</p>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {member.nickname}
+              {member.username === clubInfo?.captainUsername ? (
+                <img
+                  src={crown}
+                  alt=""
+                  style={{ border: "none", height: "20px", width: "20px" }}
+                />
+              ) : (
+                ""
+              )}
+              <p>{member.username === username ? "  me" : ""}</p>
+            </div>
           </div>
         ))}
       </MemberList>

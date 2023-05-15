@@ -1,4 +1,4 @@
-import { api, fastApi, formApi } from "./axiosConfig";
+import { api, fastApi, formApi, authApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 다수 클럽 생성
@@ -38,11 +38,10 @@ const postDoubleClubApi = (payload: any) => {
 };
 
 // 내가 속한 클럽 조회
-const getMyClubListApi = (payload: string) => {
+const getMyClubListApi = () => {
   return api
-    .get(`api/clubs?username=${payload}`, { withCredentials: true })
+    .get(`api/clubs`, { withCredentials: true })
     .then((res) => {
-      console.log(res.data.myClubList);
       return res.data.myClubList;
     })
     .catch((err) => {
@@ -58,7 +57,6 @@ const getRecommendBySurveyApi = (payload: number) => {
   return fastApi
     .get(`/fastapi/recommend/survey/${payload}`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
@@ -72,18 +70,17 @@ const getRecommendBySurveyApi = (payload: number) => {
 
 // 클럽 디테일 조회
 
-const getClubDetailApi = (clubId: string, username: string) => {
+const getClubDetailApi = (clubId: string) => {
   return api
-    .get(`api/clubs/${clubId}/${username}`)
+    .get(`api/clubs/${clubId}`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
-      return res;
+      return res.data;
     })
     .catch((err) => {
-      // Swal.fire({
-      //   icon: "error",
-      //   text: "getClubDetailApi 오류가 발생했어요.",
-      // });
+      Swal.fire({
+        icon: "error",
+        text: "getClubDetailApi 오류가 발생했어요.",
+      });
       return err;
     });
 };

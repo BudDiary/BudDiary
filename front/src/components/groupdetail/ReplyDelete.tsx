@@ -13,7 +13,6 @@ import {
 import { deleteReplyApi } from "../../apis/replyAPI";
 import { Divider } from "@mui/material";
 import { Reply } from "../../types/group";
-import { userdummy } from "../mypage/userdummy";
 import close from "../../assets/modal/close.png";
 interface RepliesProps {
   isOpen: boolean;
@@ -30,10 +29,9 @@ export default function DeleteReply({
   const closeCommentModal = () => {
     onClose();
   };
-  const username = userdummy.username;
 
   const handleDeleteReply = () => {
-    deleteReplyApi(reply.id, commentId, username);
+    deleteReplyApi(commentId, reply.id);
     onClose();
   };
 
@@ -64,7 +62,15 @@ export default function DeleteReply({
             }}
           />
         </div>
-        <EditTitle>답글 삭제하기</EditTitle>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <EditTitle>답글 삭제하기</EditTitle>
+        </div>
         <div
           style={{
             height: "25px",
@@ -75,7 +81,7 @@ export default function DeleteReply({
         ></div>
       </ModalTopNavContainer>
 
-      <UserInfo>
+      <UserInfo style={{ padding: "10px" }}>
         <div>
           <img src={reply.writer.profilePath ?? ""} alt="프로필" />
         </div>
@@ -96,10 +102,10 @@ export default function DeleteReply({
         <div style={{ textAlign: "center", marginTop: "5px" }}>
           <EditTitle>답글 삭제하기</EditTitle>
         </div>
-        <p style={{ marginBottom: "10px" }}>다음 댓글을 삭제하시겠습니까?</p>
+        <p style={{ marginBottom: "10px" }}>다음 답글을 삭제하시겠습니까?</p>
         <DeleteContent>{commentState}</DeleteContent>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <DeleteButton onClick={handleDeleteReply}>댓글 삭제</DeleteButton>
+          <DeleteButton onClick={handleDeleteReply}>답글 삭제</DeleteButton>
         </div>
       </EditContent>
     </EditContainer>

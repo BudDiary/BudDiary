@@ -16,6 +16,16 @@ public class MemberDto {
 	private String intro;
 	private Long point;
 	private SocialType socialType;
-	private String sociaId;
+	private String socialId;
+	private String gender;
+	private String ageRange;
 
+	public GetMemberDetailResponse toGetMemberDetailResponse() {
+		return GetMemberDetailResponse.builder()
+			.username(this.username)
+			.imgUrl(this.profilePath)
+			.ageRange(this.ageRange)
+			.gender(this.gender)
+			.build();
+	}
 }

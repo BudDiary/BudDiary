@@ -1,5 +1,7 @@
 # pip install pymysql
 # uvicorn main:app --reload
+
+# source venv/Scripts/activate
 # uvicorn main:app --reload --port 9000
 
 import re

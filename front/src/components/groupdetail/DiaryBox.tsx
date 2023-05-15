@@ -7,7 +7,7 @@ import {
   DiaryText,
   BlankNotice,
   BlankDiary,
-  BasicButton,
+  EmojiButton,
   DiaryDetailBlank,
   ReactionSet,
 } from "./Diaries.styles";
@@ -17,25 +17,33 @@ import { DeleteButton } from "../common/Button.styles";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.css";
-import { userdummy } from "../mypage/userdummy";
+import { Divider } from "@mui/material";
+import useMember from "../../hooks/memberHook";
 import EmojiCount from "./emoji/EmojiCount";
 import EmojiPicker from "./emoji/EmojiPicker";
 import { Diary, Image } from "../../types/group";
 import DiaryDelete from "./DiaryDelete";
-import { deleteDiaryApi } from "../../apis/diaryApi";
+
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 interface DiaryBoxProps {
   diaryList?: Diary[];
   imgList?: Image[];
 }
+
+interface SelectedEmojis {
+  [diaryId: number]: string[] | undefined;
+}
+
 export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
 
+  const { memberData } = useMember();
   // 일기 삭제 모달
   const [diaryDelete, setDiaryDelete] = useState(false);
   const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
-  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
+  const [selectedDiaryEmojis, setSelectedDiaryEmojis] =
+    useState<SelectedEmojis>({});
 
   const showDeleteModal = (diaryId: number) => {
     setSelectedDiaryId(diaryId);
@@ -46,16 +54,19 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   };
 
   useEffect(() => {
-    // 다이어리 데이터 로드
     setDiaryData(diaryList ?? []);
-  }, []);
+  }, [diaryList]);
 
   const handleSelectEmoji = (emoji: string, diaryId: number) => {
-    if (selectedEmojis.includes(emoji)) {
-      setSelectedEmojis(selectedEmojis.filter((e) => e !== emoji));
-    } else {
-      setSelectedEmojis([...selectedEmojis, emoji]);
-    }
+    const selectedEmojis = selectedDiaryEmojis[diaryId] || [];
+    const updatedEmojis = selectedEmojis.includes(emoji)
+      ? selectedEmojis.filter((e) => e !== emoji)
+      : [...selectedEmojis, emoji];
+
+    setSelectedDiaryEmojis((prev) => ({
+      ...prev,
+      [diaryId]: updatedEmojis,
+    }));
   };
 
   return (
@@ -94,7 +105,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                           onClose={handleCloseModal}
                         />
                       )}
-                      {userdummy.nickname === diary.writer.nickname && (
+                      {memberData.username === diary.writer.username && (
                         <DeleteButton
                           style={{ fontSize: "12px" }}
                           onClick={() => showDeleteModal(diary.diaryId)}
@@ -106,6 +117,9 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
                   </div>
                 </DiaryHeader>
+                <Divider
+                  style={{ border: "solid 2px #BFDBFE", marginBlock: "10px" }}
+                />
                 <DiaryContent>
                   {diary.imgList?.length > 0 && (
                     <DiaryImageSlider>
@@ -125,14 +139,14 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     </DiaryImageSlider>
                   )}
                   <DiaryText>
-                    <p style={{ marginTop: 0 }}>{diary.text}</p>
+                    <p>{diary.text}</p>
                   </DiaryText>
                 </DiaryContent>
 
                 <ReactionSet>
                   <div>
                     <EmojiCount reactionList={diary.reactionList} />
-                    <BasicButton
+                    <EmojiButton
                       onClick={() =>
                         setSelectedDiaryId((prev) =>
                           prev === diary.diaryId ? null : diary.diaryId
@@ -140,17 +154,21 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                       }
                     >
                       +😀
-                    </BasicButton>
+                    </EmojiButton>
                   </div>
                   {selectedDiaryId === diary.diaryId && (
-                    <EmojiPicker
-                      reactionList={diary.reactionList}
-                      onSelect={(emoji) =>
-                        handleSelectEmoji(emoji, diary.diaryId)
-                      }
-                      selectedEmojis={selectedEmojis}
-                      diaryId={diary.diaryId}
-                    />
+                    <div>
+                      <EmojiPicker
+                        reactionList={diary.reactionList}
+                        onSelect={(emoji) =>
+                          handleSelectEmoji(emoji, diary.diaryId)
+                        }
+                        selectedEmojis={
+                          selectedDiaryEmojis[diary.diaryId] || []
+                        }
+                        diaryId={diary.diaryId}
+                      />
+                    </div>
                   )}
                 </ReactionSet>
                 <DiaryComment

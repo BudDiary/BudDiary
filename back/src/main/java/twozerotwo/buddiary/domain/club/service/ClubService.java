@@ -22,7 +22,6 @@ import twozerotwo.buddiary.domain.club.dto.PluralCreateRequest;
 import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.service.DiaryService;
 import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
-import twozerotwo.buddiary.domain.reaction.service.ReactionService;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;

@@ -23,7 +23,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
@@ -98,6 +97,9 @@ public class JwtService {
 		log.info("profile mode is : {}", envName);
 		if (envName.equals("local")) {
 			cookie.setDomain("localhost");
+		} else {
+			log.info(" 쿠키 배포 설정으로 던집니다.");
+			cookie.setDomain("buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
@@ -110,25 +112,17 @@ public class JwtService {
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
 		response.setStatus(HttpServletResponse.SC_OK);
 		Cookie cookie = new Cookie(REFRESH_TOKEN_SUBJECT, "" + refreshToken);
-		// if (envName == "local") {
-		// 	cookie.setDomain("localhost");
-		// } else if() {
-		// 	cookie.setDomain("ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com");
-		// }
+		if (envName.equals("local")) {
+			cookie.setDomain("localhost");
+		} else {
+			log.info(" 쿠키 배포 설정으로 던집니다.");
+			cookie.setDomain("buddiary.site");
+		}
 		cookie.setPath("/");
 		cookie.setMaxAge(1209600000);
 		cookie.setHttpOnly(true);
 		response.addCookie(cookie);
 
-	}
-
-	/**
-	 * RefreshToken DB 저장(업데이트)
-	 */
-	public void updateRefreshToken(String email, String refreshToken) {
-		memberRepository.findByUsername(email)
-			.ifPresentOrElse(member -> member.updateRefreshToken(refreshToken),
-				() -> new NotFoundException("일치하는 회원이 없습니다."));
 	}
 
 	public boolean isTokenValid(String token) {
@@ -248,7 +242,7 @@ public class JwtService {
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
-		log.info("socialType {}",  socialType);
+		log.info("socialType {}", socialType);
 		log.info("socialId {}", socialId);
 		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
 		if (member == null) {

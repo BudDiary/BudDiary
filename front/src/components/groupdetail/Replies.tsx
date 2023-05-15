@@ -9,12 +9,12 @@ import {
   CommentWrapper,
   ExpansionButton,
   CommentError,
-  CommentBox,
+  ReplyBox,
 } from "./DiaryComment.style";
 
 import { postReplyApi } from "../../apis/replyAPI";
 import { EditButton, DeleteButton } from "../common/Button.styles";
-import { userdummy } from "../mypage/userdummy";
+import useMember from "../../hooks/memberHook";
 import {
   handleReplyBlur,
   handleCheckReply,
@@ -28,6 +28,7 @@ interface RepliesProps {
 }
 
 export default function Replies({ replies, commentId }: RepliesProps) {
+  const { memberData } = useMember();
   const [replyText, setReplyText] = useState("");
   const [showReply, setShowReply] = useState(false);
   const [height, setHeight] = useState("35px");
@@ -40,11 +41,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
       return;
     }
     try {
-      const response = await postReplyApi(
-        commentId,
-        replyText,
-        userdummy.username
-      );
+      const response = await postReplyApi(commentId, replyText);
 
       // console.log(response);
       setReplyText("");
@@ -83,13 +80,13 @@ export default function Replies({ replies, commentId }: RepliesProps) {
         {replyButtonText}
       </ExpansionButton>
       {showReply && (
-        <div style={{ width: "160%" }}>
+        <div>
           {replies.map((reply) => (
             <UserInfo key={reply.id}>
               <div>
                 <img src={reply.writer.profilePath ?? ""} alt="프로필" />
               </div>
-              <CommentBox>
+              <ReplyBox>
                 <div
                   style={{
                     display: "flex",
@@ -118,7 +115,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                       onClose={handleCloseModal}
                     />
                   )}
-                  {userdummy.nickname === reply.writer.nickname && (
+                  {memberData.username === reply.writer.username && (
                     <EditButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showUpdateModal(reply.id)}
@@ -126,7 +123,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                       수정
                     </EditButton>
                   )}
-                  {userdummy.nickname === reply.writer.nickname && (
+                  {memberData.username === reply.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showDeleteModal(reply.id)}
@@ -135,10 +132,10 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                     </DeleteButton>
                   )}
                 </div>
-                <div style={{ width: "145%" }}>
+                <div style={{ width: "100%" }}>
                   <p>{reply.text}</p>
                 </div>
-              </CommentBox>
+              </ReplyBox>
             </UserInfo>
           ))}
           <InputSet>
@@ -153,12 +150,7 @@ export default function Replies({ replies, commentId }: RepliesProps) {
               style={{ height }}
             />
 
-            <BasicButton
-              onClick={handleReplySubmit}
-              style={{ fontSize: "12px" }}
-            >
-              댓글달기
-            </BasicButton>
+            <BasicButton onClick={handleReplySubmit}>댓글달기</BasicButton>
           </InputSet>
           {error && <CommentError>{error}</CommentError>}
         </div>
