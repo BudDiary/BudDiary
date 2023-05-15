@@ -98,6 +98,9 @@ public class JwtService {
 		log.info("profile mode is : {}", envName);
 		if (envName.equals("local")) {
 			cookie.setDomain("localhost");
+		} else {
+			log.info(" 쿠키 배포 설정으로 던집니다.");
+			cookie.setDomain("buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
@@ -110,11 +113,12 @@ public class JwtService {
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
 		response.setStatus(HttpServletResponse.SC_OK);
 		Cookie cookie = new Cookie(REFRESH_TOKEN_SUBJECT, "" + refreshToken);
-		// if (envName == "local") {
-		// 	cookie.setDomain("localhost");
-		// } else if() {
-		// 	cookie.setDomain("ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com");
-		// }
+		if (envName.equals("local")) {
+			cookie.setDomain("localhost");
+		} else {
+			log.info(" 쿠키 배포 설정으로 던집니다.");
+			cookie.setDomain("buddiary.site");
+		}
 		cookie.setPath("/");
 		cookie.setMaxAge(1209600000);
 		cookie.setHttpOnly(true);
@@ -248,7 +252,7 @@ public class JwtService {
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
-		log.info("socialType {}",  socialType);
+		log.info("socialType {}", socialType);
 		log.info("socialId {}", socialId);
 		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
 		if (member == null) {

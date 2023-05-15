@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { GroupList, MemberList, ClubList } from "./GroupInfo.styles";
 import { BasicButton } from "./Diaries.styles";
 import useMember from "../../hooks/memberHook";
+import { Divider } from "@mui/material";
 import { Member, Info } from "../../types/group";
 import crown from "../../assets/group/crown.png";
 interface GroupInfoProps {
@@ -33,7 +34,7 @@ export default function GroupInfo({
         <ClubList>멤버 {memberList?.length}</ClubList>
         <BasicButton>초대하기</BasicButton>
       </div>
-
+      <Divider style={{ border: "solid 2px #BFDBFE", width: "100%" }} />
       <MemberList>
         {memberList?.map((member) => (
           <div key={member.id}>

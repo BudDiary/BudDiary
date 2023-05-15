@@ -1,15 +1,34 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-import close from "../../assets/modal/close.png";
+
 export const BasicButton = styled.button`
-  ${tw`bg-bud-blue rounded-full px-5 py-1 font-berry`}
+  ${tw`bg-bud-blue rounded-full px-4 py-1 font-berry`}
   letter-spacing: 0.1rem;
+  font-size: 12px;
+
+  @media (max-width: 640px) {
+    ${tw`bg-bud-blue rounded-full px-2 py-1 font-berry`}
+    font-size: 8px;
+    letter-spacing: 0.1rem;
+  }
+`;
+
+export const GroupButton = styled.button`
+  ${tw`bg-bud-green rounded-full px-4 py-1 font-berry fixed `}
+  bottom: 25px;
+  right: 15px;
+  font-size: 15px;
 `;
 
 export const DeleteButton = styled.button`
   ${tw`bg-bud-pink rounded-full px-3 py-1 font-bold my-2`}
   width: 100px;
   color: white;
+`;
+
+export const EmojiButton = styled.button`
+  ${tw`bg-bud-blue rounded-full px-4 py-1 font-berry`}
+  letter-spacing: 0.1rem;
 `;
 
 export const WideButton = styled.button`
@@ -19,6 +38,10 @@ export const WideButton = styled.button`
 
   svg {
     ${tw`mr-2`}
+  }
+
+  @media (max-width: 640px) {
+    width: 90vw;
   }
 `;
 
@@ -31,10 +54,14 @@ export const DiaryDetail = styled.div`
   > * {
     margin: auto;
   }
+
+  @media (max-width: 640px) {
+    width: 90vw;
+  }
 `;
 
 export const DiaryHeader = styled.div`
-  ${tw`flex items-center mb-4`}
+  ${tw`flex items-center mb-2`}
   width: 40vw;
   height: 50px;
 
@@ -42,7 +69,7 @@ export const DiaryHeader = styled.div`
     border-radius: 100%;
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 2px solid #abc4ff;
     margin-right: 10px;
   }
   h2 {
@@ -51,6 +78,10 @@ export const DiaryHeader = styled.div`
   }
   h3 {
     ${tw`font-hassam text-gray-400 font-bold`}
+  }
+
+  @media (max-width: 640px) {
+    width: 75vw;
   }
 `;
 
@@ -85,6 +116,36 @@ export const DiaryContent = styled.div`
     border-radius: 20px;
     border: 4px solid pink;
   }
+
+  @media (max-width: 640px) {
+    height: auto;
+    flex-direction: column;
+
+    > div:first-child {
+      height: auto;
+      margin-inline: 0;
+      margin-bottom: 1rem;
+      flex: none;
+    }
+
+    > div:last-child {
+      flex: none;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 20px;
+      height: 250px;
+      border: 4px solid pink;
+      border-radius: 15px;
+    }
+
+    img {
+      width: 100%;
+      height: 250px;
+      border-radius: 20px;
+      border: 4px solid pink;
+    }
+  }
 `;
 
 export const DiaryImageSlider = styled.div`
@@ -92,11 +153,13 @@ export const DiaryImageSlider = styled.div`
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   max-width: 60%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   & > .swiper-button-prev,
   & > .swiper-button-next {
@@ -106,7 +169,6 @@ export const DiaryImageSlider = styled.div`
     height: 50px;
     transform: translateY(-50%);
     border-radius: 50%;
-    background-image: url("../../assets/prev_button.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -115,16 +177,33 @@ export const DiaryImageSlider = styled.div`
     align-items: center;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    z-index: 0;
+    z-index: 1;
+  }
+
+  & > .swiper-button-prev {
+    left: 0;
+    background-image: url("../../assets/prev_button.png");
   }
 
   & > .swiper-button-next {
+    right: 0;
     background-image: url("../../assets/next_button.png");
   }
 
   .swiper-button-prev:hover,
   .swiper-button-next:hover {
     background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+
+    & > .swiper-button-prev,
+    & > .swiper-button-next {
+      width: 30px;
+      height: 30px;
+      transform: translateY(-50%) scale(0.8);
+    }
   }
 `;
 
@@ -172,12 +251,19 @@ export const DiaryDetailBlank = styled.div`
   > * {
     margin: auto;
   }
+
+  @media (max-width: 640px) {
+    width: 90vw;
+  }
 `;
-
 export const ReactionSet = styled.div`
-  ${tw`flex flex-col items-baseline relative`}
+  ${tw`relative`}
 
-  div {
+  > div {
     ${tw`flex items-baseline`}
+  }
+
+  @media (max-width: 640px) {
+    ${tw`flex-col`}
   }
 `;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Addpicture from "../../components/write/Addpicture";
 import Pictures from "../../components/write/Pictures";
 import Checkbox from "@mui/joy/Checkbox";
@@ -15,7 +15,7 @@ import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
 import { useNavigate } from "react-router-dom";
-import { ContentBox, StageContainer } from "./WritePage.styles";
+import Sticker from "./StickerPage";
 
 // asdadasd
 
@@ -82,12 +82,10 @@ export default function WritePage() {
     setStage(1);
   };
 
-  const backSpace = () => {
-    setStage(0);
-  };
+  // 스티커 이동
 
   return (
-    <>
+    <div className="font-mf">
       <SubNavContainer img={navimg}>
         <TypeIt
           options={{
@@ -135,22 +133,8 @@ export default function WritePage() {
           </div>
         </PageContainer>
       ) : (
-        <StageContainer>
-          <div>스티커 들어올 자리</div>
-          <ContentBox>{content}</ContentBox>
-          <div className="flex justify-evenly">
-            <button
-              className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"
-              onClick={backSpace}
-            >
-              이전
-            </button>
-            <button className="bg-bud-green text-white w-[120px] h-[45px] rounded-md">
-              완료
-            </button>
-          </div>
-        </StageContainer>
+        <Sticker setStage={setStage} content={content} />
       )}
-    </>
+    </div>
   );
 }

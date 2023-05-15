@@ -1,9 +1,9 @@
-import { api, formApi } from "./axiosConfig";
+import { api, formApi, apiKakao } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 카카오 인가코드 전송
 const kakaoSignUpApi = (payload: string | null) => {
-  return api
+  return apiKakao
     .get(`${payload}`, { withCredentials: true })
     .then((res) => {
       return res.data;

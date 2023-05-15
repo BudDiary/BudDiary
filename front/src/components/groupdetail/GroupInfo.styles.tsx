@@ -3,17 +3,16 @@ import tw from "twin.macro";
 
 export const GroupList = styled.div`
   ${tw`flex flex-col items-center justify-center gap-2`}
-  width: 80%;
+  width: 90%;
   height: 400px;
   padding: 20px;
   border: 5px solid #bee5bf;
   border-radius: 15px;
 
   img {
-    border: 1px solid black;
+    ${tw`rounded-lg border border-4 border-bud-green`};
     height: 150px;
     width: 95%;
-    ${tw`rounded-lg`};
   }
 
   p {
@@ -44,11 +43,11 @@ export const MemberList = styled.div`
     }
 
     p {
-      ${tw`text-bud-blue`}
+      ${tw`text-bud-blue text-center`}
     }
   }
 `;
 
 export const ClubList = styled.span`
-  ${tw`font-berry`}
+  ${tw`font-berry mx-2 px-1`}
 `;
