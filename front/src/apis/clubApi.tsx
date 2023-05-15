@@ -38,11 +38,10 @@ const postDoubleClubApi = (payload: any) => {
 };
 
 // 내가 속한 클럽 조회
-const getMyClubListApi = (payload: string) => {
+const getMyClubListApi = () => {
   return api
-    .get(`api/clubs?username=${payload}`, { withCredentials: true })
+    .get(`api/clubs`, { withCredentials: true })
     .then((res) => {
-      console.log(res.data.myClubList);
       return res.data.myClubList;
     })
     .catch((err) => {
