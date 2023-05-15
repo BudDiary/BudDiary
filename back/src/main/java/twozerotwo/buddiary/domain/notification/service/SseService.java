@@ -2,6 +2,8 @@ package twozerotwo.buddiary.domain.notification.service;
 
 import static twozerotwo.buddiary.domain.notification.api.SseController.*;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ public class SseService {
 	private final ClubService clubService;
 	private final RedisPublisher redisPublisher;
 	private final RedisDoubleInviteRepository redisDoubleInviteRepository;
+
+	@Transactional
 	public void notifyDoubleInviteEvent(Member inviter, String targetName) {
 		Member target = clubService.returnMemberByUsername(targetName);
 		// DB 저장
