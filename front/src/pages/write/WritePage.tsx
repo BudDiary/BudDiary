@@ -10,7 +10,7 @@ import {
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import { SurveyAgainButton } from "../../components/common/Button.styles";
-import { postSentimentApi, postTodayDiaryApi } from "../../apis/diaryApi";
+import { postKeywordApi, postSentimentApi, postTodayDiaryApi } from "../../apis/diaryApi";
 import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
@@ -38,10 +38,7 @@ export default function WritePage() {
   const [mygroup, setMygroup] = useState<GroupData[]>([]);
   const [personalChecked, setPersonalChecked] = useState<boolean>(false);
   const [stage, setStage] = useState<number>(0);
-  const [sentiment, setSentiment] = useState<{
-    negative: number;
-    positive: number;
-  }>({ negative: 0, positive: 0 });
+  const [sentiment, setSentiment] = useState<{negative: number, positive: number}>({ negative: 0, positive: 0 });
 
   useEffect(() => {
     async function fetchMyGroup() {
@@ -68,15 +65,22 @@ export default function WritePage() {
   };
 
   const sendData = async () => {
-    postSentimentApi({ content: content });
-
-    const data = {
-      text: content,
-      fileList: originFiles,
-      clubList: selectGroup,
-      isPersonal: personalChecked,
-      memberUsername: username,
-    };
+    Promise.all([
+      postSentimentApi({content : content}),
+      postKeywordApi({userId : username, content: content})
+    ]).then(([result, kewordSend]) => {
+      setSentiment(result)
+      const data = {
+        text: content,
+        fileList: originFiles,
+        clubList: selectGroup,
+        isPersonal: personalChecked,
+        memberUsername: username,
+        negativeRate: sentiment.negative,
+        positiveRate: sentiment.positive
+      };
+      console.log(data, 'this is data')
+    });
 
     // await postTodayDiaryApi(data);
     setStage(1);

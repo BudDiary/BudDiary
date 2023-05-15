@@ -4,17 +4,31 @@
 # source venv/Scripts/activate
 # uvicorn main:app --reload --port 9000
 
+import re
 import os
 import json
-from fastapi import FastAPI
+import requests
+from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from soynlp.noun import LRNounExtractor_v2
 
 class myAnswer(BaseModel):
     id: int
     favor_list: list[str]
+
+class diaryContnet(BaseModel):
+    content: str
+
+class diaryKeyword(BaseModel):
+    userId: str
+    content: str  
+    
+class keywordSimilar(BaseModel):
+    userId: str
+    
 
 app = FastAPI()
 origins = [
@@ -115,7 +129,120 @@ def recommend_by_survey(member_id: int):
                 result.append((ids[i], sim))
 
         return result
-    recommend_list = get_similarity_scores('survey.json', 1)
+    recommend_list = get_similarity_scores('survey.json', member_id)
     recommend_object = [{"id" : id, "rate": round(rate, 2)} for id, rate in recommend_list]
+
+    return recommend_object
+
+@app.post("/fastapi/sentiment")
+async def analyze_sentiment(content: diaryContnet):
+    headers = {
+        'Content-Type': 'application/json',
+        'X-NCP-APIGW-API-KEY-ID': 'vrdjgx8oxa',
+        'X-NCP-APIGW-API-KEY': 'T6W3dtfPEqKkPwr8vDbDdpU6GdNS62bce6NtVLo6',
+    }
+    
+    data = {
+        'content': content.content
+    }
+    response = requests.post('https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze', headers=headers, json=data)
+    if response.status_code == 200:
+            result = response.json()
+            doc_confidence = result["document"]["confidence"]
+            doc_neg = doc_confidence["negative"]
+            doc_pos = doc_confidence["positive"]
+            result_json = {
+                "negative": round(doc_neg, 2),
+                "positive": round(doc_pos, 2)
+            }
+
+            return result_json
+    else:
+        return {'error': response.status_code, 'message': response.text}
+
+
+@app.post("/fastapi/keyword")
+async def keyword(info: diaryKeyword):
+    def make_keyword_object():
+        noun_extractor = LRNounExtractor_v2(verbose=True)
+        nouns = noun_extractor.train_extract([info.content])
+        
+        keywords = {}
+
+        for key, value in nouns.items():
+            freq = float(value.score)
+            score = float(value.score)
+            
+            # score가 0.5 이상인 것
+            if score >= 0.5:
+                formatted_key = key.strip().title()
+                keywords[formatted_key] = round(score*freq, 2)
+
+    
+
+        result = {"userId": info.userId, "keywords": keywords}    
+        
+        return result
+    
+    filename = 'keyword.json'
+    if os.path.exists(filename):
+        with open(filename, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    # Check if userId already exists in data
+    for d in data:
+        if d["userId"] == info.userId:
+            # Update existing keywords
+            for key, value in make_keyword_object()["keywords"].items():
+                if key in d["keywords"]:
+                    d["keywords"][key] += value
+                else:
+                    d["keywords"][key] = value
+            break
+    else:
+        # Add new data
+        new_data = make_keyword_object()
+        data.append(new_data)
+
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False)
+
+    return {"message": "json_update success"}
+
+@app.post("/fastapi/recommend/keyword")
+async def keyword(info : keywordSimilar):
+    def get_similarity_scores_keyword(filename, userId):
+        # 파일에서 데이터 로드
+        if os.path.exists(filename):
+            with open(filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+        # userId와 keyword 추출
+        ids = []
+        keywords = []
+        for entry in data:
+            ids.append(entry['userId'])
+            keywords.append(' '.join(str(p) for p in entry['keywords'].keys()))
+
+        # TF-IDF 특성 행렬 생성
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(keywords)
+
+        # 코사인 유사도 계산
+        cosine_similarities = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+        # 결과 리스트 생성
+        result = []
+        target_index = ids.index(userId)
+        for i, sim in sorted(enumerate(cosine_similarities[target_index]), key=lambda x: x[1], reverse=True):
+            if i != target_index:
+                result.append((ids[i], sim))
+
+        return result
+
+    recommend_by_survey_list = get_similarity_scores_keyword('keyword.json', info.userId)
+    recommend_object = [{"userId" : info.userId, "rate": round(rate, 2)} for info.userId, rate in recommend_by_survey_list]
 
     return recommend_object
