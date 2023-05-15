@@ -98,7 +98,7 @@ public class JwtService {
 		log.info("profile mode is : {}", envName);
 		if (envName.equals("local")) {
 			cookie.setDomain("localhost");
-		}else{
+		} else {
 			log.info(" 쿠키 배포 설정으로 던집니다.");
 			cookie.setDomain("buddiary.site");
 		}
@@ -115,7 +115,7 @@ public class JwtService {
 		Cookie cookie = new Cookie(REFRESH_TOKEN_SUBJECT, "" + refreshToken);
 		if (envName.equals("local")) {
 			cookie.setDomain("localhost");
-		}else {
+		} else {
 			log.info(" 쿠키 배포 설정으로 던집니다.");
 			cookie.setDomain("buddiary.site");
 		}
@@ -252,7 +252,7 @@ public class JwtService {
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
-		log.info("socialType {}",  socialType);
+		log.info("socialType {}", socialType);
 		log.info("socialId {}", socialId);
 		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
 		if (member == null) {
