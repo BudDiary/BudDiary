@@ -5,10 +5,9 @@ import {
   ModalTopNavContainer,
 } from "../common/ModalWindow.styles";
 import { UserInfo } from "./DiaryComment.style";
-import { timeAgo } from "./GroupDetailFunction";
 import close from "../../assets/modal/close.png";
 import {
-  InputBox,
+  EditContentBox,
   InputSet,
   CommentBox,
   CommentError,
@@ -29,7 +28,6 @@ interface ReplyEditProps {
 
 export default function ReplyEdit({ reply, onClose }: ReplyEditProps) {
   const [commentState, setCommentState] = useState(reply.text);
-  const [height, setHeight] = useState("33px");
   const [checkComment, setCheckComment] = useState("");
   const [error, setError] = useState<string | null>(null);
   const closeCommentModal = () => {
@@ -96,15 +94,13 @@ export default function ReplyEdit({ reply, onClose }: ReplyEditProps) {
       <EditContent>
         <EditTitle>답글 수정하기</EditTitle>
         <InputSet>
-          <InputBox
+          <EditContentBox
             key={commentState}
             defaultValue={commentState}
             onChange={(e) => {
-              handleCommentChange(e, setHeight);
               handleCheckComment(e, setCheckComment, setError);
             }}
             onBlur={(e) => handleCommentBlur(e, setCommentState)}
-            style={{ height }}
           />
           <BasicButton style={{ fontSize: "12px" }}>댓글달기</BasicButton>
         </InputSet>

@@ -5,7 +5,6 @@ type ActionType = "LIKED" | "SURPRISED" | "SAD" | "ANGRY" | "BEST";
 
 // 리액션 등록
 const postReactionApi = (diaryId: number, actionType: ActionType) => {
-  console.log("???");
   const data = {
     diaryId,
     actionType,

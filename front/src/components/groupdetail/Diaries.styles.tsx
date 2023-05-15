@@ -233,12 +233,19 @@ export const BlankNotice = styled.div`
   ${tw`flex flex-row rounded-md mt-2`}
   font-size: 50px;
   font-weight: bold;
+  @media (max-width: 640px) {
+    font-size: 45px;
+    font-weight: bold;
+  }
 `;
 export const BlankDiary = styled.div`
   ${tw`flex flex-col rounded-md mt-2 font-berry`}
   font-size: 28px;
   justify-content: center;
   align-items: center;
+  @media (max-width: 640px) {
+    font-size: 20px;
+  }
 `;
 
 export const DiaryDetailBlank = styled.div`

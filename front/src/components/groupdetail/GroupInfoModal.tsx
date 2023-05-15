@@ -26,6 +26,8 @@ export default function GroupInfoModal({
     onClose();
   };
 
+  const diaryType = "DOUBLE";
+
   useEffect(() => {});
   return (
     <GroupModal style={{ padding: "10px" }}>
@@ -74,19 +76,21 @@ export default function GroupInfoModal({
       <img
         src={clubInfo?.thumbnailUrl ?? ""}
         alt="그룹 섬네일"
-        style={{ marginBlock: "10px" }}
+        style={{ marginBlock: "10px", height: "65px", width: "100%" }}
       />
       <p>{clubInfo?.clubName}</p>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
-        <ClubList>멤버 {memberList?.length}</ClubList>
-        <BasicButton>초대하기</BasicButton>
-      </div>
+      {diaryType !== "DOUBLE" && diaryType === "PLURAL" ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <ClubList>멤버 {memberList?.length}</ClubList>
+          <BasicButton>초대하기</BasicButton>
+        </div>
+      ) : null}
       <Divider style={{ border: "solid 2px #BFDBFE" }} />
       <MemberList>
         {memberList?.map((member) => (
