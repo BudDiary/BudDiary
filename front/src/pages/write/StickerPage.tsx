@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import { ContentBox, StageContainer } from "./WritePage.styles";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/modules";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import interact from "interactjs";
 
@@ -10,6 +12,13 @@ interface Props {
 
 export default function StickerPage({ setStage, content }: Props) {
   const contentBoxRef = useRef<HTMLInputElement | null>(null);
+  const mySticker = useSelector(
+    (state: RootState) => state.member.memberData.sticker
+  );
+
+  const getMySitcker = () => {
+    console.log("가지고있는 스티커 종류", mySticker);
+  };
 
   interact(".item").draggable({
     onstart: (event: any) => {
@@ -82,12 +91,16 @@ export default function StickerPage({ setStage, content }: Props) {
           console.log(" -> 안으로", newX, newY - 192.5);
         }
       }
+      // 스티커 가져오기
     },
   });
   return (
     <StageContainer>
       <div className="text-4xl w-full text-center my-4">보유중인 스티커</div>
       <div className="flex ">
+        <button className="border bg-bud-yellow" onClick={() => getMySitcker()}>
+          스티커확인
+        </button>
         <img src={navimg} alt="" className="item h-40 w-40 mr-8" />
         <img src={navimg} alt="" className="item h-40 w-40 mr-8" />
       </div>
