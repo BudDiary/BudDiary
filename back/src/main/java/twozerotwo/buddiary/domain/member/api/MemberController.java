@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.domain.member.dto.GetMemberDetailRequest;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.domain.member.dto.MemberSignUpRequest;
 import twozerotwo.buddiary.domain.member.service.MemberService;
@@ -35,6 +36,16 @@ public class MemberController {
 	private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
 	public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
 	public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
+
+	//-------------------------------------------다른 맵버 정보 가져오기----------------------------------------------
+	@PostMapping
+	public ResponseEntity<?> getMemberByUsername(@RequestBody GetMemberDetailRequest getMemberDetailRequest) {
+
+		String username = getMemberDetailRequest.getUsername();
+		MemberDto findMemberDto = memberService.findMemberUsername(username);
+
+		return ResponseEntity.ok().body(findMemberDto.toGetMemberDetailResponse());
+	}
 
 	//-------------------------------------------맴버 회원가입 추가정보 기입----------------------------------------------
 	@PostMapping(value = "/signup")

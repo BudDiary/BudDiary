@@ -50,4 +50,22 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 		Map<String, Object> account = (Map<String, Object>)attributes.get("kakao_account");
 		return (String)account.get("email");
 	}
+
+	@Override
+	public String getGender() {
+		Map<String, Object> account = (Map<String, Object>)attributes.get("kakao_account");
+		if (!(Boolean)account.get("gender_needs_agreement")) {
+			return (String)account.get("gender");
+		}
+		return null;
+	}
+
+	@Override
+	public String getAgeRange() {
+		Map<String, Object> account = (Map<String, Object>)attributes.get("kakao_account");
+		if (!(Boolean)account.get("age_range_needs_agreement")) {
+			return (String)account.get("age_range");
+		}
+		return null;
+	}
 }
