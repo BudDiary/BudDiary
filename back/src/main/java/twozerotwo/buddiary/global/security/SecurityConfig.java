@@ -90,6 +90,7 @@ public class SecurityConfig {
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 			// ELB  health 체크를위한  api 오픈
 			.antMatchers("/actuator/health", "/actuator/info").permitAll()
+			.antMatchers(HttpMethod.GET, "/api/members/**").hasRole("USER")
 			.antMatchers(HttpMethod.PATCH, "/api/members/**").hasRole("USER")
 			.antMatchers(HttpMethod.GET, "/api/members/jwt-test").hasRole("USER")
 			.antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
