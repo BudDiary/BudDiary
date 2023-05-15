@@ -64,14 +64,13 @@ export default function NavBar() {
     const fetchData = async () => {
       try {
         const data = await getSSEAlarmsApi();
-        console.log(data, "알람");
         setAlarmList(data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, []);
+  }, [alarmList]);
 
   const showSidebar = () => {
     setSidebarState(true);
@@ -104,7 +103,7 @@ export default function NavBar() {
           </LogoContainer>
           <MenuItem to="/group">그룹일기</MenuItem>
           <MenuItem to="/write">일기작성</MenuItem>
-
+          <MenuItem to="/stickers">상점</MenuItem>
           <ProfileContainer>
             <NickNameContainer onClick={handleUser}>
               {isLoggedIn ? nickname : "로그인"}

@@ -1,6 +1,10 @@
-import React from "react";
-import { StickerImageBox, StickerPriceBox } from "./StickerItem.styles";
-import { postBuyDiaryStickerApi } from "../../apis/stickerApi";
+import React, { useState } from "react";
+import {
+  StickerImageBox,
+  StickerPriceBox,
+  IndividualStickerContainer,
+} from "./StickerItem.styles";
+import StickerBuyModal from "./StickerBuyModal";
 
 interface Props {
   stickerId: number;
@@ -11,15 +15,25 @@ interface Props {
 
 export default function StickerItem(props: Props) {
   const { stickerId, imageUrl, name, price } = props;
-  const buySticker = async () => {
-    const response = await postBuyDiaryStickerApi(stickerId, price);
-    console.log(response);
+  const [modalState, handleModalState] = useState(false);
+  const openStickerModal = async () => {
+    handleModalState(true);
   };
 
   return (
-    <div onClick={buySticker}>
-      <StickerImageBox src={imageUrl} alt={name} />
-      <StickerPriceBox>{price}포인트</StickerPriceBox>
-    </div>
+    <>
+      {modalState ? (
+        <StickerBuyModal
+          key={stickerId}
+          stickerId={stickerId}
+          imageUrl={imageUrl}
+          price={price}
+        />
+      ) : null}
+      <IndividualStickerContainer onClick={openStickerModal}>
+        <StickerImageBox src={imageUrl} alt={name} />
+        <StickerPriceBox>{price}포인트</StickerPriceBox>
+      </IndividualStickerContainer>
+    </>
   );
 }

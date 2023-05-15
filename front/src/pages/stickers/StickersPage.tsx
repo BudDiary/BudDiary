@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllStickersApi, getMyStickersApi } from "../../apis/stickerApi";
+import { getAllStickersApi } from "../../apis/stickerApi";
 import {
   PageContainer,
   SubNavContainer,
@@ -20,14 +20,11 @@ export default function StickersPage() {
   const { memberData } = useMember();
   // const [points, setPoints] = useState<File | null>(null);
   const [allStickers, setAllStickers] = useState<Stickers[]>([]);
-  const [myStickers, setMyStickers] = useState<Stickers[]>([]);
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getAllStickersApi();
-        const mine = await getMyStickersApi();
         setAllStickers(data.stickerList);
-        setMyStickers(mine.myStickerList);
       } catch (error) {
         console.error(error);
       }
