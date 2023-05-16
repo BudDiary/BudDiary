@@ -10,7 +10,7 @@ export const GroupList = styled.div`
   border-radius: 15px;
 
   img {
-    ${tw`rounded-lg border border-4 border-bud-green`};
+    ${tw`rounded-lg border border-4 border-none`};
     height: 150px;
     width: 95%;
   }
@@ -36,10 +36,9 @@ export const MemberList = styled.div`
     ${tw`flex items-center justify-start gap-6 font-berry`}
 
     img {
+      ${tw`rounded-full border-2 border-bud-blue`}
       height: 35px;
       width: 35px;
-      border: 1px solid black;
-      ${tw`rounded-full`}
     }
 
     p {
