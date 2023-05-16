@@ -67,28 +67,7 @@ export default function Recommended() {
       setInitialLoad(false); // Update the flag to prevent subsequent calls
     }
   }, [recommendList]);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await postRecommendBySurveyApi({userId : memberData.username});
-  //       // const userdata = await postUserInfoApi({userId : memberData.username})
-  //       setRecommendList(data.data);
-  //       getRecommend();
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (recommendList.length !== 0) {
-  //     console.log(recommendList, 'this is recommendList')
-  //     console.log(recommendList.length, 'this is length')
-  //     getRecommend();
-  //   }
-  // }, [recommendList]);
-
+  
   const getRecommend = () => {
     const newdatas: RecommendUserInfo[] = [];
     for (let i = 0; i < recommendList.length; i++) {

@@ -41,15 +41,15 @@ export default function RecommendedByKeyword() {
   >([]);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   useEffect(() => {
-    if (recommendList.length === 0) {
+    
       PostRecommendBykeyWordApi({ userId: memberData.username }).then(
         (result) => {
           console.log(result, "this is keyword recommend result");
           setRecommendList(result.data);
         }
       );
-    }
-  }, [recommendList]);
+    
+  }, []);
 
   useEffect(() => {
     // let initialLoad = true; // Flag to track initial load
