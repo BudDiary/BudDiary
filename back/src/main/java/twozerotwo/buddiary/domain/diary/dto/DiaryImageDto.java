@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WriterDto {
-	private String nickname;
-	private String username;
-	private String profilePath;
+public class DiaryImageDto {
+	private String imgUrl;
 }

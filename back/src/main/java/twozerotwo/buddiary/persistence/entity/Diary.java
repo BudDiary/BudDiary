@@ -16,13 +16,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.domain.comment.dto.CommentDto;
+import twozerotwo.buddiary.domain.diary.dto.DiaryImageDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
+import twozerotwo.buddiary.domain.diary.dto.WriterDto;
 import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
 import twozerotwo.buddiary.persistence.enums.ClubType;
 
@@ -44,8 +49,9 @@ public class Diary {
 
 	@Builder.Default
 	private LocalDateTime writeDate = LocalDateTime.now();
+	@JsonIgnore
 	@Builder.Default
-	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<DiaryImage> diaryImages = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -100,11 +106,13 @@ public class Diary {
 
 	}
 
-	public DiaryInfo toDiaryInfo(List<ReactionDto> reactionDtos) {
+	public DiaryInfo toDiaryInfo(List<ReactionDto> reactionDtos, List<DiaryImageDto> imgDtos,
+		List<CommentDto> commentDtos) {
+		WriterDto writerDto = this.writer.toWriterDto();
 		return DiaryInfo.builder()
-			.diaryId(this.getId()).writer(this.getWriter()).writeDate(this.getWriteDate()).text(this.getText())
-			.imgList(this.getDiaryImages()).positiveRate(this.getPositiveRate()).negativeRate(this.getNegativeRate())
-			.reactionList(reactionDtos).commentList(this.getComments())
+			.diaryId(this.getId()).writer(writerDto).writeDate(this.getWriteDate()).text(this.getText())
+			.imgList(imgDtos).positiveRate(this.getPositiveRate()).negativeRate(this.getNegativeRate())
+			.reactionList(reactionDtos).commentList(commentDtos)
 			.build();
 	}
 }
