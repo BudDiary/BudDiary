@@ -18,6 +18,7 @@ import { MoveIndex, Tag } from "./SurveyModal.styles";
 import { firstSurveyApi } from "../../apis/surveyApi";
 import useMember from "../../hooks/memberHook";
 import { LinearProgress } from "@mui/material";
+import { postUserInfoApi } from "../../apis/userApi";
 // import { fastApi } from "./axiosConfig";
 
 // // 다수 클럽 생성
@@ -46,10 +47,11 @@ export default function SurveyModal({ closeModal }: Props) {
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
   const swiper = useSwiper();
   const { memberData } = useMember();
-  // const [isDone, setIsDone] = useState(false);
+
+
   const closeSurvey = () => {
     console.log({ userId: memberData.username, favor_list: myAnswer });
-    firstSurveyApi({ userId: memberData.username, favor_list: myAnswer });
+    firstSurveyApi({ userId: memberData.username, favor_list: myAnswer});
     closeModal();
   };
   // const postPluralClubApi = (payload: any) => {

@@ -113,6 +113,25 @@ const deleteTokenApi = () => {
     });
 };
 
+const postUserInfoApi = (payload: any) => {
+  return api
+    .post(`api/members`, payload, { withCredentials: true })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err)
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "postUserInfoApi 오류가 발생했어요.",
+      // });
+      return err;
+    });
+}
+
+
+
+
 export {
   kakaoSignUpApi,
   firstSignUpApi,
@@ -120,4 +139,5 @@ export {
   patchIntroApi,
   patchProfileApi,
   deleteTokenApi,
+  postUserInfoApi
 };
