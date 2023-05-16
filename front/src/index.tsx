@@ -18,7 +18,7 @@ import MypagePage from "./pages/mypage/MypagePage";
 import SignUpPage from "./pages/signup/SignUpPage";
 import ViewDiariesPage from "./pages/view/ViewDiariesPage";
 import SignUpInfoPage from "./pages/signup/SignUpInfoPage";
-import StickersPage from "./pages/stickers/StickersPage";
+import StickerStorePage from "./pages/stickers/StickerStorePage";
 
 // const {isLoggedIn} = useMember();
 const router = createBrowserRouter([
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       { path: "/view/diary/:id", element: <ViewDiariesPage /> },
       { path: "/login/oauth2/code/kakao", element: <SignUpPage /> },
       { path: "/signup-info", element: <SignUpInfoPage /> },
-      { path: "/stickers", element: <StickersPage /> },
+      { path: "/stickers", element: <StickerStorePage /> },
     ],
   },
 ]);

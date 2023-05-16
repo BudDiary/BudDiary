@@ -5,7 +5,7 @@ import {
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import StickerItem from "../../components/stickers/StickerItem";
-import { StickersContainer } from "./StickersPage.styles";
+import { StickersContainer } from "./StickerStorePage.styles";
 import subnavimg from "../../assets/subnav/Stickers.jpg";
 import useMember from "../../hooks/memberHook";
 

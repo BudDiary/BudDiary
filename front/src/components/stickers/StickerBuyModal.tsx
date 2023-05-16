@@ -22,7 +22,7 @@ import {
   getMyStickersApi,
 } from "../../apis/stickerApi";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
-import { getStickerList } from "../../store/modules/member";
+import { getStickerList, updatePointsAction } from "../../store/modules/member";
 import Swal from "sweetalert2";
 
 interface StickerProps {
@@ -46,7 +46,9 @@ export default function StickerBuyModal({
   };
   const buySticker = async () => {
     const response = await postBuyDiaryStickerApi(stickerId, totalNumber);
-    if (response === 200) {
+    if (response.status === 200) {
+      const leftPoint = response.data.leftPoint;
+      dispatch(updatePointsAction(leftPoint));
       const sticker = await getMyStickersApi();
       dispatch(getStickerList(sticker));
       Swal.fire({

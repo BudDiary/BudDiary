@@ -143,12 +143,12 @@ export const StyledPopper = styled(Popper)`
 // -------------------------------------------------------------------------------
 // 스티커페이지 CSS
 
-export const StageContainer = styledComponents.div`
-  ${tw`max-w-[1152px] mx-auto`};
-`;
-
 export const ContentBox = styledComponents.div`
-  ${tw`w-full border my-8 px-4 pt-8 pb-32`};
+  ${tw`w-full min-h-[720px] border my-8 px-4 pt-8 pb-32`};
   white-space: pre-wrap;
   word-wrap: break-word;
+`;
+
+export const StickerListTitle = styledComponents.div`
+  ${tw`text-2xl w-full my-4 font-berry`};
 `;

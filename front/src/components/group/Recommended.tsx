@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { postRecommendBySurveyApi } from "../../apis/clubApi";
+import { postLiveDoubleInviteApi } from "../../apis/noticeApi";
 import useMember from "../../hooks/memberHook";
 import male from "../../assets/male.png";
 import nullImage from "../../assets/nullImage.png";
@@ -41,15 +42,21 @@ export default function Recommended() {
   >([]);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   useEffect(() => {
-    if (recommendList.length === 0) {
-      postRecommendBySurveyApi({ userId: memberData.username }).then(
-        (result) => {
-          console.log(result, "this is result");
-          setRecommendList(result.data);
-        }
-      );
-    }
-  }, [recommendList]);
+    const fetchData = async () => {
+      try {
+        const data = await postRecommendBySurveyApi({
+          userId: memberData.username,
+        });
+        setRecommendList(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+  const handleInviteDouble = (userId: string) => {
+    postLiveDoubleInviteApi(userId);
+  };
 
   useEffect(() => {
     // let initialLoad = true; // Flag to track initial load
@@ -167,7 +174,11 @@ export default function Recommended() {
                       )}
                     </CardContent>
                     <CardActions>
-                      <ApplyButton>그룹일기 신청하기</ApplyButton>
+                      <ApplyButton
+                        onClick={() => handleInviteDouble(el.userId)}
+                      >
+                        그룹일기 신청하기
+                      </ApplyButton>
                     </CardActions>
                   </Card>
                 </SwiperSlide>
