@@ -29,14 +29,10 @@ const postBuyDiaryStickerApi = (id: number, count: number) => {
       { withCredentials: true }
     )
     .then((res) => {
-      console.log(res.data, "잘삼?");
-      return res.data;
+      console.log(res, "잘삼?");
+      return res.status;
     })
     .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        text: "postDiarySticker 오류가 발생했어요.",
-      });
       return err;
     });
 };

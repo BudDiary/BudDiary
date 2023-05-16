@@ -11,27 +11,56 @@ import {
   ModalContentSection,
   StickerPictureContainer,
   CalculateSection,
+  BuyButtonContainer,
+  BuyButton,
   TotalPriceSection,
 } from "./StickerBuyModal.styles";
 import { BiArrowBack } from "react-icons/bi";
-import { postBuyDiaryStickerApi } from "../../apis/stickerApi";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  postBuyDiaryStickerApi,
+  getMyStickersApi,
+} from "../../apis/stickerApi";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
+import { getStickerList } from "../../store/modules/member";
+import Swal from "sweetalert2";
 
-interface Props {
+interface StickerProps {
   stickerId: number;
   imageUrl: string | undefined;
   price: number;
+  closeModal: any;
 }
 
-export default function StickerBuyModal({ stickerId, imageUrl, price }: Props) {
+export default function StickerBuyModal({
+  stickerId,
+  imageUrl,
+  price,
+  closeModal,
+}: StickerProps) {
   // const { stickerId, imageUrl, price } = props;
+  const dispatch = useDispatch();
   const [totalNumber, setTotalNumber] = useState<number>(0);
-  const closeProfileModal = () => {
-    // closeModal();
+  const closeStickerModal = () => {
+    closeModal();
   };
   const buySticker = async () => {
     const response = await postBuyDiaryStickerApi(stickerId, totalNumber);
-    console.log(response);
+    if (response === 200) {
+      const sticker = await getMyStickersApi();
+      dispatch(getStickerList(sticker));
+      Swal.fire({
+        icon: "success",
+        text: "스티커를 구매했어요!🎉",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "잔여 포인트가 부족해요😥",
+        text: "다양한 활동으로 포인트를 획득해보세요.",
+      });
+    }
   };
 
   const subtractTotalNumber = () => {
@@ -46,7 +75,7 @@ export default function StickerBuyModal({ stickerId, imageUrl, price }: Props) {
       <BackgroundContainer></BackgroundContainer>
       <ModalContainer>
         <ModalTopNavContainer>
-          <CloseModalButton onClick={closeProfileModal}>
+          <CloseModalButton onClick={closeStickerModal}>
             <BiArrowBack />
           </CloseModalButton>
           <ModalTitle>스티커 구매</ModalTitle>
@@ -67,7 +96,9 @@ export default function StickerBuyModal({ stickerId, imageUrl, price }: Props) {
           </CalculateSection>
           <TotalPriceSection>{totalNumber * price}pts</TotalPriceSection>
         </ModalContentSection>
-        <button onClick={buySticker}>구매하기</button>
+        <BuyButtonContainer>
+          <BuyButton onClick={buySticker}>구매하기</BuyButton>
+        </BuyButtonContainer>
       </ModalContainer>
     </>
   );
