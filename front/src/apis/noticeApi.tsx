@@ -28,4 +28,19 @@ const deleteSSEAlarmsApi = (payload: number) => {
     });
 };
 
-export { getSSEAlarmsApi, deleteSSEAlarmsApi };
+const postLiveDoubleInviteApi = (payload: string) => {
+  return api
+    .post(`/event/double/clubs/${payload}`, { withCredentials: true })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err, "postLiveDoubleInviteApi 오류");
+      Swal.fire({
+        icon: "error",
+        text: "postLiveDoubleInviteApi 오류",
+      });
+    });
+};
+
+export { getSSEAlarmsApi, deleteSSEAlarmsApi, postLiveDoubleInviteApi };

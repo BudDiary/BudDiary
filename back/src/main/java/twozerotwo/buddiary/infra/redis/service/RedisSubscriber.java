@@ -29,6 +29,7 @@ public class RedisSubscriber implements MessageListener {
 			String publishMessage = (String)redisTemplate.getStringSerializer().deserialize(message.getBody());
 			SseMessageDto sseMessageDto = objectMapper.readValue(publishMessage, SseMessageDto.class);
 			SseEmitter sseEmitter = sseEmitters.get(sseMessageDto.getTargetId());
+			// 카프카 토픽으로 바꾸기
 
 			if (topic.equals(NoticeType.DOUBLE_INVITE.getCode())) {
 				// SseEmitter sseEmitter = sseEmitters.get(sseMessageDto.getTargetId());

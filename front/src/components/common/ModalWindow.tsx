@@ -3,11 +3,11 @@ import React from "react";
 import NewGroupDiaryModal from "../group/NewGroupDiaryModal";
 import ProfileEditModal from "../mypage/ProfileEditModal";
 import SurveyModal from "../survey/SurveyModal";
-// import StickerBuyModal from "../stickers/StickerBuyModal";
 interface Props {
   page: number;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 export default function ModalWindow({ page, setModalOpen }: Props) {
   const closeModal = () => {
     setModalOpen(false);
@@ -17,7 +17,6 @@ export default function ModalWindow({ page, setModalOpen }: Props) {
       {page === 1 && <NewGroupDiaryModal closeModal={closeModal} />}
       {page === 2 && <ProfileEditModal closeModal={closeModal} />}
       {page === 3 && <SurveyModal closeModal={closeModal} />}
-      {/* {page === 4 && <StickerBuyModal closeModal={closeModal} />} */}
     </>
   );
 }

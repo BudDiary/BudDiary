@@ -1,24 +1,30 @@
-import React, { useRef } from "react";
-import { ContentBox, StageContainer } from "./WritePage.styles";
+import React, { useRef, useState, useEffect } from "react";
+import { ContentBox, StickerListTitle } from "./WritePage.styles";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/modules";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import interact from "interactjs";
+import { PageContainer } from "../../components/common/Page.styles";
+// import { getMyStickersApi } from "../../apis/stickerApi";
 
 interface Props {
   setStage: React.Dispatch<React.SetStateAction<number>>;
   content: string;
 }
 
+// interface StickerListProps {
+//   captainUsername: string | null;
+//   clubName: string;
+//   clubUuid: string;
+//   thumbnailUrl: string | undefined;
+//   clubType: string;
+// }
+
 export default function StickerPage({ setStage, content }: Props) {
   const contentBoxRef = useRef<HTMLInputElement | null>(null);
-  const mySticker = useSelector(
+  const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
-
-  const getMySitcker = () => {
-    console.log("가지고있는 스티커 종류", mySticker);
-  };
 
   interact(".item").draggable({
     onstart: (event: any) => {
@@ -95,14 +101,13 @@ export default function StickerPage({ setStage, content }: Props) {
     },
   });
   return (
-    <StageContainer>
-      <div className="text-4xl w-full text-center my-4">보유중인 스티커</div>
-      <div className="flex ">
-        <button className="border bg-bud-yellow" onClick={() => getMySitcker()}>
-          스티커확인
-        </button>
-        <img src={navimg} alt="" className="item h-40 w-40 mr-8" />
-        <img src={navimg} alt="" className="item h-40 w-40 mr-8" />
+    <PageContainer>
+      <StickerListTitle>보유중인 스티커</StickerListTitle>
+      {/* <StickerListContainer></StickerListContainer> */}
+      <div className="grid grid-cols-6">
+        {myStickers?.map((sticker) => (
+          <img src={sticker.sticker.imageUrl} className="item my-auto" />
+        ))}
       </div>
       <ContentBox ref={contentBoxRef}>{content}</ContentBox>
       <div className="flex justify-evenly">
@@ -116,6 +121,6 @@ export default function StickerPage({ setStage, content }: Props) {
           완료
         </button>
       </div>
-    </StageContainer>
+    </PageContainer>
   );
 }

@@ -42,7 +42,7 @@ const GroupDetailPage = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [clubData]);
 
   useEffect(() => {
     const handleScroll = () => {
