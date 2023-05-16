@@ -2,7 +2,7 @@ import styled, { keyframes } from "styled-components";
 import tw from "twin.macro";
 
 export const NotFoundContainer = styled.div`
-  ${tw`flex flex-col justify-center items-center text-center rounded-md `}
+  ${tw`flex flex-col justify-center items-center text-center rounded-md p-2`}
   position: absolute;
   top: 50%;
   left: 50%;
@@ -53,6 +53,12 @@ export const NoticeNav = styled.div`
     ${tw` font-berry my-4`}
     font-size: 2vw;
   }
+
+  @media (max-width: 640px) {
+    p {
+      font-size: 4vw;
+    }
+  }
 `;
 
 export const ErrorText = styled.span<{ delay: number }>`
@@ -76,6 +82,7 @@ export const NavButton = styled.button`
   ${tw`bg-bud-blue text-bud-black rounded-md px-3 py-2 font-bold m-2`}
   width: 30%;
   font-size: 1vw;
+
   &:hover {
     background-color: ${tw`bg-bud-pink text-bud-white`};
   }
