@@ -27,7 +27,7 @@ public class KafkaObjectChangeConsumerConfig {
 
 		Map<String, Object> configs = new HashMap<>();
 		configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		configs.put(ConsumerConfig.GROUP_ID_CONFIG, "foo");
+		configs.put(ConsumerConfig.GROUP_ID_CONFIG, "c202");
 
 		return new DefaultKafkaConsumerFactory<>(
 			configs,
