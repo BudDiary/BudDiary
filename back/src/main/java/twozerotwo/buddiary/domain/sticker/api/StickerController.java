@@ -44,8 +44,8 @@ public class StickerController {
 	@PostMapping("/{stickerId}")
 	public ResponseEntity buySticker(@PathVariable Long stickerId, @RequestBody StickerBuyRequest request,
 		HttpServletRequest servlet) {
-		stickerService.buySticker(stickerId, request, servlet);
-		return new ResponseEntity<>(HttpStatus.OK);
+		Long leftPoint = stickerService.buySticker(stickerId, request, servlet);
+		return new ResponseEntity<>(Map.of("leftPoint", leftPoint), HttpStatus.OK);
 	}
 
 	//---------------------------------------------------모든 스티커 조회----------------------------------------------------

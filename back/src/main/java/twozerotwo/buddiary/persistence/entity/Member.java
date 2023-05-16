@@ -160,11 +160,12 @@ public class Member {
 		return false;
 	}
 
-	public void minusPoint(Long totalPrice) {
+	public Long minusPoint(Long totalPrice) {
 		if (this.point - totalPrice < 0) {
 			throw new BadRequestException("포인트가 부족합니다.");
 		}
 		this.point -= totalPrice;
+		return this.point;
 	}
 
 	public String updateIntro(String intro) {
