@@ -97,9 +97,7 @@ export default function Recommended() {
   return (
     <>
       <TitleSection>
-        <Typography variant="h5" component="h5">
-          이런 사람과 교환일기를 작성해 보는 건 어떤가요?
-        </Typography>
+        이런 사람과 교환일기를 작성해 보는 건 어떤가요?
       </TitleSection>
       <hr />
       <br />
