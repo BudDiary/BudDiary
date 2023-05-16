@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Info } from "../../../types/group";
 import kakao from "../../../assets/modal/kakaotalk.png";
+import { LoginButton } from "../../navbar/MobileSidebar.styles";
 declare global {
   interface Window {
     Kakao: any;
@@ -8,14 +9,10 @@ declare global {
 }
 interface GroupInfoProps {
   clubInfo?: Info;
+  description: string;
 }
 
-export const KakaoShare = ({ clubInfo }: GroupInfoProps) => {
-  useEffect(() => {
-    console.log(window.Kakao);
-    createKakaoButton();
-  }, []);
-
+export const KakaoShare = ({ clubInfo, description }: GroupInfoProps) => {
   const createKakaoButton = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
@@ -28,7 +25,7 @@ export const KakaoShare = ({ clubInfo }: GroupInfoProps) => {
         objectType: "feed",
         content: {
           title: clubInfo?.clubName,
-          description: "안녕하세요",
+          description: description,
           imageUrl: clubInfo?.thumbnailUrl, // i.e. process.env.FETCH_URL + '/logo.png'
           link: {
             mobileWebUrl: window.location.href,
@@ -61,9 +58,10 @@ export const KakaoShare = ({ clubInfo }: GroupInfoProps) => {
   };
   return (
     <div className="kakao-share-button">
-      <button onClick={createKakaoButton} id="kakao-link-btn">
+      <LoginButton id="kakao-link-btn" onClick={createKakaoButton}>
         <img src={kakao} alt="kakao-share-icon" />
-      </button>
+        으로 초대하기
+      </LoginButton>
     </div>
   );
 };
