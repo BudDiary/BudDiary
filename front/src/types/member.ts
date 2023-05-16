@@ -4,7 +4,7 @@ export type MemberLoginType = {
   nickname: string;
   profilePic: string | null;
   intro: string | null;
-  points: 0;
+  points: number;
   checkPreference: false;
   sticker: Array<Sticker> | null;
 };
