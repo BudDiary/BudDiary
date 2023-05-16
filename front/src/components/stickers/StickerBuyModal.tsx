@@ -17,7 +17,6 @@ import {
 } from "./StickerBuyModal.styles";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   postBuyDiaryStickerApi,
   getMyStickersApi,
