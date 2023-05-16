@@ -13,6 +13,7 @@ interface PluralList {
   clubName: string;
   clubUuid: string;
   thumbnailUrl: string | undefined;
+  clubType: string;
 }
 
 export default function MyGroup() {

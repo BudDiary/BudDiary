@@ -9,6 +9,8 @@ import {
   SideUserInfo,
   SideMyPage,
   SideNotice,
+  ButtonLink,
+  LoginButton,
 } from "./MobileSidebar.styles";
 import { AlarmContainer } from "./NavBar.styles";
 import { MdHome, MdPowerSettingsNew } from "react-icons/md";
@@ -18,7 +20,7 @@ import { Divider } from "@mui/material";
 import useMember from "../../hooks/memberHook";
 import { deleteTokenApi } from "../../apis/userApi";
 import { KAKAO_AUTH_URL } from "../../apis/axiosConfig";
-import kakaoLogin from "../../assets/modal/kakaoLogin.png";
+import kakao from "../../assets/modal/kakaotalk.png";
 interface SideBarProps {
   onClose: () => void;
 }
@@ -43,7 +45,7 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
           <LogoGreen>:D</LogoGreen>
           <LogoBlue>iary</LogoBlue>
         </SidebarHeader>
-        <Divider style={{ border: "solid 2px #BFDBFE" }} />
+        <Divider style={{ border: "solid 1.5px #BFDBFE" }} />
         <SideBarMenuBox>
           {isLoggedIn ? (
             <>
@@ -55,13 +57,15 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
                   {memberData.nickname}
                 </h2>
                 <SideMyPage>
-                  <SideBarMenuItem onClick={onClose} to="/mypage">
+                  <ButtonLink to="/mypage">
                     <MdHome
+                      onClick={onClose}
                       color="#ABC4FF"
                       size={28}
                       style={{ marginBottom: "5px" }}
                     />
-                  </SideBarMenuItem>
+                  </ButtonLink>
+
                   <MdPowerSettingsNew
                     onClick={handleLogout}
                     color="#ABC4FF"
@@ -81,6 +85,11 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
                   일기작성
                 </SideBarMenuItem>
               </SideBarMenuSelect>
+              <SideBarMenuSelect>
+                <SideBarMenuItem onClick={onClose} to="/stickers">
+                  상점
+                </SideBarMenuItem>
+              </SideBarMenuSelect>
               <AlarmContainer>
                 <AiFillBell className="text-3xl text-bud-green" />
               </AlarmContainer>
@@ -89,14 +98,18 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
             <SideNotice>
               <h3>
                 소중한 추억을
-                <div style={{ display: "flex", justifyContent: "start" }}>
+                <div>
                   <LogoBlue>Bud</LogoBlue>
                   <LogoGreen>:D</LogoGreen>
-                  <LogoBlue>iary</LogoBlue> 에서
+                  <LogoBlue>iary</LogoBlue>
+                  <p>에서</p>
                 </div>
-                공유해보세요
+                <p>공유해보세요.</p>
               </h3>
-              <img src={kakaoLogin} alt="로그인" onClick={handleUser} />
+              <LoginButton>
+                <img src={kakao} alt="로그인" onClick={handleUser} />
+                으로 로그인하기
+              </LoginButton>
             </SideNotice>
           )}
         </SideBarMenuBox>

@@ -34,6 +34,7 @@ interface AlarmList {
 }
 
 export default function NavBar() {
+  const [initialLoad, setInitialLoad] = useState(true);
   const [sideBarState, setSidebarState] = useState(false);
   const [alarmBoxState, setAlarmBoxState] = useState(false);
   const [alarmList, setAlarmList] = useState<AlarmList[]>([]);
@@ -42,34 +43,41 @@ export default function NavBar() {
   const nickname = memberData.nickname;
   const profilePic = memberData.profilePic;
   const subscribeUrl = "http://localhost:8080/event/sub";
-  const eventSource = new EventSource(subscribeUrl, { withCredentials: true });
+
   useEffect(() => {
-    eventSource.addEventListener("DOUBLE_INVITE", function (event) {
-      let message = event.data;
-      alert(message);
-      console.log(message);
-    });
+    if (initialLoad && isLoggedIn) {
+      const eventSource = new EventSource(subscribeUrl, {
+        withCredentials: true,
+      });
 
-    eventSource.addEventListener("error", function (event) {
-      console.log("error");
-      console.log(event);
-      eventSource.close();
-    });
-    eventSource.addEventListener("connect", function (event) {
-      let message = event.data;
-      console.log(message);
-      // eventSource.close()
-    });
+      eventSource.addEventListener("DOUBLE_INVITE", function (event) {
+        let message = event.data;
+        alert(message);
+        console.log(message);
+      });
 
-    const fetchData = async () => {
-      try {
-        const data = await getSSEAlarmsApi();
-        setAlarmList(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
+      eventSource.addEventListener("error", function (event) {
+        console.log("error");
+        console.log(event);
+        eventSource.close();
+      });
+      eventSource.addEventListener("connect", function (event) {
+        let message = event.data;
+        console.log(message);
+        // eventSource.close()
+      });
+
+      const fetchData = async () => {
+        try {
+          const data = await getSSEAlarmsApi();
+          setAlarmList(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData();
+      setInitialLoad(false);
+    }
   }, [alarmList]);
 
   const showSidebar = () => {
