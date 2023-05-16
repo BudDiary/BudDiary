@@ -11,6 +11,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { postRecommendBySurveyApi } from "../../apis/clubApi";
 import useMember from "../../hooks/memberHook";
+import male from "../../assets/male.png"
+import female from "../../assets/female.png"
 import {
   TitleSection,
   ProfileSection,
@@ -34,6 +36,7 @@ export default function Recommended() {
 
   const [recommendList, setRecommendList] = useState<Recommendation[]>([]);
   const [recommendUserList, setRecommendUserList] = useState<RecommendUserInfo[]>([]);
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
   useEffect(() => {
     if (recommendList.length === 0) {
       postRecommendBySurveyApi({ userId: memberData.username })
@@ -46,11 +49,11 @@ export default function Recommended() {
 
 
   useEffect(() => {
-    let initialLoad = true; // Flag to track initial load
+    // let initialLoad = true; // Flag to track initial load
   
     if (recommendList.length > 0 && initialLoad) {
       getRecommend(); // Call getRecommend() when recommendList has a value for the first time
-      initialLoad = false; // Update the flag to prevent subsequent calls
+      setInitialLoad(false); // Update the flag to prevent subsequent calls
     }
   }, [recommendList]);
   // useEffect(() => {
@@ -80,10 +83,11 @@ export default function Recommended() {
     for (let i = 0; i < recommendList.length; i++) {
       postUserInfoApi({member_id : recommendList[i].userId}).then((result) => {
         if (result.data) {
+          console.log(result.data, 'this is result data')
           let newdata: RecommendUserInfo = {
             nickname: result.data.nickname,
             gender: result.data.gender,
-            agerange: result.data.agerange,
+            agerange: result.data.ageRange,
             rate: recommendList[i].rate,
           };
           newdatas.push(newdata);
@@ -123,7 +127,12 @@ export default function Recommended() {
             ? recommendUserList.map((el, idx) => (
                 <SwiperSlide key={idx} className="p-2">
                   <Card sx={{ width: 200 }}>
-                    <CardMedia sx={{ height: 100 }} image="./assets/male.png"/>
+                    { el.gender === 'male' ?
+                    (<CardMedia component="img" sx={{ height: 100 }} image= {male}/>)
+                    :
+                    (<CardMedia component="img" sx={{ height: 100 }} image= {female}/>)
+                    }
+                      
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
                         {el.nickname}
@@ -134,9 +143,7 @@ export default function Recommended() {
                       <Typography variant="body2" color="text.secondary">
                         {el.agerange}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {el.gender}
-                      </Typography>
+
                     </CardContent>
                     <CardActions>
                       <ApplyButton>그룹일기 신청하기</ApplyButton>
