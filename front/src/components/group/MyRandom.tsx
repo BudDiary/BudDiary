@@ -14,36 +14,49 @@ interface DoubleList {
 
 export default function MyRandom() {
   const [doubleList, setDoubleList] = useState<DoubleList[]>([]);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getMyClubListApi();
-        setDoubleList(data.doubleList);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const data = await getMyClubListApi();
+  //       setDoubleList(data.doubleList);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
 
-    fetchData();
+  //   fetchData();
+  // }, []);
+  useEffect(() => {
+    getMyClubListApi()
+      .then((result) => {
+        if (!result.error) {
+          setDoubleList(result.data.doubleList);
+        } else {
+          console.error(result.error); // Optionally, log the error
+        }
+      })
+      .catch((error) => {
+        console.error(error); // Log any unhandled promise rejections
+      });
   }, []);
   return (
     <Swiper
       spaceBetween={20}
       slidesPerView={1}
-      breakpoints={{
-        360: {
-          slidesPerView: 1,
-        },
-        640: {
-          slidesPerView: 2,
-        },
-        1024: {
-          slidesPerView: 3,
-        },
-        1440: {
-          slidesPerView: 4,
-        },
-      }}
+      // breakpoints={{
+      //   360: {
+      //     slidesPerView: 1,
+      //   },
+      //   640: {
+      //     slidesPerView: 2,
+      //   },
+      //   1024: {
+      //     slidesPerView: 3,
+      //   },
+      //   1440: {
+      //     slidesPerView: 4,
+      //   },
+      // }}
     >
       {doubleList.length >= 1
         ? doubleList.map((item, index) => (
