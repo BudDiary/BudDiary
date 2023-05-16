@@ -38,7 +38,8 @@ public class KafkaObjectChangeConsumerConfig {
 
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, SseMessageDto> stockChangeListener() {
-		ConcurrentKafkaListenerContainerFactory<String, SseMessageDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		ConcurrentKafkaListenerContainerFactory<String, SseMessageDto> factory
+			= new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(stockChangeConsumer());
 		return factory;
 	}
