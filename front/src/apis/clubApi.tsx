@@ -63,10 +63,10 @@ const postRecommendBySurveyApi = (payload: any) => {
       return res;
     })
     .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        text: "postRecommendBySurveyApi 오류가 발생했어요.",
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "postRecommendBySurveyApi 오류가 발생했어요.",
+      // });
       return err;
     });
 };
@@ -96,10 +96,10 @@ const PostRecommendBykeyWordApi = (payload: any) => {
       return res;
     })
     .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        text: "PostRecommendBykeyWordApi 오류가 발생했어요.",
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "PostRecommendBykeyWordApi 오류가 발생했어요.",
+      // });
       return err;
     });
 };

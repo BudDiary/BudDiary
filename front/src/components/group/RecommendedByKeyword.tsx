@@ -31,6 +31,7 @@ interface RecommendUserInfo {
   gender: string;
   agerange: string;
   rate: number;
+  userId: string;
 }
 export default function RecommendedByKeyword() {
   const { memberData } = useMember();
@@ -39,50 +40,61 @@ export default function RecommendedByKeyword() {
   const [recommendUserList, setRecommendUserList] = useState<
     RecommendUserInfo[]
   >([]);
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const [initialLoad, setInitialLoad] = useState<number>(1);
   useEffect(() => {
-    
-      PostRecommendBykeyWordApi({ userId: memberData.username }).then(
-        (result) => {
+    PostRecommendBykeyWordApi({ userId: memberData.username })
+      .then((result) => {
+        if (!result.error) {
           console.log(result, "this is keyword recommend result");
           setRecommendList(result.data);
+          setInitialLoad(2)
+        } else {
+          console.error(result.error); // Optionally, log the error
         }
-      );
-    
+      })
+      .catch((error) => {
+        console.error(error); // Log any unhandled promise rejections
+      });
   }, []);
 
   useEffect(() => {
     // let initialLoad = true; // Flag to track initial load
 
-    if (recommendList.length > 0 && initialLoad) {
+    if (initialLoad === 2) {
+      console.log(recommendList, 'this is recommendList')
       getRecommend(); // Call getRecommend() when recommendList has a value for the first time
-      setInitialLoad(false); // Update the flag to prevent subsequent calls
+      setInitialLoad(3); // Update the flag to prevent subsequent calls
     }
   }, [recommendList]);
 
   const getRecommend = () => {
     const newdatas: RecommendUserInfo[] = [];
-    for (let i = 0; i < recommendList.length; i++) {
-      postUserInfoApi({ member_id: recommendList[i].userId }).then((result) => {
-        if (result.data) {
-          console.log(result.data, "this is result data");
-          let newdata: RecommendUserInfo = {
-            nickname: result.data.nickname,
-            gender: result.data.gender,
-            agerange: result.data.ageRange,
-            rate: recommendList[i].rate,
-          };
-          newdatas.push(newdata);
-          setRecommendUserList([...recommendUserList, ...newdatas]);
-        } else {
-          console.error(
-            "Invalid data received for user:",
-            recommendList[i].userId
-          );
-        }
-      });
+    
+    if (recommendList) {
+      for (let i = 0; i < recommendList.length; i++) {
+        postUserInfoApi({ member_id: recommendList[i].userId }).then((result) => {
+          if (result.data) {
+            console.log(result.data, "this is result data");
+            let newdata: RecommendUserInfo = {
+              nickname: result.data.nickname,
+              gender: result.data.gender,
+              agerange: result.data.ageRange,
+              rate: recommendList[i].rate,
+              userId: recommendList[i].userId,
+            };
+            newdatas.push(newdata);
+            setRecommendUserList([...recommendUserList, ...newdatas]);
+          } else {
+            console.error(
+              "Invalid data received for user:",
+              recommendList[i].userId
+            );
+          }
+        });
+      }
     }
   };
+  
   return (
     <>
       <TitleSection>일기 내용을 기반으로 한 추천 리스트 입니다.</TitleSection>

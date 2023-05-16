@@ -41,35 +41,36 @@ export default function Recommended() {
   const [recommendUserList, setRecommendUserList] = useState<
     RecommendUserInfo[]
   >([]);
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const [initialLoad, setInitialLoad] = useState<number>(1);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await postRecommendBySurveyApi({
-          userId: memberData.username,
-        });
-        setRecommendList(data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
+    postRecommendBySurveyApi({ userId: memberData.username })
+      .then((result) => {
+        if (!result.error) {
+          setRecommendList(result.data);
+          setInitialLoad(2)
+        } else {
+          console.error(result.error); // Optionally, log the error
+        }
+      })
+      .catch((error) => {
+        console.error(error); // Log any unhandled promise rejections
+      });
   }, []);
   const handleInviteDouble = (userId: string) => {
     postLiveDoubleInviteApi(userId);
   };
 
   useEffect(() => {
-    // let initialLoad = true; // Flag to track initial load
-
-    if (recommendList.length > 0 && initialLoad) {
+    if ( initialLoad === 2) {
       getRecommend(); // Call getRecommend() when recommendList has a value for the first time
-      setInitialLoad(false); // Update the flag to prevent subsequent calls
+      setInitialLoad(3); // Update the flag to prevent subsequent calls
     }
   }, [recommendList]);
   
   const getRecommend = () => {
     const newdatas: RecommendUserInfo[] = [];
+    if (recommendList) {
     for (let i = 0; i < recommendList.length; i++) {
       postUserInfoApi({ member_id: recommendList[i].userId }).then((result) => {
         if (result.data) {
@@ -91,6 +92,7 @@ export default function Recommended() {
         }
       });
     }
+  }
   };
   return (
     <>
