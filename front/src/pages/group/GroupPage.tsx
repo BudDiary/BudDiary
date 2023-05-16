@@ -4,6 +4,7 @@ import {
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import Recommended from "../../components/group/Recommended";
+import RecommendedByKeyword from "../../components/group/RecommendedByKeyword";
 import MyTab from "../../components/group/MyTab";
 import navimg from "../../assets/subnav/GroupDiary.jpg";
 import TypeIt from "typeit-react";
@@ -25,7 +26,8 @@ export default function GroupPage() {
       </SubNavContainer>
       <PageContainer>
         <Recommended />
-        <br />
+        <br/>
+        <RecommendedByKeyword />
         <MyTab />
       </PageContainer>
     </>

@@ -9,11 +9,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { postRecommendBySurveyApi } from "../../apis/clubApi";
+import { PostRecommendBykeyWordApi } from "../../apis/clubApi";
 import useMember from "../../hooks/memberHook";
 import male from "../../assets/male.png";
-import nullImage from "../../assets/nullImage.png";
 import female from "../../assets/female.png";
+import nullImage from "../../assets/nullImage.png";
 import {
   TitleSection,
   ProfileSection,
@@ -32,7 +32,7 @@ interface RecommendUserInfo {
   agerange: string;
   rate: number;
 }
-export default function Recommended() {
+export default function RecommendedByKeyword() {
   const { memberData } = useMember();
 
   const [recommendList, setRecommendList] = useState<Recommendation[]>([]);
@@ -42,9 +42,9 @@ export default function Recommended() {
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   useEffect(() => {
     if (recommendList.length === 0) {
-      postRecommendBySurveyApi({ userId: memberData.username }).then(
+      PostRecommendBykeyWordApi({ userId: memberData.username }).then(
         (result) => {
-          console.log(result, "this is result");
+          console.log(result, "this is keyword recommend result");
           setRecommendList(result.data);
         }
       );
@@ -59,27 +59,6 @@ export default function Recommended() {
       setInitialLoad(false); // Update the flag to prevent subsequent calls
     }
   }, [recommendList]);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await postRecommendBySurveyApi({userId : memberData.username});
-  //       // const userdata = await postUserInfoApi({userId : memberData.username})
-  //       setRecommendList(data.data);
-  //       getRecommend();
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (recommendList.length !== 0) {
-  //     console.log(recommendList, 'this is recommendList')
-  //     console.log(recommendList.length, 'this is length')
-  //     getRecommend();
-  //   }
-  // }, [recommendList]);
 
   const getRecommend = () => {
     const newdatas: RecommendUserInfo[] = [];
@@ -106,9 +85,7 @@ export default function Recommended() {
   };
   return (
     <>
-      <TitleSection>
-        이런 사람과 교환일기를 작성해 보는 건 어떤가요?
-      </TitleSection>
+      <TitleSection>일기 내용을 기반으로 한 추천 리스트 입니다.</TitleSection>
       <hr />
       <br />
       <ProfileSection>
@@ -152,13 +129,9 @@ export default function Recommended() {
                         image={nullImage}
                       />
                     )}
-
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
                         {el.nickname}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        나와 {(el.rate * 100).toFixed(0)}% 유사한 사람이에요!
                       </Typography>
                       {el.agerange !== null && (
                         <Typography variant="body2" color="text.secondary">
