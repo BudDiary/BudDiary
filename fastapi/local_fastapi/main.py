@@ -292,3 +292,29 @@ async def keyword(info : keywordSimilar):
     result = ", ".join(formatted_output)
 
     return [result]
+
+@app.post("/fastapi/wordcloud")
+async def wordcloud(info : keywordSimilar):
+    def get_wordcloud(filename, target_user):
+        if os.path.exists(filename):
+            with open(filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+        for obj in data:
+            if obj["userId"] == target_user:
+                keywords = obj["keywords"]
+                break
+        return keywords
+    
+    keyword_object = get_wordcloud('keyword.json', info.userId)
+    converted_output = []
+
+    for key, value in keyword_object.items():
+        converted_output.append({
+            "text": key,
+            "value": value
+        })
+
+   
+    return converted_output
+
