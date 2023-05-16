@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { postRecommendBySurveyApi } from "../../apis/clubApi";
+import { postLiveDoubleInviteApi } from "../../apis/noticeApi";
 import useMember from "../../hooks/memberHook";
 import {
   TitleSection,
@@ -38,6 +39,9 @@ export default function Recommended() {
     };
     fetchData();
   }, []);
+  const handleInviteDouble = (userId: string) => {
+    postLiveDoubleInviteApi(userId);
+  };
 
   return (
     <>
@@ -78,7 +82,11 @@ export default function Recommended() {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <ApplyButton>그룹일기 신청하기</ApplyButton>
+                      <ApplyButton
+                        onClick={() => handleInviteDouble(el.userId)}
+                      >
+                        그룹일기 신청하기
+                      </ApplyButton>
                     </CardActions>
                   </Card>
                 </SwiperSlide>

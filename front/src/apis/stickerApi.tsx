@@ -30,7 +30,7 @@ const postBuyDiaryStickerApi = (id: number, count: number) => {
     )
     .then((res) => {
       console.log(res, "잘삼?");
-      return res.status;
+      return res;
     })
     .catch((err) => {
       return err;
@@ -42,8 +42,8 @@ const getMyStickersApi = () => {
   return api
     .get(`api/stickers/mine`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
-      return res.data;
+      console.log(res.data.myStickerList);
+      return res.data.myStickerList;
     })
     .catch((err) => {
       Swal.fire({
