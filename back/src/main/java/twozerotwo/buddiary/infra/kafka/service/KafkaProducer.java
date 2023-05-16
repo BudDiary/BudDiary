@@ -9,8 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class KafkaProducer {
-
-	private static final String TOPIC = "exam";
+	private static final String TOPIC = "buddiary";
 	private final KafkaTemplate<String, Object> kafkaTemplate;
 
 	@Autowired
