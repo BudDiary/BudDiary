@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.reply.dto.ReplyDto;
 
 @Entity
 @Builder
@@ -48,4 +49,10 @@ public class Reply {
 	@Size(min = 1, max = 200, message = "댓글은 1자 이상 200자 이하여야 합니다.")
 	private String text;
 
+	public ReplyDto toDto() {
+		return ReplyDto.builder()
+			.text(this.text)
+			.writeDate(this.writeDate)
+			.writer(this.writer.toWriterDto()).build();
+	}
 }
