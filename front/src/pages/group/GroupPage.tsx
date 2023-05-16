@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   PageContainer,
   SubNavContainer,
@@ -7,8 +7,10 @@ import Recommended from "../../components/group/Recommended";
 import MyTab from "../../components/group/MyTab";
 import navimg from "../../assets/subnav/GroupDiary.jpg";
 import TypeIt from "typeit-react";
+import useMember from "../../hooks/memberHook";
 
 export default function GroupPage() {
+
   return (
     <>
       <SubNavContainer img={navimg}>

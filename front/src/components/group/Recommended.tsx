@@ -22,23 +22,78 @@ interface Recommendation {
   userId: string;
   rate: number;
 }
+
+interface RecommendUserInfo {
+  nickname: string;
+  gender: string;
+  agerange: string;
+  rate: number;
+}
 export default function Recommended() {
   const { memberData } = useMember();
 
   const [recommendList, setRecommendList] = useState<Recommendation[]>([]);
+  const [recommendUserList, setRecommendUserList] = useState<RecommendUserInfo[]>([]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await postRecommendBySurveyApi({userId : memberData.username});
-        // const userdata = await postUserInfoApi({userId : memberData.username})
-        setRecommendList(data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
+    if (recommendList.length === 0) {
+      postRecommendBySurveyApi({ userId: memberData.username })
+        .then((result) => {
+          console.log(result, 'this is result');
+          setRecommendList(result.data);
+        })
+    }
+  }, [recommendList]);
 
+
+  useEffect(() => {
+    let initialLoad = true; // Flag to track initial load
+  
+    if (recommendList.length > 0 && initialLoad) {
+      getRecommend(); // Call getRecommend() when recommendList has a value for the first time
+      initialLoad = false; // Update the flag to prevent subsequent calls
+    }
+  }, [recommendList]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await postRecommendBySurveyApi({userId : memberData.username});
+  //       // const userdata = await postUserInfoApi({userId : memberData.username})
+  //       setRecommendList(data.data);
+  //       getRecommend();
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (recommendList.length !== 0) {
+  //     console.log(recommendList, 'this is recommendList')
+  //     console.log(recommendList.length, 'this is length')
+  //     getRecommend();
+  //   }
+  // }, [recommendList]);
+
+  const getRecommend = () => {
+    const newdatas: RecommendUserInfo[] = [];
+    for (let i = 0; i < recommendList.length; i++) {
+      postUserInfoApi({member_id : recommendList[i].userId}).then((result) => {
+        if (result.data) {
+          let newdata: RecommendUserInfo = {
+            nickname: result.data.nickname,
+            gender: result.data.gender,
+            agerange: result.data.agerange,
+            rate: recommendList[i].rate,
+          };
+          newdatas.push(newdata);
+          setRecommendUserList([...recommendUserList, ...newdatas]);
+        } else {
+          console.error('Invalid data received for user:', recommendList[i].userId);
+        }
+      });
+    }
+  };
   return (
     <>
       <TitleSection>
@@ -66,17 +121,23 @@ export default function Recommended() {
             },
           }}
         >
-          {recommendList.length >= 1
-            ? recommendList.map((el, idx) => (
+          {recommendUserList.length >= 1
+            ? recommendUserList.map((el, idx) => (
                 <SwiperSlide key={idx} className="p-2">
                   <Card sx={{ width: 200 }}>
-                    <CardMedia sx={{ height: 100 }} />
+                    <CardMedia sx={{ height: 100 }} image="./assets/male.png"/>
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
-                        {el.userId}
+                        {el.nickname}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        나와 {el.rate * 100}% 유사한 사람이에요!
+                        나와 {(el.rate * 100).toFixed(0)}% 유사한 사람이에요!
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {el.agerange}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {el.gender}
                       </Typography>
                     </CardContent>
                     <CardActions>
