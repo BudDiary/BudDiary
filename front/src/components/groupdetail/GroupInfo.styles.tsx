@@ -16,7 +16,7 @@ export const GroupList = styled.div`
   }
 
   p {
-    ${tw`font-berry`}
+    ${tw`font-berry mb-4`}
   }
 
   div {
@@ -43,11 +43,15 @@ export const MemberList = styled.div`
     }
 
     p {
-      ${tw`text-bud-blue text-center`}
+      ${tw`text-bud-blue text-center items-center`}
     }
   }
 `;
 
 export const ClubList = styled.span`
   ${tw`font-berry mx-2 px-1`}
+`;
+
+export const MemberListInfo = styled.span`
+  ${tw`flex items-center`}
 `;

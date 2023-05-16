@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StickerBuyRequest {
-	@NotNull(message = "스티커 아이디를 입력해주세요.")
-	private Long stickerId;
+	// @NotNull(message = "스티커 아이디를 입력해주세요.")
+	// private Long stickerId;
 	@NotNull(message = "스티커 수량을 입력해주세요.")
 	private Long count;
 	// private String username;

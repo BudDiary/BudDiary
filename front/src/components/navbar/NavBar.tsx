@@ -11,6 +11,8 @@ import {
   NavbarBox,
   NickNameContainer,
   NavProfilePicContainer,
+  AlarmNumber,
+  AlarmListContainer,
 } from "./NavBar.styles";
 import { RxHamburgerMenu } from "react-icons/rx";
 import MobileSidebar from "./MobileSidebar";
@@ -22,47 +24,68 @@ import { AiFillBell } from "react-icons/ai";
 import AlarmSSE from "./AlarmSSE";
 import { getSSEAlarmsApi } from "../../apis/noticeApi";
 
+interface AlarmList {
+  id: number;
+  clubName: string | null;
+  clubUuid: string | null;
+  nickname: string;
+  type: string;
+  username: string;
+}
+
 export default function NavBar() {
+  const [initialLoad, setInitialLoad] = useState(true);
   const [sideBarState, setSidebarState] = useState(false);
   const [alarmBoxState, setAlarmBoxState] = useState(false);
+  const [alarmList, setAlarmList] = useState<AlarmList[]>([]);
   const { memberData, isLoggedIn } = useMember();
   const navigate = useNavigate();
   const nickname = memberData.nickname;
   const profilePic = memberData.profilePic;
   const subscribeUrl = "http://localhost:8080/event/sub";
-  const eventSource = new EventSource(subscribeUrl, { withCredentials: true });
+
   useEffect(() => {
-    eventSource.addEventListener("DOUBLE_INVITE", function (event) {
-      let message = event.data;
-      alert(message);
-      console.log(message);
-    });
+    if (initialLoad && isLoggedIn) {
+      const eventSource = new EventSource(subscribeUrl, {
+        withCredentials: true,
+      });
 
-    eventSource.addEventListener("error", function (event) {
-      console.log("error");
-      console.log(event);
-      // eventSource.close()
-    });
-    eventSource.addEventListener("connect", function (event) {
-      let message = event.data;
-      console.log(message);
-      // eventSource.close()
-    });
+      eventSource.addEventListener("DOUBLE_INVITE", function (event) {
+        let message = event.data;
+        alert(message);
+        console.log(message);
+      });
 
-    const fetchData = async () => {
-      try {
-        const data = await getSSEAlarmsApi();
-        console.log(data, "알람");
-        // setRecommendList(data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
+      eventSource.addEventListener("error", function (event) {
+        console.log("error");
+        console.log(event);
+        eventSource.close();
+      });
+      eventSource.addEventListener("connect", function (event) {
+        let message = event.data;
+        console.log(message);
+        // eventSource.close()
+      });
+
+      const fetchData = async () => {
+        try {
+          const data = await getSSEAlarmsApi();
+          setAlarmList(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData();
+      setInitialLoad(false);
+    }
+  }, [alarmList]);
 
   const showSidebar = () => {
     setSidebarState(true);
+  };
+
+  const handleCloseSidebar = () => {
+    setSidebarState(false);
   };
   const handleUser = () => {
     if (isLoggedIn === true) {
@@ -76,7 +99,9 @@ export default function NavBar() {
   };
   return (
     <div>
-      {sideBarState === true ? <MobileSidebar /> : null}
+      {sideBarState === true ? (
+        <MobileSidebar onClose={handleCloseSidebar} />
+      ) : null}
       <NavbarContainer>
         <NavbarBox>
           <LogoContainer to="/">
@@ -86,7 +111,7 @@ export default function NavBar() {
           </LogoContainer>
           <MenuItem to="/group">그룹일기</MenuItem>
           <MenuItem to="/write">일기작성</MenuItem>
-
+          <MenuItem to="/stickers">상점</MenuItem>
           <ProfileContainer>
             <NickNameContainer onClick={handleUser}>
               {isLoggedIn ? nickname : "로그인"}
@@ -98,14 +123,30 @@ export default function NavBar() {
             {isLoggedIn ? (
               <AlarmContainer onClick={handleAlarms}>
                 <AiFillBell className="text-3xl text-bud-green" />
+                {alarmList.length >= 1 ? (
+                  <AlarmNumber>{alarmList.length}</AlarmNumber>
+                ) : null}
               </AlarmContainer>
             ) : null}
           </ProfileContainer>
-
           <MobileMenu>
             <RxHamburgerMenu onClick={showSidebar} />
           </MobileMenu>
-          {alarmBoxState ? <AlarmSSE /> : null}
+          {alarmBoxState ? (
+            <AlarmListContainer>
+              {alarmList.map((alarm) => (
+                <AlarmSSE
+                  key={alarm.id}
+                  id={alarm.id}
+                  clubName={alarm.clubName}
+                  clubUuid={alarm.clubUuid}
+                  nickname={alarm.nickname}
+                  type={alarm.type}
+                  username={alarm.username}
+                />
+              ))}
+            </AlarmListContainer>
+          ) : null}
         </NavbarBox>
       </NavbarContainer>
     </div>

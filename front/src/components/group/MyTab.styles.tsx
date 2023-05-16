@@ -2,6 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const Container = styled.div`
+  ${tw`h-[400px]`}
   animation-name: AppearText;
   animation-delay: 1s;
   animation-duration: 1.5s;
