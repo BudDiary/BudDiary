@@ -32,6 +32,7 @@ interface RecommendUserInfo {
   gender: string;
   agerange: string;
   rate: number;
+  userId: string;
 }
 export default function Recommended() {
   const { memberData } = useMember();
@@ -99,6 +100,7 @@ export default function Recommended() {
             gender: result.data.gender,
             agerange: result.data.ageRange,
             rate: recommendList[i].rate,
+            userId: recommendList[i].userId,
           };
           newdatas.push(newdata);
           setRecommendUserList([...recommendUserList, ...newdatas]);
