@@ -10,11 +10,16 @@
 
 </body>
 <script>
-    let subscribeUrl = "http://localhost:8080/sub";
+    let subscribeUrl = "http://localhost:8080/event/sub";
 
     let eventSource = new EventSource(subscribeUrl);
 
     eventSource.addEventListener("DOUBLE_INVITE", function(event) {
+        let message = event.data;
+        alert(message);
+        console.log(message);
+    })
+    eventSource.addEventListener("CLUB_WRITE", function(event) {
         let message = event.data;
         alert(message);
         console.log(message);
