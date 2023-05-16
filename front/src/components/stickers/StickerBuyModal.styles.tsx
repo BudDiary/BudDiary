@@ -10,9 +10,17 @@ export const StickerPictureContainer = styled.img`
 `;
 
 export const CalculateSection = styled.div`
-  ${tw`flex justify-between px-32 text-4xl mt-10`}
+  ${tw`flex justify-between px-40 text-4xl mt-10`}
 `;
 
 export const TotalPriceSection = styled.div`
-  ${tw`text-center`}
+  ${tw`text-center text-lg`}
+`;
+
+export const BuyButtonContainer = styled.div`
+  ${tw`flex justify-center mt-10`}
+`;
+
+export const BuyButton = styled.button`
+  ${tw`text-center bg-bud-pink text-white px-10 py-3 text-xl rounded-md`}
 `;

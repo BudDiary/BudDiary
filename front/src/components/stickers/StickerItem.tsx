@@ -19,6 +19,9 @@ export default function StickerItem(props: Props) {
   const openStickerModal = async () => {
     handleModalState(true);
   };
+  const closeModal = () => {
+    handleModalState(false);
+  };
 
   return (
     <>
@@ -28,6 +31,7 @@ export default function StickerItem(props: Props) {
           stickerId={stickerId}
           imageUrl={imageUrl}
           price={price}
+          closeModal={closeModal}
         />
       ) : null}
       <IndividualStickerContainer onClick={openStickerModal}>
