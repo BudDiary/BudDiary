@@ -57,6 +57,7 @@ export interface Info {
   thumbnailUrl: string | null;
   clubName: string;
   captainUsername: string | null;
+  clubType: string;
 }
 
 export interface ClubDetail {

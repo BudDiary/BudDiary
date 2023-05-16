@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { EditTitle } from "./DiaryComment.style";
 import { ModalTopNavContainer, GroupModal } from "../common/ModalWindow.styles";
 import { MemberList, ClubList } from "./GroupInfo.styles";
@@ -26,9 +26,8 @@ export default function GroupInfoModal({
     onClose();
   };
 
-  const diaryType = "DOUBLE";
+  const clubType = clubInfo?.clubType;
 
-  useEffect(() => {});
   return (
     <GroupModal style={{ padding: "10px" }}>
       <ModalTopNavContainer
@@ -79,7 +78,7 @@ export default function GroupInfoModal({
         style={{ marginBlock: "10px", height: "65px", width: "100%" }}
       />
       <p>{clubInfo?.clubName}</p>
-      {diaryType !== "DOUBLE" && diaryType === "PLURAL" ? (
+      {clubType !== "DOUBLE" && clubType === "PLURAL" ? (
         <div
           style={{
             display: "flex",

@@ -1,5 +1,10 @@
 import React from "react";
-import { GroupList, MemberList, ClubList } from "./GroupInfo.styles";
+import {
+  GroupList,
+  MemberList,
+  ClubList,
+  MemberListInfo,
+} from "./GroupInfo.styles";
 import { BasicButton } from "./Diaries.styles";
 import useMember from "../../hooks/memberHook";
 import { Divider } from "@mui/material";
@@ -19,14 +24,13 @@ export default function GroupInfo({
 }: GroupInfoProps) {
   const { memberData } = useMember();
   const username = memberData.username;
-
-  const diaryType = "DOUBLE";
+  const clubType = clubInfo?.clubType;
 
   return (
     <GroupList style={style}>
-      <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
       <p>{clubInfo?.clubName}</p>
-      {diaryType !== "DOUBLE" && diaryType === "PLURAL" ? (
+      <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
+      {clubType !== "DOUBLE" && clubType === "PLURAL" ? (
         <div
           style={{
             display: "flex",
@@ -43,7 +47,7 @@ export default function GroupInfo({
         {memberList?.map((member) => (
           <div key={member.id}>
             <img src={member.profilePath ?? ""} alt="프로필" />
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <MemberListInfo>
               {member.nickname}
               {member.username === clubInfo?.captainUsername ? (
                 <img
@@ -55,7 +59,7 @@ export default function GroupInfo({
                 ""
               )}
               <p>{member.username === username ? "  me" : ""}</p>
-            </div>
+            </MemberListInfo>
           </div>
         ))}
       </MemberList>

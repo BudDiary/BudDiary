@@ -44,15 +44,29 @@ export const MobileMenu = styled.button`
   ${tw`my-auto mr-4 text-2xl visible sm:hidden`}
 `;
 
-
 export const NavProfilePicContainer = styled.img`
-${tw`hover:cursor-pointer w-[36px] h-[36px] border-2 border-gray-200 rounded-full mb-10 ml-2 mt-1`}
+  ${tw`hover:cursor-pointer w-[36px] h-[36px] border-2 border-gray-200 rounded-full mb-10 ml-2 mt-1`}
 `;
 
 export const NickNameContainer = styled.div`
-${tw`hover:cursor-pointer font-bold mt-2`}
+  ${tw`hover:cursor-pointer font-bold mt-2`}
 `;
 
 export const AlarmContainer = styled.div`
-${tw`hover:cursor-pointer ml-4  my-auto`}
+  ${tw`hover:cursor-pointer ml-4  my-auto relative`}
+`;
+
+export const AlarmNumber = styled.div`
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  ${tw`bg-bud-pink rounded-full h-4 w-4 text-[4px] text-center text-white`}
+`;
+
+export const AlarmListContainer = styled.div`
+  position: fixed;
+  top: 42px;
+  right: 0%;
+  z-index: 15;
+  ${tw`bg-white h-[75%] w-[320px] border-2 rounded-xl overflow-y-scroll`}
 `;

@@ -66,13 +66,14 @@ public class Member {
 	private Role role;
 	//민우 요청사항 추가 설문조사
 	// @JsonProperty("checkPreference")
-
+	@JsonIgnore
 	@Builder.Default
 	@Column(length = 2000)
 	private String phoneNumber = null;
-
+	@JsonIgnore
 	@Builder.Default
 	private String gender = null;
+	@JsonIgnore
 
 	@Builder.Default
 	private String ageRange = null;
@@ -134,6 +135,7 @@ public class Member {
 	public MemberDto toDto() {
 		return MemberDto.builder()
 			.username(this.username)
+			.nickname(this.nickname)
 			.profilePath(this.profilePath)
 			.intro(this.intro)
 			.point(this.point)

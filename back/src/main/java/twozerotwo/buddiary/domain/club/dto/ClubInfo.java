@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import twozerotwo.buddiary.persistence.enums.ClubType;
 
 @Getter
 @Builder
@@ -16,4 +17,5 @@ public class ClubInfo {
 	private String thumbnailUrl;
 	private String clubName;
 	private String captainUsername;
+	private ClubType clubType;
 }

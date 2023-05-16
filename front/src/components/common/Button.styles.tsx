@@ -22,3 +22,11 @@ export const ResetButton = styled.button`
 export const EditSubmitButton = styled.button`
   ${tw`bg-bud-blue text-white h-10 rounded-sm px-4 w-[200px] ml-3`}
 `;
+
+export const AcceptInvitationButton = styled.button`
+  ${tw`bg-bud-pink text-white h-10 rounded-sm px-4 w-[40%] ml-3`}
+`;
+
+export const DeclineInvitationButton = styled.button`
+  ${tw`bg-gray-400 text-white h-10 rounded-sm px-4 w-[40%] ml-3`}
+`;

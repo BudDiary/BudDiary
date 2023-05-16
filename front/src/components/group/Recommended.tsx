@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { getRecommendBySurveyApi } from "../../apis/clubApi";
+import { postRecommendBySurveyApi } from "../../apis/clubApi";
 import useMember from "../../hooks/memberHook";
 import {
   TitleSection,
@@ -18,7 +18,7 @@ import {
 } from "./Recommended.styles";
 
 interface Recommendation {
-  id: number;
+  userId: string;
   rate: number;
 }
 export default function Recommended() {
@@ -28,7 +28,9 @@ export default function Recommended() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getRecommendBySurveyApi(memberData.id);
+        const data = await postRecommendBySurveyApi({
+          userId: memberData.username,
+        });
         setRecommendList(data.data);
       } catch (error) {
         console.error(error);
@@ -40,9 +42,7 @@ export default function Recommended() {
   return (
     <>
       <TitleSection>
-        <Typography variant="h5" component="h5">
-          이런 사람과 교환일기를 작성해 보는 건 어떤가요?
-        </Typography>
+        이런 사람과 교환일기를 작성해 보는 건 어떤가요?
       </TitleSection>
       <hr />
       <br />
@@ -71,7 +71,7 @@ export default function Recommended() {
                     <CardMedia sx={{ height: 100 }} />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
-                        {el.id}
+                        {el.userId}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         나와 {el.rate * 100}% 유사한 사람이에요!
