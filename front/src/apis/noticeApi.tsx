@@ -30,7 +30,11 @@ const deleteSSEAlarmsApi = (payload: number) => {
 
 const postLiveDoubleInviteApi = (payload: string) => {
   return api
-    .post(`/event/double/clubs/${payload}`, "", { withCredentials: true })
+    .post(
+      `/event/double/clubs`,
+      { targetUsername: payload },
+      { withCredentials: true }
+    )
     .then((res) => {
       console.log(res.data, "친구하자");
       return res.data;
