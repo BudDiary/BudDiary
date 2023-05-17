@@ -81,3 +81,9 @@ export const InvitationContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+
+// 상단바 디자인
+
+export const ModalTopContent = styled.div`
+  ${tw`flex justify-center items-center`}
+`;
