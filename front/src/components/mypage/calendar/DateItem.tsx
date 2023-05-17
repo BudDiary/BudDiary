@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { DateItemContainer, DateTitle } from "./DateItem.styles";
 import { useNavigate } from 'react-router-dom';
 
+
 interface Props {
   day: Date;
   todayDate: Date;
@@ -68,6 +69,7 @@ export default function DateItem({
       saturDay = {saturDay}
       sunDay = {sunDay}
       >{day.getDate()}</DateTitle>
+            <img src="https://cdn.pixabay.com/photo/2023/05/11/05/40/blackbird-7985552_640.jpg" alt="" />
     </DateItemContainer>
   )
 }
