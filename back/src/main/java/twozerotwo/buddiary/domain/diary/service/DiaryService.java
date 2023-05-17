@@ -88,7 +88,7 @@ public class DiaryService {
 	public void makeDiaryImage(Diary diary, List<MultipartFile> fileList) throws IOException {
 		List<DiaryImage> imgList = diary.getDiaryImages();
 
-		if (imgList.size() > 0) {
+		if (fileList.size() > 0) {
 			for (MultipartFile file : fileList) {
 				String imgUrl = s3Uploader.upload(file, "Diary");
 				DiaryImage diaryImage = DiaryImage.builder()
