@@ -151,6 +151,14 @@ export default function SurveyModal({ closeModal }: Props) {
       setMyAnswer([...myAnswer, element]);
     }
   };
+
+  const addMyAnswer2 = (element: string) => {
+    if (myAnswer.includes(element)) {
+      setMyAnswer(myAnswer.filter((answer) => answer !== element));
+    } else {
+      setMyAnswer([element]);
+    }
+  };
   const outputPrevSentence = () => {
     if (
       currentSentenceIndex < allSentences.length &&
@@ -219,18 +227,24 @@ export default function SurveyModal({ closeModal }: Props) {
             className="mx-4 my-4 flex flex-wrap justify-center"
             style={{ minHeight: "100px" }}
           >
-            {allAnswers[currentSentenceIndex].map((element, index) => {
-              return (
-                <Tag
-                  style={{ minWidth: "100px" }}
-                  key={index}
-                  onClick={() => addMyAnswer(element)}
-                  select={myAnswer.indexOf(element) !== -1 ? true : false}
-                >
-                  {element}
-                </Tag>
-              );
-            })}
+{allAnswers[currentSentenceIndex].map((element, index) => {
+  return (
+    <Tag
+      style={{ minWidth: "100px" }}
+      key={index}
+      onClick={() => {
+        if (currentSentenceIndex === 1) {
+          addMyAnswer2(element);
+        } else {
+          addMyAnswer(element);
+        }
+      }}
+      select={myAnswer.indexOf(element) !== -1 ? true : false}
+    >
+      {element}
+    </Tag>
+  );
+})}
           </div>
 
           <MoveIndex>
