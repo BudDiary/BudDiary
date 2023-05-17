@@ -46,6 +46,12 @@ interact(".sticker-item").draggable({
     target.setAttribute("data-x", newX);
     target.setAttribute("data-y", newY);
   },
+  onend: (event: any) => {
+    const target = event.target;
+    const finalX = target.getAttribute("data-x");
+    const finalY = target.getAttribute("data-y");
+    // 사진 좌표 저장해서 append 하는 코드 짜기
+  },
 });
 
 export default function StickerPage({
