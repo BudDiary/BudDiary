@@ -148,6 +148,7 @@ export const ButtonSection = styled.div`
   width: 50%;
   height: 10%;
   min-height: 50px;
+  cursor: pointer;
 `;
 
 export const ButtonTextBox = styled.div<animationrun>`
