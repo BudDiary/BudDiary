@@ -37,11 +37,11 @@ const getDateDiaryListApi = (date: string) => {
 };
 
 // 다이어리 디테일
-const getDiaryDetailApi = (payload: number) => {
+const getDiaryDetailApi = (payload: string) => {
   return api
     .get(`/api/diaries/${payload}`)
     .then((res) => {
-      console.log(res);
+      console.log(res.data, "일기 잘 들어왔나");
       return res.data;
     })
     .catch((err) => {

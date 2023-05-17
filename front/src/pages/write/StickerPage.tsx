@@ -100,7 +100,9 @@ export default function StickerPage({
           />
         ))}
       </div>
-      <ContentBox className="drop-container text-2xl">{content}</ContentBox>
+      <ContentBox className="drop-container text-2xl font-hassam">
+        {content}
+      </ContentBox>
       <div className="flex justify-evenly">
         <button
           className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"
