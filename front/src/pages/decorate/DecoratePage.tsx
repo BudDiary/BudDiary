@@ -68,7 +68,6 @@ export default function DecoratePage() {
         <StickerListTitle>보유중인 스티커</StickerListTitle>
         <div className="grid grid-cols-6">
           {myStickers?.map((sticker) => (
-            // {sticker.sticker.}
             <img
               src={sticker.sticker.imageUrl}
               className="sticker-item my-auto"

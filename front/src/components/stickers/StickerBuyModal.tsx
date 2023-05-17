@@ -85,10 +85,15 @@ export default function StickerBuyModal({
         <ModalContentSection>
           <StickerPictureContainer src={imageUrl}></StickerPictureContainer>
           <CalculateSection>
-            <AiOutlineMinusSquare
-              onClick={subtractTotalNumber}
-              className="hover:cursor-pointer"
-            />
+            {totalNumber >= 1 ? (
+              <AiOutlineMinusSquare
+                onClick={subtractTotalNumber}
+                className="hover:cursor-pointer"
+              />
+            ) : (
+              <AiOutlineMinusSquare className="text-gray-200" />
+            )}
+
             {totalNumber}
             <AiOutlinePlusSquare
               onClick={addTotalNumber}

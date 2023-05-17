@@ -75,7 +75,7 @@ export default function StickerPage({
   // useEffect(() => {
   //   console.log(myStickers, 'this is mySticker')
   // }, [myStickers]);
-  
+
   const [sentiment, setSentiment] = useState<{
     negative: number;
     positive: number;
