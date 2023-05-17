@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.diary.dto.WriterDto;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
@@ -185,5 +186,13 @@ public class Member {
 	public String updateProfilePath(String profilePath) {
 		this.profilePath = profilePath;
 		return this.profilePath;
+	}
+
+	public WriterDto toWriterDto() {
+		return WriterDto.builder()
+			.nickname(this.nickname)
+			.profilePath(this.profilePath)
+			.username(this.username)
+			.build();
 	}
 }
