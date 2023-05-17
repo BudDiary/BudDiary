@@ -42,7 +42,7 @@ export default function NavBar() {
   const navigate = useNavigate();
   const nickname = memberData.nickname;
   const profilePic = memberData.profilePic;
-  const subscribeUrl = "http://localhost:8080/event/sub";
+  const subscribeUrl = `${process.env.REACT_APP_BASE_URL}/event/sub`;
 
   useEffect(() => {
     if (initialLoad && isLoggedIn) {
