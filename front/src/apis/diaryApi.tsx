@@ -41,6 +41,7 @@ const getDiaryDetailApi = (payload: string) => {
   return api
     .get(`/api/diaries/${payload}`)
     .then((res) => {
+      console.log(res.data.diaryDetail, "다이어리디테일");
       return res.data.diaryDetail;
     })
     .catch((err) => {

@@ -20,7 +20,6 @@ export default function ViewDiariesPage() {
     fetchData();
   }, []);
 
-
   return (
     <>
       <SubNavContainer img={navimg}>작성한 일기</SubNavContainer>
