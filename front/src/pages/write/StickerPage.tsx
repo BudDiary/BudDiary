@@ -131,20 +131,15 @@ export default function StickerPage({
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
       <div className="grid grid-cols-6">
-      {/* {myStickers && myStickers.length > 0 && (
+      {myStickers && myStickers.length > 0 && (
   myStickers.map((sticker) => (
     <img
       src={sticker.sticker.imageUrl}
       className="sticker-item my-auto"
     />
   ))
-)} */}
-        {myStickers?.map((sticker) => (
-          <img
-            src={sticker.sticker.imageUrl}
-            className="sticker-item my-auto"
-          />
-        ))}
+)}
+
       </div>
       <ContentBox ref={contentBoxRef} className="drop-container text-2xl">
         {content}
