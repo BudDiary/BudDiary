@@ -53,6 +53,9 @@ public class StickerService {
 		Sticker sticker = returnStickerById(stickerId);
 		// Member member = clubService.returnMemberByUsername(request.getUsername());
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
+		if (request.getCount() <= 0) {
+			throw new BadRequestException("구매 수량이 0 이하입니다.");
+		}
 		Long totalPrice = sticker.getPrice() * request.getCount();
 		boolean canBuy = member.checkPoint(totalPrice);
 		if (canBuy) {

@@ -293,6 +293,7 @@ public class DiaryService {
 		}
 		return diaryImageDtos;
 	}
+
 	@Transactional
 	public DiaryDetailDto getDiaryDetail(Long diaryId) {
 		Diary diary = returnDiaryById(diaryId);
