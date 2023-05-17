@@ -47,7 +47,9 @@ export default function Calendar() {
     setAllDaysInMonth(daysInMonth(todayDate));
   }, [todayDate]);
   
-
+  useEffect(() => {
+    console.log(allDaysInMonth, 'this is allDaysInMondth')
+  }, [allDaysInMonth]);
 
   return (
     <CalendarContainer>
@@ -61,7 +63,9 @@ export default function Calendar() {
           return <WeekDaySection key={weekDay} isSaturday={weekDay === "토"} isSunday={weekDay === "일"}>{weekDay}</WeekDaySection>;
         })}
         {allDaysInMonth.map((day: Date) => {
-        return (
+        return (<>
+          {/* <img src="https://cdn.pixabay.com/photo/2023/05/11/05/40/blackbird-7985552_640.jpg" alt="" /> */}
+
           <DateItem 
           key={day.getTime()}
           day={day}
@@ -69,8 +73,12 @@ export default function Calendar() {
           setTodayDate={setTodayDate}
           clickedDate={clickedDate}
           setClickedDate={setClickedDate}/>
+          </>
         );
+
       })}
+
+
       </CalendarSection>
     </CalendarContainer>
   )

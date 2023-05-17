@@ -36,6 +36,7 @@ interface FormData {
 
 export default function NewGroupDiaryModal({ closeModal }: Props) {
   const { memberData } = useMember();
+  const [open, setOpen] = React.useState(false);
   const username = memberData.username;
   const [image, setImage] = useState<File | null>(null);
 
@@ -73,10 +74,13 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       formData.append("captainUsername", username);
       formData.append("clubName", clubName);
       // postPluralClubApi({ clubName: clubName, captainUsername: username, image: image })
-      postPluralClubApi(formData).then((result) => {
+      postPluralClubApi(formData)
+      .then((result) => {
         if (!result.error) {
           // newgroupdata가 빈 값이 아닐 때 가져다가 쓰도록, 필요하면 useeffect도 활용해서 쓰시면 될 거 같아요.
           setNewGroupData(result)
+          setOpen(true);
+
           console.log(result, 'this is group info')
         } else {
           console.error(result.error); // Optionally, log the error
@@ -86,15 +90,15 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
         console.error(error); // Log any unhandled promise rejections
       });
       // 폼 객체 key 와 value 값을 순회.
-      let entries = formData.entries();
-      for (const pair of entries) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
+      // let entries = formData.entries();
+      // for (const pair of entries) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
     }
   };
 
   function ChildModal() {
-    const [open, setOpen] = React.useState(false);
+
     const handleOpen = () => {
       setOpen(true);
     };
@@ -112,8 +116,8 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
         <Button
           onClick={(event) => {
             event.preventDefault();
-            handleOpen();
             submitMakeClub(event);
+            handleOpen();
           }}
         >
           {" "}
