@@ -24,8 +24,8 @@ const getDateDiaryListApi = (date: string) => {
   return api
     .get(`/api/diaries?date=${date}`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
-      return res.data;
+      console.log(res.data.diaryList);
+      return res.data.diaryList;
     })
     .catch((err) => {
       console.log(err, "getDateDiaryListApi 오류");
