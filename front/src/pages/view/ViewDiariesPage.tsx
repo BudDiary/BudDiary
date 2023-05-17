@@ -25,11 +25,15 @@ export default function ViewDiariesPage() {
     <>
       <SubNavContainer img={navimg}>작성한 일기</SubNavContainer>
       <PageContainer>
+        <div className="font-berry text-3xl mt-2 ml-[20px] sm:ml-0">
+          {window.location.href.slice(-10)} 일기
+        </div>
         {dateDiaries.length >= 1 ? (
           dateDiaries.map((diary: any) => {
             return (
               <WrittenDiaryItem
                 key={diary.diaryInfo.diaryId}
+                id={diary.diaryInfo.diaryId}
                 type={diary.type}
                 club={diary.clubInfo}
                 pics={diary.diaryInfo.imgList}
