@@ -20,7 +20,7 @@ import ViewDiariesPage from "./pages/view/ViewDiariesPage";
 import SignUpInfoPage from "./pages/signup/SignUpInfoPage";
 import StickerStorePage from "./pages/stickers/StickerStorePage";
 import DecoratePage from "./pages/decorate/DecoratePage";
-import ApproveInvitation from "./components/kakaoinvitation/applyInvitation";
+import ApproveInvitation from "./components/kakaoinvitation/approveInvitation";
 // const {isLoggedIn} = useMember();
 const router = createBrowserRouter([
   {
