@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Info } from "../../../types/group";
-import kakao from "../../../assets/modal/kakaotalk.png";
-import { LoginButton } from "../../navbar/MobileSidebar.styles";
+import { Info } from "../../types/group";
+import kakao from "../../assets/modal/kakaotalk.png";
+import { LoginButton } from "../navbar/MobileSidebar.styles";
 declare global {
   interface Window {
     Kakao: any;
@@ -60,7 +60,7 @@ export const KakaoShare = ({ clubInfo, description }: GroupInfoProps) => {
     <div className="kakao-share-button">
       <LoginButton id="kakao-link-btn" onClick={createKakaoButton}>
         <img src={kakao} alt="kakao-share-icon" />
-        으로 초대하기
+        으로 친구 초대하기
       </LoginButton>
     </div>
   );

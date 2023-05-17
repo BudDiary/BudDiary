@@ -10,7 +10,7 @@ import useMember from "../../hooks/memberHook";
 import { Divider } from "@mui/material";
 import { Member, Info } from "../../types/group";
 import crown from "../../assets/group/crown.png";
-import { InvitationModal } from "./invitation/InvitationModal";
+import { InvitationModal } from "../kakaoinvitation/InvitationModal";
 
 interface GroupInfoProps {
   clubInfo?: Info;

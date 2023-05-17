@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.comment.dto.CommentDto;
+import twozerotwo.buddiary.domain.diary.dto.DiaryDetailDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryImageDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
@@ -88,7 +89,7 @@ public class DiaryService {
 	public void makeDiaryImage(Diary diary, List<MultipartFile> fileList) throws IOException {
 		List<DiaryImage> imgList = diary.getDiaryImages();
 
-		if (imgList.size() > 0) {
+		if (fileList.size() > 0) {
 			for (MultipartFile file : fileList) {
 				String imgUrl = s3Uploader.upload(file, "Diary");
 				DiaryImage diaryImage = DiaryImage.builder()
@@ -206,8 +207,7 @@ public class DiaryService {
 		return simpleDtoList;
 	}
 
-	public List<UsedStickerDto> getDiarySticker(Long diaryId) {
-		Diary diary = returnDiaryById(diaryId);
+	public List<UsedStickerDto> getDiarySticker(Diary diary) {
 		List<UsedStickerDto> usedStickerList = new ArrayList<>();
 
 		for (UsedSticker usedSticker : diary.getUsedStickers()) {
@@ -260,7 +260,7 @@ public class DiaryService {
 		if (unusedSticker.getCount() <= 0) {
 			unusedStickerRepository.delete(unusedSticker);
 		}
-		return getDiarySticker(diary.getId());
+		return getDiarySticker(diary);
 	}
 
 	public List<ReactionDto> returnReactionDtoList(Diary diary) {
@@ -292,5 +292,23 @@ public class DiaryService {
 			diaryImageDtos.add(diaryImage.toDto());
 		}
 		return diaryImageDtos;
+	}
+	@Transactional
+	public DiaryDetailDto getDiaryDetail(Long diaryId) {
+		Diary diary = returnDiaryById(diaryId);
+		List<ReactionDto> reactionDtos = returnReactionDtoList(diary);
+		List<DiaryImageDto> imgDtos = returnImgDtoList(diary);
+		List<CommentDto> commentDtos = returnCommentDtoList(diary);
+		DiaryInfo diaryInfo = diary.toDiaryInfo(reactionDtos, imgDtos, commentDtos);
+		SimpleDiaryDto simpleDiaryDto;
+		if (diary.getClub() == null) {
+			simpleDiaryDto = diary.toPersonalDto(diaryInfo);
+		} else {
+			simpleDiaryDto = diary.toClubDto(diaryInfo);
+		}
+		return DiaryDetailDto.builder()
+			.simpleDiary(simpleDiaryDto)
+			.usedStickers(getDiarySticker(diary))
+			.build();
 	}
 }

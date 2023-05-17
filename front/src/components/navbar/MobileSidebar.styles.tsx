@@ -62,7 +62,7 @@ export const SideMyPage = styled.div`
 export const SideNotice = styled.div`
   ${tw`flex items-center flex-col text-xl font-bold`}
   h3 {
-    ${tw`font-inkLip text-xl mt-20 w-[70%]`}
+    ${tw`font-inkLip text-xl mt-20 w-[70%] mb-20`}
   }
   div {
     ${tw`flex justify-center my-1 font-hassam`}
@@ -78,9 +78,9 @@ export const LogOutButton = styled.button`
 `;
 
 export const LoginButton = styled.button`
-  ${tw`bg-bud-blue flex justify-center font-hassam text-white mt-20 px-3 py-2 rounded-md text-sm`}
+  ${tw`bg-bud-blue flex justify-center font-hassam text-white px-3 py-2 rounded-md text-sm`}
 
-  animation: ${bounceAnimation} 1s ease-in-out infinite;
+  animation: ${bounceAnimation} 1s ease-in-out 3;
 
   img {
     ${tw`mx-1 w-[20px] h-[20px]`}
