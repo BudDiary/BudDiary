@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,8 +20,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.service.ClubService;
+import twozerotwo.buddiary.domain.diary.dto.DoubleInviteDto;
 import twozerotwo.buddiary.domain.notification.dto.NewDiaryRequest;
 import twozerotwo.buddiary.domain.notification.service.SseService;
+import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.persistence.entity.Member;
 
@@ -58,11 +61,10 @@ public class SseController {
 		return sseEmitter;
 	}
 
-	@PostMapping("/event/double/clubs/{target}")
-	public ResponseEntity notifyDoubleInviteEvent(@PathVariable String target, HttpServletRequest request) {
+	@PostMapping("/event/double/clubs")
+	public ResponseEntity notifyDoubleInviteEvent(@RequestBody @Valid DoubleInviteDto dto, HttpServletRequest request) {
 		Member inviter = authenticationUtil.getMemberEntityFromRequest(request);
-		// Member inviter = clubService.returnMemberByUsername("yeokyung502@naver.com");
-		sseService.notifyDoubleInviteEvent(inviter, target);
+		sseService.notifyDoubleInviteEvent(inviter, dto.getTargetUsername());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
