@@ -15,6 +15,7 @@ import twozerotwo.buddiary.domain.diary.dto.WriterDto;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReplyDto {
+	private Long id;
 	private WriterDto writer;
 	private String text;
 	private LocalDateTime writeDate;

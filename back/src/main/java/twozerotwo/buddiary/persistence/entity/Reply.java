@@ -51,6 +51,7 @@ public class Reply {
 
 	public ReplyDto toDto() {
 		return ReplyDto.builder()
+			.id(this.id)
 			.text(this.text)
 			.writeDate(this.writeDate)
 			.writer(this.writer.toWriterDto()).build();
