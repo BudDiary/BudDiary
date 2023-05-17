@@ -94,6 +94,10 @@ export default function StickerPage({
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
+
+  // useEffect(() => {
+  //   console.log(myStickers, 'this is mySticker')
+  // }, [myStickers]);
   const [sentiment, setSentiment] = useState<{
     negative: number;
     positive: number;
@@ -127,6 +131,14 @@ export default function StickerPage({
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
       <div className="grid grid-cols-6">
+      {/* {myStickers && myStickers.length > 0 && (
+  myStickers.map((sticker) => (
+    <img
+      src={sticker.sticker.imageUrl}
+      className="sticker-item my-auto"
+    />
+  ))
+)} */}
         {myStickers?.map((sticker) => (
           <img
             src={sticker.sticker.imageUrl}
