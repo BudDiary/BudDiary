@@ -65,7 +65,9 @@ public class Comment {
 		}
 
 		return CommentDto.builder()
+			.id(this.id)
 			.text(this.text)
+			.writer(this.writer.toWriterDto())
 			.writeDate(this.writeDate)
 			.replies(replyDtos).build();
 	}
