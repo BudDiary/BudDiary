@@ -24,7 +24,7 @@ public class RedisPublisher {
 	private final RedisClubWriteRepository redisClubWriteRepository;
 	private final RedisDoubleInviteRepository redisDoubleInviteRepository;
 
-	@KafkaListener(topics = "buddiary", groupId = "foo")
+	@KafkaListener(topics = "exam", groupId = "foo")
 	public void kafkaListener(String message) throws JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		SseMessageDto sseMessageDto = objectMapper.readValue(message, SseMessageDto.class);

@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.domain.club.service.ClubService;
+import twozerotwo.buddiary.domain.comment.dto.CommentDto;
+import twozerotwo.buddiary.domain.diary.dto.DiaryImageDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
@@ -24,13 +24,13 @@ import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerToDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
 import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
-import twozerotwo.buddiary.domain.reaction.service.ReactionService;
 import twozerotwo.buddiary.domain.sticker.service.StickerService;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Club;
+import twozerotwo.buddiary.persistence.entity.Comment;
 import twozerotwo.buddiary.persistence.entity.Diary;
 import twozerotwo.buddiary.persistence.entity.DiaryImage;
 import twozerotwo.buddiary.persistence.entity.Member;
@@ -40,7 +40,6 @@ import twozerotwo.buddiary.persistence.entity.UnusedSticker;
 import twozerotwo.buddiary.persistence.entity.UsedSticker;
 import twozerotwo.buddiary.persistence.repository.ClubRepository;
 import twozerotwo.buddiary.persistence.repository.DiaryRepository;
-import twozerotwo.buddiary.persistence.repository.MemberRepository;
 import twozerotwo.buddiary.persistence.repository.UnusedStickerRepository;
 import twozerotwo.buddiary.persistence.repository.UsedStickerRepository;
 
@@ -173,6 +172,7 @@ public class DiaryService {
 		}
 	}
 
+	@Transactional
 	public List<SimpleDiaryDto> getDayDiaryList(HttpServletRequest servlet, String date) {
 		// Member member = clubService.returnMemberByUsername(username);
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
@@ -189,13 +189,17 @@ public class DiaryService {
 			// log.info("확인: " + diary.getClub());
 			//다이어리 > diaryInfo로 바꾸는 메소드 필요
 			List<ReactionDto> reactionDtos = returnReactionDtoList(diary);
-			DiaryInfo diaryInfo = diary.toDiaryInfo(reactionDtos);
+			List<DiaryImageDto> imgDtos = returnImgDtoList(diary);
+			List<CommentDto> commentDtos = returnCommentDtoList(diary);
+			DiaryInfo diaryInfo = diary.toDiaryInfo(reactionDtos, imgDtos, commentDtos);
 			//diaryInfo 인자로 바꿈
 			simpleDtoList.add(diary.toPersonalDto(diaryInfo));
 		}
 		for (Diary diary : clubDiaries) {
 			List<ReactionDto> reactionDtos = returnReactionDtoList(diary);
-			DiaryInfo diaryInfo = diary.toDiaryInfo(reactionDtos);
+			List<DiaryImageDto> imgDtos = returnImgDtoList(diary);
+			List<CommentDto> commentDtos = returnCommentDtoList(diary);
+			DiaryInfo diaryInfo = diary.toDiaryInfo(reactionDtos, imgDtos, commentDtos);
 			// log.info("확인: " + diary.getClub());
 			simpleDtoList.add(diary.toClubDto(diaryInfo));
 		}
@@ -268,5 +272,25 @@ public class DiaryService {
 		// member point 추가
 		return reactionDtos;
 
+	}
+
+	public List<CommentDto> returnCommentDtoList(Diary diary) {
+		List<Comment> comments = diary.getComments();
+		List<CommentDto> commentDtos = new ArrayList<>();
+		for (Comment comment : comments) {
+			commentDtos.add(comment.toDto());
+		}
+		// member point 추가
+		return commentDtos;
+
+	}
+
+	public List<DiaryImageDto> returnImgDtoList(Diary diary) {
+		List<DiaryImage> diaryImages = diary.getDiaryImages();
+		List<DiaryImageDto> diaryImageDtos = new ArrayList<>();
+		for (DiaryImage diaryImage : diaryImages) {
+			diaryImageDtos.add(diaryImage.toDto());
+		}
+		return diaryImageDtos;
 	}
 }

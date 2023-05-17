@@ -37,45 +37,46 @@ export default function GroupInfo({
   };
 
   return (
-    <GroupList style={style}>
-      <p>{clubInfo?.clubName}</p>
-      <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
-      {clubType !== "DOUBLE" && clubType === "PLURAL" ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <ClubList>멤버 {memberList?.length}</ClubList>
-          <BasicButton onClick={handleToggleModal}>초대하기</BasicButton>
-        </div>
-      ) : null}
-      <Divider style={{ border: "solid 2px #BFDBFE", width: "100%" }} />
-      <MemberList>
-        {memberList?.map((member) => (
-          <div key={member.id}>
-            <img src={member.profilePath ?? ""} alt="프로필" />
-            <MemberListInfo>
-              {member.nickname}
-              {member.username === clubInfo?.captainUsername ? (
-                <img
-                  src={crown}
-                  alt=""
-                  style={{ border: "none", height: "20px", width: "20px" }}
-                />
-              ) : (
-                ""
-              )}
-              <p>{member.username === username ? "  me" : ""}</p>
-            </MemberListInfo>
+    <>
+      <GroupList style={style}>
+        <p>{clubInfo?.clubName}</p>
+        <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
+        {clubType !== "DOUBLE" && clubType === "PLURAL" ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <ClubList>멤버 {memberList?.length}</ClubList>
+            <BasicButton onClick={handleToggleModal}>초대하기</BasicButton>
           </div>
-        ))}
-      </MemberList>
+        ) : null}
+        <Divider style={{ border: "solid 2px #BFDBFE", width: "100%" }} />
+        <MemberList>
+          {memberList?.map((member) => (
+            <div key={member.id}>
+              <img src={member.profilePath ?? ""} alt="프로필" />
+              <MemberListInfo>
+                {member.nickname}
+                {member.username === clubInfo?.captainUsername ? (
+                  <img
+                    src={crown}
+                    alt=""
+                    style={{ border: "none", height: "20px", width: "20px" }}
+                  />
+                ) : (
+                  ""
+                )}
+                <p>{member.username === username ? "  me" : ""}</p>
+              </MemberListInfo>
+            </div>
+          ))}
+        </MemberList>
+      </GroupList>
       {showModal && (
         <InvitationModal clubInfo={clubInfo} onClose={handleCloseModal} />
       )}
-    </GroupList>
+    </>
   );
 }

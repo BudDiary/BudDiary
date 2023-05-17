@@ -19,6 +19,8 @@ import twozerotwo.buddiary.domain.club.dto.ClubInfo;
 import twozerotwo.buddiary.domain.club.dto.DoubleCreateRequest;
 import twozerotwo.buddiary.domain.club.dto.MyClubDto;
 import twozerotwo.buddiary.domain.club.dto.PluralCreateRequest;
+import twozerotwo.buddiary.domain.comment.dto.CommentDto;
+import twozerotwo.buddiary.domain.diary.dto.DiaryImageDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.service.DiaryService;
 import twozerotwo.buddiary.domain.reaction.dto.ReactionDto;
@@ -165,7 +167,9 @@ public class ClubService {
 		List<DiaryInfo> diaryInfos = new ArrayList<>();
 		for (Diary diary : diaries) {
 			List<ReactionDto> reactionDtos = diaryService.returnReactionDtoList(diary);
-			diaryInfos.add(diary.toDiaryInfo(reactionDtos));
+			List<DiaryImageDto> imgDtos = diaryService.returnImgDtoList(diary);
+			List<CommentDto> commentDtos = diaryService.returnCommentDtoList(diary);
+			diaryInfos.add(diary.toDiaryInfo(reactionDtos, imgDtos, commentDtos));
 		}
 		String clubImgUrl = club.getThumbnailPath();
 		ClubInfo clubInfo;
