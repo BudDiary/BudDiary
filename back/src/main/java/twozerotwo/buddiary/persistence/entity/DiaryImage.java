@@ -38,6 +38,7 @@ public class DiaryImage {
 	private Diary diary;
 
 	@NotBlank
+	@Column(columnDefinition = "TEXT")
 	private String imgUrl;
 
 	public DiaryImageDto toDto() {
