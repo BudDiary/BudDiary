@@ -89,7 +89,7 @@ public class MemberController {
 				.orElseThrow(() -> new ConflictException("프로파일 변경을 실패 했습니다."));
 			return ResponseEntity.ok(updatedNickname);
 		} catch (NullPointerException err) {
-			return ResponseEntity.ok().body("빈파일이 왔습니다. 변경인 진행되지 않았습니다.");
+			return ResponseEntity.ok().body(null);
 		}catch (Exception err){
 			return ResponseEntity.badRequest().body(err.getMessage());
 		}
