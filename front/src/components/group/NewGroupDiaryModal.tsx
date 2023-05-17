@@ -105,8 +105,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
             submitMakeClub(event);
           }}
         >
-          {" "}
-          다음{" "}
+          다음
         </Button>
         <Modal
           open={open}

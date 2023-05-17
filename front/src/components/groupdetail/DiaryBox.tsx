@@ -161,7 +161,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                 <Divider
                   style={{ border: "solid 2px #BFDBFE", marginBlock: "10px" }}
                 />
-                <DiaryContent>
+                <DiaryContent className="bg-red-200">
                   {diary.imgList?.length > 0 && (
                     <DiaryImageSlider>
                       <Swiper
