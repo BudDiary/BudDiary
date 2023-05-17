@@ -70,8 +70,8 @@ public class DiaryController {
 
 	//-------------------------------------------다이어리 상세(스티커)----------------------------------------------
 	@GetMapping("/{diaryId}")
-	public ResponseEntity getDiarySticker(@PathVariable Long diaryId) {
-		return ResponseEntity.ok(Map.of("usedStickers", diaryService.getDiarySticker(diaryId)));
+	public ResponseEntity getDiaryDetail(@PathVariable Long diaryId) {
+		return ResponseEntity.ok(Map.of("diaryDetail", diaryService.getDiaryDetail(diaryId)));
 	}
 
 	//-------------------------------------------다이어리 삭제----------------------------------------------
