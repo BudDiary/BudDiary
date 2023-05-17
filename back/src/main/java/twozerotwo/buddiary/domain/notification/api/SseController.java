@@ -69,7 +69,9 @@ public class SseController {
 	@PostMapping("/event/clubs/new-diary")
 	public ResponseEntity notifyNewDiaryInClub(@RequestBody NewDiaryRequest request, HttpServletRequest servlet) {
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
-		sseService.notifyNewDiaryInClub(member, request.getClubUuid());
+		for (String clubUuid : request.getClubList()) {
+			sseService.notifyNewDiaryInClub(member, clubUuid);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

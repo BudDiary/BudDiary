@@ -117,6 +117,7 @@ public class ClubService {
 		return member;
 	}
 
+	@Transactional
 	public MyClubDto getMyClub(HttpServletRequest servlet) {
 		// Member me = returnMemberByUsername(username);
 		Member me = authenticationUtil.getMemberEntityFromRequest(servlet);
