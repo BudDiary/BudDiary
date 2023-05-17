@@ -1,9 +1,12 @@
 import React from "react";
-import { DiaryItemContainer, DiaryTypeBox } from "./WrittenDiaryItem.styles";
+import {
+  DiaryItemContainer,
+  DiaryTypeBox,
+  DiaryPicSlider,
+} from "./WrittenDiaryItem.styles";
 import { Divider } from "@mui/material";
 import { BiLinkExternal } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { DiaryImageSlider } from "../groupdetail/Diaries.styles";
 import { Swiper, SwiperSlide } from "swiper/react";
 import excited from "../../assets/excited.png"
 import happy from "../../assets/happy.png"
@@ -64,26 +67,31 @@ export default function WrittenDiaryItem({
       <img src={getFeelingRate(negative, positive)} alt=""  style={{ maxWidth: '50px', maxHeight: '50px', marginLeft: 'auto' }} />
       </div>
       <Divider style={{ border: "solid 1px #BFDBFE", marginBlock: "10px" }} />
-
-      <div className="grid-cols-2">
-        {pics?.length > 0 && (
-          <DiaryImageSlider>
-            <Swiper
-              spaceBetween={50}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              loop={true}
-            >
-              {pics.map((pic: any, index: any) => (
-                <SwiperSlide key={index}>
-                  <img src={pic.imgUrl} alt="일기 사진입니다." />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </DiaryImageSlider>
-        )}
-        <div className="min-h-[200px] pt-2 px-4">{content}</div>
+      <div className="grid-cols-3">
+        <div>
+          {pics?.length > 0 && (
+            <DiaryPicSlider>
+              <Swiper
+                spaceBetween={50}
+                slidesPerView={3}
+                navigation
+                pagination={{ clickable: true }}
+                loop={true}
+              >
+                {pics.map((pic: any, index: any) => (
+                  <SwiperSlide key={index}>
+                    <img
+                      src={pic.imgUrl}
+                      alt="일기 사진입니다."
+                      className="my-auto"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </DiaryPicSlider>
+          )}
+        </div>
+        <div className="min-h-[200px] mt-8 px-4">{content}</div>
       </div>
 
       {/* <div>{negative}</div>
