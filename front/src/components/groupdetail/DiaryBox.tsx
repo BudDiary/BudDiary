@@ -23,6 +23,12 @@ import EmojiCount from "./emoji/EmojiCount";
 import EmojiPicker from "./emoji/EmojiPicker";
 import { Diary, Image } from "../../types/group";
 import DiaryDelete from "./DiaryDelete";
+import excited from "../../assets/excited.png"
+import happy from "../../assets/happy.png"
+import normal from "../../assets/normal.png"
+import sad from "../../assets/sad.png"
+import crying from "../../assets/crying.png"
+
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -37,7 +43,7 @@ interface SelectedEmojis {
 
 export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
-
+  const [feelingRateData, setFeelingRateData] = useState<{ [diaryId: number]: string }>({});
   const { memberData } = useMember();
   // 일기 삭제 모달
   const [diaryDelete, setDiaryDelete] = useState(false);
@@ -52,11 +58,40 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
   const handleCloseModal = () => {
     setDiaryDelete(false);
   };
+  
+  const getFeelingRate = (negative: number, positive: number) => {
+    const feelingRate = positive - negative;
+    let image = "";
+
+    if (feelingRate >= -100 && feelingRate < -60) {
+      image = crying;
+    } else if (feelingRate >= -60 && feelingRate < -20) {
+      image = sad;
+    } else if (feelingRate >= -20 && feelingRate < 20) {
+      image = normal;
+    } else if (feelingRate >= 20 && feelingRate < 60) {
+      image = happy;
+    } else if (feelingRate >= 60 && feelingRate <= 100) {
+      image = excited;
+    }
+
+    return image;
+  };
+
 
   useEffect(() => {
     setDiaryData(diaryList ?? []);
-    console.log(diaryList, 'this is diaryList')
+
+    const calculatedFeelingRateData: { [diaryId: number]: string } = {};
+    diaryList?.forEach((diary) => {
+      const { negativeRate, positiveRate } = diary;
+      calculatedFeelingRateData[diary.diaryId] = getFeelingRate(negativeRate, positiveRate);
+    });
+
+    setFeelingRateData(calculatedFeelingRateData);
   }, [diaryList]);
+
+
 
   const handleSelectEmoji = (emoji: string, diaryId: number) => {
     const selectedEmojis = selectedDiaryEmojis[diaryId] || [];
@@ -117,7 +152,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     </h2>
                     <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
                   </div>
-                  <img src="" alt="" />
+                  <img src={getFeelingRate(diary.negativeRate, diary.positiveRate)} alt="" />
                 </DiaryHeader>
                 <Divider
                   style={{ border: "solid 2px #BFDBFE", marginBlock: "10px" }}
