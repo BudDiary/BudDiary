@@ -60,7 +60,8 @@ export const RightInvitation = styled.div`
 `;
 
 export const JoinButton = styled.button`
-  ${tw`bg-gray-200 text-bud-black py-1 px-2 mt-4`}
+  ${tw`bg-gray-200 text-bud-black py-2 px-2 mt-4`}
+  width: 80%;
   font-weight: 600;
   font-size: 3px;
   border-radius: 5px;

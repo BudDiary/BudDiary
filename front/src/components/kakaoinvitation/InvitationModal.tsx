@@ -138,7 +138,11 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
             <p style={{ color: "red", fontSize: "5px" }}>50자가 넘었습니다.</p>
           )}
           <KakaoContainer>
-            <KakaoShare clubInfo={clubInfo} description={description} />
+            <KakaoShare
+              clubInfo={clubInfo}
+              description={description}
+              address={currentUrl}
+            />
           </KakaoContainer>
         </RightInvitation>
       </SendInvitation>

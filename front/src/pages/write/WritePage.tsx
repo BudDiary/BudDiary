@@ -4,15 +4,21 @@ import Pictures from "../../components/write/Pictures";
 import Checkbox from "@mui/joy/Checkbox";
 import Content from "../../components/write/Content";
 import { getMyClubListApi } from "../../apis/clubApi";
+import useMember from "../../hooks/memberHook";
 import {
   PageContainer,
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import { SurveyAgainButton } from "../../components/common/Button.styles";
+import {
+  postKeywordApi,
+  postSentimentApi,
+  postTodayDiaryApi,
+} from "../../apis/diaryApi";
 import GroupSelect from "../../components/write/GroupSelect";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
-import useMember from "../../hooks/memberHook";
+import { useNavigate } from "react-router-dom";
 import Sticker from "./StickerPage";
 
 // asdadasd
@@ -26,14 +32,21 @@ interface GroupData {
 }
 
 export default function WritePage() {
+  const navigate = useNavigate();
+
   const { memberData } = useMember();
   const username = memberData.username;
+  const nickname = memberData.nickname;
   const [content, setContent] = useState<string>("");
   const [originFiles, setOriginFiles] = useState<File[]>([]);
   const [selectGroup, setSelectGroup] = useState<string[]>([]);
   const [mygroup, setMygroup] = useState<GroupData[]>([]);
   const [personalChecked, setPersonalChecked] = useState<boolean>(true);
   const [stage, setStage] = useState<number>(0);
+  const [sentiment, setSentiment] = useState<{
+    negative: number;
+    positive: number;
+  }>({ negative: 0, positive: 0 });
 
   useEffect(() => {
     async function fetchMyGroup() {
@@ -59,9 +72,30 @@ export default function WritePage() {
     setSelectGroup(newSelectGroup);
   };
 
-  const goToSticker = () => {
+  const sendData = async () => {
+    Promise.all([
+      postSentimentApi({ content: content }),
+      postKeywordApi({ userId: username, content: content }),
+    ]).then(([result, kewordSend]) => {
+      setSentiment(result);
+      const data = {
+        text: content,
+        fileList: originFiles,
+        clubList: selectGroup,
+        isPersonal: personalChecked,
+        memberUsername: username,
+        negativeRate: sentiment.negative,
+        positiveRate: sentiment.positive,
+      };
+      console.log(data, "this is data");
+      postTodayDiaryApi(data);
+    });
+
+    // await postTodayDiaryApi(data);
     setStage(1);
   };
+
+  // 스티커 이동
 
   return (
     <div className="font-mf">
@@ -105,20 +139,14 @@ export default function WritePage() {
           <div className="w-full flex justify-center my-8">
             <SurveyAgainButton
               disabled={content === "" ? true : false}
-              onClick={goToSticker}
+              onClick={sendData}
             >
               다음
             </SurveyAgainButton>
           </div>
         </PageContainer>
       ) : (
-        <Sticker
-          setStage={setStage}
-          content={content}
-          pics={originFiles}
-          groups={mygroup}
-          personal={personalChecked}
-        />
+        <Sticker setStage={setStage} content={content} />
       )}
     </div>
   );
