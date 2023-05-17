@@ -75,29 +75,54 @@ export default function StickerPage({
   // useEffect(() => {
   //   console.log(myStickers, 'this is mySticker')
   // }, [myStickers]);
+  
   const [sentiment, setSentiment] = useState<{
     negative: number;
     positive: number;
   }>({ negative: 0, positive: 0 });
   const { memberData } = useMember();
   const username = memberData.username;
+  const [data, setData] = useState<{
+    text: string;
+    fileList: any;
+    clubList: any;
+    isPersonal: boolean;
+    memberUsername: string;
+    negativeRate: number;
+    positiveRate: number;
+  }>({
+    text: content,
+    fileList: pics,
+    clubList: groups,
+    isPersonal: personal,
+    memberUsername: username,
+    negativeRate: 0,
+    positiveRate: 0,
+  });
+
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      negativeRate: sentiment.negative,
+      positiveRate: sentiment.positive,
+    }));
+    // console.log(data, 'this is emotion test')
+  }, [sentiment]);
   // const nickname = memberData.nickname;
   const sendData = async () => {
     Promise.all([
       postSentimentApi({ content: content }),
       postKeywordApi({ userId: username, content: content }),
     ]).then(([result, kewordSend]) => {
-      console.log(result, 'this is emotion')
       setSentiment(result);
-      const data = {
-        text: content,
-        fileList: pics,
-        clubList: groups,
-        isPersonal: personal,
-        memberUsername: username,
-        negativeRate: sentiment.negative,
-        positiveRate: sentiment.positive,
-      };
+      setSentiment((prevSentiment) => {
+        setData((prevData) => ({
+          ...prevData,
+          negativeRate: prevSentiment.negative,
+          positiveRate: prevSentiment.positive,
+        }));
+        return prevSentiment;
+      });
       postTodayDiaryApi(data);
       console.log(data, "this is data");
     });
