@@ -30,7 +30,7 @@ const deleteSSEAlarmsApi = (payload: number) => {
 
 const postLiveDoubleInviteApi = (payload: string) => {
   return api
-    .post(`/event/double/clubs/${payload}`, { withCredentials: true })
+    .post(`event/double/clubs/${payload}`, { withCredentials: true })
     .then((res) => {
       return res.data;
     })
