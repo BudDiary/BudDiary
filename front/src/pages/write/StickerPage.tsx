@@ -29,43 +29,22 @@ interface Props {
 //   clubType: string;
 // }
 
-export default function StickerPage({ setStage, content }: Props) {
-  const contentBoxRef = useRef<HTMLInputElement | null>(null);
-  const myStickers = useSelector(
-    (state: RootState) => state.member.memberData.sticker
-  );
-
-  interact(".item").draggable({
-    onstart: (event: any) => {
-      const contentBoxElement = contentBoxRef.current;
-      const itemElement = event.target;
-
-      if (contentBoxElement && itemElement) {
-        const contentBoxRect = contentBoxElement.getBoundingClientRect();
-        const itemRect = itemElement.getBoundingClientRect();
-
-        const itemInsideContentBox =
-          itemRect.left >= contentBoxRect.left &&
-          itemRect.right <= contentBoxRect.right &&
-          itemRect.top >= contentBoxRect.top &&
-          itemRect.bottom <= contentBoxRect.bottom;
-
-        itemElement.setAttribute(
-          "data-was-inside",
-          itemInsideContentBox ? "true" : "false"
-        );
-      }
-    },
-    onmove: (event: any) => {
-      const target = event.target;
-      const dataX = target.getAttribute("data-x");
-      const dataY = target.getAttribute("data-y");
-      const initialX = parseFloat(dataX) || 0;
-      const initialY = parseFloat(dataY) || 0;
-      const deltaX = event.dx;
-      const deltaY = event.dy;
-      const newX = initialX + deltaX;
-      const newY = initialY + deltaY;
+interact(".sticker-item").draggable({
+  onstart: (event: any) => {
+    const itemElement = event.target;
+    itemElement.setAttribute("data-initial-x", 0);
+    itemElement.setAttribute("data-initial-y", 0);
+  },
+  onmove: (event: any) => {
+    const target = event.target;
+    const dataX = target.getAttribute("data-x");
+    const dataY = target.getAttribute("data-y");
+    const initialX = parseFloat(dataX) || 0;
+    const initialY = parseFloat(dataY) || 0;
+    const deltaX = event.dx;
+    const deltaY = event.dy;
+    const newX = initialX + deltaX;
+    const newY = initialY + deltaY;
 
     target.style.transform = `translate(${newX}px, ${newY}px)`;
 

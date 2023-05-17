@@ -19,7 +19,7 @@ import SignUpPage from "./pages/signup/SignUpPage";
 import ViewDiariesPage from "./pages/view/ViewDiariesPage";
 import SignUpInfoPage from "./pages/signup/SignUpInfoPage";
 import StickerStorePage from "./pages/stickers/StickerStorePage";
-
+import applyInvitation from "./components/kakaoinvitation/applyInvitation";
 // const {isLoggedIn} = useMember();
 const router = createBrowserRouter([
   {
@@ -42,6 +42,7 @@ const router = createBrowserRouter([
       { path: "/login/oauth2/code/kakao", element: <SignUpPage /> },
       { path: "/signup-info", element: <SignUpInfoPage /> },
       { path: "/stickers", element: <StickerStorePage /> },
+      { path: "/group/apply/:id", element: <applyInvitation /> },
     ],
   },
 ]);
