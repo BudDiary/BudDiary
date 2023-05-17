@@ -1,7 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { DateItemContainer, DateTitle } from "./DateItem.styles";
 import { useNavigate } from 'react-router-dom';
-
+import { getDateDiaryListApi } from '../../../apis/diaryApi';
+import excited from "../../../assets/excited.png"
+import happy from "../../../assets/happy.png"
+import normal from "../../../assets/normal.png"
+import sad from "../../../assets/sad.png"
+import crying from "../../../assets/crying.png"
 
 interface Props {
   day: Date;
@@ -18,12 +23,52 @@ export default function DateItem({
   setClickedDate,
   }: Props) {
   const navigate = useNavigate();
+  const [dateList, setDateList] = useState<string[]>([]);
+  const [averagePositive, setAveragePositive] = useState<number>();
+  const [averageNegative, setAverageNegative] = useState<number>();
   const nowTime = new Date();
-  useEffect(() => {
-    console.log(`${day.getFullYear()}-${(day.getMonth()+1).toString().padStart(2, '0')}-${day.getDate().toString().padStart(2, '0')}`)
-    // console.log(, 'this is day')
-  }, []);
 
+  useEffect(() => {
+    const date = `${day.getFullYear()}-${(day.getMonth() + 1).toString().padStart(2, '0')}-${day.getDate().toString().padStart(2, '0')}`;
+  
+    getDateDiaryListApi(date)
+      .then((res) => {
+        if (res && res.length > 0) {
+          const averagePositiveRate = res.reduce((sum: number, diary:any) => {
+            return sum + diary.diaryInfo.positiveRate;
+          }, 0) / res.length;
+  
+          const averageNegativeRate = res.reduce((sum: number, diary:any) => {
+            return sum + diary.diaryInfo.negativeRate;
+          }, 0) / res.length;
+  
+          setAveragePositive(averagePositiveRate)
+          setAverageNegative(averageNegativeRate)
+
+        }
+        
+      });
+  }, [day]);
+  
+
+  const getFeelingRate = (negative: number, positive: number) => {
+    const feelingRate = positive - negative;
+    let image = "";
+
+    if (feelingRate >= -100 && feelingRate < -60) {
+      image = crying;
+    } else if (feelingRate >= -60 && feelingRate < -20) {
+      image = sad;
+    } else if (feelingRate >= -20 && feelingRate < 20) {
+      image = normal;
+    } else if (feelingRate >= 20 && feelingRate < 60) {
+      image = happy;
+    } else if (feelingRate >= 60 && feelingRate <= 100) {
+      image = excited;
+    }
+
+    return image;
+  };
 
   const sameMonth = todayDate.getMonth() === day.getMonth();
   const sameDay =
@@ -69,7 +114,9 @@ export default function DateItem({
       saturDay = {saturDay}
       sunDay = {sunDay}
       >{day.getDate()}</DateTitle>
-            <img src="https://cdn.pixabay.com/photo/2023/05/11/05/40/blackbird-7985552_640.jpg" alt="" />
+{averageNegative !== undefined && averagePositive !== undefined && (
+  <img src={getFeelingRate(averageNegative, averagePositive)} alt="" />
+)}
     </DateItemContainer>
   )
 }

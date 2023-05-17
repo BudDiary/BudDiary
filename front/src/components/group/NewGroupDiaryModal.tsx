@@ -75,20 +75,20 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       formData.append("clubName", clubName);
       // postPluralClubApi({ clubName: clubName, captainUsername: username, image: image })
       postPluralClubApi(formData)
-      .then((result) => {
-        if (!result.error) {
-          // newgroupdata가 빈 값이 아닐 때 가져다가 쓰도록, 필요하면 useeffect도 활용해서 쓰시면 될 거 같아요.
-          setNewGroupData(result)
-          setOpen(true);
+        .then((result) => {
+          if (!result.error) {
+            // newgroupdata가 빈 값이 아닐 때 가져다가 쓰도록, 필요하면 useeffect도 활용해서 쓰시면 될 거 같아요.
+            setNewGroupData(result);
+            setOpen(true);
 
-          console.log(result, 'this is group info')
-        } else {
-          console.error(result.error); // Optionally, log the error
-        }
-      })
-      .catch((error) => {
-        console.error(error); // Log any unhandled promise rejections
-      });
+            console.log(result, "this is group info");
+          } else {
+            console.error(result.error); // Optionally, log the error
+          }
+        })
+        .catch((error) => {
+          console.error(error); // Log any unhandled promise rejections
+        });
       // 폼 객체 key 와 value 값을 순회.
       // let entries = formData.entries();
       // for (const pair of entries) {
@@ -98,7 +98,6 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
   };
 
   function ChildModal() {
-
     const handleOpen = () => {
       setOpen(true);
     };
@@ -120,8 +119,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
             handleOpen();
           }}
         >
-          {" "}
-          다음{" "}
+          다음
         </Button>
         <Modal
           open={open}
@@ -155,6 +153,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
             <Box>
               <h2 id="child-modal-title">초대</h2>
               <p id="child-modal-description">초대링크 들어갈 부분</p>
+              {/* <p>{newGroupData && newGroupData.uuid}</p> */}
             </Box>
           </Sheet>
         </Modal>

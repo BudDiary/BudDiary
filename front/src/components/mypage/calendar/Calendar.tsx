@@ -10,6 +10,9 @@ export default function Calendar() {
     date.setMonth(date.getMonth() + payload);
     setTodayDate(date);
   }
+  // useEffect(() => {
+  //   console.log(allDaysInMonth, 'this is allDaysInMonth')
+  // }, []);
   // 요일들
   const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
   
