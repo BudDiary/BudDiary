@@ -87,6 +87,7 @@ export default function StickerPage({
       postSentimentApi({ content: content }),
       postKeywordApi({ userId: username, content: content }),
     ]).then(([result, kewordSend]) => {
+      console.log(result, 'this is emotion')
       setSentiment(result);
       const data = {
         text: content,
