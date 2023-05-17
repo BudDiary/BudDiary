@@ -2,9 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const DescriptionBox = styled.textarea`
-  ${tw`bg-blue-200 text-sm leading-normal font-hassam`}
-  width: 80%;
-  height: 100px;
+  ${tw`bg-blue-200 text-sm leading-normal font-hassam h-[40%] w-[100%] border-2 border-bud-black p-4`}
   resize: none;
   ::-webkit-scrollbar {
     display: none;
@@ -27,8 +25,17 @@ export const LeftInvitation = styled.div`
   }
 `;
 export const InvitationExample = styled.div`
-  ${tw`h-[95%] border-2 border-bud-blue p-2 my-2 mx-6`}
+  ${tw`h-[110%] border-2 border-bud-blue p-2 my-2 mx-6`}
   border-radius : 15px
+`;
+
+export const DescriptionContent = styled.p`
+  ${tw`text-gray-800`}
+  overflow-y: auto;
+  max-height: 75px;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const RightInvitation = styled.div`
@@ -36,19 +43,34 @@ export const RightInvitation = styled.div`
   h2 {
     ${tw`font-berry mt-3`}
   }
+  h4 {
+    ${tw`font-berry text-sm my-2`}
+  }
   span {
     ${tw`flex items-center`}
     font-size: 5px;
+    p {
+      ${tw`bg-bud-blue w-[82%] px-3 py-1`}
+      overflow-x: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 `;
 
 export const JoinButton = styled.button`
-  ${tw`bg-gray-200 text-bud-black py-1 px-2 font-black`}
+  ${tw`bg-gray-200 text-bud-black py-1 px-2 mt-4`}
+  font-weight: 600;
   font-size: 3px;
   border-radius: 5px;
 `;
 export const CopyButton = styled.button`
-  ${tw`bg-bud-blue text-bud-black px-2 text-center items-center ml-1 font-bold`}
+  ${tw`bg-bud-blue text-bud-black px-2 text-center items-center ml-2 font-bold text-white p-1`}
   font-size: 3px;
   border-radius: 5px;
+`;
+
+export const KakaoContainer = styled.div`
+  ${tw`flex justify-center mt-4`}
 `;
