@@ -116,10 +116,10 @@ export default function StickerPage({
         negativeRate: sentiment.negative,
         positiveRate: sentiment.positive,
       };
+      postTodayDiaryApi(data);
       console.log(data, "this is data");
     });
-
-    // await postTodayDiaryApi(data);
+    
   };
 
   return (
