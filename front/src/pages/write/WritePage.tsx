@@ -146,7 +146,13 @@ export default function WritePage() {
           </div>
         </PageContainer>
       ) : (
-        <Sticker setStage={setStage} content={content} />
+        <Sticker
+          setStage={setStage}
+          content={content}
+          pics={originFiles}
+          groups={selectGroup}
+          personal={personalChecked}
+        />
       )}
     </div>
   );

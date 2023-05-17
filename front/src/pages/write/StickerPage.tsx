@@ -4,12 +4,21 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/modules";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import interact from "interactjs";
+import useMember from "../../hooks/memberHook";
 import { PageContainer } from "../../components/common/Page.styles";
-// import { getMyStickersApi } from "../../apis/stickerApi";
+import {
+  postTodayDiaryApi,
+  postSentimentApi,
+  postKeywordApi,
+} from "../../apis/diaryApi";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   setStage: React.Dispatch<React.SetStateAction<number>>;
   content: string;
+  pics: any;
+  groups: any;
+  personal: boolean;
 }
 
 // interface StickerListProps {
@@ -58,58 +67,102 @@ export default function StickerPage({ setStage, content }: Props) {
       const newX = initialX + deltaX;
       const newY = initialY + deltaY;
 
-      target.style.transform = `translate(${newX}px, ${newY}px)`;
+    target.style.transform = `translate(${newX}px, ${newY}px)`;
 
-      target.setAttribute("data-x", newX);
-      target.setAttribute("data-y", newY);
-    },
-    onend: (event: any) => {
-      const contentBoxElement = contentBoxRef.current;
-      const itemElement = event.target;
+    target.setAttribute("data-x", newX);
+    target.setAttribute("data-y", newY);
+  },
+  onend: (event: any) => {
+    const itemElement = event.target;
+    const initialX =
+      parseFloat(itemElement.getAttribute("data-initial-x")) || 0;
+    const initialY =
+      parseFloat(itemElement.getAttribute("data-initial-y")) || 0;
+    const newX = parseFloat(itemElement.getAttribute("data-x")) || 0;
+    const newY = parseFloat(itemElement.getAttribute("data-y")) || 0;
 
-      if (contentBoxElement && itemElement) {
-        const contentBoxRect = contentBoxElement.getBoundingClientRect();
-        const itemRect = itemElement.getBoundingClientRect();
+    if (newX === initialX && newY === initialY) {
+      console.log("-> 들어오지 않음");
+    } else {
+      console.log("-> 안으로", newX, newY);
+    }
+  },
+});
 
-        const itemInsideContentBox =
-          itemRect.left >= contentBoxRect.left &&
-          itemRect.right <= contentBoxRect.right &&
-          itemRect.top >= contentBoxRect.top &&
-          itemRect.bottom <= contentBoxRect.bottom;
+interact(".sticker-item").dropzone({
+  ondragenter: (event: any) => {
+    const itemElement = event.relatedTarget;
+    const contentBoxElement = event.target;
+    const itemRect = itemElement.getBoundingClientRect();
+    const contentBoxRect = contentBoxElement.getBoundingClientRect();
 
-        const wasInsideContentBox =
-          itemElement.getAttribute("data-was-inside") === "true";
+    const initialX = itemRect.left - contentBoxRect.left;
+    const initialY = itemRect.top - contentBoxRect.top;
+    itemElement.setAttribute("data-initial-x", initialX);
+    itemElement.setAttribute("data-initial-y", initialY);
+  },
+});
 
-        if (!itemInsideContentBox) {
-          const initialX =
-            parseFloat(itemElement.getAttribute("data-initial-x")) || 0;
-          const initialY =
-            parseFloat(itemElement.getAttribute("data-initial-y")) || 0;
-          itemElement.style.transform = `translate(${initialX}px, ${initialY}px)`;
-          itemElement.setAttribute("data-x", initialX);
-          itemElement.setAttribute("data-y", initialY);
-          console.log(" -> 밖으로");
-        } else {
-          const newX = parseFloat(itemElement.getAttribute("data-x")) || 0;
-          const newY = parseFloat(itemElement.getAttribute("data-y")) || 0;
-          itemElement.setAttribute("data-initial-x", newX);
-          itemElement.setAttribute("data-initial-y", newY);
-          console.log(" -> 안으로", newX, newY - 192.5);
-        }
-      }
-      // 스티커 가져오기
-    },
-  });
+export default function StickerPage({
+  setStage,
+  content,
+  pics,
+  groups,
+  personal,
+}: Props) {
+  const navigate = useNavigate();
+  const contentBoxRef = useRef<HTMLInputElement | null>(null);
+  const myStickers = useSelector(
+    (state: RootState) => state.member.memberData.sticker
+  );
+
+  // useEffect(() => {
+  //   console.log(myStickers, 'this is mySticker')
+  // }, [myStickers]);
+  const [sentiment, setSentiment] = useState<{
+    negative: number;
+    positive: number;
+  }>({ negative: 0, positive: 0 });
+  const { memberData } = useMember();
+  const username = memberData.username;
+  // const nickname = memberData.nickname;
+  const sendData = async () => {
+    Promise.all([
+      postSentimentApi({ content: content }),
+      postKeywordApi({ userId: username, content: content }),
+    ]).then(([result, kewordSend]) => {
+      setSentiment(result);
+      const data = {
+        text: content,
+        fileList: pics,
+        clubList: groups,
+        isPersonal: personal,
+        memberUsername: username,
+        negativeRate: sentiment.negative,
+        positiveRate: sentiment.positive,
+      };
+      postTodayDiaryApi(data);
+      console.log(data, "this is data");
+    });
+  };
+
   return (
     <PageContainer>
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
       <div className="grid grid-cols-6">
-        {myStickers?.map((sticker) => (
-          <img src={sticker.sticker.imageUrl} className="item my-auto" />
-        ))}
+        {myStickers &&
+          myStickers.length > 0 &&
+          myStickers.map((sticker) => (
+            <img
+              src={sticker.sticker.imageUrl}
+              className="sticker-item my-auto"
+            />
+          ))}
       </div>
-      <ContentBox ref={contentBoxRef}>{content}</ContentBox>
+      <ContentBox ref={contentBoxRef} className="drop-container text-2xl">
+        {content}
+      </ContentBox>
       <div className="flex justify-evenly">
         <button
           className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"
@@ -117,7 +170,10 @@ export default function StickerPage({ setStage, content }: Props) {
         >
           이전
         </button>
-        <button className="bg-bud-green text-white w-[120px] h-[45px] rounded-md">
+        <button
+          className="bg-bud-green text-white w-[120px] h-[45px] rounded-md"
+          onClick={sendData}
+        >
           완료
         </button>
       </div>

@@ -24,7 +24,7 @@ export const KakaoShare = ({
       if (!kakao.isInitialized()) {
         kakao.init("3f9ab37954d904c89a4a1a068d784064");
       }
-
+      
       kakao.Link.createDefaultButton({
         container: "#kakao-link-btn",
         objectType: "feed",
