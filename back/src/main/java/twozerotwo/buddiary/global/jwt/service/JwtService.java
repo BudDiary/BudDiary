@@ -99,7 +99,7 @@ public class JwtService {
 			cookie.setDomain("localhost");
 		} else {
 			log.info(" 쿠키 배포 설정으로 던집니다.");
-			cookie.setDomain("www.buddiary.site");
+			cookie.setDomain("alb.buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
@@ -116,7 +116,7 @@ public class JwtService {
 			cookie.setDomain("localhost");
 		} else {
 			log.info(" 쿠키 배포 설정으로 던집니다.");
-			cookie.setDomain("www.buddiary.site");
+			cookie.setDomain("alb.buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setMaxAge(1209600000);
