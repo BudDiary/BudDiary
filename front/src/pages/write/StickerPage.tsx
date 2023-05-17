@@ -21,41 +21,56 @@ interface Props {
   personal: boolean;
 }
 
-// interface StickerListProps {
-//   captainUsername: string | null;
-//   clubName: string;
-//   clubUuid: string;
-//   thumbnailUrl: string | undefined;
-//   clubType: string;
-// }
+type stickerDtoList = {
+  id: any;
+  xCoordinates: number;
+  yCoordinates: number;
+};
+
+const points: stickerDtoList[] = [];
 
 interact(".sticker-item").draggable({
   onstart: (event: any) => {
     const itemElement = event.target;
-    itemElement.setAttribute("data-initial-x", 0);
-    itemElement.setAttribute("data-initial-y", 0);
+    const itemRect = itemElement.getBoundingClientRect();
+    const initialX = itemRect.left;
+    const initialY = itemRect.top;
+    itemElement.setAttribute("data-initial-x", initialX);
+    itemElement.setAttribute("data-initial-y", initialY);
   },
-  onmove: (event: any) => {
-    const target = event.target;
-    const dataX = target.getAttribute("data-x");
-    const dataY = target.getAttribute("data-y");
-    const initialX = parseFloat(dataX) || 0;
-    const initialY = parseFloat(dataY) || 0;
-    const deltaX = event.dx;
-    const deltaY = event.dy;
-    const newX = initialX + deltaX;
-    const newY = initialY + deltaY;
+  // onmove: (event: any) => {
+  //   const target = event.target;
+  //   const dataX = target.getAttribute("data-x");
+  //   const dataY = target.getAttribute("data-y");
+  //   // const initialX = parseFloat(dataX) || 0;
+  //   // const initialY = parseFloat(dataY) || 0;
+  //   const deltaX = event.dx;
+  //   const deltaY = event.dy;
+  //   // const newX = initialX + deltaX;
+  //   // const newY = initialY + deltaY;
 
-    target.style.transform = `translate(${newX}px, ${newY}px)`;
+  //   target.style.transform = `translate(${newX}px, ${newY}px)`;
 
-    target.setAttribute("data-x", newX);
-    target.setAttribute("data-y", newY);
-  },
+  //   target.setAttribute("data-x", newX);
+  //   target.setAttribute("data-y", newY);
+  // },
   onend: (event: any) => {
     const target = event.target;
-    const finalX = target.getAttribute("data-x");
-    const finalY = target.getAttribute("data-y");
+    const startX = Number(target.getAttribute("data-initial-x"));
+    const startY = Number(target.getAttribute("data-initial-y"));
+    const movedX = Number(target.getAttribute("data-x"));
+    const movedY = Number(target.getAttribute("data-y"));
+    const finalX = startX + movedX;
+    const finalY = startY + movedY;
+
     // 사진 좌표 저장해서 append 하는 코드 짜기
+    console.log(target, finalX, finalY);
+    const temp: stickerDtoList = {
+      id: target,
+      xCoordinates: finalX,
+      yCoordinates: finalY,
+    };
+    points.push(temp);
   },
 });
 
@@ -66,6 +81,7 @@ export default function StickerPage({
   groups,
   personal,
 }: Props) {
+  // const [stickerList, setStickerList] = useState([]);
   const navigate = useNavigate();
   const contentBoxRef = useRef<HTMLInputElement | null>(null);
   const myStickers = useSelector(
@@ -90,6 +106,7 @@ export default function StickerPage({
     memberUsername: string;
     negativeRate: number;
     positiveRate: number;
+    stickerDtoList: any;
   }>({
     text: content,
     fileList: pics,
@@ -98,6 +115,7 @@ export default function StickerPage({
     memberUsername: username,
     negativeRate: 0,
     positiveRate: 0,
+    stickerDtoList: [],
   });
 
   useEffect(() => {
@@ -120,10 +138,14 @@ export default function StickerPage({
           ...prevData,
           negativeRate: prevSentiment.negative,
           positiveRate: prevSentiment.positive,
+          stickerDtoList: points,
         }));
         return prevSentiment;
       });
-      postTodayDiaryApi(data);
+      postTodayDiaryApi(data)
+        .then
+        // navigate('/group')
+        ();
       console.log(data, "this is data");
     });
   };

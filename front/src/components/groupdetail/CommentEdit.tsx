@@ -97,7 +97,7 @@ export default function CommentEdit({
           <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
-      <Divider style={{ border: "solid 2px #BFDBFE" }} />
+      <Divider style={{ border: "solid 1px #BFDBFE" }} />
       <EditContent>
         <EditTitle>댓글 수정하기</EditTitle>
         <InputSet>

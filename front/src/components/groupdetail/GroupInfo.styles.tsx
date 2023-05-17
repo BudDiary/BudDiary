@@ -6,7 +6,7 @@ export const GroupList = styled.div`
   width: 90%;
   height: 400px;
   padding: 20px;
-  border: 5px solid #bee5bf;
+  border: 2px solid #bee5bf;
   border-radius: 15px;
 
   img {
