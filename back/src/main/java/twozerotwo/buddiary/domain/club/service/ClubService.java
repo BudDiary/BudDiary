@@ -99,6 +99,7 @@ public class ClubService {
 			.build();
 		clubRepository.save(club);
 		club.getClubMembers().add(createMemberClub(captain, club));
+		captain.addPoint(20L);
 		// log.info("createMemberClub" + club.getClubMembers().toString());
 
 		return ClubCreateResponse.builder().type(ClubType.PLURAL.getCode()).uuid(club.getUuid()).build();
