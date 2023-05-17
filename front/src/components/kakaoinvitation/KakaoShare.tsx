@@ -10,16 +10,21 @@ declare global {
 interface GroupInfoProps {
   clubInfo?: Info;
   description: string;
+  address: string;
 }
 
-export const KakaoShare = ({ clubInfo, description }: GroupInfoProps) => {
+export const KakaoShare = ({
+  clubInfo,
+  description,
+  address,
+}: GroupInfoProps) => {
   const createKakaoButton = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
       if (!kakao.isInitialized()) {
         kakao.init("3f9ab37954d904c89a4a1a068d784064");
       }
-
+      
       kakao.Link.createDefaultButton({
         container: "#kakao-link-btn",
         objectType: "feed",
@@ -28,21 +33,21 @@ export const KakaoShare = ({ clubInfo, description }: GroupInfoProps) => {
           description: description,
           imageUrl: clubInfo?.thumbnailUrl, // i.e. process.env.FETCH_URL + '/logo.png'
           link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
+            mobileWebUrl: address,
+            webUrl: address,
           },
         },
         social: {
-          likeCount: 77,
-          commentCount: 55,
-          sharedCount: 333,
+          // likeCount: 77,
+          // commentCount: 55,
+          // sharedCount: 333,
         },
         buttons: [
           {
             title: "Buddiary 참여하기",
             link: {
-              mobileWebUrl: window.location.href,
-              webUrl: window.location.href,
+              mobileWebUrl: address,
+              webUrl: address,
             },
           },
           // {

@@ -52,33 +52,10 @@ interact(".sticker-item").draggable({
     target.setAttribute("data-y", newY);
   },
   onend: (event: any) => {
-    const itemElement = event.target;
-    const initialX =
-      parseFloat(itemElement.getAttribute("data-initial-x")) || 0;
-    const initialY =
-      parseFloat(itemElement.getAttribute("data-initial-y")) || 0;
-    const newX = parseFloat(itemElement.getAttribute("data-x")) || 0;
-    const newY = parseFloat(itemElement.getAttribute("data-y")) || 0;
-
-    if (newX === initialX && newY === initialY) {
-      console.log("-> 들어오지 않음");
-    } else {
-      console.log("-> 안으로", newX, newY);
-    }
-  },
-});
-
-interact(".sticker-item").dropzone({
-  ondragenter: (event: any) => {
-    const itemElement = event.relatedTarget;
-    const contentBoxElement = event.target;
-    const itemRect = itemElement.getBoundingClientRect();
-    const contentBoxRect = contentBoxElement.getBoundingClientRect();
-
-    const initialX = itemRect.left - contentBoxRect.left;
-    const initialY = itemRect.top - contentBoxRect.top;
-    itemElement.setAttribute("data-initial-x", initialX);
-    itemElement.setAttribute("data-initial-y", initialY);
+    const target = event.target;
+    const finalX = target.getAttribute("data-x");
+    const finalY = target.getAttribute("data-y");
+    // 사진 좌표 저장해서 append 하는 코드 짜기
   },
 });
 
@@ -94,6 +71,10 @@ export default function StickerPage({
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
+
+  // useEffect(() => {
+  //   console.log(myStickers, 'this is mySticker')
+  // }, [myStickers]);
   const [sentiment, setSentiment] = useState<{
     negative: number;
     positive: number;
@@ -119,7 +100,6 @@ export default function StickerPage({
       postTodayDiaryApi(data);
       console.log(data, "this is data");
     });
-    
   };
 
   return (
@@ -127,14 +107,16 @@ export default function StickerPage({
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
       <div className="grid grid-cols-6">
-        {myStickers?.map((sticker) => (
-          <img
-            src={sticker.sticker.imageUrl}
-            className="sticker-item my-auto"
-          />
-        ))}
+        {myStickers &&
+          myStickers.length > 0 &&
+          myStickers.map((sticker) => (
+            <img
+              src={sticker.sticker.imageUrl}
+              className="sticker-item my-auto"
+            />
+          ))}
       </div>
-      <ContentBox ref={contentBoxRef} className="drop-container text-2xl">
+      <ContentBox className="drop-container text-2xl font-hassam">
         {content}
       </ContentBox>
       <div className="flex justify-evenly">

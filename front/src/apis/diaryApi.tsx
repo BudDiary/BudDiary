@@ -37,12 +37,11 @@ const getDateDiaryListApi = (date: string) => {
 };
 
 // 다이어리 디테일
-const getDiaryDetailApi = (payload: number) => {
+const getDiaryDetailApi = (payload: string) => {
   return api
     .get(`/api/diaries/${payload}`)
     .then((res) => {
-      console.log(res);
-      return res.data;
+      return res.data.diaryDetail;
     })
     .catch((err) => {
       console.log(err, "getDateDiaryListAPI 오류");
