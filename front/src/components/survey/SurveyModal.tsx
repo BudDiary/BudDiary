@@ -14,7 +14,7 @@ import {
   ModalTitle,
   ModalTopNavContainer,
 } from "../../components/common/ModalWindow.styles";
-import { MoveIndex, Tag } from "./SurveyModal.styles";
+import { MoveIndex, SurveyButton, Tag } from "./SurveyModal.styles";
 import { firstSurveyApi } from "../../apis/surveyApi";
 import useMember from "../../hooks/memberHook";
 import { LinearProgress } from "@mui/material";
@@ -202,16 +202,16 @@ export default function SurveyModal({ closeModal }: Props) {
           <CloseModalButton onClick={closeSurvey}>
             {/* <BiArrowBack /> */}
           </CloseModalButton>
-          <ModalTitle style={{ textAlign: "center" }}>초기 설문조사</ModalTitle>
-          {currentSentenceIndex < allSentences.length - 1 ? (
-            <Button disabled onClick={closeSurvey} className="w-20">
-              완료
-            </Button>
-          ) : (
-            <Button onClick={closeSurvey} className="w-20">
-              완료
-            </Button>
-          )}
+          <ModalTitle style={{  }}>초기 설문조사</ModalTitle>
+          {currentSentenceIndex === allSentences.length - 1 ? (
+  <Button className="text-center" onClick={closeSurvey} >
+    완료
+  </Button>
+) : (
+  <SurveyButton onClick={closeSurvey}>
+    완료
+  </SurveyButton>
+)}
         </ModalTopNavContainer>
         <div>
           <p className="w-full text-center my-2 text-bold">

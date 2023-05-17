@@ -8,6 +8,11 @@ import { Divider } from "@mui/material";
 import { BiLinkExternal } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
+import excited from "../../assets/excited.png"
+import happy from "../../assets/happy.png"
+import normal from "../../assets/normal.png"
+import sad from "../../assets/sad.png"
+import crying from "../../assets/crying.png"
 
 interface Props {
   id: number;
@@ -31,12 +36,36 @@ export default function WrittenDiaryItem({
   positive,
 }: Props) {
   const navigate = useNavigate();
+
+  const getFeelingRate = (negative: number, positive: number) => {
+    const feelingRate = positive - negative;
+    let image = "";
+
+    if (feelingRate >= -100 && feelingRate < -60) {
+      image = crying;
+    } else if (feelingRate >= -60 && feelingRate < -20) {
+      image = sad;
+    } else if (feelingRate >= -20 && feelingRate < 20) {
+      image = normal;
+    } else if (feelingRate >= 20 && feelingRate < 60) {
+      image = happy;
+    } else if (feelingRate >= 60 && feelingRate <= 100) {
+      image = excited;
+    }
+
+    return image;
+  };
+
   return (
     <DiaryItemContainer>
       <DiaryTypeBox>
         {type === "PERSONAL" ? "비밀일기" : `${club.clubName}그룹일기`}
       </DiaryTypeBox>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+
       <div>{new Date(date).toLocaleString()}</div>
+      <img src={getFeelingRate(negative, positive)} alt=""  style={{ maxWidth: '50px', maxHeight: '50px', marginLeft: 'auto' }} />
+      </div>
       <Divider style={{ border: "solid 1px #BFDBFE", marginBlock: "10px" }} />
       <div className="grid-cols-3">
         <div>
@@ -65,8 +94,8 @@ export default function WrittenDiaryItem({
         <div className="min-h-[200px] mt-8 px-4">{content}</div>
       </div>
 
-      <div>{negative}</div>
-      <div>{positive}</div>
+      {/* <div>{negative}</div>
+      <div>{positive}</div> */}
       <div className="flex justify-end sm:mr-10">
         <button
           className="font-berry flex"

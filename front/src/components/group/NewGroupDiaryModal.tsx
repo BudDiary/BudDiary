@@ -44,7 +44,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
     thumbnail: null,
     captainUsername: "",
   });
-
+  const [newGroupData, setNewGroupData] = useState();
   const handleFileInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -73,7 +73,18 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       formData.append("captainUsername", username);
       formData.append("clubName", clubName);
       // postPluralClubApi({ clubName: clubName, captainUsername: username, image: image })
-      postPluralClubApi(formData);
+      postPluralClubApi(formData).then((result) => {
+        if (!result.error) {
+          // newgroupdata가 빈 값이 아닐 때 가져다가 쓰도록, 필요하면 useeffect도 활용해서 쓰시면 될 거 같아요.
+          setNewGroupData(result)
+          console.log(result, 'this is group info')
+        } else {
+          console.error(result.error); // Optionally, log the error
+        }
+      })
+      .catch((error) => {
+        console.error(error); // Log any unhandled promise rejections
+      });
       // 폼 객체 key 와 value 값을 순회.
       let entries = formData.entries();
       for (const pair of entries) {
