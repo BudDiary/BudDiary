@@ -162,9 +162,6 @@ public class Member {
 	}
 
 	public Long minusPoint(Long totalPrice) {
-		if (totalPrice <= 0) {
-			throw new BadRequestException("0개 이하의 스티커는 구매할 수 없습니다.");
-		}
 		if (this.point - totalPrice < 0) {
 			throw new BadRequestException("포인트가 부족합니다.");
 		}
