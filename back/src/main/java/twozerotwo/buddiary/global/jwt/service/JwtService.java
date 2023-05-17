@@ -239,6 +239,7 @@ public class JwtService {
 	}
 
 	public Authentication getAuthentication(String accessToken) {
+		log.info("디비에서 정보를 가져옵니다.");
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
