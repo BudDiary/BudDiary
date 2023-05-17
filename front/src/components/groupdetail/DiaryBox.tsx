@@ -153,12 +153,20 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     </h2>
                     <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
                   </div>
-                  <img src={getFeelingRate(diary.negativeRate, diary.positiveRate)} alt="" style={{ maxWidth: '50px', maxHeight: '50px', marginLeft: 'auto' }}/>
+                  <img
+                    src={getFeelingRate(diary.negativeRate, diary.positiveRate)}
+                    alt=""
+                    style={{
+                      maxWidth: "50px",
+                      maxHeight: "50px",
+                      marginLeft: "auto",
+                    }}
+                  />
                 </DiaryHeader>
                 <Divider
                   style={{ border: "solid 2px #BFDBFE", marginBlock: "10px" }}
                 />
-                <DiaryContent className="bg-red-200">
+                <DiaryContent>
                   {diary.imgList?.length > 0 && (
                     <DiaryImageSlider>
                       <Swiper
