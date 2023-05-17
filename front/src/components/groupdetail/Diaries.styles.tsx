@@ -32,8 +32,7 @@ export const EmojiButton = styled.button`
 `;
 
 export const WideButton = styled.button`
-  ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center`}
-  width: 45vw;
+  ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center w-[100%]`}
   border: 2px solid #c3cfe3;
 
   svg {
@@ -46,8 +45,7 @@ export const WideButton = styled.button`
 `;
 
 export const DiaryDetail = styled.div`
-  ${tw`sm:col-span-2 bg-white rounded-md`}
-  width: 45vw;
+  ${tw`sm:col-span-2 bg-white rounded-md w-[100%] my-4`}
   margin-block: 30px;
   padding: 20px;
   border: 2px solid #c3cfe3;
@@ -102,8 +100,8 @@ export const DiaryContent = styled.div`
     margin: 10px;
     padding: 20px;
     height: 250px;
-    border: 4px solid pink;
-    border-radius: 15px;
+    border: 2px solid pink;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -113,8 +111,8 @@ export const DiaryContent = styled.div`
   img {
     width: 100%;
     height: 250px;
-    border-radius: 20px;
-    border: 4px solid pink;
+    border-radius: 8px;
+    border: 2px solid pink;
   }
 
   @media (max-width: 640px) {
@@ -133,17 +131,17 @@ export const DiaryContent = styled.div`
       width: 100%;
       height: auto;
       margin: 0;
-      padding: 20px;
+      padding: 8px;
       height: 250px;
-      border: 4px solid pink;
+      border: 2px solid pink;
       border-radius: 15px;
     }
 
     img {
       width: 100%;
       height: 250px;
-      border-radius: 20px;
-      border: 4px solid pink;
+      border-radius: 8px;
+      border: 2px solid pink;
     }
   }
 `;
