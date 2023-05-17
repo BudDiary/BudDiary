@@ -45,7 +45,6 @@ const router = createBrowserRouter([
       { path: "/signup-info", element: <SignUpInfoPage /> },
       { path: "/stickers", element: <StickerStorePage /> },
       { path: "/decorate/:id", element: <DecoratePage /> },
-      { path: "/group/apply/:id", element: <applyInvitation /> },
     ],
   },
 ]);

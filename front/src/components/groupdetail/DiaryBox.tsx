@@ -55,6 +55,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
 
   useEffect(() => {
     setDiaryData(diaryList ?? []);
+    console.log(diaryList, 'this is diaryList')
   }, [diaryList]);
 
   const handleSelectEmoji = (emoji: string, diaryId: number) => {
@@ -116,6 +117,7 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     </h2>
                     <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
                   </div>
+                  <img src="" alt="" />
                 </DiaryHeader>
                 <Divider
                   style={{ border: "solid 2px #BFDBFE", marginBlock: "10px" }}
