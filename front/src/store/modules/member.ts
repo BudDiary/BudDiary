@@ -69,6 +69,12 @@ const memberSlice = createSlice({
     ) {
       state.memberData.profilePic = action.payload;
     },
+    updatePointsAction(
+      state: MemberStateType,
+      action: PayloadAction<number>
+    ) {
+      state.memberData.points = action.payload;
+    },
   },
 });
 
@@ -81,5 +87,6 @@ export const {
   updateIntroAction,
   updateNicknameAction,
   updateProfilePicAction,
+  updatePointsAction
 } = actions;
 export default reducer;

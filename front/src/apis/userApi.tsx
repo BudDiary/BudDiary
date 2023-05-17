@@ -1,4 +1,4 @@
-import { api, formApi, apiKakao } from "./axiosConfig";
+import { api, formApi, apiKakao, fastApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 카카오 인가코드 전송
@@ -113,6 +113,42 @@ const deleteTokenApi = () => {
     });
 };
 
+// 유저의 age, gender, nickname 조회
+const postUserInfoApi = (payload: any) => {
+  return api
+    .post(`api/members`, payload, { withCredentials: true })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err)
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "postUserInfoApi 오류가 발생했어요.",
+      // });
+      return err;
+    });
+}
+
+// 워드 클라우드에 필요한 데이터 가져오기
+const postWordCloudApi = (payload: any) => {
+  return fastApi
+    .post(`fastapi/wordcloud`, payload, { withCredentials: true })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "error",
+        text: "postWordCloudApi 오류가 발생했어요",
+      });
+      return err;
+    });
+};
+
+
+
+
 export {
   kakaoSignUpApi,
   firstSignUpApi,
@@ -120,4 +156,6 @@ export {
   patchIntroApi,
   patchProfileApi,
   deleteTokenApi,
+  postUserInfoApi,
+  postWordCloudApi
 };

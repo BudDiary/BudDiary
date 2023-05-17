@@ -49,7 +49,7 @@ public class StickerService {
 	}
 
 	@Transactional
-	public void buySticker(Long stickerId, StickerBuyRequest request, HttpServletRequest servlet) {
+	public Long buySticker(Long stickerId, StickerBuyRequest request, HttpServletRequest servlet) {
 		Sticker sticker = returnStickerById(stickerId);
 		// Member member = clubService.returnMemberByUsername(request.getUsername());
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
@@ -68,7 +68,7 @@ public class StickerService {
 					.build();
 				unusedStickerRepository.save(unusedSticker);
 			}
-			member.minusPoint(totalPrice);
+			return member.minusPoint(totalPrice);
 		} else {
 			throw new BadRequestException("포인트가 부족합니다.");
 		}

@@ -13,6 +13,7 @@ interface PluralList {
   clubName: string;
   clubUuid: string;
   thumbnailUrl: string | undefined;
+  clubType: string;
 }
 
 export default function MyGroup() {
@@ -55,17 +56,12 @@ export default function MyGroup() {
         >
           <div className="w-full h-full flex flex-col items-center justify-evenly">
             <button>
-              <MdLibraryAdd color="blue" size={32} />
+              <MdLibraryAdd size={32} className="text-bud-pink" />
             </button>
             <Typography variant="h5" component="div">
               <p className="text-lg">새로운 교환일기</p>
             </Typography>
           </div>
-          {/* <img
-              src=''
-              alt= '대체'
-              style={{ width: '100%', marginBottom: '10%' }}
-            /> */}
         </Paper>
         <Swiper
           spaceBetween={50}

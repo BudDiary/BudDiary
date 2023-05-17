@@ -18,6 +18,7 @@ import { MoveIndex, Tag } from "./SurveyModal.styles";
 import { firstSurveyApi } from "../../apis/surveyApi";
 import useMember from "../../hooks/memberHook";
 import { LinearProgress } from "@mui/material";
+import { postUserInfoApi } from "../../apis/userApi";
 // import { fastApi } from "./axiosConfig";
 
 // // 다수 클럽 생성
@@ -46,11 +47,11 @@ export default function SurveyModal({ closeModal }: Props) {
   const [myAnswer, setMyAnswer] = useState<string[]>([]);
   const swiper = useSwiper();
   const { memberData } = useMember();
-  // const [isDone, setIsDone] = useState(false);
-  const navigate = useNavigate();
+
+
   const closeSurvey = () => {
-    console.log({ id: memberData.id, favor_list: myAnswer });
-    firstSurveyApi({ id: memberData.id, favor_list: myAnswer });
+    console.log({ userId: memberData.username, favor_list: myAnswer });
+    firstSurveyApi({ userId: memberData.username, favor_list: myAnswer});
     closeModal();
   };
   // const postPluralClubApi = (payload: any) => {
@@ -150,6 +151,14 @@ export default function SurveyModal({ closeModal }: Props) {
       setMyAnswer([...myAnswer, element]);
     }
   };
+
+  const addMyAnswer2 = (element: string) => {
+    if (myAnswer.includes(element)) {
+      setMyAnswer(myAnswer.filter((answer) => answer !== element));
+    } else {
+      setMyAnswer([element]);
+    }
+  };
   const outputPrevSentence = () => {
     if (
       currentSentenceIndex < allSentences.length &&
@@ -218,18 +227,24 @@ export default function SurveyModal({ closeModal }: Props) {
             className="mx-4 my-4 flex flex-wrap justify-center"
             style={{ minHeight: "100px" }}
           >
-            {allAnswers[currentSentenceIndex].map((element, index) => {
-              return (
-                <Tag
-                  style={{ minWidth: "100px" }}
-                  key={index}
-                  onClick={() => addMyAnswer(element)}
-                  select={myAnswer.indexOf(element) !== -1 ? true : false}
-                >
-                  {element}
-                </Tag>
-              );
-            })}
+{allAnswers[currentSentenceIndex].map((element, index) => {
+  return (
+    <Tag
+      style={{ minWidth: "100px" }}
+      key={index}
+      onClick={() => {
+        if (currentSentenceIndex === 1) {
+          addMyAnswer2(element);
+        } else {
+          addMyAnswer(element);
+        }
+      }}
+      select={myAnswer.indexOf(element) !== -1 ? true : false}
+    >
+      {element}
+    </Tag>
+  );
+})}
           </div>
 
           <MoveIndex>

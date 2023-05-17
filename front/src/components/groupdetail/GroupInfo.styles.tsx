@@ -10,13 +10,13 @@ export const GroupList = styled.div`
   border-radius: 15px;
 
   img {
-    ${tw`rounded-lg border border-4 border-bud-green`};
+    ${tw`rounded-lg border border-4 border-none`};
     height: 150px;
     width: 95%;
   }
 
   p {
-    ${tw`font-berry`}
+    ${tw`font-berry mb-4`}
   }
 
   div {
@@ -36,18 +36,21 @@ export const MemberList = styled.div`
     ${tw`flex items-center justify-start gap-6 font-berry`}
 
     img {
+      ${tw`rounded-full border-2 border-bud-blue`}
       height: 35px;
       width: 35px;
-      border: 1px solid black;
-      ${tw`rounded-full`}
     }
 
     p {
-      ${tw`text-bud-blue text-center`}
+      ${tw`text-bud-blue text-center items-center`}
     }
   }
 `;
 
 export const ClubList = styled.span`
   ${tw`font-berry mx-2 px-1`}
+`;
+
+export const MemberListInfo = styled.span`
+  ${tw`flex items-center`}
 `;

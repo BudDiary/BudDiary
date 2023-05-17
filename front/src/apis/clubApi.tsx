@@ -1,4 +1,4 @@
-import { api, fastApi, formApi, authApi } from "./axiosConfig";
+import { api, fastApi, formApi } from "./axiosConfig";
 import Swal from "sweetalert2";
 
 // 다수 클럽 생성
@@ -20,11 +20,14 @@ const postPluralClubApi = (payload: any) => {
 };
 
 // 1:1 클럽 생성
-const postDoubleClubApi = (payload: any) => {
+const postDoubleClubApi = (payload: string) => {
   return api
-    .post(`api/clubs/double`, payload, { withCredentials: true })
+    .post(
+      `api/clubs/double`,
+      { targetName: payload },
+      { withCredentials: true }
+    )
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
@@ -53,17 +56,17 @@ const getMyClubListApi = () => {
     });
 };
 
-const getRecommendBySurveyApi = (payload: number) => {
+const postRecommendBySurveyApi = (payload: any) => {
   return fastApi
-    .get(`/fastapi/recommend/survey/${payload}`, { withCredentials: true })
+    .post(`/fastapi/recommend/survey/`, payload, { withCredentials: true })
     .then((res) => {
       return res;
     })
     .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        text: "getRecommendBySurveyApi 오류가 발생했어요.",
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "postRecommendBySurveyApi 오류가 발생했어요.",
+      // });
       return err;
     });
 };
@@ -87,16 +90,16 @@ const getClubDetailApi = (clubId: string) => {
 
 const PostRecommendBykeyWordApi = (payload: any) => {
   return fastApi
-    .post(`/fastapi/recommend/keyword`, { withCredentials: true })
+    .post(`/fastapi/recommend/keyword`, payload, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res;
     })
     .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        text: "PostRecommendBykeyWordApi 오류가 발생했어요.",
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "PostRecommendBykeyWordApi 오류가 발생했어요.",
+      // });
       return err;
     });
 };
@@ -105,6 +108,6 @@ export {
   postDoubleClubApi,
   getMyClubListApi,
   getClubDetailApi,
-  getRecommendBySurveyApi,
+  postRecommendBySurveyApi,
   PostRecommendBykeyWordApi,
 };

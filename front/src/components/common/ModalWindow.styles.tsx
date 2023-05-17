@@ -45,7 +45,7 @@ export const EditContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 15;
-  ${tw`bg-white h-[55%] w-[320px] sm:w-[60%] border-2`}
+  ${tw`bg-white h-[55%] w-[320px] border-2`}
 
   @media screen and (max-width: 640px) {
     ${tw`bg-white h-[65%] w-[320px] sm:w-[60%] border-2`}
@@ -70,4 +70,20 @@ export const GroupModal = styled.div`
   div {
     ${tw`px-2 my-1`}
   }
+`;
+
+// 초대하기 모달
+
+export const InvitationContainer = styled.div`
+  ${tw`bg-white h-[65%] w-[50%] flex flex-col border border-bud-blue`}
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+// 상단바 디자인
+
+export const ModalTopContent = styled.div`
+  ${tw`flex justify-center items-center`}
 `;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const TitleSection = styled.div`
-  ${tw`my-2`}
+  ${tw`my-2 font-berry text-2xl`}
 
   animation-name: AppearText;
   animation-delay: 0s;

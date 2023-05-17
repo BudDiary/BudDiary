@@ -14,7 +14,6 @@ export default function ViewDiariesPage() {
       const currentUrl: string = window.location.href;
       const thisDate: string = currentUrl.slice(-10);
       const response = await getDateDiaryListApi(thisDate);
-      console.log(response, "잘왔네");
       setDateDiaries(response);
     }
     fetchData();
@@ -29,6 +28,12 @@ export default function ViewDiariesPage() {
               <WrittenDiaryItem
                 key={diary.diaryInfo.diaryId}
                 type={diary.type}
+                club={diary.clubInfo}
+                pics={diary.diaryInfo.imgList}
+                content={diary.diaryInfo.text}
+                date={diary.diaryInfo.writeDate}
+                negative={diary.diaryInfo.negativeRate}
+                positive={diary.diaryInfo.positiveRate}
               />
             );
           })

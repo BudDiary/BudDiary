@@ -5,8 +5,7 @@ const getSSEAlarmsApi = () => {
   return api
     .get(`/api/notices`, { withCredentials: true })
     .then((res) => {
-      console.log(res, "알람오냐");
-      // return res.data
+      return res.data.noticeList;
     })
     .catch((err) => {
       console.log(err, "getSSEAlarmsAPI 오류");
@@ -14,12 +13,11 @@ const getSSEAlarmsApi = () => {
     });
 };
 
-const deleteSSEAlarmsApi = () => {
+const deleteSSEAlarmsApi = (payload: number) => {
   return api
-    .delete(``)
+    .delete(`/api/notices/${payload}`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
-      // return res.data
+      return res.data;
     })
     .catch((err) => {
       console.log(err, "deleteSSEAlarmsAPI 오류");
@@ -30,4 +28,19 @@ const deleteSSEAlarmsApi = () => {
     });
 };
 
-export { getSSEAlarmsApi, deleteSSEAlarmsApi };
+const postLiveDoubleInviteApi = (payload: string) => {
+  return api
+    .post(`event/double/clubs/${payload}`, { withCredentials: true })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err, "postLiveDoubleInviteApi 오류");
+      Swal.fire({
+        icon: "error",
+        text: "postLiveDoubleInviteApi 오류",
+      });
+    });
+};
+
+export { getSSEAlarmsApi, deleteSSEAlarmsApi, postLiveDoubleInviteApi };

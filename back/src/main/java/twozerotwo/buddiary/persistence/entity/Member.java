@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.diary.dto.WriterDto;
 import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
@@ -66,13 +67,14 @@ public class Member {
 	private Role role;
 	//민우 요청사항 추가 설문조사
 	// @JsonProperty("checkPreference")
-
+	@JsonIgnore
 	@Builder.Default
 	@Column(length = 2000)
 	private String phoneNumber = null;
-
+	@JsonIgnore
 	@Builder.Default
 	private String gender = null;
+	@JsonIgnore
 
 	@Builder.Default
 	private String ageRange = null;
@@ -134,6 +136,7 @@ public class Member {
 	public MemberDto toDto() {
 		return MemberDto.builder()
 			.username(this.username)
+			.nickname(this.nickname)
 			.profilePath(this.profilePath)
 			.intro(this.intro)
 			.point(this.point)
@@ -158,11 +161,12 @@ public class Member {
 		return false;
 	}
 
-	public void minusPoint(Long totalPrice) {
+	public Long minusPoint(Long totalPrice) {
 		if (this.point - totalPrice < 0) {
 			throw new BadRequestException("포인트가 부족합니다.");
 		}
 		this.point -= totalPrice;
+		return this.point;
 	}
 
 	public String updateIntro(String intro) {
@@ -182,5 +186,13 @@ public class Member {
 	public String updateProfilePath(String profilePath) {
 		this.profilePath = profilePath;
 		return this.profilePath;
+	}
+
+	public WriterDto toWriterDto() {
+		return WriterDto.builder()
+			.nickname(this.nickname)
+			.profilePath(this.profilePath)
+			.username(this.username)
+			.build();
 	}
 }

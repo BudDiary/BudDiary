@@ -16,7 +16,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from soynlp.noun import LRNounExtractor_v2
 
 class myAnswer(BaseModel):
-    id: int
+    userId: str
     favor_list: list[str]
 
 class diaryContnet(BaseModel):
@@ -53,7 +53,7 @@ def test():
 def survey(items: myAnswer):
     def make_survey_object():
         survey_object = {
-            'id': items.id,
+            'userId': items.userId,
             'preference': items.favor_list
         }
         
@@ -74,12 +74,12 @@ def survey(items: myAnswer):
             if answer_list[i] in survey_object["preference"]:
                 answer_idx.append(i)
         
-        survey_refactor = {'id': items.id, 'preference' : answer_idx}
+        survey_refactor = {'userId': items.userId, 'preference' : answer_idx}
         return survey_refactor
 
     filename = 'survey.json'
     if os.path.exists(filename):
-        with open(filename, 'r') as f:
+        with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
     else:
         data = []
@@ -87,31 +87,31 @@ def survey(items: myAnswer):
     new_data = make_survey_object()
     
     for i, survey in enumerate(data):
-        if survey['id'] == new_data['id']:
+        if survey['userId'] == new_data['userId']:
             data[i] = new_data
             break
     else:
         data.append(new_data)
 
-    with open(filename, 'w') as f:
+    with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f)
 
     return {"message": "json_update success"}
 
 
-@app.get("/fastapi/recommend/survey/{member_id}")
-def recommend_by_survey(member_id: int):
-    def get_similarity_scores(filename, member_id):
+@app.post("/fastapi/recommend/survey")
+def recommend_by_survey(info: keywordSimilar):
+    def get_similarity_scores(filename, userId):
         # 파일에서 데이터 로드
         if os.path.exists(filename):
-            with open(filename) as f:
+            with open(filename, 'r', encoding='utf-8') as f:
                 data = json.load(f)
 
-        # id와 preference 추출
+        # userId와 preference 추출
         ids = []
         preferences = []
         for entry in data:
-            ids.append(entry['id'])
+            ids.append(entry['userId'])
             preferences.append(' '.join([str(p) for p in entry['preference']]))
 
         # TF-IDF 특성 행렬 생성
@@ -123,14 +123,14 @@ def recommend_by_survey(member_id: int):
 
         # 결과 리스트 생성
         result = []
-        target_index = ids.index(member_id)
+        target_index = ids.index(userId)
         for i, sim in sorted(enumerate(cosine_similarities[target_index]), key=lambda x: x[1], reverse=True):
             if i != target_index:
                 result.append((ids[i], sim))
 
         return result
-    recommend_list = get_similarity_scores('survey.json', member_id)
-    recommend_object = [{"id" : id, "rate": round(rate, 2)} for id, rate in recommend_list]
+    recommend_list = get_similarity_scores('survey.json', info.userId)
+    recommend_object = [{"userId" : info.userId, "rate": round(rate, 2)} for info.userId, rate in recommend_list]
 
     return recommend_object
 
@@ -245,4 +245,76 @@ async def keyword(info : keywordSimilar):
     recommend_by_survey_list = get_similarity_scores_keyword('keyword.json', info.userId)
     recommend_object = [{"userId" : info.userId, "rate": round(rate, 2)} for info.userId, rate in recommend_by_survey_list]
 
-    return recommend_object
+
+    filtered_data = [obj for obj in recommend_object if obj['rate'] != 0]
+    sorted_data = sorted(filtered_data, key=lambda obj: obj['rate'], reverse=True)[:5]
+
+    return sorted_data
+
+
+
+@app.post("/fastapi/recommend/keyword2")
+async def keyword(info : keywordSimilar):
+    def get_overlapping_words(filename, target_user):
+        # 파일에서 데이터 로드
+        if os.path.exists(filename):
+            with open(filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+        target_keywords = None
+        overlapping_words = {}
+        for obj in data:
+            if obj["userId"] == target_user:
+                target_keywords = obj["keywords"]
+                break
+
+        if target_keywords is None:
+            return overlapping_words
+
+        for obj in data:
+            if obj["userId"] != target_user:
+                current_user = obj["userId"]
+                current_keywords = obj["keywords"]
+                common_words = set(target_keywords.keys()) & set(current_keywords.keys())
+
+                if common_words:
+                    overlapping_words[current_user] = list(common_words)
+
+        return overlapping_words
+
+    def print_overlapping_words(user, words):
+        return f"{{userId: '{user}', words: {words}}}"
+
+    overlapping_words = get_overlapping_words('keyword.json', info.userId)
+
+    formatted_output = [print_overlapping_words(user, words) for user, words in overlapping_words.items()]
+
+    result = ", ".join(formatted_output)
+
+    return [result]
+
+@app.post("/fastapi/wordcloud")
+async def wordcloud(info : keywordSimilar):
+    def get_wordcloud(filename, target_user):
+        if os.path.exists(filename):
+            with open(filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+        for obj in data:
+            if obj["userId"] == target_user:
+                keywords = obj["keywords"]
+                break
+        return keywords
+    
+    keyword_object = get_wordcloud('keyword.json', info.userId)
+    converted_output = []
+
+    for key, value in keyword_object.items():
+        converted_output.append({
+            "text": key,
+            "value": value
+        })
+
+   
+    return converted_output
+

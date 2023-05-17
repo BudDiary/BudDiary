@@ -20,11 +20,12 @@ const postTodayDiaryApi = (payload: any) => {
 
 // 특정 날짜 다이어리 리스트 조회
 const getDateDiaryListApi = (date: string) => {
+  console.log(date);
   return api
     .get(`/api/diaries?date=${date}`, { withCredentials: true })
     .then((res) => {
-      console.log(res);
-      return res.data;
+      console.log(res.data.diaryList);
+      return res.data.diaryList;
     })
     .catch((err) => {
       console.log(err, "getDateDiaryListApi 오류");
@@ -86,35 +87,35 @@ const patchDiaryStickerApi = (payload: any) => {
 
 const postSentimentApi = (payload: any) => {
   return fastApi
-  .post(`/fastapi/sentiment`, payload)
-  .then((res) => {
-    console.log(res)
-    return res.data
-  })
-  .catch((err) => {
-    console.log(err, "postSentimentApi 오류");
-    Swal.fire({
-      icon: "error",
-      text: "postSentimentApi 오류",
+    .post(`/fastapi/sentiment`, payload)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err, "postSentimentApi 오류");
+      Swal.fire({
+        icon: "error",
+        text: "postSentimentApi 오류",
+      });
     });
-})
-}
+};
 
 const postKeywordApi = (payload: any) => {
   return fastApi
-  .post(`/fastapi/keyword`, payload)
-  .then((res) => {
-    console.log(res)
-    return res.data
-  })
-  .catch((err) => {
-    console.log(err, "postKeywordApi 오류");
-    Swal.fire({
-      icon: "error",
-      text: "postKeywordApi 오류",
+    .post(`/fastapi/keyword`, payload)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err, "postKeywordApi 오류");
+      Swal.fire({
+        icon: "error",
+        text: "postKeywordApi 오류",
+      });
     });
-  });
-}
+};
 
 export {
   postTodayDiaryApi,
