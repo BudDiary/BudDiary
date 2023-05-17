@@ -6,7 +6,6 @@ const postTodayDiaryApi = (payload: any) => {
   return formApi
     .post(`/api/diaries`, payload, { withCredentials: true })
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {

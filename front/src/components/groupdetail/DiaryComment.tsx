@@ -151,7 +151,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
           </UserInfo>
         ))}
 
-      <Divider style={{ border: "solid 2px #BFDBFE", marginTop: "10px" }} />
+      <Divider style={{ border: "solid 1px #BFDBFE", marginTop: "10px" }} />
       {commentList.length > 2 && (
         <div style={{ textAlign: "center" }}>
           <ExpansionButton onClick={() => setShowAllComments((prev) => !prev)}>

@@ -92,7 +92,7 @@ export default function DeleteComment({
           <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
-      <Divider style={{ border: "solid 2px #BFDBFE" }} />
+      <Divider style={{ border: "solid 1px #BFDBFE" }} />
       <EditContent>
         <div style={{ textAlign: "center", marginBlock: "3px" }}>
           <EditTitle>댓글 삭제하기</EditTitle>

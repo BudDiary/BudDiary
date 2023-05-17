@@ -34,7 +34,7 @@ export const EmojiButton = styled.button`
 export const WideButton = styled.button`
   ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center`}
   width: 45vw;
-  border: 5px solid #c3cfe3;
+  border: 2px solid #c3cfe3;
 
   svg {
     ${tw`mr-2`}
@@ -50,7 +50,7 @@ export const DiaryDetail = styled.div`
   width: 45vw;
   margin-block: 30px;
   padding: 20px;
-  border: 5px solid #c3cfe3;
+  border: 2px solid #c3cfe3;
   > * {
     margin: auto;
   }
@@ -168,7 +168,7 @@ export const DiaryImageSlider = styled.div`
     width: 50px;
     height: 50px;
     transform: translateY(-50%);
-    border-radius: 50%;
+    border-radius: 30%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -253,7 +253,7 @@ export const DiaryDetailBlank = styled.div`
   width: 45vw;
   margin: 30px 0;
   padding-block: 150px;
-  border: 5px solid #c3cfe3;
+  border: 2px solid #c3cfe3;
 
   > * {
     margin: auto;

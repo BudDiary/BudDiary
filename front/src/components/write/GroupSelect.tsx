@@ -69,7 +69,7 @@ export default function GroupSelect({
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
         >
-          {mygroup.map((group: Info, index: number) => (
+          {mygroup?.map((group: Info, index: number) => (
             <MenuItem key={index} value={group.clubUuid}>
               {group.clubName}
             </MenuItem>
