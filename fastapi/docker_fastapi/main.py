@@ -77,7 +77,7 @@ def survey(items: myAnswer):
         survey_refactor = {'userId': items.userId, 'preference' : answer_idx}
         return survey_refactor
 
-    filename = './docker_fastapi/survey.json'
+    filename = './docker_fastapi/static/survey.json'
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -129,7 +129,7 @@ def recommend_by_survey(info: keywordSimilar):
                 result.append((ids[i], sim))
 
         return result
-    recommend_list = get_similarity_scores('./docker_fastapi/survey.json', info.userId)
+    recommend_list = get_similarity_scores('./docker_fastapi/static/survey.json', info.userId)
     recommend_object = [{"userId" : info.userId, "rate": round(rate, 2)} for info.userId, rate in recommend_list]
 
     return recommend_object
@@ -184,7 +184,7 @@ async def keyword(info: diaryKeyword):
         
         return result
     
-    filename = './docker_fastapi/keyword.json'
+    filename = './docker_fastapi/static/keyword.json'
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
