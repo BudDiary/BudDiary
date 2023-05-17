@@ -17,7 +17,7 @@ const deleteSSEAlarmsApi = (payload: number) => {
   return api
     .delete(`/api/notices/${payload}`, { withCredentials: true })
     .then((res) => {
-      return res.data;
+      return res.status;
     })
     .catch((err) => {
       console.log(err, "deleteSSEAlarmsAPI 오류");

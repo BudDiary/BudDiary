@@ -48,10 +48,9 @@ export default function SurveyModal({ closeModal }: Props) {
   const swiper = useSwiper();
   const { memberData } = useMember();
 
-
   const closeSurvey = () => {
     console.log({ userId: memberData.username, favor_list: myAnswer });
-    firstSurveyApi({ userId: memberData.username, favor_list: myAnswer});
+    firstSurveyApi({ userId: memberData.username, favor_list: myAnswer });
     closeModal();
   };
   // const postPluralClubApi = (payload: any) => {
@@ -181,7 +180,7 @@ export default function SurveyModal({ closeModal }: Props) {
   }, [myAnswer]);
   return (
     <Modal
-      className="font-mf text-2xl"
+      className="font-hassam text-2xl"
       aria-labelledby="modal-title"
       aria-describedby="modal-desc"
       open={true}
@@ -202,16 +201,14 @@ export default function SurveyModal({ closeModal }: Props) {
           <CloseModalButton onClick={closeSurvey}>
             {/* <BiArrowBack /> */}
           </CloseModalButton>
-          <ModalTitle style={{  }}>초기 설문조사</ModalTitle>
+          <ModalTitle style={{}}>초기 설문조사</ModalTitle>
           {currentSentenceIndex === allSentences.length - 1 ? (
-  <Button className="text-center" onClick={closeSurvey} >
-    완료
-  </Button>
-) : (
-  <SurveyButton onClick={closeSurvey}>
-    완료
-  </SurveyButton>
-)}
+            <Button className="text-center" onClick={closeSurvey}>
+              완료
+            </Button>
+          ) : (
+            <SurveyButton onClick={closeSurvey}>완료</SurveyButton>
+          )}
         </ModalTopNavContainer>
         <div>
           <p className="w-full text-center my-2 text-bold">
@@ -227,29 +224,33 @@ export default function SurveyModal({ closeModal }: Props) {
             className="mx-4 my-4 flex flex-wrap justify-center"
             style={{ minHeight: "100px" }}
           >
-{allAnswers[currentSentenceIndex].map((element, index) => {
-  return (
-    <Tag
-      style={{ minWidth: "100px" }}
-      key={index}
-      onClick={() => {
-        if (currentSentenceIndex === 1) {
-          addMyAnswer2(element);
-        } else {
-          addMyAnswer(element);
-        }
-      }}
-      select={myAnswer.indexOf(element) !== -1 ? true : false}
-    >
-      {element}
-    </Tag>
-  );
-})}
+            {allAnswers[currentSentenceIndex].map((element, index) => {
+              return (
+                <Tag
+                  style={{ minWidth: "100px" }}
+                  key={index}
+                  onClick={() => {
+                    if (currentSentenceIndex === 1) {
+                      addMyAnswer2(element);
+                    } else {
+                      addMyAnswer(element);
+                    }
+                  }}
+                  select={myAnswer.indexOf(element) !== -1 ? true : false}
+                >
+                  {element}
+                </Tag>
+              );
+            })}
           </div>
 
           <MoveIndex>
-            {<Button onClick={outputPrevSentence}>이전</Button>}
-            {<Button onClick={outputNextSentence}>다음</Button>}
+            {currentSentenceIndex > 0 ? (
+              <Button onClick={outputPrevSentence}>이전</Button>
+            ) : null}
+            {currentSentenceIndex < 7 ? (
+              <Button onClick={outputNextSentence}>다음</Button>
+            ) : null}
           </MoveIndex>
         </div>
       </Sheet>

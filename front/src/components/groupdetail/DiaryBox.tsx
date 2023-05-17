@@ -11,6 +11,7 @@ import {
   DiaryDetailBlank,
   ReactionSet,
 } from "./Diaries.styles";
+import { useNavigate } from "react-router-dom";
 import { LogoBlue, LogoGreen } from "../navbar/NavBar.styles";
 import DiaryComment from "./DiaryComment";
 import { DeleteButton } from "../common/Button.styles";
@@ -28,6 +29,7 @@ import happy from "../../assets/happy.png";
 import normal from "../../assets/normal.png";
 import sad from "../../assets/sad.png";
 import crying from "../../assets/crying.png";
+import { BiLinkExternal } from "react-icons/bi";
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -41,6 +43,7 @@ interface SelectedEmojis {
 }
 
 export default function DiaryBox({ diaryList }: DiaryBoxProps) {
+  const navigate = useNavigate();
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
   const [feelingRateData, setFeelingRateData] = useState<{
     [diaryId: number]: string;
@@ -184,9 +187,21 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                       </Swiper>
                     </DiaryImageSlider>
                   )}
-                  <DiaryText>
-                    <p>{diary.text}</p>
-                  </DiaryText>
+                  <div>
+                    <div className="flex justify-end sm:mr-10">
+                      <button
+                        className="font-berry flex"
+                        onClick={() => navigate(`/decorate/${diary.diaryId}`)}
+                      >
+                        다꾸 페이지 보러가기
+                        <BiLinkExternal className="my-auto ml-1" />
+                      </button>
+                    </div>
+                    <div className="h-[2px] w-[100%] bg-red-200 my-2"></div>
+                    <DiaryText>
+                      <p>{diary.text}</p>
+                    </DiaryText>
+                  </div>
                 </DiaryContent>
 
                 <ReactionSet>

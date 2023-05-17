@@ -214,7 +214,7 @@ export const DiaryImage = styled.img`
 `;
 
 export const DiaryText = styled.div`
-  ${tw`font-berry`}
+  ${tw`font-hassam text-xl`}
   display: "flex",
   justifyContent: "flex-start",
   margin: 0,

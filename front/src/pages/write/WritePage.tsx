@@ -14,6 +14,7 @@ import navimg from "../../assets/subnav/WirteDiary.jpg";
 import TypeIt from "typeit-react";
 import useMember from "../../hooks/memberHook";
 import Sticker from "./StickerPage";
+import Swal from "sweetalert2";
 
 // asdadasd
 
@@ -60,11 +61,18 @@ export default function WritePage() {
   };
 
   const goToSticker = () => {
-    setStage(1);
+    if (personalChecked === false && selectGroup.length === 0) {
+      Swal.fire({
+        icon: "error",
+        text: "일기를 작성할 위치를 고르지 않았어요.",
+      });
+    } else {
+      setStage(1);
+    }
   };
 
   return (
-    <div className="font-mf">
+    <div className="font-hassam">
       <SubNavContainer img={navimg}>
         <TypeIt
           options={{
