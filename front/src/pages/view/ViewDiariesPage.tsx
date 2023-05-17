@@ -9,6 +9,7 @@ import navimg from "../../assets/subnav/View.jpg";
 
 export default function ViewDiariesPage() {
   let [dateDiaries, setDateDiaries] = useState([]);
+  // const [feelingEmoji, setFeelingEmoji] = userState(number)
   useEffect(() => {
     async function fetchData() {
       const currentUrl: string = window.location.href;
@@ -18,6 +19,8 @@ export default function ViewDiariesPage() {
     }
     fetchData();
   }, []);
+
+
   return (
     <>
       <SubNavContainer img={navimg}>작성한 일기</SubNavContainer>

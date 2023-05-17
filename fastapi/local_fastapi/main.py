@@ -138,7 +138,7 @@ def recommend_by_survey(info: keywordSimilar):
 async def analyze_sentiment(content: diaryContnet):
     headers = {
         'Content-Type': 'application/json',
-        'X-NCP-APIGW-API-KEY-ID': 'vrdjgx8oxa',
+        'X-NCP-APIGW-API-KEY-ID': 'vrdjgx8oxa', 
         'X-NCP-APIGW-API-KEY': 'T6W3dtfPEqKkPwr8vDbDdpU6GdNS62bce6NtVLo6',
     }
     
@@ -312,7 +312,7 @@ async def wordcloud(info : keywordSimilar):
     for key, value in keyword_object.items():
         converted_output.append({
             "text": key,
-            "value": value
+            "value": int(value*40)
         })
 
    
