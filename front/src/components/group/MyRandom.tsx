@@ -41,27 +41,30 @@ export default function MyRandom() {
   }, []);
   return (
     <Swiper
-      spaceBetween={20}
       slidesPerView={1}
-      // breakpoints={{
-      //   360: {
-      //     slidesPerView: 1,
-      //   },
-      //   640: {
-      //     slidesPerView: 2,
-      //   },
-      //   1024: {
-      //     slidesPerView: 3,
-      //   },
-      //   1440: {
-      //     slidesPerView: 4,
-      //   },
-      // }}
+      breakpoints={{
+        // 화면 크기가 500px 이상일 때
+        450: {
+          slidesPerView: 2,
+        },
+        // 화면 크기가 640px 이상일 때
+        640: {
+          slidesPerView: 3,
+        },
+        // 화면 크기가 768px 이상일 때
+        768: {
+          slidesPerView: 4,
+        },
+        // 화면 크기가 1024px 이상일 때
+        1024: {
+          slidesPerView: 5,
+        },
+      }}
     >
       {doubleList.length >= 1
         ? doubleList.map((item, index) => (
             <SwiperSlide key={index} className="py-4 px-1">
-              <Paper elevation={3} sx={{ p: 2 }}>
+              <Paper style={{ height: "300px" }} sx={{ p: 2 }}>
                 <Typography variant="h5" component="div" sx={{ mb: 1 }}>
                   {item.clubName}
                 </Typography>

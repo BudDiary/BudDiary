@@ -21,6 +21,7 @@ import SignUpInfoPage from "./pages/signup/SignUpInfoPage";
 import StickerStorePage from "./pages/stickers/StickerStorePage";
 import DecoratePage from "./pages/decorate/DecoratePage";
 
+import applyInvitation from "./components/kakaoinvitation/applyInvitation";
 // const {isLoggedIn} = useMember();
 const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
       { path: "/signup-info", element: <SignUpInfoPage /> },
       { path: "/stickers", element: <StickerStorePage /> },
       { path: "/decorate/:id", element: <DecoratePage /> },
+      { path: "/group/apply/:id", element: <applyInvitation /> },
     ],
   },
 ]);

@@ -30,6 +30,11 @@ interface Props {
 // }
 
 interact(".sticker-item").draggable({
+  onstart: (event: any) => {
+    const itemElement = event.target;
+    itemElement.setAttribute("data-initial-x", 0);
+    itemElement.setAttribute("data-initial-y", 0);
+  },
   onmove: (event: any) => {
     const target = event.target;
     const dataX = target.getAttribute("data-x");
@@ -62,8 +67,7 @@ export default function StickerPage({
   personal,
 }: Props) {
   const navigate = useNavigate();
-  // const contentBoxRef = useRef<HTMLInputElement | null>(null);
-  // const contentBoxRef = useRef(null);
+  const contentBoxRef = useRef<HTMLInputElement | null>(null);
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
@@ -103,15 +107,14 @@ export default function StickerPage({
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
       <div className="grid grid-cols-6">
-      {myStickers && myStickers.length > 0 && (
-  myStickers.map((sticker) => (
-    <img
-      src={sticker.sticker.imageUrl}
-      className="sticker-item my-auto"
-    />
-  ))
-)}
-
+        {myStickers &&
+          myStickers.length > 0 &&
+          myStickers.map((sticker) => (
+            <img
+              src={sticker.sticker.imageUrl}
+              className="sticker-item my-auto"
+            />
+          ))}
       </div>
       <ContentBox className="drop-container text-2xl font-hassam">
         {content}
