@@ -116,7 +116,7 @@ export default function WritePage() {
           setStage={setStage}
           content={content}
           pics={originFiles}
-          groups={mygroup}
+          groups={selectGroup}
           personal={personalChecked}
         />
       )}
