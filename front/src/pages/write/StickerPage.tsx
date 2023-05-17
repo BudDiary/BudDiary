@@ -30,11 +30,6 @@ interface Props {
 // }
 
 interact(".sticker-item").draggable({
-  onstart: (event: any) => {
-    const itemElement = event.target;
-    itemElement.setAttribute("data-initial-x", 0);
-    itemElement.setAttribute("data-initial-y", 0);
-  },
   onmove: (event: any) => {
     const target = event.target;
     const dataX = target.getAttribute("data-x");
@@ -51,35 +46,6 @@ interact(".sticker-item").draggable({
     target.setAttribute("data-x", newX);
     target.setAttribute("data-y", newY);
   },
-  onend: (event: any) => {
-    const itemElement = event.target;
-    const initialX =
-      parseFloat(itemElement.getAttribute("data-initial-x")) || 0;
-    const initialY =
-      parseFloat(itemElement.getAttribute("data-initial-y")) || 0;
-    const newX = parseFloat(itemElement.getAttribute("data-x")) || 0;
-    const newY = parseFloat(itemElement.getAttribute("data-y")) || 0;
-
-    if (newX === initialX && newY === initialY) {
-      console.log("-> 들어오지 않음");
-    } else {
-      console.log("-> 안으로", newX, newY);
-    }
-  },
-});
-
-interact(".sticker-item").dropzone({
-  ondragenter: (event: any) => {
-    const itemElement = event.relatedTarget;
-    const contentBoxElement = event.target;
-    const itemRect = itemElement.getBoundingClientRect();
-    const contentBoxRect = contentBoxElement.getBoundingClientRect();
-
-    const initialX = itemRect.left - contentBoxRect.left;
-    const initialY = itemRect.top - contentBoxRect.top;
-    itemElement.setAttribute("data-initial-x", initialX);
-    itemElement.setAttribute("data-initial-y", initialY);
-  },
 });
 
 export default function StickerPage({
@@ -90,7 +56,8 @@ export default function StickerPage({
   personal,
 }: Props) {
   const navigate = useNavigate();
-  const contentBoxRef = useRef<HTMLInputElement | null>(null);
+  // const contentBoxRef = useRef<HTMLInputElement | null>(null);
+  // const contentBoxRef = useRef(null);
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
@@ -119,7 +86,6 @@ export default function StickerPage({
       postTodayDiaryApi(data);
       console.log(data, "this is data");
     });
-    
   };
 
   return (
@@ -134,9 +100,7 @@ export default function StickerPage({
           />
         ))}
       </div>
-      <ContentBox ref={contentBoxRef} className="drop-container text-2xl">
-        {content}
-      </ContentBox>
+      <ContentBox className="drop-container text-2xl">{content}</ContentBox>
       <div className="flex justify-evenly">
         <button
           className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"

@@ -46,12 +46,15 @@ export default function Profile() {
       <ProfileInfoSection>
         <NicknameBox>{nickname}</NicknameBox>
         <PointsButton to="/stickers">{points}pts</PointsButton>
-      </ProfileInfoSection>
-      <ChangeProfileSection>
         <FullRoundedButton onClick={showProfileModal}>
           프로필수정
         </FullRoundedButton>
-      </ChangeProfileSection>
+      </ProfileInfoSection>
+      {/* <ChangeProfileSection>
+        <FullRoundedButton onClick={showProfileModal}>
+          프로필수정
+        </FullRoundedButton>
+      </ChangeProfileSection> */}
       <IntroContainer>
         <IntroTitle>소개글</IntroTitle>
         {intro}
