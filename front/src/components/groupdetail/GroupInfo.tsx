@@ -52,7 +52,7 @@ export default function GroupInfo({
             <BasicButton onClick={handleToggleModal}>초대하기</BasicButton>
           </div>
         ) : null}
-        <Divider style={{ border: "solid 2px #BFDBFE", width: "100%" }} />
+        <Divider style={{ border: "solid 1px #BFDBFE", width: "100%" }} />
         <MemberList>
           {memberList?.map((member) => (
             <div key={member.id}>

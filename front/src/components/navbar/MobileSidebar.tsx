@@ -74,7 +74,7 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
                   />
                 </SideMyPage>
               </SideUserInfo>
-              <Divider style={{ border: "solid 2px #BFDBFE" }} />
+              <Divider style={{ border: "solid 1px #BFDBFE" }} />
               <SideBarMenuSelect>
                 <SideBarMenuItem onClick={onClose} to="/group">
                   그룹일기

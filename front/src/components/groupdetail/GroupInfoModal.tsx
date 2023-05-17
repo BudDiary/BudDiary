@@ -90,7 +90,7 @@ export default function GroupInfoModal({
           <BasicButton>초대하기</BasicButton>
         </div>
       ) : null}
-      <Divider style={{ border: "solid 2px #BFDBFE" }} />
+      <Divider style={{ border: "solid 1px #BFDBFE" }} />
       <MemberList>
         {memberList?.map((member) => (
           <div key={member.id}>
