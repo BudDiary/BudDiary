@@ -41,10 +41,14 @@ export default function Calendar() {
     return result;
   };
   const [allDaysInMonth, setAllDaysInMonth] = useState<Date[]>([]);
+
+
   useEffect(() => {
     setAllDaysInMonth(daysInMonth(todayDate));
   }, [todayDate]);
   
+
+
   return (
     <CalendarContainer>
       <DateControlContainer>

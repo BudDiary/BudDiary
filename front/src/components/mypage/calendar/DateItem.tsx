@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { DateItemContainer, DateTitle } from "./DateItem.styles";
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,11 @@ export default function DateItem({
   }: Props) {
   const navigate = useNavigate();
   const nowTime = new Date();
+  useEffect(() => {
+    console.log(`${day.getFullYear()}-${(day.getMonth()+1).toString().padStart(2, '0')}-${day.getDate().toString().padStart(2, '0')}`)
+    // console.log(, 'this is day')
+  }, []);
+
 
   const sameMonth = todayDate.getMonth() === day.getMonth();
   const sameDay =
