@@ -41,7 +41,7 @@ export default function WritePage() {
   const [originFiles, setOriginFiles] = useState<File[]>([]);
   const [selectGroup, setSelectGroup] = useState<string[]>([]);
   const [mygroup, setMygroup] = useState<GroupData[]>([]);
-  const [personalChecked, setPersonalChecked] = useState<boolean>(false);
+  const [personalChecked, setPersonalChecked] = useState<boolean>(true);
   const [stage, setStage] = useState<number>(0);
   const [sentiment, setSentiment] = useState<{
     negative: number;
@@ -88,6 +88,7 @@ export default function WritePage() {
         positiveRate: sentiment.positive,
       };
       console.log(data, "this is data");
+      postTodayDiaryApi(data)
     });
 
     // await postTodayDiaryApi(data);
