@@ -72,13 +72,26 @@ export const ImageSection = styled.div<running>`
 `;
 
 export const FirstImageBox = styled.div`
-  ${tw`border-2`}
+  ${tw``}
   width:45%;
+  height: 100%;
+
+  @media screen and (max-width: 640px) {
+    width: 80%;
+    height: 100%;
+    overflow: hidden;
+    ${tw`bg-center`}
+  }
 `;
 
 export const SecondImageBox = styled.div`
-  ${tw`border-2`}
+  ${tw`ml-2`}
   width:50%;
+  height: 50%;
+
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 export const TextContainer = styled.div`
@@ -473,11 +486,11 @@ export const SExcited = styled.div<running>`
       ${tw`bg-bottom`}
     }
     14.25% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translate(0px,0px);
     }
     28.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(400%);
     }
     43% {
@@ -524,11 +537,11 @@ export const SHappy = styled.div<running>`
       transform : translateX(-100%);
     }
     28.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-100%);
     }
     43% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(300%);
     }
     55.25% {
@@ -575,11 +588,11 @@ export const SNormal = styled.div<running>`
       transform : translateX(-200%);
     }
     43% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-200%);
     }
     55.25% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(200%);
     }
     69.5% {
@@ -626,11 +639,11 @@ export const SSad = styled.div<running>`
       transform : translateX(-300%);
     }
     55.25% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-300%);
     }
     69.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(100%);
     }
     83.75% {
@@ -677,11 +690,11 @@ export const SCrying = styled.div<running>`
       transform : translateX(-400%);
     }
     69.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-400%);
     }
     83.75% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(0%);
     }
     100% {
@@ -716,6 +729,14 @@ export const UnderLine = styled.p<timer>`
       ${tw`border-2`}
     }
   }
+`;
+
+export const ImgMargin = styled.div`
+  ${tw`h-[50%]`}
+`;
+
+export const ImgBox = styled.div`
+  ${tw`h-[50%]`}
 `;
 
 // @media screen and (max-width: 640px) {
