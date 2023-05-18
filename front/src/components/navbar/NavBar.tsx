@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+
 import {
   LogoBlue,
   LogoContainer,
@@ -16,13 +18,12 @@ import {
 } from "./NavBar.styles";
 import { RxHamburgerMenu } from "react-icons/rx";
 import MobileSidebar from "./MobileSidebar";
-import { useState } from "react";
 import { KAKAO_AUTH_URL, api } from "../../apis/axiosConfig";
 import useMember from "../../hooks/memberHook";
 import { useNavigate } from "react-router-dom";
 import { AiFillBell } from "react-icons/ai";
 import AlarmSSE from "./AlarmSSE";
-import { getSSEAlarmsApi } from "../../apis/noticeApi";
+import { deleteSSEAlarmsApi, getSSEAlarmsApi } from "../../apis/noticeApi";
 
 interface AlarmList {
   id: number;
@@ -94,15 +95,25 @@ export default function NavBar() {
       window.location.href = KAKAO_AUTH_URL;
     }
   };
-  // const handleDeleteAlarm = async (alarmId) => {
-  //   const delRes = await deleteSSEAlarmsApi(alarmId);
-  //   console.log(delRes, 'this is delRes');
+  const handleDeleteAlarm = async (alarmId: number) => {
+    try {
+      const delRes = await deleteSSEAlarmsApi(alarmId);
+      console.log(delRes, 'this is delRes');
 
-  //   if (delRes === 204) {
-  //     Swal.fire({
-  //       text: '랜덤일기 신청을 거절했습니다.',
-  //     });
-  //   }
+      if (delRes === 204) {
+        Swal.fire({
+          text: '랜덤일기 신청을 거절했습니다.',
+        });
+      }
+
+      // Fetch updated alarm list
+      const updatedAlarmList = alarmList.filter((alarm) => alarm.id !== alarmId);
+      setAlarmList(updatedAlarmList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   const handleAlarms = () => {
     setAlarmBoxState(!alarmBoxState);
   };
@@ -145,13 +156,9 @@ export default function NavBar() {
             <AlarmListContainer>
               {alarmList.map((alarm) => (
                 <AlarmSSE
-                  key={alarm.id}
-                  id={alarm.id}
-                  clubName={alarm.clubName}
-                  clubUuid={alarm.clubUuid}
-                  nickname={alarm.nickname}
-                  type={alarm.type}
-                  username={alarm.username}
+                key={alarm.id}
+                alarm={alarm}
+                onDeleteAlarm={handleDeleteAlarm}
                 />
               ))}
             </AlarmListContainer>
