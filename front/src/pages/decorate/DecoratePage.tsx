@@ -18,31 +18,11 @@ interface Props {
   xcoordinate: number;
   ycoordinate: number;
 }
-
-interact(".sticker-item").draggable({
-  onmove: (event: any) => {
-    const target = event.target;
-    const dataX = target.getAttribute("data-x");
-    const dataY = target.getAttribute("data-y");
-    const initialX = parseFloat(dataX) || 0;
-    const initialY = parseFloat(dataY) || 0;
-    const deltaX = event.dx;
-    const deltaY = event.dy;
-    const newX = initialX + deltaX;
-    const newY = initialY + deltaY;
-
-    target.style.transform = `translate(${newX}px, ${newY}px)`;
-
-    target.setAttribute("data-x", newX);
-    target.setAttribute("data-y", newY);
-  },
-  onend: (event: any) => {
-    const target = event.target;
-    const finalX = target.getAttribute("data-x");
-    const finalY = target.getAttribute("data-y");
-    // 사진 좌표 저장해서 append 하는 코드 짜기
-  },
-});
+type usedSticker = {
+  stickerUrl: any;
+  xCoordinate: number;
+  yCoordinate: number;
+};
 
 export default function DecoratePage() {
   const navigate = useNavigate();
@@ -51,6 +31,37 @@ export default function DecoratePage() {
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
+  const [sendStickerList, setSendStickerList] = useState<usedSticker[]>([]);
+  interact(".sticker-item").draggable({
+    onstart: (event: any) => {
+      const itemElement = event.target;
+      const itemRect = itemElement.getBoundingClientRect();
+      const initialX = itemRect.left;
+      const initialY = itemRect.top;
+      itemElement.setAttribute("data-initial-x", initialX);
+      itemElement.setAttribute("data-initial-y", initialY);
+    },
+    onend: (event: any) => {
+      const target = event.target;
+      const startX = Number(target.getAttribute("data-initial-x"));
+      const startY = Number(target.getAttribute("data-initial-y"));
+      const movedX = Number(target.getAttribute("data-x"));
+      const movedY = Number(target.getAttribute("data-y"));
+      const finalX = startX + movedX;
+      const finalY = startY + movedY;
+
+      // 사진 좌표 저장해서 append 하는 코드 짜기
+
+      const temp: usedSticker = {
+        stickerUrl: target.src,
+        xCoordinate: finalX,
+        yCoordinate: finalY,
+      };
+
+      setSendStickerList([...sendStickerList, temp]);
+    },
+  });
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -68,7 +79,12 @@ export default function DecoratePage() {
   }, []);
 
   const sendData = () => {
-    // patchDiaryStickerApi()
+    const finalData = {
+      stickerDtoList: sendStickerList,
+      diaryId: window.location.href.split(`/decorate/`)[1],
+    };
+    patchDiaryStickerApi(finalData);
+    // 여기에서 데이터 payload 만들고 api 호출
   };
   return (
     <div className="relative">
@@ -82,12 +98,12 @@ export default function DecoratePage() {
               left: sticker.xcoordinate,
               top: sticker.ycoordinate,
             }}
-            className="absolute"
+            className="absolute w-[192px]"
           />
         ))}
 
         <StickerListTitle>보유중인 스티커</StickerListTitle>
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-6 h-[160px]">
           {myStickers?.map((sticker) => (
             <img
               src={sticker.sticker.imageUrl}

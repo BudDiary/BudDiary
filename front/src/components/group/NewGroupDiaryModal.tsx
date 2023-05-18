@@ -25,6 +25,7 @@ import { postPluralClubApi, getClubDetailApi } from "../../apis/clubApi";
 import useMember from "../../hooks/memberHook";
 import { KakaoInvitation } from "../kakaoinvitation/kakaoInvitation";
 import { Club } from "../../types/group";
+import { useNavigate } from "react-router-dom";
 interface Props {
   closeModal: any;
 }
@@ -36,6 +37,14 @@ interface FormData {
 }
 
 export default function NewGroupDiaryModal({ closeModal }: Props) {
+  
+  const navigate = useNavigate();
+
+
+  const handleGroupClick = (clubUuid: string) => {
+    navigate(`/group/${clubUuid}`);
+  };
+
   const { memberData } = useMember();
   const [open, setOpen] = React.useState(false);
   const [initial, setInitial] = useState(true);
@@ -127,8 +136,13 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
     };
 
     const handleClose2 = () => {
-      handleClose();
-      closeDiaryModal(); // close parent modal
+      // handleClose();
+      // closeDiaryModal(); // close parent modal
+      if (newGroupData) {
+       console.log(newGroupData, 'this is newgroupdata')
+       handleGroupClick(newGroupData.uuid)
+      }
+
     };
 
     return (
