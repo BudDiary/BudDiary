@@ -27,6 +27,8 @@ export default function AlarmSSE(props: Props) {
   const { id, clubName, clubUuid, nickname, type, username } = props;
   const handleDeleteAlarm = async () => {
     const delRes = await deleteSSEAlarmsApi(id);
+    console.log(delRes, 'this is delRes')
+
     if (delRes === 204) {
       Swal.fire({
         text: "랜덤일기 신청을 거절했습니다.",
