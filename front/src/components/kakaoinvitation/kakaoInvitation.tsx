@@ -39,14 +39,18 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
   }, []);
 
   function copyCurrentUrlToClipboard() {
-    navigator.clipboard
-      .writeText(address)
-      .then(() => {
-        setIsCopied(true);
-      })
-      .catch((err) => {
-        console.error("Failed to copy current URL:", err);
-      });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(address)
+        .then(() => {
+          setIsCopied(true);
+        })
+        .catch((err) => {
+          console.error("Failed to copy current URL:", err);
+        });
+    } else {
+      console.error("Clipboard writeText API is not supported.");
+    }
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {

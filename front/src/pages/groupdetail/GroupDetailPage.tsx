@@ -37,7 +37,7 @@ const GroupDetailPage = () => {
       try {
         const data = await getClubDetailApi(code);
         setClubData(data);
-        console.log(data, 'this is clubdetaildata')
+        console.log(data, "this is clubdetaildata");
       } catch (error) {
         console.error(error);
       }
