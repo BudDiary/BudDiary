@@ -58,7 +58,7 @@ const getMyClubListApi = () => {
 
 const postRecommendBySurveyApi = (payload: any) => {
   return fastApi
-    .post(`/fastapi/recommend/survey/`, payload, { withCredentials: true })
+    .post(`/fastapi/recommend/survey`, payload, { withCredentials: true })
     .then((res) => {
       return res;
     })

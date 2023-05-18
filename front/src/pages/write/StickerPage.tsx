@@ -39,22 +39,6 @@ interact(".sticker-item").draggable({
     itemElement.setAttribute("data-initial-x", initialX);
     itemElement.setAttribute("data-initial-y", initialY);
   },
-  // onmove: (event: any) => {
-  //   const target = event.target;
-  //   const dataX = target.getAttribute("data-x");
-  //   const dataY = target.getAttribute("data-y");
-  //   // const initialX = parseFloat(dataX) || 0;
-  //   // const initialY = parseFloat(dataY) || 0;
-  //   const deltaX = event.dx;
-  //   const deltaY = event.dy;
-  //   // const newX = initialX + deltaX;
-  //   // const newY = initialY + deltaY;
-
-  //   target.style.transform = `translate(${newX}px, ${newY}px)`;
-
-  //   target.setAttribute("data-x", newX);
-  //   target.setAttribute("data-y", newY);
-  // },
   onend: (event: any) => {
     const target = event.target;
     const startX = Number(target.getAttribute("data-initial-x"));
@@ -65,16 +49,18 @@ interact(".sticker-item").draggable({
     const finalY = startY + movedY;
 
     // 사진 좌표 저장해서 append 하는 코드 짜기
-    console.log(target, finalX, finalY);
+
     const temp: stickerDtoList = {
-      id: target,
+      id: target.src,
       xCoordinates: finalX,
       yCoordinates: finalY,
     };
     points.push(temp);
+    console.log(target);
+    console.log(points);
   },
 });
-
+console.log(points);
 export default function StickerPage({
   setStage,
   content,
@@ -82,16 +68,11 @@ export default function StickerPage({
   groups,
   personal,
 }: Props) {
-  // const [stickerList, setStickerList] = useState([]);
   const navigate = useNavigate();
   const contentBoxRef = useRef<HTMLInputElement | null>(null);
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
-
-  // useEffect(() => {
-  //   console.log(myStickers, 'this is mySticker')
-  // }, [myStickers]);
 
   const [sentiment, setSentiment] = useState<{
     negative: number;
@@ -139,7 +120,7 @@ export default function StickerPage({
           ...prevData,
           negativeRate: prevSentiment.negative,
           positiveRate: prevSentiment.positive,
-          stickerDtoList: points,
+          stickerDtoList: { points },
         }));
         return prevSentiment;
       });
@@ -168,6 +149,7 @@ export default function StickerPage({
           myStickers.map((sticker) => (
             <img
               src={sticker.sticker.imageUrl}
+              // alt={String(sticker.sticker.stickerId)}
               className="sticker-item my-auto"
             />
           ))}

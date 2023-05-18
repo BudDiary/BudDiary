@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { EditContent, DeleteButton } from "./Diaries.styles";
 import {
   EditContainer,
@@ -8,9 +8,11 @@ import { UserInfo, EditTitle } from "./DiaryComment.style";
 import { DeleteContent, CommentBox } from "./DiaryComment.style";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
+import { getClubDetailApi } from "../../apis/clubApi";
 import { deleteCommentApi } from "../../apis/commentApi";
 import close from "../../assets/modal/close.png";
-import useMember from "../../hooks/memberHook";
+import { Club } from "../../types/group";
+
 interface CommentDeleteProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,7 +24,22 @@ export default function DeleteComment({
   diaryId,
   onClose,
 }: CommentDeleteProps) {
-  const { memberData } = useMember();
+  const [clubData, setClubData] = useState<Club | null>(null);
+  useEffect(() => {
+    const currentUrl: string = window.location.href;
+
+    const code = currentUrl.split(`/group/`)[1];
+    async function fetchData() {
+      try {
+        const data = await getClubDetailApi(code);
+        setClubData(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, [comment]);
+
   const [commentState, setCommentState] = useState(comment.text);
   const closeCommentModal = () => {
     onClose();
@@ -92,7 +109,7 @@ export default function DeleteComment({
           <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
-      <Divider style={{ border: "solid 1px #BFDBFE" }} />
+      <Divider style={{ border: "solid 2px #BFDBFE" }} />
       <EditContent>
         <div style={{ textAlign: "center", marginBlock: "3px" }}>
           <EditTitle>댓글 삭제하기</EditTitle>

@@ -1,12 +1,39 @@
-import React , { useState,useRef }from "react";
-import {BiArrowBack} from 'react-icons/bi'
-import { ModalContainer, BackgroundContainer, ModalTopNavContainer, CloseModalButton, ModalTitle, SaveModalButton } from '../common/ModalWindow.styles'
-import { SurveyAgainButton, ResetButton,EditSubmitButton } from "../common/Button.styles";
-import { SurveyLink, ProfilePicBox, ImgInput, ProfileContainer, ModalContentContainer, ProfileEditButtonsContainer,EditInputContainer } from "./ProfileEditModal.styles";
+import React, { useState, useRef } from "react";
+import { BiArrowBack } from "react-icons/bi";
+import {
+  ModalContainer,
+  BackgroundContainer,
+  ModalTopNavContainer,
+  CloseModalButton,
+  ModalTitle,
+  SaveModalButton,
+} from "../common/ModalWindow.styles";
+import {
+  SurveyAgainButton,
+  ResetButton,
+  EditSubmitButton,
+} from "../common/Button.styles";
+import {
+  SurveyLink,
+  ProfilePicBox,
+  ImgInput,
+  ProfileContainer,
+  ModalContentContainer,
+  ProfileEditButtonsContainer,
+  EditInputContainer,
+} from "./ProfileEditModal.styles";
 import { SignupInfoInput, SignupPicInput } from "../common/Input.styles";
-import { patchIntroApi, patchNicknameApi, patchProfileApi } from "../../apis/userApi";
+import {
+  patchIntroApi,
+  patchNicknameApi,
+  patchProfileApi,
+} from "../../apis/userApi";
 import { useDispatch } from "react-redux";
-import { updateIntroAction, updateNicknameAction, updateProfilePicAction } from "../../store/modules/member";
+import {
+  updateIntroAction,
+  updateNicknameAction,
+  updateProfilePicAction,
+} from "../../store/modules/member";
 import useMember from "../../hooks/memberHook";
 import ModalWindow from "../common/ModalWindow";
 
@@ -20,8 +47,8 @@ export default function ProfileEditModal({ closeModal }: Props) {
   const [fileURL, setFileURL] = useState<string>("");
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
-  const [intro, setIntro] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [intro, setIntro] = useState("");
+  const [nickname, setNickname] = useState("");
   const dispatch = useDispatch();
   // 기본이미지에서 내가 올린 이미지로 바꾸기
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +61,7 @@ export default function ProfileEditModal({ closeModal }: Props) {
   // 초기화시키는거
   const onImageRemove = (): void => {
     URL.revokeObjectURL(fileURL);
-    setFileURL(""); 
+    setFileURL("");
     setFile(null);
   };
   const closeProfileModal = () => {
@@ -50,7 +77,7 @@ export default function ProfileEditModal({ closeModal }: Props) {
   const updateNickname = async () => {
     const response = await patchNicknameApi(nickname);
     dispatch(updateNicknameAction(response));
-  }
+  };
   const updateProfilePic = async () => {
     const formData = new FormData();
     if (file) {
@@ -58,7 +85,7 @@ export default function ProfileEditModal({ closeModal }: Props) {
     }
     const response = await patchProfileApi(formData);
     dispatch(updateProfilePicAction(response));
-  }
+  };
   return (
     <>
       {modalOpen && <ModalWindow page={3} setModalOpen={setModalOpen} />}
@@ -66,7 +93,9 @@ export default function ProfileEditModal({ closeModal }: Props) {
       <BackgroundContainer>gg</BackgroundContainer>
       <ModalContainer>
         <ModalTopNavContainer>
-          <CloseModalButton onClick={closeProfileModal}><BiArrowBack /></CloseModalButton>
+          <CloseModalButton onClick={closeProfileModal}>
+            <BiArrowBack />
+          </CloseModalButton>
           <ModalTitle>프로필 수정</ModalTitle>
           <SaveModalButton></SaveModalButton>
         </ModalTopNavContainer>
@@ -112,5 +141,5 @@ export default function ProfileEditModal({ closeModal }: Props) {
       </ModalContentContainer>
       </ModalContainer>
     </>
-  )
+  );
 }

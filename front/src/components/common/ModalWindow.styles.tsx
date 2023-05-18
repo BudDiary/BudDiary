@@ -76,7 +76,7 @@ export const GroupModal = styled.div`
 // 초대하기 모달
 
 export const InvitationContainer = styled.div`
-  ${tw`bg-white h-[55%] w-[50%] flex flex-col border border-bud-blue`}
+  ${tw`bg-white h-[65%] w-[50%] flex flex-col border border-bud-blue`}
   position: fixed;
   top: 50%;
   left: 50%;

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StickerDto {
-	private Long stickerId;
+	private String stickerUrl;
 	private Double xCoordinate;
 	private Double yCoordinate;
 

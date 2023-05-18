@@ -88,8 +88,9 @@ public class MemberController {
 			String updatedNickname = memberService.updateProfilePath(inputFile, request)
 				.orElseThrow(() -> new ConflictException("프로파일 변경을 실패 했습니다."));
 			return ResponseEntity.ok(updatedNickname);
+		} catch (NullPointerException err) {
+			return ResponseEntity.ok().body(null);
 		} catch (Exception err) {
-			err.printStackTrace();
 			return ResponseEntity.badRequest().body(err.getMessage());
 		}
 
