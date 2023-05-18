@@ -63,7 +63,8 @@ public class ReplyService {
 		if (!reply.getComment().equals(comment)) {
 			throw new BadRequestException(commentId + "번의 댓글의 대댓글이 아닙니다.");
 		}
-		replyRepository.delete(reply);
+		replyRepository.deleteById(reply.getId());
+
 	}
 
 	public Reply returnReplyById(Long replyId) {
