@@ -69,9 +69,8 @@ export default function ApproveInvitation() {
           <WelcomeText style={{ marginTop: "20px" }}>
             회원님은 "{clubName}"에 초대되었습니다.
           </WelcomeText>
-          <WelcomeText>
-            비슷한 관심사를 가진 사람들과 당신의 스토리를 나눠보세요
-          </WelcomeText>
+          <WelcomeText>비슷한 관심사를 가진 사람들과</WelcomeText>
+          <WelcomeText>당신의 스토리를 나눠보세요</WelcomeText>
           <VisitButton onClick={handleVisitClub}>
             지금 "{clubName}" 방문하기
           </VisitButton>

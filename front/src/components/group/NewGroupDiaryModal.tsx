@@ -37,9 +37,7 @@ interface FormData {
 }
 
 export default function NewGroupDiaryModal({ closeModal }: Props) {
-  
   const navigate = useNavigate();
-
 
   const handleGroupClick = (clubUuid: string) => {
     navigate(`/group/${clubUuid}`);
@@ -80,29 +78,25 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
   };
 
   const submitMakeClub = async (event: any) => {
-    /** 서버통신 */
     const formData = new FormData();
 
     if (initial && image && clubName && username) {
       formData.append("thumbnail", image);
       formData.append("captainUsername", username);
       formData.append("clubName", clubName);
-      // postPluralClubApi({ clubName: clubName, captainUsername: username, image: image })
+
       postPluralClubApi(formData)
         .then((result) => {
           if (!result.error) {
-            // newgroupdata가 빈 값이 아닐 때 가져다가 쓰도록, 필요하면 useeffect도 활용해서 쓰시면 될 거 같아요.
             setInitial(false);
             setNewGroupData(result);
             setOpen(true);
-
-            console.log(result, "this is group info");
           } else {
-            console.error(result.error); // Optionally, log the error
+            console.error(result.error);
           }
         })
         .catch((error) => {
-          console.error(error); // Log any unhandled promise rejections
+          console.error(error);
         });
       // 폼 객체 key 와 value 값을 순회.
       // let entries = formData.entries();
@@ -139,10 +133,9 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       // handleClose();
       // closeDiaryModal(); // close parent modal
       if (newGroupData) {
-       console.log(newGroupData, 'this is newgroupdata')
-       handleGroupClick(newGroupData.uuid)
+        console.log(newGroupData, "this is newgroupdata");
+        handleGroupClick(newGroupData.uuid);
       }
-
     };
 
     return (
@@ -170,9 +163,8 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           <Sheet
             variant="outlined"
             sx={{
-              minHeight: "60%",
-              minWidth: 500,
-              maxWidth: 500,
+              minHeight: "50%",
+              width: 600,
               borderRadius: "md",
               // p: 5,
               boxShadow: "lg",
