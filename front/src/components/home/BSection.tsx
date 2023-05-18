@@ -30,6 +30,7 @@ import {
   ImgBox,
 } from "./BSection.styles";
 import img from "./assets/Testimg916.jpg";
+import img2 from "./assets/senti.jpg";
 
 export default function BSection() {
   const [ref, inView] = useInView({ threshold: 0.9 });
@@ -56,7 +57,7 @@ export default function BSection() {
             <ImgMargin></ImgMargin>
             <ImgBox>
               {/* 두번째 */}
-              <img src={img} alt="" />
+              <img src={img2} alt="" />
             </ImgBox>
           </SecondImageBox>
         </ImageSection>

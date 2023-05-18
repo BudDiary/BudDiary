@@ -148,7 +148,7 @@ export default function StickerPage({
       formData.append("negativeRate", result.negative);
       formData.append("positiveRate", result.positive);
       if (groups.length > 0) {
-        for (let i = 0; i < pics.length; i++) {
+        for (let i = 0; i < groups.length; i++) {
           formData.append(`clubList[${i}]`, groups[i]);
         }
       }
@@ -162,11 +162,12 @@ export default function StickerPage({
           if (groups.length === 0) {
             navigate("/mypage");
           } else {
-            console.log(groups, "여기로 알람 보내줘");
+            console.log(groups[0], "여기로 알람 보내줘");
             // 일기 작성이 잘 되었다면
             // 구성원 모두한테 알람 보내기
+            console.log(groups.length, 'this is group length')
             postLiveNewDiaryApi(groups);
-            navigate("/group");
+            navigate(`/group/${groups[0]}`);
           }
         })
         .catch((error) => {

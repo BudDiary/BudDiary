@@ -49,8 +49,15 @@ export default function SignUpInfoPage() {
 
   // 설문으로 넘어가기 눌렀을 때
   const sendToSurvey = () => {
-    setModalOpen(true);
-    SetIsSurveyDone(true);
+    if (nickname.length >= 2 && nickname.length <= 8) {
+      setModalOpen(true);
+      SetIsSurveyDone(true);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: "닉네임은 2자 이상, 8자 이하로 설정해주세요.",
+      });
+    }
   };
   // 저장하기 눌렀을 때
   const submitHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {

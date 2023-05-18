@@ -73,17 +73,28 @@ export default function WrittenDiaryItem({
             <DiaryPicSlider>
               <Swiper
                 spaceBetween={50}
-                slidesPerView={3}
+                slidesPerView={2}
                 navigation
                 pagination={{ clickable: true }}
-                loop={true}
+                // loop={true}
               >
                 {pics.map((pic: any, index: any) => (
-                  <SwiperSlide key={index}>
+                  <SwiperSlide             key={index}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minWidth: "150px",
+                    minHeight: "150px",
+                    position: "relative",
+                  }}>
                     <img
+                    
                       src={pic.imgUrl}
                       alt="일기 사진입니다."
                       className="my-auto"
+                      style={{ minWidth: '150px', minHeight: '150px' }}
+
                     />
                   </SwiperSlide>
                 ))}
