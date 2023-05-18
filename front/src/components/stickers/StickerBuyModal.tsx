@@ -55,6 +55,7 @@ export default function StickerBuyModal({
         icon: "success",
         text: "스티커를 구매했어요!🎉",
       });
+      closeModal();
     } else {
       Swal.fire({
         icon: "error",
