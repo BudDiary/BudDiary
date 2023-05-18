@@ -30,7 +30,8 @@ export default function MyRandom() {
     getMyClubListApi()
       .then((result) => {
         if (!result.error) {
-          setDoubleList(result.data.doubleList);
+          setDoubleList(result.doubleList);
+          console.log(result, 'this is double')
         } else {
           console.error(result.error); // Optionally, log the error
         }
