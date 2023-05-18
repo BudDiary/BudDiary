@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 
 // 다이어리 작성 API
 const postTodayDiaryApi = (payload: any) => {
+  console.log(payload, "보냐기직전");
   return formApi
     .post(`/api/diaries`, payload, { withCredentials: true })
     .then((res) => {

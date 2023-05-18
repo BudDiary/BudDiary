@@ -12,6 +12,13 @@ import { patchDiaryStickerApi } from "../../apis/diaryApi";
 import interact from "interactjs";
 import navimg from "../../assets/subnav/Decorate.jpg";
 
+interface Props {
+  stickerId: number;
+  imgUrl: string;
+  xcoordinate: number;
+  ycoordinate: number;
+}
+
 interact(".sticker-item").draggable({
   onmove: (event: any) => {
     const target = event.target;
@@ -40,6 +47,7 @@ interact(".sticker-item").draggable({
 export default function DecoratePage() {
   const navigate = useNavigate();
   const [diaryContent, setDiaryContent] = useState<string>();
+  const [usedStickers, setUsedStickers] = useState<Props[]>([]);
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
@@ -50,6 +58,7 @@ export default function DecoratePage() {
         const diaryId = currentUrl.split(`/decorate/`)[1];
         const response = await getDiaryDetailApi(diaryId);
         setDiaryContent(response.simpleDiary.diaryInfo.text);
+        setUsedStickers(response.usedStickers);
       } catch (error) {
         console.error(error);
       }
@@ -62,9 +71,21 @@ export default function DecoratePage() {
     // patchDiaryStickerApi()
   };
   return (
-    <>
+    <div className="relative">
       <SubNavContainer img={navimg}></SubNavContainer>
       <PageContainer>
+        {usedStickers.map((sticker, index) => (
+          <img
+            key={index}
+            src={sticker.imgUrl}
+            style={{
+              left: sticker.xcoordinate,
+              top: sticker.ycoordinate,
+            }}
+            className="absolute"
+          />
+        ))}
+
         <StickerListTitle>보유중인 스티커</StickerListTitle>
         <div className="grid grid-cols-6">
           {myStickers?.map((sticker) => (
@@ -92,6 +113,6 @@ export default function DecoratePage() {
           </button>
         </div>
       </PageContainer>
-    </>
+    </div>
   );
 }
