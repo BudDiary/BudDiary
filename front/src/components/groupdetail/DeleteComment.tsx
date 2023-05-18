@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { EditContent, DeleteButton } from "./Diaries.styles";
 import {
   EditContainer,
@@ -11,44 +11,39 @@ import { Comment } from "../../types/group";
 import { getClubDetailApi } from "../../apis/clubApi";
 import { deleteCommentApi } from "../../apis/commentApi";
 import close from "../../assets/modal/close.png";
-import { Club } from "../../types/group";
+import { Club, Info } from "../../types/group";
 
 interface CommentDeleteProps {
   isOpen: boolean;
   onClose: () => void;
   comment: Comment;
   diaryId: number;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 export default function DeleteComment({
   comment,
   diaryId,
+  clubInfo,
   onClose,
+  setClubData,
 }: CommentDeleteProps) {
-  const [clubData, setClubData] = useState<Club | null>(null);
-  useEffect(() => {
-    const currentUrl: string = window.location.href;
-
-    const code = currentUrl.split(`/group/`)[1];
-    async function fetchData() {
-      try {
-        const data = await getClubDetailApi(code);
-        setClubData(data);
-      } catch (error) {
-        console.error(error);
-      }
+  const handleDeleteComment = async () => {
+    try {
+      await deleteCommentApi(diaryId, comment.id);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
+      onClose();
+    } catch (error) {
+      console.error(error);
     }
-    fetchData();
-  }, [comment]);
+  };
 
   const [commentState, setCommentState] = useState(comment.text);
   const closeCommentModal = () => {
     onClose();
   };
 
-  const handleDeleteComment = () => {
-    deleteCommentApi(diaryId, comment.id);
-    onClose();
-  };
   return (
     <EditContainer>
       <ModalTopNavContainer

@@ -1,15 +1,21 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { WideButton } from "./Diaries.styles";
 import { MdLibraryAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import DiaryBox from "./DiaryBox";
-import { Diary } from "../../types/group";
+import { Diary, Info, Club } from "../../types/group";
 
 interface DiaryBoxProps {
+  setClubData: Dispatch<SetStateAction<Club | null>>;
   diaryList?: Diary[];
+  clubInfo?: Info;
 }
 
-export default function Diaries({ diaryList }: DiaryBoxProps) {
+export default function Diaries({
+  setClubData,
+  diaryList,
+  clubInfo,
+}: DiaryBoxProps) {
   const navigate = useNavigate();
 
   return (
@@ -19,7 +25,13 @@ export default function Diaries({ diaryList }: DiaryBoxProps) {
         <h1>일기 작성하기</h1>
       </WideButton>
       <br />
-      {diaryList && <DiaryBox diaryList={diaryList} />}
+      {diaryList && (
+        <DiaryBox
+          diaryList={diaryList}
+          clubInfo={clubInfo}
+          setClubData={setClubData}
+        />
+      )}
     </>
   );
 }
