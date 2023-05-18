@@ -37,6 +37,7 @@ interface FormData {
 export default function NewGroupDiaryModal({ closeModal }: Props) {
   const { memberData } = useMember();
   const [open, setOpen] = React.useState(false);
+  const [initial, setInitial] = useState(true);
   const username = memberData.username;
   const [image, setImage] = useState<File | null>(null);
 
@@ -69,7 +70,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
     /** 서버통신 */
     const formData = new FormData();
 
-    if (image && clubName && username) {
+    if (initial && image && clubName && username) {
       formData.append("thumbnail", image);
       formData.append("captainUsername", username);
       formData.append("clubName", clubName);
@@ -78,6 +79,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
         .then((result) => {
           if (!result.error) {
             // newgroupdata가 빈 값이 아닐 때 가져다가 쓰도록, 필요하면 useeffect도 활용해서 쓰시면 될 거 같아요.
+            setInitial(false);
             setNewGroupData(result);
             setOpen(true);
 

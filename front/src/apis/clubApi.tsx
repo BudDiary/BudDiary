@@ -90,7 +90,7 @@ const getClubDetailApi = (clubId: string) => {
 
 const PostRecommendBykeyWordApi = (payload: any) => {
   return fastApi
-    .post(`/fastapi/recommend/keyword`, payload, { withCredentials: true })
+    .post(`/fastapi/recommend/keyword2`, payload, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res;

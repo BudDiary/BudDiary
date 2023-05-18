@@ -8,6 +8,7 @@ import { patchIntroApi, patchNicknameApi, patchProfileApi } from "../../apis/use
 import { useDispatch } from "react-redux";
 import { updateIntroAction, updateNicknameAction, updateProfilePicAction } from "../../store/modules/member";
 import useMember from "../../hooks/memberHook";
+import ModalWindow from "../common/ModalWindow";
 
 interface Props {
   closeModal: any;
@@ -15,6 +16,7 @@ interface Props {
 
 export default function ProfileEditModal({ closeModal }: Props) {
   const { memberData } = useMember();
+  const [modalOpen, setModalOpen] = useState(false);
   const [fileURL, setFileURL] = useState<string>("");
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
@@ -38,7 +40,9 @@ export default function ProfileEditModal({ closeModal }: Props) {
   const closeProfileModal = () => {
     closeModal();
   }
-
+  const updateSurvey = () => {
+    setModalOpen(true);
+  }
   const updateIntro = async () => {
     const response = await patchIntroApi(intro);
     dispatch(updateIntroAction(response));
@@ -57,6 +61,8 @@ export default function ProfileEditModal({ closeModal }: Props) {
   }
   return (
     <>
+      {modalOpen && <ModalWindow page={3} setModalOpen={setModalOpen} />}
+
       <BackgroundContainer>gg</BackgroundContainer>
       <ModalContainer>
         <ModalTopNavContainer>
@@ -101,7 +107,8 @@ export default function ProfileEditModal({ closeModal }: Props) {
           <SignupInfoInput type="text" placeholder="소개글" value={intro} onChange={(e) => setIntro(e.target.value)}></SignupInfoInput>
           <EditSubmitButton onClick={updateIntro}>소개글 수정</EditSubmitButton>
         </EditInputContainer>
-      <SurveyAgainButton><SurveyLink to='/survey'>설문 다시하기</SurveyLink></SurveyAgainButton>
+      <SurveyAgainButton onClick={updateSurvey}>설문 다시하기</SurveyAgainButton>
+      {/* <SurveyAgainButton><SurveyLink to='/survey'>설문 다시하기</SurveyLink></SurveyAgainButton> */}
       </ModalContentContainer>
       </ModalContainer>
     </>

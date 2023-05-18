@@ -17,6 +17,7 @@ interface Props {
   setStage: React.Dispatch<React.SetStateAction<number>>;
   content: string;
   pics: any;
+  // pics: File[] | null;
   groups: any;
   personal: boolean;
 }
@@ -100,7 +101,7 @@ export default function StickerPage({
   const username = memberData.username;
   const [data, setData] = useState<{
     text: string;
-    fileList: any;
+    fileList: File[] | null;
     clubList: any;
     isPersonal: boolean;
     memberUsername: string;
@@ -143,9 +144,16 @@ export default function StickerPage({
         return prevSentiment;
       });
       postTodayDiaryApi(data)
-        .then
-        // navigate('/group')
-        ();
+      .then(() => {
+        if (data.clubList.length === 0) {
+          navigate("/mypage");
+        } else {
+          navigate("/group");
+        }
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
       console.log(data, "this is data");
     });
   };

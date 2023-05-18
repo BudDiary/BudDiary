@@ -23,14 +23,14 @@ import { postUserInfoApi } from "../../apis/userApi";
 
 interface Recommendation {
   userId: string;
-  rate: number;
+  words: string[];
 }
 
 interface RecommendUserInfo {
   nickname: string;
   gender: string;
   agerange: string;
-  rate: number;
+  keywords: string[];
   userId: string;
 }
 export default function RecommendedByKeyword() {
@@ -72,15 +72,17 @@ export default function RecommendedByKeyword() {
 
     if (recommendList) {
       for (let i = 0; i < recommendList.length; i++) {
+        console.log(recommendList[i], "final test");
+
         postUserInfoApi({ member_id: recommendList[i].userId }).then(
           (result) => {
             if (result.data) {
-              console.log(result.data, "this is result data");
+              console.log(result.data, "this is result data22");
               let newdata: RecommendUserInfo = {
                 nickname: result.data.nickname,
                 gender: result.data.gender,
                 agerange: result.data.ageRange,
-                rate: recommendList[i].rate,
+                keywords: recommendList[i].words,
                 userId: recommendList[i].userId,
               };
               newdatas.push(newdata);
@@ -147,6 +149,24 @@ export default function RecommendedByKeyword() {
                       <Typography gutterBottom variant="h5" component="div">
                         {el.nickname}
                       </Typography>
+
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        color="text.first"
+                      >
+                        겹치는 키워드:
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        color="text.first"
+                      >
+                        {el.keywords.length >= 3
+                          ? el.keywords.slice(0, 3).join(", ")
+                          : el.keywords.slice(0, el.keywords.length)}
+                      </Typography>
+
                       {el.agerange !== null && (
                         <Typography variant="body2" color="text.secondary">
                           {el.agerange.substring(0, 2)} 대
