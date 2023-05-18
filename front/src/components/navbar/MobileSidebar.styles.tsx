@@ -20,7 +20,7 @@ export const SideBarContainer = styled.div`
   top: 0;
   right: 0;
   z-index: 99;
-  ${tw`bg-white w-[45%] h-[75%] mt-10 border-t-2 border-r-0 border-l-4 border-b-2 border-bud-blue`}
+  ${tw`bg-white w-[250px] h-[430px] mt-10 border-t-2 border-r-0 border-l-4 border-b-2 border-bud-blue`}
   border-radius: 0 0 0 20px;
 `;
 
