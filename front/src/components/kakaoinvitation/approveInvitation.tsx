@@ -10,11 +10,13 @@ import {
   JoinNotice,
   WelcomeText,
   VisitButton,
+  WarningText,
+  WelcomeContainer,
 } from "./approveInvitation.style";
 import { LoginButton } from "../navbar/MobileSidebar.styles";
 import kakao from "../../assets/modal/kakaotalk.png";
 import { KAKAO_AUTH_URL } from "../../apis/axiosConfig";
-
+import { LogoBlue, LogoGreen } from "../navbar/NavBar.styles";
 export default function ApproveInvitation() {
   const currentUrl = window.location.href;
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ export default function ApproveInvitation() {
   return (
     <JoinContainer>
       {isLoggedIn ? (
-        <div>
+        <WelcomeContainer>
           <JoinNotice>
             <JoinText delay={0.1}>B</JoinText>
             <JoinText delay={0.3}>U</JoinText>
@@ -73,7 +75,7 @@ export default function ApproveInvitation() {
           <VisitButton onClick={handleVisitClub}>
             지금 "{clubName}" 방문하기
           </VisitButton>
-        </div>
+        </WelcomeContainer>
       ) : (
         <div>
           <JoinNotice>
@@ -87,14 +89,27 @@ export default function ApproveInvitation() {
             <JoinText delay={1.5}>R</JoinText>
             <JoinText delay={1.7}>Y</JoinText>
           </JoinNotice>
-          <div>
-            죄송합니다. Buddiary의 서비스는 로그인한 회원에게만 제공됩니다.
+          <WarningText>
+            <LogoBlue>"Bud</LogoBlue>
+            <LogoGreen>:D</LogoGreen>
+            <LogoBlue>iary"</LogoBlue>의 서비스는 로그인한 회원에게만
+            제공됩니다.
+          </WarningText>
+          <WarningText>로그인 하신 뒤, 재접속을 시도해주세요</WarningText>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "center",
+            }}
+          >
+            <LoginButton onClick={handleUser}>
+              <img src={kakao} alt="로그인" />
+              으로 로그인하기
+            </LoginButton>
           </div>
-          <div>로그인 하신 뒤, 재접속을 시도해주세요</div>
-          <LoginButton onClick={handleUser}>
-            <img src={kakao} alt="로그인" />
-            으로 로그인하기
-          </LoginButton>
         </div>
       )}
     </JoinContainer>
