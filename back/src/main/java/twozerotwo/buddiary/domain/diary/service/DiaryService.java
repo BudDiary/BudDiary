@@ -112,7 +112,7 @@ public class DiaryService {
 				/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
 				Boolean stickerOwned = false;
 				for (UnusedSticker ownedSticker : member.getStickers()) {
-					if (ownedSticker.getSticker().getId().equals(stickerDto.getStickerId())) {
+					if (ownedSticker.getSticker().getImageUrl().equals(stickerDto.getStickerUrl())) {
 						stickerOwned = true;
 						break;
 					}
@@ -120,7 +120,7 @@ public class DiaryService {
 				if (!stickerOwned) {
 					throw new BadRequestException("스티커를 보유하고 있지 않습니다.");
 				}
-				Sticker sticker = stickerService.returnStickerById(stickerDto.getStickerId());
+				Sticker sticker = stickerService.returnStickerByUrl(stickerDto.getStickerUrl());
 
 				UsedSticker usedSticker = UsedSticker.builder()
 					.diary(diary)
@@ -161,7 +161,7 @@ public class DiaryService {
 
 		if (request.getStickerDtoList() != null) {
 			for (StickerDto stickerDto : request.getStickerDtoList()) {
-				Sticker sticker = stickerService.returnStickerById(stickerDto.getStickerId());
+				Sticker sticker = stickerService.returnStickerByUrl(stickerDto.getStickerUrl());
 				// Unused 스티커 조회해서 리턴
 				UnusedSticker unusedSticker = unusedStickerRepository.findByMemberIdAndStickerId(member, sticker);
 				// Unused 스티커 cnt -1

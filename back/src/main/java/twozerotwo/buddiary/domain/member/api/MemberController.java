@@ -90,7 +90,7 @@ public class MemberController {
 			return ResponseEntity.ok(updatedNickname);
 		} catch (NullPointerException err) {
 			return ResponseEntity.ok().body(null);
-		}catch (Exception err){
+		} catch (Exception err) {
 			return ResponseEntity.badRequest().body(err.getMessage());
 		}
 

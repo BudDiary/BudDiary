@@ -87,6 +87,13 @@ public class StickerService {
 		return sticker;
 	}
 
+
+	public Sticker returnStickerByUrl(String stickerUrl) {
+		Sticker sticker = stickerRepository.findByImageUrl(stickerUrl)
+			.orElseThrow(() -> new NotFoundException("존재하지 않는 스티커입니다."));
+		return sticker;
+	}
+
 	public List<UnusedSticker> getMineSticker(HttpServletRequest servlet) {
 		// Member member = clubService.returnMemberByUsername(username);
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);

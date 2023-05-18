@@ -28,6 +28,7 @@ public class Sticker {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonProperty("stickerId")
 	private Long id;
+	@Column(columnDefinition = "TEXT")
 	private String imageUrl;
 	@Size(min = 1, max = 20)
 	@Column(unique = true)
