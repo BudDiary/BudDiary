@@ -60,7 +60,8 @@ public class StickerService {
 		boolean canBuy = member.checkPoint(totalPrice);
 		if (canBuy) {
 			// unusedSticker에 맴버, 스티커 같은 거 있으면 거기 조회 후++
-			UnusedSticker originSticker = unusedStickerRepository.findByMemberIdAndStickerId(member, sticker);
+			UnusedSticker originSticker = unusedStickerRepository.findByMemberAndStickerId(member, sticker)
+				.orElseThrow(() -> new NotFoundException("보유한 스티커가 아닙니다."));;
 			if (originSticker != null) {
 				originSticker.plusCnt(request.getCount());
 			} else {
