@@ -10,10 +10,9 @@ export const DetailPageContainer = styled.div`
 `;
 
 export const DiariesContainer = styled.div`
-  ${tw`sm:col-span-2`}
-  display: flex;
+  ${tw`sm:col-span-2 pt-[20px] flex-col px-4`}
+
   justify-content: center;
-  padding-block: 20px;
   > * {
     margin: auto;
   }

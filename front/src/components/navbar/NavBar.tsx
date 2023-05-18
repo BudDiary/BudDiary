@@ -37,12 +37,13 @@ export default function NavBar() {
   const [initialLoad, setInitialLoad] = useState(true);
   const [sideBarState, setSidebarState] = useState(false);
   const [alarmBoxState, setAlarmBoxState] = useState(false);
+  const [alarmRenewState, setAlarmRenewState] = useState(true);
   const [alarmList, setAlarmList] = useState<AlarmList[]>([]);
   const { memberData, isLoggedIn } = useMember();
   const navigate = useNavigate();
   const nickname = memberData.nickname;
   const profilePic = memberData.profilePic;
-  const subscribeUrl = "http://localhost:8080/event/sub";
+  const subscribeUrl = `${process.env.REACT_APP_BASE_URL}/event/sub`;
 
   useEffect(() => {
     if (initialLoad && isLoggedIn) {
@@ -78,7 +79,7 @@ export default function NavBar() {
       fetchData();
       setInitialLoad(false);
     }
-  }, [alarmList]);
+  }, []);
 
   const showSidebar = () => {
     setSidebarState(true);

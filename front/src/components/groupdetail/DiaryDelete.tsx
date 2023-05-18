@@ -87,7 +87,7 @@ export default function DiaryDelete({ diary, diaryId, onClose }: DiaryProps) {
           <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
-      <Divider style={{ border: "solid 2px #BFDBFE" }} />
+      <Divider style={{ border: "solid 1px #BFDBFE" }} />
       <EditContent>
         <div style={{ textAlign: "center", marginTop: "5px" }}>
           <EditTitle>일기 삭제하기</EditTitle>

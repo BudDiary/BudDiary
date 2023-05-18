@@ -32,9 +32,8 @@ export const EmojiButton = styled.button`
 `;
 
 export const WideButton = styled.button`
-  ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center`}
-  width: 45vw;
-  border: 5px solid #c3cfe3;
+  ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center w-[100%]`}
+  border: 2px solid #c3cfe3;
 
   svg {
     ${tw`mr-2`}
@@ -46,11 +45,10 @@ export const WideButton = styled.button`
 `;
 
 export const DiaryDetail = styled.div`
-  ${tw`sm:col-span-2 bg-white rounded-md`}
-  width: 45vw;
+  ${tw`sm:col-span-2 bg-white rounded-md w-[100%] my-4`}
   margin-block: 30px;
   padding: 20px;
-  border: 5px solid #c3cfe3;
+  border: 2px solid #c3cfe3;
   > * {
     margin: auto;
   }
@@ -102,8 +100,8 @@ export const DiaryContent = styled.div`
     margin: 10px;
     padding: 20px;
     height: 250px;
-    border: 4px solid pink;
-    border-radius: 15px;
+    border: 2px solid pink;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -113,8 +111,8 @@ export const DiaryContent = styled.div`
   img {
     width: 100%;
     height: 250px;
-    border-radius: 20px;
-    border: 4px solid pink;
+    border-radius: 8px;
+    border: 2px solid pink;
   }
 
   @media (max-width: 640px) {
@@ -133,17 +131,17 @@ export const DiaryContent = styled.div`
       width: 100%;
       height: auto;
       margin: 0;
-      padding: 20px;
+      padding: 8px;
       height: 250px;
-      border: 4px solid pink;
+      border: 2px solid pink;
       border-radius: 15px;
     }
 
     img {
       width: 100%;
       height: 250px;
-      border-radius: 20px;
-      border: 4px solid pink;
+      border-radius: 8px;
+      border: 2px solid pink;
     }
   }
 `;
@@ -168,7 +166,7 @@ export const DiaryImageSlider = styled.div`
     width: 50px;
     height: 50px;
     transform: translateY(-50%);
-    border-radius: 50%;
+    border-radius: 30%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -216,7 +214,7 @@ export const DiaryImage = styled.img`
 `;
 
 export const DiaryText = styled.div`
-  ${tw`font-berry`}
+  ${tw`font-hassam text-xl`}
   display: "flex",
   justifyContent: "flex-start",
   margin: 0,
@@ -253,7 +251,7 @@ export const DiaryDetailBlank = styled.div`
   width: 45vw;
   margin: 30px 0;
   padding-block: 150px;
-  border: 5px solid #c3cfe3;
+  border: 2px solid #c3cfe3;
 
   > * {
     margin: auto;

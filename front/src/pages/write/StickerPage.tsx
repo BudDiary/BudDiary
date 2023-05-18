@@ -21,33 +21,45 @@ interface Props {
   personal: boolean;
 }
 
-// interface StickerListProps {
-//   captainUsername: string | null;
-//   clubName: string;
-//   clubUuid: string;
-//   thumbnailUrl: string | undefined;
-//   clubType: string;
-// }
+type stickerDtoList = {
+  id: any;
+  xCoordinates: number;
+  yCoordinates: number;
+};
+
+const points: stickerDtoList[] = [];
 
 interact(".sticker-item").draggable({
-  onmove: (event: any) => {
+  onstart: (event: any) => {
+    const itemElement = event.target;
+    const itemRect = itemElement.getBoundingClientRect();
+    const initialX = itemRect.left;
+    const initialY = itemRect.top;
+    itemElement.setAttribute("data-initial-x", initialX);
+    itemElement.setAttribute("data-initial-y", initialY);
+  },
+  onend: (event: any) => {
     const target = event.target;
-    const dataX = target.getAttribute("data-x");
-    const dataY = target.getAttribute("data-y");
-    const initialX = parseFloat(dataX) || 0;
-    const initialY = parseFloat(dataY) || 0;
-    const deltaX = event.dx;
-    const deltaY = event.dy;
-    const newX = initialX + deltaX;
-    const newY = initialY + deltaY;
+    const startX = Number(target.getAttribute("data-initial-x"));
+    const startY = Number(target.getAttribute("data-initial-y"));
+    const movedX = Number(target.getAttribute("data-x"));
+    const movedY = Number(target.getAttribute("data-y"));
+    const finalX = startX + movedX;
+    const finalY = startY + movedY;
 
-    target.style.transform = `translate(${newX}px, ${newY}px)`;
+    // 사진 좌표 저장해서 append 하는 코드 짜기
 
-    target.setAttribute("data-x", newX);
-    target.setAttribute("data-y", newY);
+    const temp: stickerDtoList = {
+      id: target.src,
+      xCoordinates: finalX,
+      yCoordinates: finalY,
+    };
+    points.push(temp);
+    console.log(target);
+    console.log(points);
   },
 });
-
+console.log(points);
 export default function StickerPage({
   setStage,
   content,
@@ -56,17 +68,45 @@ export default function StickerPage({
   personal,
 }: Props) {
   const navigate = useNavigate();
-  // const contentBoxRef = useRef<HTMLInputElement | null>(null);
-  // const contentBoxRef = useRef(null);
+  const contentBoxRef = useRef<HTMLInputElement | null>(null);
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
+
   const [sentiment, setSentiment] = useState<{
     negative: number;
     positive: number;
   }>({ negative: 0, positive: 0 });
   const { memberData } = useMember();
   const username = memberData.username;
+  const [data, setData] = useState<{
+    text: string;
+    fileList: any;
+    clubList: any;
+    isPersonal: boolean;
+    memberUsername: string;
+    negativeRate: number;
+    positiveRate: number;
+    stickerDtoList: any;
+  }>({
+    text: content,
+    fileList: pics,
+    clubList: groups,
+    isPersonal: personal,
+    memberUsername: username,
+    negativeRate: 0,
+    positiveRate: 0,
+    stickerDtoList: [],
+  });
+
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      negativeRate: sentiment.negative,
+      positiveRate: sentiment.positive,
+    }));
+    // console.log(data, 'this is emotion test')
+  }, [sentiment]);
   // const nickname = memberData.nickname;
   const sendData = async () => {
     Promise.all([
@@ -74,16 +114,19 @@ export default function StickerPage({
       postKeywordApi({ userId: username, content: content }),
     ]).then(([result, kewordSend]) => {
       setSentiment(result);
-      const data = {
-        text: content,
-        fileList: pics,
-        clubList: groups,
-        isPersonal: personal,
-        memberUsername: username,
-        negativeRate: sentiment.negative,
-        positiveRate: sentiment.positive,
-      };
-      postTodayDiaryApi(data);
+      setSentiment((prevSentiment) => {
+        setData((prevData) => ({
+          ...prevData,
+          negativeRate: prevSentiment.negative,
+          positiveRate: prevSentiment.positive,
+          stickerDtoList: { points },
+        }));
+        return prevSentiment;
+      });
+      postTodayDiaryApi(data)
+        .then
+        // navigate('/group')
+        ();
       console.log(data, "this is data");
     });
   };
@@ -93,14 +136,19 @@ export default function StickerPage({
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
       <div className="grid grid-cols-6">
-        {myStickers?.map((sticker) => (
-          <img
-            src={sticker.sticker.imageUrl}
-            className="sticker-item my-auto"
-          />
-        ))}
+        {myStickers &&
+          myStickers.length > 0 &&
+          myStickers.map((sticker) => (
+            <img
+              src={sticker.sticker.imageUrl}
+              // alt={String(sticker.sticker.stickerId)}
+              className="sticker-item my-auto"
+            />
+          ))}
       </div>
-      <ContentBox className="drop-container text-2xl">{content}</ContentBox>
+      <ContentBox className="drop-container text-2xl font-hassam">
+        {content}
+      </ContentBox>
       <div className="flex justify-evenly">
         <button
           className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"

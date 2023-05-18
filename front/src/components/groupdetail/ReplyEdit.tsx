@@ -90,7 +90,7 @@ export default function ReplyEdit({ reply, onClose }: ReplyEditProps) {
           <h3>{new Date(reply.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
-      <Divider style={{ border: "solid 2px #BFDBFE" }} />
+      <Divider style={{ border: "solid 1px #BFDBFE" }} />
       <EditContent>
         <EditTitle>답글 수정하기</EditTitle>
         <InputSet>

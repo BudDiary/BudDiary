@@ -11,6 +11,7 @@ import {
 } from "../common/Button.styles";
 import { deleteSSEAlarmsApi } from "../../apis/noticeApi";
 import { postDoubleClubApi } from "../../apis/clubApi";
+import Swal from "sweetalert2";
 
 interface Props {
   id: number;
@@ -19,14 +20,18 @@ interface Props {
   nickname: string;
   type: string;
   username: string;
-  // alarmList: any[];
 }
 
 export default function AlarmSSE(props: Props) {
   const navigate = useNavigate();
   const { id, clubName, clubUuid, nickname, type, username } = props;
   const handleDeleteAlarm = async () => {
-    await deleteSSEAlarmsApi(id);
+    const delRes = await deleteSSEAlarmsApi(id);
+    if (delRes === 204) {
+      Swal.fire({
+        text: "랜덤일기 신청을 거절했습니다.",
+      });
+    }
   };
   const handleAcceptAlarm = async () => {
     const response = await postDoubleClubApi(username);
@@ -34,6 +39,9 @@ export default function AlarmSSE(props: Props) {
       deleteSSEAlarmsApi(id);
     }
     navigate(`/group/${response.uuid}`);
+    Swal.fire({
+      text: "새로운 랜덤일기가 시작되었어요!🎉",
+    });
   };
 
   return (

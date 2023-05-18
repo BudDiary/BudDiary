@@ -58,7 +58,7 @@ const getMyClubListApi = () => {
 
 const postRecommendBySurveyApi = (payload: any) => {
   return fastApi
-    .post(`/fastapi/recommend/survey/`, payload, { withCredentials: true })
+    .post(`/fastapi/recommend/survey`, payload, { withCredentials: true })
     .then((res) => {
       return res;
     })
@@ -103,6 +103,28 @@ const PostRecommendBykeyWordApi = (payload: any) => {
       return err;
     });
 };
+
+const PostApproveInvitationApi = (clubId: string) => {
+  const data = {
+    clubId,
+  };
+  console.log(clubId);
+  return api
+    .post(`api/clubs/invitation`, data, { withCredentials: true })
+    .then((res) => {
+      return res;
+    })
+
+    .catch((err) => {
+      Swal.fire({
+        icon: "error",
+        text: "PostApproveInvitationApi 오류가 발생했어요.",
+      });
+
+      return err;
+    });
+};
+
 export {
   postPluralClubApi,
   postDoubleClubApi,
@@ -110,4 +132,5 @@ export {
   getClubDetailApi,
   postRecommendBySurveyApi,
   PostRecommendBykeyWordApi,
+  PostApproveInvitationApi,
 };

@@ -13,5 +13,7 @@ public interface StickerRepository extends JpaRepository<Sticker, Long> {
 	@Query("SELECT COUNT(s) > 0 FROM Sticker s WHERE s.name = :name")
 	Boolean existsByName(@Param("pid") String name);
 
+	Optional<Sticker> findByImageUrl(String imageUrl);
+
 	List<Sticker> findAll();
 }

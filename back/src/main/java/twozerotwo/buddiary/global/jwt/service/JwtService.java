@@ -99,7 +99,7 @@ public class JwtService {
 			cookie.setDomain("localhost");
 		} else {
 			log.info(" 쿠키 배포 설정으로 던집니다.");
-			cookie.setDomain("buddiary.site");
+			cookie.setDomain("alb.buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
@@ -116,7 +116,7 @@ public class JwtService {
 			cookie.setDomain("localhost");
 		} else {
 			log.info(" 쿠키 배포 설정으로 던집니다.");
-			cookie.setDomain("buddiary.site");
+			cookie.setDomain("alb.buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setMaxAge(1209600000);
@@ -239,6 +239,7 @@ public class JwtService {
 	}
 
 	public Authentication getAuthentication(String accessToken) {
+		log.info("디비에서 정보를 가져옵니다.");
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);

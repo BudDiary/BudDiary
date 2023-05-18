@@ -48,7 +48,7 @@ export default function Recommended() {
       .then((result) => {
         if (!result.error) {
           setRecommendList(result.data);
-          setInitialLoad(2)
+          setInitialLoad(2);
         } else {
           console.error(result.error); // Optionally, log the error
         }
@@ -62,37 +62,39 @@ export default function Recommended() {
   };
 
   useEffect(() => {
-    if ( initialLoad === 2) {
+    if (initialLoad === 2) {
       getRecommend(); // Call getRecommend() when recommendList has a value for the first time
       setInitialLoad(3); // Update the flag to prevent subsequent calls
     }
   }, [recommendList]);
-  
+
   const getRecommend = () => {
     const newdatas: RecommendUserInfo[] = [];
     if (recommendList) {
-    for (let i = 0; i < recommendList.length; i++) {
-      postUserInfoApi({ member_id: recommendList[i].userId }).then((result) => {
-        if (result.data) {
-          console.log(result.data, "this is result data");
-          let newdata: RecommendUserInfo = {
-            nickname: result.data.nickname,
-            gender: result.data.gender,
-            agerange: result.data.ageRange,
-            rate: recommendList[i].rate,
-            userId: recommendList[i].userId,
-          };
-          newdatas.push(newdata);
-          setRecommendUserList([...recommendUserList, ...newdatas]);
-        } else {
-          console.error(
-            "Invalid data received for user:",
-            recommendList[i].userId
-          );
-        }
-      });
+      for (let i = 0; i < recommendList.length; i++) {
+        postUserInfoApi({ member_id: recommendList[i].userId }).then(
+          (result) => {
+            if (result.data) {
+              console.log(result.data, "this is result data");
+              let newdata: RecommendUserInfo = {
+                nickname: result.data.nickname,
+                gender: result.data.gender,
+                agerange: result.data.ageRange,
+                rate: recommendList[i].rate,
+                userId: recommendList[i].userId,
+              };
+              newdatas.push(newdata);
+              setRecommendUserList([...recommendUserList, ...newdatas]);
+            } else {
+              console.error(
+                "Invalid data received for user:",
+                recommendList[i].userId
+              );
+            }
+          }
+        );
+      }
     }
-  }
   };
   return (
     <>
@@ -103,8 +105,12 @@ export default function Recommended() {
       <br />
       <ProfileSection>
         <Swiper
-          slidesPerView={0}
+          slidesPerView={1}
           breakpoints={{
+            // 화면 크기가 500px 이상일 때
+            450: {
+              slidesPerView: 2,
+            },
             // 화면 크기가 640px 이상일 때
             640: {
               slidesPerView: 3,
@@ -143,12 +149,12 @@ export default function Recommended() {
                       />
                     )}
 
-                    <CardContent>
+                    <CardContent sx={{ height: 130, marginTop: "10px" }}>
                       <Typography gutterBottom variant="h5" component="div">
                         {el.nickname}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        나와 {(el.rate * 100).toFixed(0)}% 유사한 사람이에요!
+                        나와의 유사도 : {(el.rate * 100).toFixed(0)}%
                       </Typography>
                       {el.agerange !== null && (
                         <Typography variant="body2" color="text.secondary">

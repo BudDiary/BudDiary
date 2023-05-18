@@ -11,6 +11,7 @@ import {
   DiaryDetailBlank,
   ReactionSet,
 } from "./Diaries.styles";
+import { useNavigate } from "react-router-dom";
 import { LogoBlue, LogoGreen } from "../navbar/NavBar.styles";
 import DiaryComment from "./DiaryComment";
 import { DeleteButton } from "../common/Button.styles";
@@ -23,6 +24,12 @@ import EmojiCount from "./emoji/EmojiCount";
 import EmojiPicker from "./emoji/EmojiPicker";
 import { Diary, Image } from "../../types/group";
 import DiaryDelete from "./DiaryDelete";
+import excited from "../../assets/excited.png";
+import happy from "../../assets/happy.png";
+import normal from "../../assets/normal.png";
+import sad from "../../assets/sad.png";
+import crying from "../../assets/crying.png";
+import { BiLinkExternal } from "react-icons/bi";
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -36,8 +43,11 @@ interface SelectedEmojis {
 }
 
 export default function DiaryBox({ diaryList }: DiaryBoxProps) {
+  const navigate = useNavigate();
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
-
+  const [feelingRateData, setFeelingRateData] = useState<{
+    [diaryId: number]: string;
+  }>({});
   const { memberData } = useMember();
   // 일기 삭제 모달
   const [diaryDelete, setDiaryDelete] = useState(false);
@@ -53,8 +63,38 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
     setDiaryDelete(false);
   };
 
+  const getFeelingRate = (negative: number, positive: number) => {
+    const feelingRate = positive - negative;
+    let image = "";
+
+    if (feelingRate >= -100 && feelingRate < -60) {
+      image = crying;
+    } else if (feelingRate >= -60 && feelingRate < -20) {
+      image = sad;
+    } else if (feelingRate >= -20 && feelingRate < 20) {
+      image = normal;
+    } else if (feelingRate >= 20 && feelingRate < 60) {
+      image = happy;
+    } else if (feelingRate >= 60 && feelingRate <= 100) {
+      image = excited;
+    }
+
+    return image;
+  };
+
   useEffect(() => {
     setDiaryData(diaryList ?? []);
+
+    const calculatedFeelingRateData: { [diaryId: number]: string } = {};
+    diaryList?.forEach((diary) => {
+      const { negativeRate, positiveRate } = diary;
+      calculatedFeelingRateData[diary.diaryId] = getFeelingRate(
+        negativeRate,
+        positiveRate
+      );
+    });
+
+    setFeelingRateData(calculatedFeelingRateData);
   }, [diaryList]);
 
   const handleSelectEmoji = (emoji: string, diaryId: number) => {
@@ -116,6 +156,15 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                     </h2>
                     <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
                   </div>
+                  <img
+                    src={getFeelingRate(diary.negativeRate, diary.positiveRate)}
+                    alt=""
+                    style={{
+                      maxWidth: "50px",
+                      maxHeight: "50px",
+                      marginLeft: "auto",
+                    }}
+                  />
                 </DiaryHeader>
                 <Divider
                   style={{ border: "solid 2px #BFDBFE", marginBlock: "10px" }}
@@ -138,9 +187,21 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                       </Swiper>
                     </DiaryImageSlider>
                   )}
-                  <DiaryText>
-                    <p>{diary.text}</p>
-                  </DiaryText>
+                  <div>
+                    <div className="flex justify-end sm:mr-10">
+                      <button
+                        className="font-berry flex"
+                        onClick={() => navigate(`/decorate/${diary.diaryId}`)}
+                      >
+                        다꾸 페이지 보러가기
+                        <BiLinkExternal className="my-auto ml-1" />
+                      </button>
+                    </div>
+                    <div className="h-[2px] w-[100%] bg-red-200 my-2"></div>
+                    <DiaryText>
+                      <p>{diary.text}</p>
+                    </DiaryText>
+                  </div>
                 </DiaryContent>
 
                 <ReactionSet>

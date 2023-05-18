@@ -26,8 +26,10 @@ import dimg2 from "./assets/DSectionimg2.jpg";
 import dimg3 from "./assets/DSectionimg3.jpg";
 import dimg4 from "./assets/DSectionimg4.jpg";
 import dimg5 from "./assets/DSectionimg5.jpg";
+import { useNavigate } from "react-router-dom";
 
 export default function DSection() {
+  const navigate = useNavigate();
   const [ref, inView] = useInView({ threshold: 0.9 });
   const [run, setRun] = useState<string>("paused");
   const [text, setText] = useState<string>("의");
@@ -63,6 +65,10 @@ export default function DSection() {
   const handleButtonClick = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     setselectImg(images[currentImageIndex]);
+  };
+
+  const handleRedirect = () => {
+    navigate("/write");
   };
 
   return (
@@ -112,7 +118,7 @@ export default function DSection() {
               </AppearText>
             </FirstBox>
           </ThirdSection>
-          <ButtonSection>
+          <ButtonSection onClick={handleRedirect}>
             <ButtonTextBox run={run}></ButtonTextBox>
             <ButtonSubBox run={run}></ButtonSubBox>
             <ButtonSSubBox run={run}></ButtonSSubBox>

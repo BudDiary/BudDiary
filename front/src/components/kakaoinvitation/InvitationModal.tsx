@@ -31,7 +31,7 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
   const [isCopied, setIsCopied] = useState(false);
   const [description, setDescription] = useState(defaultDescription);
   const currentUrl = window.location.href;
-
+  const address = `http://localhost:3000/group/approve/${clubInfo?.clubUuid}`;
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -138,7 +138,11 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
             <p style={{ color: "red", fontSize: "5px" }}>50자가 넘었습니다.</p>
           )}
           <KakaoContainer>
-            <KakaoShare clubInfo={clubInfo} description={description} />
+            <KakaoShare
+              clubInfo={clubInfo}
+              description={description}
+              address={address}
+            />
           </KakaoContainer>
         </RightInvitation>
       </SendInvitation>

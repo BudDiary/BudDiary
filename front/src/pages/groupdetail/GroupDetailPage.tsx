@@ -29,20 +29,20 @@ const GroupDetailPage = () => {
   const handleToggleModal = () => {
     setShowModal((prevState) => !prevState);
   };
-  const TempCode = "8f3fcf5c-ed97-43b5-9ebb-821c2f9ad117";
+  // const TempCode = "8f3fcf5c-ed97-43b5-9ebb-821c2f9ad117";
   useEffect(() => {
     const currentUrl: string = window.location.href;
     const code = currentUrl.split(`/group/`)[1];
     async function fetchData() {
       try {
-        const data = await getClubDetailApi(TempCode);
+        const data = await getClubDetailApi(code);
         setClubData(data);
       } catch (error) {
         console.error(error);
       }
     }
     fetchData();
-  }, [clubData]);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

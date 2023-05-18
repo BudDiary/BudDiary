@@ -47,7 +47,7 @@ export default function RecommendedByKeyword() {
         if (!result.error) {
           console.log(result, "this is keyword recommend result");
           setRecommendList(result.data);
-          setInitialLoad(2)
+          setInitialLoad(2);
         } else {
           console.error(result.error); // Optionally, log the error
         }
@@ -61,7 +61,7 @@ export default function RecommendedByKeyword() {
     // let initialLoad = true; // Flag to track initial load
 
     if (initialLoad === 2) {
-      console.log(recommendList, 'this is recommendList')
+      console.log(recommendList, "this is recommendList");
       getRecommend(); // Call getRecommend() when recommendList has a value for the first time
       setInitialLoad(3); // Update the flag to prevent subsequent calls
     }
@@ -69,32 +69,34 @@ export default function RecommendedByKeyword() {
 
   const getRecommend = () => {
     const newdatas: RecommendUserInfo[] = [];
-    
+
     if (recommendList) {
       for (let i = 0; i < recommendList.length; i++) {
-        postUserInfoApi({ member_id: recommendList[i].userId }).then((result) => {
-          if (result.data) {
-            console.log(result.data, "this is result data");
-            let newdata: RecommendUserInfo = {
-              nickname: result.data.nickname,
-              gender: result.data.gender,
-              agerange: result.data.ageRange,
-              rate: recommendList[i].rate,
-              userId: recommendList[i].userId,
-            };
-            newdatas.push(newdata);
-            setRecommendUserList([...recommendUserList, ...newdatas]);
-          } else {
-            console.error(
-              "Invalid data received for user:",
-              recommendList[i].userId
-            );
+        postUserInfoApi({ member_id: recommendList[i].userId }).then(
+          (result) => {
+            if (result.data) {
+              console.log(result.data, "this is result data");
+              let newdata: RecommendUserInfo = {
+                nickname: result.data.nickname,
+                gender: result.data.gender,
+                agerange: result.data.ageRange,
+                rate: recommendList[i].rate,
+                userId: recommendList[i].userId,
+              };
+              newdatas.push(newdata);
+              setRecommendUserList([...recommendUserList, ...newdatas]);
+            } else {
+              console.error(
+                "Invalid data received for user:",
+                recommendList[i].userId
+              );
+            }
           }
-        });
+        );
       }
     }
   };
-  
+
   return (
     <>
       <TitleSection>일기 내용을 기반으로 한 추천 리스트 입니다.</TitleSection>
@@ -141,7 +143,7 @@ export default function RecommendedByKeyword() {
                         image={nullImage}
                       />
                     )}
-                    <CardContent>
+                    <CardContent sx={{ height: 150 }}>
                       <Typography gutterBottom variant="h5" component="div">
                         {el.nickname}
                       </Typography>

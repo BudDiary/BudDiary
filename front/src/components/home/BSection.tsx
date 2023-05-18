@@ -26,6 +26,8 @@ import {
   WordsSection,
   UnderLine,
   SecondBox,
+  ImgMargin,
+  ImgBox,
 } from "./BSection.styles";
 import img from "./assets/Testimg916.jpg";
 
@@ -43,8 +45,20 @@ export default function BSection() {
     <Container ref={ref}>
       <SectionContainer>
         <ImageSection run={run}>
-          <FirstImageBox></FirstImageBox>
-          <SecondImageBox></SecondImageBox>
+          <FirstImageBox>
+            <ImgBox>
+              {/* 첫번쨰 */}
+              <img src={img} alt="" />
+            </ImgBox>
+            <ImgMargin></ImgMargin>
+          </FirstImageBox>
+          <SecondImageBox>
+            <ImgMargin></ImgMargin>
+            <ImgBox>
+              {/* 두번째 */}
+              <img src={img} alt="" />
+            </ImgBox>
+          </SecondImageBox>
         </ImageSection>
         <TextContainer>
           <TextSection>

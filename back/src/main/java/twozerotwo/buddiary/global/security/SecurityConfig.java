@@ -139,10 +139,10 @@ public class SecurityConfig {
 		return source;
 	}
 
-	@Bean
-	public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
-		return new HttpCookieOAuth2AuthorizationRequestRepository();
-	}
+	// @Bean
+	// public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+	// 	return new HttpCookieOAuth2AuthorizationRequestRepository();
+	// }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

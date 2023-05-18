@@ -6,7 +6,6 @@ const postTodayDiaryApi = (payload: any) => {
   return formApi
     .post(`/api/diaries`, payload, { withCredentials: true })
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
@@ -20,11 +19,9 @@ const postTodayDiaryApi = (payload: any) => {
 
 // 특정 날짜 다이어리 리스트 조회
 const getDateDiaryListApi = (date: string) => {
-  console.log(date);
   return api
     .get(`/api/diaries?date=${date}`, { withCredentials: true })
     .then((res) => {
-      console.log(res.data.diaryList);
       return res.data.diaryList;
     })
     .catch((err) => {
@@ -37,12 +34,12 @@ const getDateDiaryListApi = (date: string) => {
 };
 
 // 다이어리 디테일
-const getDiaryDetailApi = (payload: number) => {
+const getDiaryDetailApi = (payload: string) => {
   return api
     .get(`/api/diaries/${payload}`)
     .then((res) => {
-      console.log(res);
-      return res.data;
+      console.log(res.data.diaryDetail, "다이어리디테일");
+      return res.data.diaryDetail;
     })
     .catch((err) => {
       console.log(err, "getDateDiaryListAPI 오류");

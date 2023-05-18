@@ -59,7 +59,9 @@ export default function GroupSelect({
   return (
     <div>
       <FormControl sx={{ m: 1, minWidth: 300 }}>
-        <InputLabel id="demo-multiple-name-label">&nbsp; 그룹</InputLabel>
+        {mygroup.length > 0 ? (
+          <InputLabel id="demo-multiple-name-label">나의 교환일기들</InputLabel>
+        ) : null}
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
