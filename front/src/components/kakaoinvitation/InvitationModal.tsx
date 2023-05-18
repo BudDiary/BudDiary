@@ -18,7 +18,6 @@ import { EditTitle } from "../groupdetail/DiaryComment.style";
 import { KakaoShare } from "./KakaoShare";
 import { Info } from "../../types/group";
 import close from "../../assets/modal/close.png";
-import { maxHeight } from "@mui/system";
 
 interface GroupInfoProps {
   clubInfo?: Info;
@@ -28,7 +27,6 @@ interface GroupInfoProps {
 export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
   const defaultDescription = ` ${clubInfo?.clubName}에 당신을 초대합니다.`;
   const [isDescriptionExceeded, setIsDescriptionExceeded] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
   const [description, setDescription] = useState(defaultDescription);
   const currentUrl = window.location.href;
   const address = `${process.env.REACT_APP_KAKAO_INVITE_URL}group/approve/${clubInfo?.clubUuid}`;
