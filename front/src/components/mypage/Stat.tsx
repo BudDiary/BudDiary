@@ -28,8 +28,10 @@ export default function Stat() {
     });
 }, []);
 
-  return (
-    
-    <ReactWordcloud words={words} />
-  )
+return (
+  <>
+    {words.length > 0 && <ReactWordcloud words={words} />}
+  </>
+);
+
 }
