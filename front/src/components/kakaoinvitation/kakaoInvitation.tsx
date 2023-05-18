@@ -88,6 +88,7 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
             </CopyButton>
           </span>
           <h2>카카오톡으로 공유하기</h2>
+
           <h4>초대메세지를 적어주세요 (50자 제한)</h4>
           <DescriptionBox
             value={description}
