@@ -106,39 +106,50 @@ export default function StickerPage({
       negativeRate: sentiment.negative,
       positiveRate: sentiment.positive,
     }));
-    // console.log(data, 'this is emotion test')
   }, [sentiment]);
   // const nickname = memberData.nickname;
   const sendData = async () => {
     Promise.all([
       postSentimentApi({ content: content }),
       postKeywordApi({ userId: username, content: content }),
-    ]).then(([result, kewordSend]) => {
-      setSentiment(result);
-      setSentiment((prevSentiment) => {
+    ]).then(([result, keywordSend]) => {
+      if (result.negative !== 0 && result.positive !== 0) {
         setData((prevData) => ({
           ...prevData,
-          negativeRate: prevSentiment.negative,
-          positiveRate: prevSentiment.positive,
-          stickerDtoList: { points },
+          negativeRate: result.negative,
+          positiveRate: result.positive,
         }));
-        return prevSentiment;
-      });
-      postTodayDiaryApi(data)
-      .then(() => {
-        if (data.clubList.length === 0) {
-          navigate("/mypage");
-        } else {
-          navigate("/group");
-        }
-      })
-      .catch((error) => {
-        console.log("Error:", error);
-      });
+      }
+      // console.log(result, 'this is')
+      // setSentiment({negative: 0.04, positive: 99.96});
+      // console.log(data, 'this is data')
+      // setSentiment((prevSentiment) => {
+      //   setData((prevData) => ({
+      //     ...prevData,
+      //     negativeRate: prevSentiment.negative,
+      //     positiveRate: prevSentiment.positive,
+      //     stickerDtoList: { points },
+      //   }));
+      //   return prevSentiment;
+      // });
+      // setData((prevData) => {
+      //   postTodayDiaryApi(prevData)
+      //     .then(() => {
+      //       if (prevData.clubList.length === 0) {
+      //         navigate("/mypage");
+      //       } else {
+      //         navigate("/group");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log("Error:", error);
+      //     });
+      //   return prevData;
+      // });
+    
       console.log(data, "this is data");
     });
-  };
-
+  }
   return (
     <PageContainer>
       <StickerListTitle>보유중인 스티커</StickerListTitle>
