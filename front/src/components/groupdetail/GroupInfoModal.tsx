@@ -112,7 +112,7 @@ export default function GroupInfoModal({
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "start",
               }}
             >
               {member.nickname}

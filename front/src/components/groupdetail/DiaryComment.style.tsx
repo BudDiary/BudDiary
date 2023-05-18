@@ -79,7 +79,10 @@ export const DeleteContent = styled.div`
   ${tw`bg-blue-200 text-gray-700 mx-3 p-5`}
   height: 150px;
   border-radius: 15px;
-  overflow-y: auto; /* 수직 스크롤 적용 */
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 export const EditContentBox = styled.textarea`
   ${tw`bg-blue-200 text-gray-700 mx-3 p-5`}
@@ -88,6 +91,10 @@ export const EditContentBox = styled.textarea`
   border-radius: 15px;
   overflow-y: auto;
   resize: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const CommentBox = styled.div`

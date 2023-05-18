@@ -46,8 +46,8 @@ export const EditContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 15;
+  min-height: 400px;
   ${tw`bg-white h-[55%] w-[320px] border-2`}
-
   @media screen and (max-width: 640px) {
     ${tw`bg-white h-[65%] w-[320px] sm:w-[60%] border-2`}
   }
@@ -56,7 +56,7 @@ export const EditContainer = styled.div`
 // 그룹 정보 모달
 
 export const GroupModal = styled.div`
-  ${tw`bg-white h-[65%] w-[90vw] sm:w-[60%] border-2 border-bud-green `}
+  ${tw`bg-white h-[65%] w-[70vw] sm:w-[60%] border-2 border-bud-green `}
   position: fixed;
   top: 50%;
   left: 50%;
