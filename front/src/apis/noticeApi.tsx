@@ -48,4 +48,25 @@ const postLiveDoubleInviteApi = (payload: string) => {
     });
 };
 
-export { getSSEAlarmsApi, deleteSSEAlarmsApi, postLiveDoubleInviteApi };
+const postLiveNewDiaryApi = (payload: any) => {
+  console.log(payload);
+  return api
+    .post(
+      `/event/clubs/new-diary`,
+      { clubList: payload },
+      { withCredentials: true }
+    )
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err, "event/clubs/new-diary 오류");
+    });
+};
+
+export {
+  getSSEAlarmsApi,
+  deleteSSEAlarmsApi,
+  postLiveDoubleInviteApi,
+  postLiveNewDiaryApi,
+};
