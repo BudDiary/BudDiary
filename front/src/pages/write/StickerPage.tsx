@@ -6,6 +6,7 @@ import navimg from "../../assets/subnav/WirteDiary.jpg";
 import interact from "interactjs";
 import useMember from "../../hooks/memberHook";
 import { PageContainer } from "../../components/common/Page.styles";
+import { Swiper, SwiperSlide } from "swiper/react";
 import {
   postTodayDiaryApi,
   postSentimentApi,
@@ -80,7 +81,7 @@ export default function StickerPage({
   // 보낼 데이터
   const [data, setData] = useState<{
     text: string;
-    fileList: File[] | null;
+    fileList: [File] | null;
     clubList: any;
     isPersonal: boolean;
     memberUsername: string;
@@ -113,60 +114,128 @@ export default function StickerPage({
     await Promise.all([
       postSentimentApi({ content: content }),
       postKeywordApi({ userId: username, content: content }),
-    ])
-      .then(async ([result]) => {
-        await setSentiment(result);
-        // -------------------------------------------------------------------------------------------------------------
-        // 여기만 수정하면된다;;;;;;
-        // const formData = new FormData();
-        let stickerData: usedSticker[] = [];
-        if (sendStickerList.length > 0) {
-          stickerData = [...sendStickerList];
-          console.log(stickerData, "this is stickerData");
+    ]).then(async ([result]) => {
+      await setSentiment(result);
+      // -------------------------------------------------------------------------------------------------------------
+      // 여기만 수정하면된다;;;;;;
+      const formData = new FormData();
+      formData.append("text", content);
+      // 여러 개의 파일 추가
+      pics.forEach((p: any) => formData.append("fileList", p));
+
+      formData.append("isPersonal", String(personal));
+      // let stickerData: usedSticker[] = [];
+      if (sendStickerList.length > 0) {
+        // stickerData = [...sendStickerList];
+        console.log(sendStickerList, "this is stickerData");
+        // formData.append("stickerDtoList", JSON.stringify(stickerData));
+        for (let i = 0; i < pics.length; i++) {
+          console.log(sendStickerList[i].stickerUrl);
+          formData.append(
+            `fileList[${i}].stickerUrl`,
+            sendStickerList[i].stickerUrl
+          );
+          formData.append(
+            `fileList[${i}].xCoordinate`,
+            String(sendStickerList[i].xCoordinate)
+          );
+          formData.append(
+            `fileList[${i}].yCoordinate`,
+            String(sendStickerList[i].yCoordinate)
+          );
         }
-        let resultArray: string[] = [];
-        stickerData.forEach((element, index) => {
-          const value1 = `stickerDtoList[${index}].stickerUrl: ${element.stickerUrl}`;
-          resultArray.push(value1);
-          const value2 = `stickerDtoList[${index}].xCoordinate: ${element.xCoordinate}`;
-          resultArray.push(value2);
-          const value3 = `stickerDtoList[${index}].yCoordinate: ${element.xCoordinate}`;
-          resultArray.push(value3);
+      }
+      formData.append("negativeRate", result.negative);
+      formData.append("positiveRate", result.positive);
+      if (groups.length > 0) {
+        for (let i = 0; i < pics.length; i++) {
+          formData.append(`clubList[${i}]`, groups[i]);
+        }
+      }
+
+      let entries = formData.entries();
+      for (const pair of entries) {
+        console.log(pair[0] + ", " + pair[1], "하이잉이이이이");
+      }
+      postTodayDiaryApi(formData)
+        .then(() => {
+          if (groups.length === 0) {
+            navigate("/mypage");
+          } else {
+            console.log(groups, "여기로 알람 보내줘");
+            // 일기 작성이 잘 되었다면
+            // 구성원 모두한테 알람 보내기
+            postLiveNewDiaryApi(groups);
+            navigate("/group");
+          }
+        })
+        .catch((error) => {
+          console.log("Error:", error);
         });
-        const updatedData = {
-          ...data,
-          negativeRate: result.negative,
-          positiveRate: result.positive,
-          stickerDtoList: stickerData,
-        };
-        // ---------------------------------------------------------------------------------------------------------------------
-        return updatedData;
-      })
-      .then((updatedData) => {
-        console.log(updatedData, "진짜 보낼데이터터");
-        // 스프링으로 데이터 보내기
-        postTodayDiaryApi(updatedData)
-          .then(() => {
-            if (updatedData.clubList.length === 0) {
-              navigate("/mypage");
-            } else {
-              // 일기 작성이 잘 되었다면
-              // 구성원 모두한테 알람 보내기
-              postLiveNewDiaryApi(updatedData.clubList);
-              navigate("/group");
-            }
-          })
-          .catch((error) => {
-            console.log("Error:", error);
-          });
-      });
+      // let resultArray: string[] = [];
+      // stickerData.forEach((element, index) => {
+      //   const value1 = `stickerDtoList[${index}].stickerUrl: ${element.stickerUrl}`;
+      //   resultArray.push(value1);
+      //   const value2 = `stickerDtoList[${index}].xCoordinate: ${element.xCoordinate}`;
+      //   resultArray.push(value2);
+      //   const value3 = `stickerDtoList[${index}].yCoordinate: ${element.xCoordinate}`;
+      //   resultArray.push(value3);
+      // });
+      // const updatedData = {
+      //   ...data,
+      //   negativeRate: result.negative,
+      //   positiveRate: result.positive,
+      //   stickerDtoList: stickerData,
+      // };
+      // ---------------------------------------------------------------------------------------------------------------------
+      // return updatedData;
+    });
+    // .then((updatedData) => {
+    //   console.log(updatedData, "진짜 보낼데이터터");
+    //   // 스프링으로 데이터 보내기
+    //   postTodayDiaryApi(updatedData)
+    //     .then(() => {
+    //       if (updatedData.clubList.length === 0) {
+    //         navigate("/mypage");
+    //       } else {
+    //         // 일기 작성이 잘 되었다면
+    //         // 구성원 모두한테 알람 보내기
+    //         postLiveNewDiaryApi(updatedData.clubList);
+    //         navigate("/group");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log("Error:", error);
+    //     });
+    // });
   };
 
   return (
     <PageContainer>
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
-      <div className="grid grid-cols-6">
+      {/* {myStickers && myStickers?.length > 0 && (
+        <div className="flex overflow-x-scroll">
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={3}
+            navigation
+            pagination={{ clickable: true }}
+            loop={true}
+          >
+            {myStickers.map((pic: any, index: any) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={pic.imgUrl}
+                  alt="일기 사진입니다."
+                  className="my-auto"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )} */}
+      <div className="grid grid-cols-6 h-[160px]">
         {myStickers &&
           myStickers.length > 0 &&
           myStickers.map((sticker) => (

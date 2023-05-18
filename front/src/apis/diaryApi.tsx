@@ -69,9 +69,9 @@ const deleteDiaryApi = (diary_id: number) => {
 // 다이어리 스티커 추가
 const patchDiaryStickerApi = (payload: any) => {
   return api
-    .get(`/api/diaries/stickers`, payload)
+    .patch(`/api/diaries/stickers`, payload, { withCredentials: true })
     .then((res) => {
-      console.log(res);
+      console.log(res.data, "다이어리 스티커 잘 추가됐냐?");
       return res.data;
     })
     .catch((err) => {
