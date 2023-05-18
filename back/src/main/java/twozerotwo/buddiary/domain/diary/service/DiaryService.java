@@ -105,7 +105,7 @@ public class DiaryService {
 	}
 
 	@Transactional
-	public void makeStickerList(Diary diary, List<StickerDto> stickerDtoList) {
+	public Diary makeStickerList(Diary diary, List<StickerDto> stickerDtoList) {
 		List<UsedSticker> usedStickerList = diary.getUsedStickers();
 
 		// List<UnusedSticker> memberStickers = member.getStickers();
@@ -125,6 +125,7 @@ public class DiaryService {
 			// 스티커 하나 줄이기
 			usedStickerList.add(usedSticker);
 		}
+		return diary;
 
 	}
 
@@ -237,14 +238,10 @@ public class DiaryService {
 
 	@Transactional
 	public List<UsedStickerDto> addStickerToDiary(NewStickerDto request, HttpServletRequest servlet) {
-
-
 		Diary diary = returnDiaryById(request.getDiaryId());
-
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 
-
-		makeStickerList(diary, request.getStickerDtoList());
+		Diary newDiary = makeStickerList(diary, request.getStickerDtoList());
 		if (request.getStickerDtoList() != null && request.getStickerDtoList().size() > 0) {
 			for (StickerDto stickerDto : request.getStickerDtoList()) {
 				Sticker sticker = stickerService.returnStickerByUrl(stickerDto.getStickerUrl());
@@ -258,9 +255,7 @@ public class DiaryService {
 				}
 			}
 		}
-		// 스티커 개수 차감
-
-		return getDiarySticker(diary);
+		return getDiarySticker(newDiary);
 
 
 	}

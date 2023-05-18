@@ -16,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 public class StickerDto {
 	// @JsonProperty("stickerUrl")
 	private String stickerUrl;
+	@JsonProperty("xCoordinate")
 	private Double xCoordinate;
+	@JsonProperty("yCoordinate")
 	private Double yCoordinate;
 
 }
