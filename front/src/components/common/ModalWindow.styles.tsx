@@ -56,7 +56,7 @@ export const EditContainer = styled.div`
 // 그룹 정보 모달
 
 export const GroupModal = styled.div`
-  ${tw`bg-white h-[65%] w-[90vw] sm:w-[60%] border-4 border-bud-green `}
+  ${tw`bg-white h-[65%] w-[90vw] sm:w-[60%] border-2 border-bud-green `}
   position: fixed;
   top: 50%;
   left: 50%;
@@ -81,22 +81,26 @@ export const GroupModal = styled.div`
 // 초대하기 모달
 
 export const InvitationContainer = styled.div`
-  ${tw`bg-white w-[60%] flex flex-col border border-bud-blue`}
+  ${tw`bg-white w-[60%] h-[60%] flex flex-col border border-bud-blue`}
   position: fixed;
   top: 50%;
   left: 50%;
   z-index: 99;
   transform: translate(-50%, -50%);
-  min-height: 400px;
+  min-height: 500px;
   min-width: 330px;
   height: 50%;
 
+  @media (max-width: 768px) {
+    ${tw`bg-white h-[100%] w-[100%] flex border-2 border-bud-blue px-2 m-auto`}
+    min-height: 450px;
+  }
   @media (max-width: 640px) {
-    ${tw`bg-white h-[100%] w-[100%] sm:w-[60%] flex border-4 border-bud-blue px-2 m-auto`}
+    ${tw`bg-white h-[100%] w-[100%] sm:w-[60%] flex border-2 border-bud-blue px-2 m-auto`}
     min-height: 450px;
   }
   @media (max-width: 450px) {
-    ${tw`bg-white h-[100%] w-[100%] sm:w-[60%] flex border-4 border-bud-blue px-2 m-auto`}
+    ${tw`bg-white h-[100%] w-[100%] sm:w-[60%] flex border-2 border-bud-blue px-2 m-auto`}
     min-height: 400px;
   }
 `;

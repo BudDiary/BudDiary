@@ -76,18 +76,22 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
           <div style={{ textAlign: "center" }}>
             <JoinButton>Buddiary 참여하기</JoinButton>
           </div>
+          {window.innerWidth > 640 ? null : (
+            <KakaoContainer>
+              <KakaoShare
+                clubInfo={clubInfo}
+                description={description}
+                address={address}
+              />
+            </KakaoContainer>
+          )}
         </InvitationExample>
       </LeftInvitation>
       {window.innerWidth > 640 ? (
         <RightInvitation>
-          <h2>주소 복사하기</h2>
-          <span>
-            <p>{address}</p>
-            <CopyButton onClick={copyCurrentUrlToClipboard}>
-              {isCopied ? "copied" : "copy"}
-            </CopyButton>
-          </span>
-          <h2>카카오톡으로 공유하기</h2>
+          <h2 style={{ marginTop: "10%" }}>카카오톡으로 공유하기</h2>
+          <h4>- 당신의 스토리를 친구들과 공유해보세요</h4>
+          <h4>- 누구든지 Buddiary의 서비스를 함께 이용할 수 있습니다.</h4>
           <h4>초대메세지를 적어주세요 (50자 제한)</h4>
           <DescriptionBox
             value={description}
@@ -100,7 +104,7 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
           {isDescriptionExceeded && (
             <p style={{ color: "red", fontSize: "5px" }}>50자가 넘었습니다.</p>
           )}
-          <KakaoContainer style={{ marginTop: "20px" }}>
+          <KakaoContainer>
             <KakaoShare
               clubInfo={clubInfo}
               description={description}
@@ -108,15 +112,7 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
             />
           </KakaoContainer>
         </RightInvitation>
-      ) : (
-        <KakaoContainer style={{ marginTop: "20px" }}>
-          <KakaoShare
-            clubInfo={clubInfo}
-            description={description}
-            address={address}
-          />
-        </KakaoContainer>
-      )}
+      ) : null}
     </SendInvitation>
   );
 }

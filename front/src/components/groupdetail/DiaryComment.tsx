@@ -80,8 +80,6 @@ export default function DiaryComment({
       const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
       setCommentText("");
       setClubData(data);
-
-      // 댓글을 업데이트한 후에 getClubDetailApi를 직접 호출합니다.
     } catch (error) {
       console.error(error);
     }
@@ -111,15 +109,6 @@ export default function DiaryComment({
                   {timeAgo(comment.writeDate)}
                 </h3>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
-                  {/* {commentUpdate && selectedCommentId === comment.id && (
-                    <CommentEdit
-                      key={comment.id}
-                      comment={comment}
-                      diaryId={diaryId}
-                      isOpen={false}
-                      onClose={handleCloseModal}
-                    />
-                  )} */}
                   {commentDelete && selectedCommentId === comment.id && (
                     <DeleteComment
                       key={comment.id}
@@ -131,15 +120,7 @@ export default function DiaryComment({
                       onClose={handleCloseModal}
                     />
                   )}
-                  {/* 
-                  {memberData.username === comment.writer.username && (
-                    <EditButton
-                      style={{ fontSize: "12px" }}
-                      onClick={() => showUpdateModal(comment.id)}
-                    >
-                      수정
-                    </EditButton>
-                  )} */}
+
                   {memberData.username === comment.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
