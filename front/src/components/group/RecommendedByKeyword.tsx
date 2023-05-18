@@ -20,6 +20,7 @@ import {
   ApplyButton,
 } from "./Recommended.styles";
 import { postUserInfoApi } from "../../apis/userApi";
+import Swal from "sweetalert2";
 
 interface Recommendation {
   userId: string;
@@ -98,6 +99,12 @@ export default function RecommendedByKeyword() {
       }
     }
   };
+  const alertPlease = () => {
+    Swal.fire({
+      icon: "success",
+      text: "일기 신청이 성공적으로 완료되었어요!",
+    });
+  }
 
   return (
     <>
@@ -174,7 +181,7 @@ export default function RecommendedByKeyword() {
                       )}
                     </CardContent>
                     <CardActions>
-                      <ApplyButton>그룹일기 신청하기</ApplyButton>
+                      <ApplyButton onClick={alertPlease}>그룹일기 신청하기</ApplyButton>
                     </CardActions>
                   </Card>
                 </SwiperSlide>

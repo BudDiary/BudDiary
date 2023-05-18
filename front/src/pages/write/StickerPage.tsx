@@ -105,7 +105,6 @@ export default function StickerPage({
       negativeRate: sentiment.negative,
       positiveRate: sentiment.positive,
     }));
-    // console.log(data, 'this is emotion test')
   }, [sentiment]);
   // const nickname = memberData.nickname;
   const sendData = async () => {

@@ -4,6 +4,7 @@
 # source venv/Scripts/activate
 # uvicorn main:app --reload --port 9000
 
+import operator
 import re
 import os
 import json
@@ -180,7 +181,9 @@ async def keyword(info: diaryKeyword):
 
     
 
-        result = {"userId": info.userId, "keywords": keywords}    
+        sorted_keywords = dict(sorted(keywords.items(), key=operator.itemgetter(1), reverse=True))
+        
+        result = {"userId": info.userId, "keywords": sorted_keywords}    
         
         return result
     
@@ -242,8 +245,75 @@ async def keyword(info : keywordSimilar):
 
         return result
 
-    recommend_by_survey_list = get_similarity_scores_keyword('keyword.json', info.userId)
+    recommend_by_survey_list = get_similarity_scores_keyword('./docker_fastapi/static/keyword.json', info.userId)
     recommend_object = [{"userId" : info.userId, "rate": round(rate, 2)} for info.userId, rate in recommend_by_survey_list]
 
-    return recommend_object
 
+    filtered_data = [obj for obj in recommend_object if obj['rate'] != 0]
+    sorted_data = sorted(filtered_data, key=lambda obj: obj['rate'], reverse=True)[:5]
+
+    return sorted_data
+
+
+@app.post("/fastapi/recommend/keyword2")
+async def keyword(info : keywordSimilar):
+    def get_overlapping_words(filename, target_user):
+        # 파일에서 데이터 로드
+        if os.path.exists(filename):
+            with open(filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+        target_keywords = None
+        overlapping_words = {}
+        for obj in data:
+            if obj["userId"] == target_user:
+                target_keywords = obj["keywords"]
+                break
+
+        if target_keywords is None:
+            return overlapping_words
+
+        for obj in data:
+            if obj["userId"] != target_user:
+                current_user = obj["userId"]
+                current_keywords = obj["keywords"]
+                common_words = set(target_keywords.keys()) & set(current_keywords.keys())
+
+                if common_words:
+                    overlapping_words[current_user] = list(common_words)
+
+        return overlapping_words
+
+    def print_overlapping_words(user, words):
+        return {'userId': user, 'words': words}
+    overlapping_words = get_overlapping_words('./docker_fastapi/static/keyword.json', info.userId)
+
+    formatted_output = [print_overlapping_words(user, words) for user, words in overlapping_words.items()]
+
+    return formatted_output
+
+
+@app.post("/fastapi/wordcloud")
+async def wordcloud(info : keywordSimilar):
+    def get_wordcloud(filename, target_user):
+        if os.path.exists(filename):
+            with open(filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+        for obj in data:
+            if obj["userId"] == target_user:
+                keywords = obj["keywords"]
+                break
+        return keywords
+    
+    keyword_object = get_wordcloud('./docker_fastapi/static/keyword.json', info.userId)
+    converted_output = []
+
+    for key, value in keyword_object.items():
+        converted_output.append({
+            "text": key,
+            "value": int(value*40)
+        })
+
+   
+    return converted_output
