@@ -57,7 +57,13 @@ export default function GroupInfo({
           {memberList?.map((member) => (
             <div key={member.id}>
               <img src={member.profilePath ?? ""} alt="프로필" />
-              <MemberListInfo>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 {member.nickname}
                 {member.username === clubInfo?.captainUsername ? (
                   <img
@@ -65,11 +71,9 @@ export default function GroupInfo({
                     alt=""
                     style={{ border: "none", height: "20px", width: "20px" }}
                   />
-                ) : (
-                  ""
-                )}
+                ) : null}
                 <p>{member.username === username ? "  me" : ""}</p>
-              </MemberListInfo>
+              </div>
             </div>
           ))}
         </MemberList>

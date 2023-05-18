@@ -103,7 +103,7 @@ export default function GroupInfoModal({
           </BasicButton>
         </div>
       ) : null}
-      <Divider style={{ border: "solid 2px #BFDBFE" }} />
+      <Divider style={{ border: "solid 2px #BFDBFE", marginBlock: "20px" }} />
       <MemberList>
         {memberList?.map((member) => (
           <div key={member.id}>

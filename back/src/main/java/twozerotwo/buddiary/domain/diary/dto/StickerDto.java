@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -20,5 +21,4 @@ public class StickerDto {
 	private Double xCoordinate;
 	@JsonProperty("yCoordinate")
 	private Double yCoordinate;
-
 }

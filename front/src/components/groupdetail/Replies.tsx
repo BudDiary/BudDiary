@@ -105,33 +105,19 @@ export default function Replies({
                   <h3 style={{ marginInline: "8px" }}>
                     {timeAgo(reply.writeDate)}
                   </h3>
-                  {/* {replyUpdate && selectedReplyId === reply.id && (
-                    <ReplyEdit
-                      key={reply.id}
-                      isOpen={false}
-                      reply={reply}
-                      onClose={handleCloseModal}
-                    />
-                  )} */}
+
                   {replyDelete && selectedReplyId === reply.id && (
                     <DeleteReply
                       key={reply.id}
                       isOpen={false}
                       commentId={commentId}
-                      // clubInfo={clubInfo}
-                      // setClubData={setClubData}
+                      clubInfo={clubInfo}
+                      setClubData={setClubData}
                       reply={reply}
                       onClose={handleCloseModal}
                     />
                   )}
-                  {/* {memberData.username === reply.writer.username && (
-                    <EditButton
-                      style={{ fontSize: "12px" }}
-                      onClick={() => showUpdateModal(reply.id)}
-                    >
-                      수정
-                    </EditButton>
-                  )} */}
+
                   {memberData.username === reply.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
