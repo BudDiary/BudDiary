@@ -4,6 +4,8 @@ import "swiper/swiper-bundle.css";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { getMyClubListApi } from "../../apis/clubApi";
+import { ApplyButton } from "./Recommended.styles";
+import { useNavigate } from "react-router-dom";
 
 interface DoubleList {
   captainUsername: string | null;
@@ -13,6 +15,8 @@ interface DoubleList {
 }
 
 export default function MyRandom() {
+  const navigate = useNavigate();
+
   const [doubleList, setDoubleList] = useState<DoubleList[]>([]);
   // useEffect(() => {
   //   async function fetchData() {
@@ -26,6 +30,9 @@ export default function MyRandom() {
 
   //   fetchData();
   // }, []);
+  const handleGroupClick = (clubUuid: string) => {
+    navigate(`/group/${clubUuid}`);
+  };
   useEffect(() => {
     getMyClubListApi()
       .then((result) => {
@@ -74,8 +81,10 @@ export default function MyRandom() {
                   alt={item.clubName}
                   style={{ width: "100%", height: "100px" }}
                 />
-                <Typography component="div">{item.clubName}</Typography>
-              </Paper>
+                  <ApplyButton onClick={() => handleGroupClick(item.clubUuid)}>
+                    조회하기
+                  </ApplyButton>              
+                  </Paper>
             </SwiperSlide>
           ))
         : null}

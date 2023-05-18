@@ -94,6 +94,15 @@ export default function NavBar() {
       window.location.href = KAKAO_AUTH_URL;
     }
   };
+  // const handleDeleteAlarm = async (alarmId) => {
+  //   const delRes = await deleteSSEAlarmsApi(alarmId);
+  //   console.log(delRes, 'this is delRes');
+
+  //   if (delRes === 204) {
+  //     Swal.fire({
+  //       text: '랜덤일기 신청을 거절했습니다.',
+  //     });
+  //   }
   const handleAlarms = () => {
     setAlarmBoxState(!alarmBoxState);
   };
