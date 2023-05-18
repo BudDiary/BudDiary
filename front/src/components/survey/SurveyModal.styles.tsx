@@ -11,6 +11,7 @@ interface TagProps {
 }
 
 export const Tag = styled.div<TagProps>`
+  ${tw`hover:bg-bud-blue`}
   height: 30px;
   /* border-radius:4px; */
   margin: 6px;
@@ -31,6 +32,6 @@ export const MoveIndex = styled.div`
 export const SurveyButton = styled.button`
   /* Your additional CSS styles here */
   color: rgba(0, 0, 0, 0.5);
-  
+
   ${tw`hidden`}
 `;
