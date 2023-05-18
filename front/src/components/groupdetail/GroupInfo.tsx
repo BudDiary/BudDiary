@@ -61,7 +61,7 @@ export default function GroupInfo({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "start",
                 }}
               >
                 {member.nickname}

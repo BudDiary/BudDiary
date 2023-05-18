@@ -62,6 +62,10 @@ const GroupDetailPage = () => {
     backgroundPosition: "center",
     color: "black",
     fontWeight: "bold",
+
+    "@media (min-width: 768px)": {
+      fontSize: "1rem",
+    },
   };
 
   return (

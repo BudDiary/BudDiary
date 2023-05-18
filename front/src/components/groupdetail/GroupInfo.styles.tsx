@@ -36,9 +36,7 @@ export const MemberList = styled.div`
     ${tw`flex items-center justify-start gap-6 font-berry`}
 
     img {
-      ${tw`rounded-full border-2 border-bud-blue`}
-      height: 35px;
-      width: 35px;
+      ${tw`rounded-full border-2 border-bud-blue h-[35px] w-[35px] mr-4 ml-2`}
     }
 
     p {
