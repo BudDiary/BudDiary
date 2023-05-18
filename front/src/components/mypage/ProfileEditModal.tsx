@@ -36,6 +36,7 @@ import {
 } from "../../store/modules/member";
 import useMember from "../../hooks/memberHook";
 import ModalWindow from "../common/ModalWindow";
+import Swal from "sweetalert2";
 
 interface Props {
   closeModal: any;
@@ -75,8 +76,15 @@ export default function ProfileEditModal({ closeModal }: Props) {
     dispatch(updateIntroAction(response));
   };
   const updateNickname = async () => {
-    const response = await patchNicknameApi(nickname);
-    dispatch(updateNicknameAction(response));
+    if (nickname.length >= 2 && nickname.length <= 8) {
+      const response = await patchNicknameApi(nickname);
+      dispatch(updateNicknameAction(response));
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: '닉네임은 2자 이상, 8자 이하로 설정해주세요.',
+      });
+    }
   };
   const updateProfilePic = async () => {
     const formData = new FormData();
