@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { BasicButton } from "./Diaries.styles";
 import ReplyEdit from "./ReplyEdit";
 import DeleteReply from "./ReplyDelete";
@@ -11,7 +11,7 @@ import {
   CommentError,
   ReplyBox,
 } from "./DiaryComment.style";
-
+import { getClubDetailApi } from "../../apis/clubApi";
 import { postReplyApi } from "../../apis/replyAPI";
 import { EditButton, DeleteButton } from "../common/Button.styles";
 import useMember from "../../hooks/memberHook";
@@ -21,13 +21,20 @@ import {
   handleCommentChange,
 } from "./GroupDetailFunction";
 import { timeAgo } from "./GroupDetailFunction";
-import { Reply } from "../../types/group";
+import { Reply, Info, Club } from "../../types/group";
 interface RepliesProps {
   replies: Reply[];
   commentId: number;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 
-export default function Replies({ replies, commentId }: RepliesProps) {
+export default function Replies({
+  replies,
+  commentId,
+  clubInfo,
+  setClubData,
+}: RepliesProps) {
   const { memberData } = useMember();
   const [replyText, setReplyText] = useState("");
   const [showReply, setShowReply] = useState(false);
@@ -42,8 +49,8 @@ export default function Replies({ replies, commentId }: RepliesProps) {
     }
     try {
       const response = await postReplyApi(commentId, replyText);
-
-      // console.log(response);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
       setReplyText("");
       console.log(response);
     } catch (error) {
@@ -98,31 +105,33 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                   <h3 style={{ marginInline: "8px" }}>
                     {timeAgo(reply.writeDate)}
                   </h3>
-                  {replyUpdate && selectedReplyId === reply.id && (
+                  {/* {replyUpdate && selectedReplyId === reply.id && (
                     <ReplyEdit
                       key={reply.id}
                       isOpen={false}
                       reply={reply}
                       onClose={handleCloseModal}
                     />
-                  )}
+                  )} */}
                   {replyDelete && selectedReplyId === reply.id && (
                     <DeleteReply
                       key={reply.id}
                       isOpen={false}
                       commentId={commentId}
+                      // clubInfo={clubInfo}
+                      // setClubData={setClubData}
                       reply={reply}
                       onClose={handleCloseModal}
                     />
                   )}
-                  {memberData.username === reply.writer.username && (
+                  {/* {memberData.username === reply.writer.username && (
                     <EditButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showUpdateModal(reply.id)}
                     >
                       수정
                     </EditButton>
-                  )}
+                  )} */}
                   {memberData.username === reply.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}

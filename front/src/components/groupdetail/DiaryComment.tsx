@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import Replies from "./Replies";
 import CommentEdit from "./CommentEdit";
 import DeleteComment from "./DeleteComment";
@@ -14,6 +14,7 @@ import {
   CommentError,
 } from "./DiaryComment.style";
 import { postCommentApi } from "../../apis/commentApi";
+import { getClubDetailApi } from "../../apis/clubApi";
 import {
   handleCommentChange,
   handleCommentBlur,
@@ -23,14 +24,21 @@ import { EditButton, DeleteButton } from "../common/Button.styles";
 import useMember from "../../hooks/memberHook";
 import { timeAgo } from "./GroupDetailFunction";
 import { Divider } from "@mui/material";
-import { Comment } from "../../types/group";
+import { Comment, Info, Club } from "../../types/group";
 
 interface CommentProps {
   commentList: Comment[];
   diaryId: number;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 
-export default function DiaryComment({ commentList, diaryId }: CommentProps) {
+export default function DiaryComment({
+  commentList,
+  diaryId,
+  clubInfo,
+  setClubData,
+}: CommentProps) {
   const { memberData } = useMember();
   const [commentText, setCommentText] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
@@ -60,18 +68,20 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
     setCommentDelete(false);
   };
 
-  // 댓글 작성
-
   const handleCommentSubmit = async () => {
     if (error || commentText === "") {
       return;
     }
     console.log("댓글 요청", commentText, diaryId);
     setHeight("35px");
+
     try {
       const response = await postCommentApi(diaryId, commentText);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
       setCommentText("");
-      console.log(response);
+      setClubData(data);
+
+      // 댓글을 업데이트한 후에 getClubDetailApi를 직접 호출합니다.
     } catch (error) {
       console.error(error);
     }
@@ -101,7 +111,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                   {timeAgo(comment.writeDate)}
                 </h3>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
-                  {commentUpdate && selectedCommentId === comment.id && (
+                  {/* {commentUpdate && selectedCommentId === comment.id && (
                     <CommentEdit
                       key={comment.id}
                       comment={comment}
@@ -109,17 +119,19 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                       isOpen={false}
                       onClose={handleCloseModal}
                     />
-                  )}
+                  )} */}
                   {commentDelete && selectedCommentId === comment.id && (
                     <DeleteComment
                       key={comment.id}
+                      clubInfo={clubInfo}
                       comment={comment}
                       diaryId={diaryId}
+                      setClubData={setClubData}
                       isOpen={false}
                       onClose={handleCloseModal}
                     />
                   )}
-
+                  {/* 
                   {memberData.username === comment.writer.username && (
                     <EditButton
                       style={{ fontSize: "12px" }}
@@ -127,7 +139,7 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                     >
                       수정
                     </EditButton>
-                  )}
+                  )} */}
                   {memberData.username === comment.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
@@ -145,6 +157,8 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
               <Replies
                 key={comment.id}
                 commentId={comment.id}
+                clubInfo={clubInfo}
+                setClubData={setClubData}
                 replies={comment.replies}
               />
             </CommentBox>
