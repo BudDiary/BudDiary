@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { EditContent, DeleteButton } from "./Diaries.styles";
 import {
   EditContainer,
@@ -10,19 +10,24 @@ import {
   CommentBox,
   EditTitle,
 } from "./DiaryComment.style";
+import { getClubDetailApi } from "../../apis/clubApi";
 import { deleteReplyApi } from "../../apis/replyAPI";
 import { Divider } from "@mui/material";
-import { Reply } from "../../types/group";
+import { Reply, Info, Club } from "../../types/group";
 import close from "../../assets/modal/close.png";
 interface RepliesProps {
   isOpen: boolean;
   reply: Reply;
   commentId: number;
   onClose: () => void;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 export default function DeleteReply({
   reply,
   commentId,
+  clubInfo,
+  setClubData,
   onClose,
 }: RepliesProps) {
   const [commentState, setCommentState] = useState(reply.text);
@@ -30,12 +35,16 @@ export default function DeleteReply({
     onClose();
   };
 
-  const handleDeleteReply = () => {
-    deleteReplyApi(commentId, reply.id);
-    console.log("삭제");
-    onClose();
+  const handleDeleteReply = async () => {
+    try {
+      await deleteReplyApi(commentId, reply.id);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
-
   return (
     <EditContainer>
       <ModalTopNavContainer
