@@ -22,9 +22,8 @@ export const KakaoShare = ({
     if (window.Kakao) {
       const kakao = window.Kakao;
       if (!kakao.isInitialized()) {
-        kakao.init("3f9ab37954d904c89a4a1a068d784064");
+        kakao.init(`${process.env.REACT_APP_KAKAO_KEY}`);
       }
-      
       kakao.Link.createDefaultButton({
         container: "#kakao-link-btn",
         objectType: "feed",

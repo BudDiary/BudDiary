@@ -31,7 +31,8 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
   const [isCopied, setIsCopied] = useState(false);
   const [description, setDescription] = useState(defaultDescription);
   const currentUrl = window.location.href;
-  const address = `http://localhost:3000/group/approve/${clubInfo?.clubUuid}`;
+  const address = `${process.env.REACT_APP_KAKAO_INVITE_URL}group/approve/${clubInfo?.clubUuid}`;
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -45,14 +46,18 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
   }, []);
 
   function copyCurrentUrlToClipboard() {
-    navigator.clipboard
-      .writeText(currentUrl)
-      .then(() => {
-        setIsCopied(true);
-      })
-      .catch((err) => {
-        console.error("Failed to copy current URL:", err);
-      });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(address)
+        .then(() => {
+          setIsCopied(true);
+        })
+        .catch((err) => {
+          console.error("Failed to copy current URL:", err);
+        });
+    } else {
+      console.error("Clipboard writeText API is not supported.");
+    }
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {

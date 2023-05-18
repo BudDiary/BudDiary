@@ -47,7 +47,7 @@ public class Comment {
 	private Diary diary;
 
 	@Builder.Default
-	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
 	private List<Reply> replies = new ArrayList<>();
 
 	@Builder.Default
