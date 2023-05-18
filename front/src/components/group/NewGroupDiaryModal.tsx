@@ -156,7 +156,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           <Sheet
             variant="outlined"
             sx={{
-              minHeight: "55%",
+              minHeight: "60%",
               minWidth: 500,
               maxWidth: 500,
               borderRadius: "md",

@@ -7,13 +7,6 @@ export const JoinContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  img {
-    ${tw`m-auto border-4 border-bud-blue`}
-    width: 30vw;
-    height: 40vh;
-    border-radius: 0 15px 0 15px;
-  }
 `;
 
 const TextUpAnimation = keyframes`
@@ -37,8 +30,19 @@ const TextUpAnimation = keyframes`
   }
 `;
 
+export const WelcomeContainer = styled.div`
+  ${tw``}
+
+  img {
+    ${tw`m-auto border-4 border-bud-blue`}
+    width: 30vw;
+    height: 40vh;
+    border-radius: 0 15px 0 15px;
+  }
+`;
+
 export const JoinNotice = styled.div`
-  ${tw`font-berry`}
+  ${tw``}
   font-size: 4vw;
   font-weight: bold;
   letter-spacing: 0.2em;
@@ -51,7 +55,7 @@ export const JoinText = styled.span<{ delay: number }>`
   animation-delay: ${(props) => props.delay}s;
 `;
 export const JoinGreenText = styled.span<{ delay: number }>`
-  ${tw`text-bud-green font-berry my-4`}
+  ${tw`text-bud-green my-4 font-bold`}
   position: relative;
   animation: ${TextUpAnimation} 1.8s infinite;
   animation-delay: ${(props) => props.delay}s;
@@ -60,6 +64,10 @@ export const JoinGreenText = styled.span<{ delay: number }>`
 export const WelcomeText = styled.div`
   ${tw`font-berry my-2`}
   font-size : 1rem
+`;
+export const WarningText = styled.div`
+  ${tw`font-berry my-2 flex justify-center`}
+  font-size : 1.5rem
 `;
 
 export const VisitButton = styled.button`

@@ -80,7 +80,11 @@ export const InvitationContainer = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
+  z-index: 99;
   transform: translate(-50%, -50%);
+  @media (max-width: 640px) {
+    ${tw`bg-white h-[100%] w-[100%] flex  border border-bud-blue`}
+  }
 `;
 
 // 상단바 디자인
