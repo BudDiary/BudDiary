@@ -2,6 +2,7 @@ package twozerotwo.buddiary.domain.sticker.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -60,10 +61,10 @@ public class StickerService {
 		boolean canBuy = member.checkPoint(totalPrice);
 		if (canBuy) {
 			// unusedSticker에 맴버, 스티커 같은 거 있으면 거기 조회 후++
-			UnusedSticker originSticker = unusedStickerRepository.findByMemberAndStickerId(member, sticker)
-				.orElseThrow(() -> new NotFoundException("보유한 스티커가 아닙니다."));;
-			if (originSticker != null) {
-				originSticker.plusCnt(request.getCount());
+			Optional<UnusedSticker> originSticker = unusedStickerRepository.findByMemberAndStickerId(member, sticker);
+			if (originSticker.isPresent()) {
+				UnusedSticker unusedSticker = originSticker.get();
+				unusedSticker.plusCnt(request.getCount());
 			} else {
 				UnusedSticker unusedSticker = UnusedSticker.builder()
 					.count(request.getCount())
