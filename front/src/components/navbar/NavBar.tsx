@@ -37,7 +37,6 @@ export default function NavBar() {
   const [initialLoad, setInitialLoad] = useState(true);
   const [sideBarState, setSidebarState] = useState(false);
   const [alarmBoxState, setAlarmBoxState] = useState(false);
-  const [alarmRenewState, setAlarmRenewState] = useState(true);
   const [alarmList, setAlarmList] = useState<AlarmList[]>([]);
   const { memberData, isLoggedIn } = useMember();
   const navigate = useNavigate();
@@ -65,12 +64,12 @@ export default function NavBar() {
       eventSource.addEventListener("connect", function (event) {
         let message = event.data;
         console.log(message);
-        // eventSource.close()
       });
 
       const fetchData = async () => {
         try {
           const data = await getSSEAlarmsApi();
+          console.log(data);
           setAlarmList(data);
         } catch (error) {
           console.error(error);
