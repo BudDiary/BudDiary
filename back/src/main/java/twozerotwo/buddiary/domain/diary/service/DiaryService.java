@@ -20,6 +20,7 @@ import twozerotwo.buddiary.domain.diary.dto.DiaryDetailDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryImageDto;
 import twozerotwo.buddiary.domain.diary.dto.DiaryInfo;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
+import twozerotwo.buddiary.domain.diary.dto.NewStickerDto;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerToDiaryDto;
@@ -106,22 +107,14 @@ public class DiaryService {
 	@Transactional
 	public void makeStickerList(Diary diary, List<StickerDto> stickerDtoList) {
 		List<UsedSticker> usedStickerList = diary.getUsedStickers();
+
 		// List<UnusedSticker> memberStickers = member.getStickers();
 		Member member = diary.getWriter();
 		for (StickerDto stickerDto : stickerDtoList) {
-			/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
-			Boolean stickerOwned = false;
 			Sticker sticker = stickerService.returnStickerByUrl(stickerDto.getStickerUrl());
-			for (UnusedSticker ownedSticker : member.getStickers()) {
-				if (ownedSticker.getSticker().getId().equals(sticker.getId())) {
-					stickerOwned = true;
-					break;
-				}
-			}
-			if (!stickerOwned) {
-				throw new BadRequestException("스티커를 보유하고 있지 않습니다.");
-			}
-
+			// Unused 스티커 조회해서 리턴
+			UnusedSticker unusedSticker = unusedStickerRepository.findByMemberAndStickerId(member, sticker)
+				.orElseThrow(() -> new NotFoundException("보유한 스티커가 아닙니다."));
 
 			UsedSticker usedSticker = UsedSticker.builder()
 				.diary(diary)
@@ -158,7 +151,6 @@ public class DiaryService {
 		if (stickerDtoList != null && !stickerDtoList.isEmpty()) {
 			makeStickerList(savedDiary, stickerDtoList);
 		}
-
 	}
 
 	@Transactional
@@ -171,7 +163,8 @@ public class DiaryService {
 			for (StickerDto stickerDto : request.getStickerDtoList()) {
 				Sticker sticker = stickerService.returnStickerByUrl(stickerDto.getStickerUrl());
 				// Unused 스티커 조회해서 리턴
-				UnusedSticker unusedSticker = unusedStickerRepository.findByMemberIdAndStickerId(member, sticker);
+				UnusedSticker unusedSticker = unusedStickerRepository.findByMemberAndStickerId(member, sticker)
+					.orElseThrow(() -> new NotFoundException("보유한 스티커가 아닙니다."));
 				// Unused 스티커 cnt -1
 				unusedSticker.minusCnt();
 				if (unusedSticker.getCount() <= 0) {
@@ -243,31 +236,33 @@ public class DiaryService {
 	}
 
 	@Transactional
-	public List<UsedStickerDto> addStickerToDiary(StickerToDiaryDto request, HttpServletRequest servlet) {
-		// log.info(request.getYCoordinate().toString());
-		// 소유자가 맞는지 확인
+	public List<UsedStickerDto> addStickerToDiary(NewStickerDto request, HttpServletRequest servlet) {
+
+
 		Diary diary = returnDiaryById(request.getDiaryId());
-		UnusedSticker unusedSticker = unusedStickerRepository.findById(request.getUnusedStickerId())
-			.orElseThrow(() -> new NotFoundException("미사용 스티커를 찾을 수 없습니다."));
-		// Member member = clubService.returnMemberByUsername(request.getUsername());
+
 		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
-		if (!unusedSticker.getMember().equals(member)) {
-			throw new BadRequestException("요청자와 소유자가 다릅니다.");
+
+
+		makeStickerList(diary, request.getStickerDtoList());
+		if (request.getStickerDtoList() != null && request.getStickerDtoList().size() > 0) {
+			for (StickerDto stickerDto : request.getStickerDtoList()) {
+				Sticker sticker = stickerService.returnStickerByUrl(stickerDto.getStickerUrl());
+				// Unused 스티커 조회해서 리턴
+				UnusedSticker unusedSticker = unusedStickerRepository.findByMemberAndStickerId(member, sticker)
+					.orElseThrow(() -> new NotFoundException("보유한 스티커가 아닙니다."));
+				// Unused 스티커 cnt -1
+				unusedSticker.minusCnt();
+				if (unusedSticker.getCount() <= 0) {
+					unusedStickerRepository.delete(unusedSticker);
+				}
+			}
 		}
-		UsedSticker usedSticker = UsedSticker.builder()
-			.diary(diary)
-			.xCoordinate(request.getXCoordinate())
-			.yCoordinate(request.getYCoordinate())
-			.sticker(unusedSticker.getSticker())
-			.build();
-		// 스티커 ++
-		usedStickerRepository.save(usedSticker);
-		// 앤드 차감 > 0 되면 삭제
-		unusedSticker.minusCnt();
-		if (unusedSticker.getCount() <= 0) {
-			unusedStickerRepository.delete(unusedSticker);
-		}
+		// 스티커 개수 차감
+
 		return getDiarySticker(diary);
+
+
 	}
 
 	public List<ReactionDto> returnReactionDtoList(Diary diary) {
