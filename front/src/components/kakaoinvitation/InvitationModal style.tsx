@@ -15,7 +15,7 @@ export const DescriptionBox = styled.textarea`
 `;
 
 export const SendInvitation = styled.div`
-  ${tw`flex px-6 items-center my-3`}
+  ${tw`flex px-6 items-center m-auto`}
   height: 80%;
 
   @media (max-width: 640px) {
@@ -23,24 +23,31 @@ export const SendInvitation = styled.div`
   }
 `;
 export const LeftInvitation = styled.div`
-  ${tw`w-1/2 flex justify-center items-center `}
+  ${tw`w-1/2 flex justify-center items-center mr-2 `}
   @media (max-width: 640px) {
-    ${tw`w-[100%] h-[85%] mt-10`}
-    min-height: 380px;
+    ${tw``}
+    max-height: 350px;
   }
   p {
-    ${tw`py-1 mt-[5%]`}
+    ${tw`py-1`}
     font-size: 5px;
+  }
+  @media (max-width: 640px) {
+    ${tw`pt-8`}
   }
 `;
 export const InvitationExample = styled.div`
-  ${tw`h-[100%] border-2 border-bud-blue p-2 my-4 mx-2`}
-  border-radius : 10px;
-  min-height: 300px;
+  ${tw`h-[100%] border-2 border-bud-blue py-3 px-2`}
+  top: 50%;
+  border-radius: 10px;
+  max-height: 340px;
 
   @media (max-width: 640px) {
     ${tw` h-[100%]`}
-    min-height: 200px;
+    min-height: 360px;
+    max-height: 360px;
+    min-width: 300px;
+    max-width: 300px;
   }
 `;
 
@@ -54,7 +61,7 @@ export const DescriptionContent = styled.p`
 `;
 
 export const RightInvitation = styled.div`
-  ${tw`w-1/2  items-start text-start mx-3`}
+  ${tw`w-1/2  items-start text-start ml-2`}
   h2 {
     ${tw`font-berry mb-5`}
     font-size: 1.3rem
@@ -74,11 +81,8 @@ export const RightInvitation = styled.div`
       }
     }
   }
-  @media screen and (max-width: 768px) {
-    h2 {
-      ${tw`font-berry mb-5`}
-      font-size: 1.0rem
-    }
+  @media screen and (max-width: 640px) {
+    ${tw`mt-6`}
   }
 `;
 

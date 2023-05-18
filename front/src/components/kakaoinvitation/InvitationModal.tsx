@@ -13,12 +13,12 @@ import {
   DescriptionContent,
   KakaoContainer,
   JoinButton,
-  CopyButton,
 } from "./InvitationModal style";
 import { EditTitle } from "../groupdetail/DiaryComment.style";
 import { KakaoShare } from "./KakaoShare";
 import { Info } from "../../types/group";
 import close from "../../assets/modal/close.png";
+import { maxHeight } from "@mui/system";
 
 interface GroupInfoProps {
   clubInfo?: Info;
@@ -97,7 +97,12 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
             <img
               src={clubInfo?.thumbnailUrl ?? ""}
               alt="다이어리 썸네일"
-              style={{ width: "100%", height: "50%" }}
+              style={{
+                width: "100%",
+                height: "40%",
+                maxHeight: "230px",
+                borderRadius: "10px",
+              }}
             />
             <p style={{ fontWeight: "800" }}>{clubInfo?.clubName}</p>
             <DescriptionContent>{description || "\u00A0"}</DescriptionContent>
@@ -105,7 +110,7 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
               <JoinButton>Buddiary 참여하기</JoinButton>
             </div>
             {window.innerWidth > 640 ? null : (
-              <KakaoContainer>
+              <KakaoContainer style={{ marginTop: "30px" }}>
                 <KakaoShare
                   clubInfo={clubInfo}
                   description={description}

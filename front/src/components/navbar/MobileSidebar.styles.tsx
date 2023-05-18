@@ -87,4 +87,8 @@ export const LoginButton = styled.button`
     ${tw`mx-1 w-[20px] h-[20px]`}
     border-radius: 15%;
   }
+  @media (max-width: 640px) {
+    ${tw` px-2 py-1`}
+    font-size: 0.5rem;
+  }
 `;
