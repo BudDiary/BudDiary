@@ -6,6 +6,7 @@ import navimg from "../../assets/subnav/WirteDiary.jpg";
 import interact from "interactjs";
 import useMember from "../../hooks/memberHook";
 import { PageContainer } from "../../components/common/Page.styles";
+import { Swiper, SwiperSlide } from "swiper/react";
 import {
   postTodayDiaryApi,
   postSentimentApi,
@@ -213,7 +214,28 @@ export default function StickerPage({
     <PageContainer>
       <StickerListTitle>보유중인 스티커</StickerListTitle>
       {/* <StickerListContainer></StickerListContainer> */}
-      <div className="grid grid-cols-6">
+      {/* {myStickers && myStickers?.length > 0 && (
+        <div className="flex overflow-x-scroll">
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={3}
+            navigation
+            pagination={{ clickable: true }}
+            loop={true}
+          >
+            {myStickers.map((pic: any, index: any) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={pic.imgUrl}
+                  alt="일기 사진입니다."
+                  className="my-auto"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )} */}
+      <div className="grid grid-cols-6 h-[160px]">
         {myStickers &&
           myStickers.length > 0 &&
           myStickers.map((sticker) => (

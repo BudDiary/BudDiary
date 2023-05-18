@@ -63,7 +63,6 @@ export default function RecommendedByKeyword() {
     // let initialLoad = true; // Flag to track initial load
 
     if (initialLoad === 2) {
-      console.log(recommendList, "this is recommendList");
       getRecommend(); // Call getRecommend() when recommendList has a value for the first time
       setInitialLoad(3); // Update the flag to prevent subsequent calls
     }

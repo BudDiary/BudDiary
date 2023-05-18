@@ -75,7 +75,6 @@ export default function Recommended() {
         postUserInfoApi({ member_id: recommendList[i].userId }).then(
           (result) => {
             if (result.data) {
-              console.log(result.data, "this is result data");
               let newdata: RecommendUserInfo = {
                 nickname: result.data.nickname,
                 gender: result.data.gender,

@@ -53,9 +53,7 @@ export default function AlarmSSE(props: Props) {
     <OneAlarmContainer id="my-component">
       <NickNameSection>
         {nickname}님의
-        {type === "DOUBLE_INVITE"
-          ? " 랜덤일기 초대:"
-          : ` ${clubName} 그룹일기 새글:`}
+        {type === "DOUBLE_INVITE" ? " 랜덤일기 초대:" : ` ${clubName} 새글:`}
       </NickNameSection>
       <ButtonsContainer>
         {type === "DOUBLE_INVITE" ? (
