@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { EditTitle } from "./DiaryComment.style";
 import { ModalTopNavContainer, GroupModal } from "../common/ModalWindow.styles";
 import { MemberList, ClubList } from "./GroupInfo.styles";
@@ -6,8 +6,10 @@ import { BasicButton } from "./Diaries.styles";
 import useMember from "../../hooks/memberHook";
 import { Divider } from "@mui/material";
 import { Member, Info } from "../../types/group";
+import { InvitationModal } from "../kakaoinvitation/InvitationModal";
 import crown from "../../assets/group/crown.png";
 import close from "../../assets/modal/close.png";
+
 interface GroupInfoProps {
   clubInfo?: Info;
   onClose: () => void;
@@ -21,9 +23,17 @@ export default function GroupInfoModal({
 }: GroupInfoProps) {
   const { memberData } = useMember();
   const username = memberData.username;
+  const [showModal, setShowModal] = useState(false);
 
   const closeCommentModal = () => {
     onClose();
+  };
+  const handleToggleModal = () => {
+    setShowModal((prevState) => !prevState);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   const clubType = clubInfo?.clubType;
@@ -87,10 +97,10 @@ export default function GroupInfoModal({
           }}
         >
           <ClubList>멤버 {memberList?.length}</ClubList>
-          <BasicButton>초대하기</BasicButton>
+          <BasicButton onClick={handleToggleModal}>초대하기</BasicButton>
         </div>
       ) : null}
-      <Divider style={{ border: "solid 1px #BFDBFE" }} />
+      <Divider style={{ border: "solid 2px #BFDBFE" }} />
       <MemberList>
         {memberList?.map((member) => (
           <div key={member.id}>
@@ -117,6 +127,9 @@ export default function GroupInfoModal({
           </div>
         ))}
       </MemberList>
+      {showModal && (
+        <InvitationModal clubInfo={clubInfo} onClose={handleCloseModal} />
+      )}
     </GroupModal>
   );
 }
