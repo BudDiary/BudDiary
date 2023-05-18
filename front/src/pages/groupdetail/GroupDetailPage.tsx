@@ -80,7 +80,7 @@ const GroupDetailPage = () => {
               clubInfo={clubData?.clubDetail.clubInfo}
             />
           </DiariesContainer>
-          {window.innerWidth > 640 ? (
+          {window.innerWidth > 768 ? (
             <GroupInfoContainer style={{ position: "relative" }}>
               <GroupInfo
                 clubInfo={clubData?.clubDetail.clubInfo}

@@ -32,7 +32,7 @@ export const EmojiButton = styled.button`
 `;
 
 export const WideButton = styled.button`
-  ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center w-[100%]`}
+  ${tw`bg-bud-blue py-2 px-4 rounded-md font-berry text-black flex items-center justify-center w-[90%]`}
   border: 2px solid #c3cfe3;
 
   svg {
@@ -40,12 +40,12 @@ export const WideButton = styled.button`
   }
 
   @media (max-width: 640px) {
-    width: 90vw;
+    width: 80vw;
   }
 `;
 
 export const DiaryDetail = styled.div`
-  ${tw`sm:col-span-2 bg-white rounded-md w-[100%] my-4`}
+  ${tw`sm:col-span-2 bg-white rounded-md w-[90%] my-4`}
   margin-block: 30px;
   padding: 20px;
   border: 2px solid #c3cfe3;
@@ -54,7 +54,7 @@ export const DiaryDetail = styled.div`
   }
 
   @media (max-width: 640px) {
-    width: 90vw;
+    width: 80vw;
   }
 `;
 
@@ -247,9 +247,7 @@ export const BlankDiary = styled.div`
 `;
 
 export const DiaryDetailBlank = styled.div`
-  ${tw`sm:col-span-2 bg-white rounded-md flex flex-col justify-center items-center`}
-  width: 45vw;
-  margin: 30px 0;
+  ${tw`sm:col-span-2 bg-white rounded-md flex flex-col justify-center items-center w-[90%] my-3`}
   padding-block: 150px;
   border: 2px solid #c3cfe3;
 
@@ -258,7 +256,7 @@ export const DiaryDetailBlank = styled.div`
   }
 
   @media (max-width: 640px) {
-    width: 90vw;
+    width: 80vw;
   }
 `;
 export const ReactionSet = styled.div`
