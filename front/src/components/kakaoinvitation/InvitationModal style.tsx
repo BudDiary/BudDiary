@@ -15,15 +15,18 @@ export const DescriptionBox = styled.textarea`
 `;
 
 export const SendInvitation = styled.div`
-  ${tw`flex px-6`}
+  ${tw`flex px-6 items-center`}
+  height: 100%;
+
   @media (max-width: 640px) {
     ${tw`flex flex-col`}
   }
 `;
 export const LeftInvitation = styled.div`
-  ${tw`w-1/2`}
+  ${tw`w-1/2 flex justify-center items-center `}
   @media (max-width: 640px) {
-    ${tw`w-[100%] m-auto `}
+    ${tw`w-[100%] mt-10`}
+    min-height: 150px;
   }
   p {
     ${tw`py-1 mt-[5%]`}
@@ -31,10 +34,13 @@ export const LeftInvitation = styled.div`
   }
 `;
 export const InvitationExample = styled.div`
-  ${tw`h-[100%] border-2 border-bud-blue p-2 mt-6 mx-4`}
-  border-radius : 15px
+  ${tw`h-[100%] border-2 border-bud-blue p-2 my-6 mx-4`}
+  border-radius : 10px;
+  height: 300px;
+
   @media (max-width: 640px) {
-    ${tw` mb-4`}
+    ${tw` h-[100%]`}
+    min-height: 200px;
   }
 `;
 
@@ -66,10 +72,13 @@ export const RightInvitation = styled.div`
       }
     }
   }
+  @media screen and (max-width: 640px) {
+    ${tw`mt-6`}
+  }
 `;
 
 export const JoinButton = styled.button`
-  ${tw`bg-gray-200 text-bud-black py-2 px-2 mt-4`}
+  ${tw`bg-gray-200 text-bud-black py-2 px-2 `}
   width: 80%;
   font-weight: 600;
   font-size: 3px;

@@ -154,7 +154,7 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
             </KakaoContainer>
           </RightInvitation>
         ) : (
-          <KakaoContainer>
+          <KakaoContainer style={{ marginTop: "20px" }}>
             <KakaoShare
               clubInfo={clubInfo}
               description={description}
