@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { EditContent, DeleteButton } from "./Diaries.styles";
 import {
   EditContainer,
@@ -10,27 +10,41 @@ import {
   CommentBox,
   EditTitle,
 } from "./DiaryComment.style";
-
+import { getClubDetailApi } from "../../apis/clubApi";
 import { deleteDiaryApi } from "../../apis/diaryApi";
 import { Divider } from "@mui/material";
-import { Diary } from "../../types/group";
+import { Diary, Info, Club } from "../../types/group";
 
 import close from "../../assets/modal/close.png";
 interface DiaryProps {
   isOpen: boolean;
   diary: Diary;
   diaryId: number;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
   onClose: () => void;
 }
-export default function DiaryDelete({ diary, diaryId, onClose }: DiaryProps) {
+export default function DiaryDelete({
+  diary,
+  diaryId,
+  clubInfo,
+  setClubData,
+  onClose,
+}: DiaryProps) {
   const [commentState, setCommentState] = useState(diary.text);
   const closeCommentModal = () => {
     onClose();
   };
 
-  const handleDeleteDiary = () => {
-    deleteDiaryApi(diaryId);
-    onClose();
+  const handleDeleteDiary = async () => {
+    try {
+      await deleteDiaryApi(diaryId);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

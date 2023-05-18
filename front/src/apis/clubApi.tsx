@@ -90,7 +90,7 @@ const getClubDetailApi = (clubId: string) => {
 
 const PostRecommendBykeyWordApi = (payload: any) => {
   return fastApi
-    .post(`/fastapi/recommend/keyword`, payload, { withCredentials: true })
+    .post(`/fastapi/recommend/keyword2`, payload, { withCredentials: true })
     .then((res) => {
       console.log(res);
       return res;
@@ -117,8 +117,8 @@ const PostApproveInvitationApi = (clubId: string) => {
 
     .catch((err) => {
       Swal.fire({
-        icon: "error",
-        text: "PostApproveInvitationApi 오류가 발생했어요.",
+        icon: "warning",
+        text: "이미 참여하고 있는 그룹입니다",
       });
 
       return err;

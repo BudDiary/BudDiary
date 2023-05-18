@@ -6,6 +6,7 @@
 
 import re
 import os
+import operator
 import json
 import requests
 from fastapi import FastAPI, Request
@@ -179,8 +180,9 @@ async def keyword(info: diaryKeyword):
                 keywords[formatted_key] = round(score*freq, 2)
 
     
-
-        result = {"userId": info.userId, "keywords": keywords}    
+        sorted_keywords = dict(sorted(keywords.items(), key=operator.itemgetter(1), reverse=True))
+        
+        result = {"userId": info.userId, "keywords": sorted_keywords}    
         
         return result
     
@@ -283,15 +285,13 @@ async def keyword(info : keywordSimilar):
         return overlapping_words
 
     def print_overlapping_words(user, words):
-        return f"{{userId: '{user}', words: {words}}}"
-
+        return {'userId': user, 'words': words}
     overlapping_words = get_overlapping_words('keyword.json', info.userId)
 
     formatted_output = [print_overlapping_words(user, words) for user, words in overlapping_words.items()]
 
-    result = ", ".join(formatted_output)
+    return formatted_output
 
-    return [result]
 
 @app.post("/fastapi/wordcloud")
 async def wordcloud(info : keywordSimilar):

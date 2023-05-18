@@ -32,6 +32,7 @@ export default function DeleteReply({
 
   const handleDeleteReply = () => {
     deleteReplyApi(commentId, reply.id);
+    console.log("삭제");
     onClose();
   };
 

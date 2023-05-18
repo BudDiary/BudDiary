@@ -21,9 +21,10 @@ import {
 import AddGroupPicture from "./AddGroupPicture";
 import GroupPicture from "./GroupPicture";
 import ModalWindow from "../common/ModalWindow";
-import { postPluralClubApi } from "../../apis/clubApi";
+import { postPluralClubApi, getClubDetailApi } from "../../apis/clubApi";
 import useMember from "../../hooks/memberHook";
-
+import { KakaoInvitation } from "../kakaoinvitation/kakaoInvitation";
+import { Club } from "../../types/group";
 interface Props {
   closeModal: any;
 }
@@ -37,6 +38,7 @@ interface FormData {
 export default function NewGroupDiaryModal({ closeModal }: Props) {
   const { memberData } = useMember();
   const [open, setOpen] = React.useState(false);
+  const [initial, setInitial] = useState(true);
   const username = memberData.username;
   const [image, setImage] = useState<File | null>(null);
 
@@ -45,7 +47,10 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
     thumbnail: null,
     captainUsername: "",
   });
-  const [newGroupData, setNewGroupData] = useState();
+  const [newGroupData, setNewGroupData] = useState<{ uuid: string } | null>(
+    null
+  );
+  const [clubData, setClubData] = useState<Club | null>(null);
   const handleFileInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -69,7 +74,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
     /** 서버통신 */
     const formData = new FormData();
 
-    if (image && clubName && username) {
+    if (initial && image && clubName && username) {
       formData.append("thumbnail", image);
       formData.append("captainUsername", username);
       formData.append("clubName", clubName);
@@ -78,6 +83,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
         .then((result) => {
           if (!result.error) {
             // newgroupdata가 빈 값이 아닐 때 가져다가 쓰도록, 필요하면 useeffect도 활용해서 쓰시면 될 거 같아요.
+            setInitial(false);
             setNewGroupData(result);
             setOpen(true);
 
@@ -96,6 +102,21 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
       // }
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (newGroupData) {
+          const data = await getClubDetailApi(newGroupData.uuid);
+          setClubData(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [newGroupData]);
 
   function ChildModal() {
     const handleOpen = () => {
@@ -135,7 +156,7 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           <Sheet
             variant="outlined"
             sx={{
-              minHeight: 300,
+              minHeight: "60%",
               minWidth: 500,
               maxWidth: 500,
               borderRadius: "md",
@@ -150,10 +171,13 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
               <ModalTitle>초대 신청</ModalTitle>
               <Button onClick={handleClose2}>완료</Button>
             </ModalTopNavContainer>
-            <Box>
-              <h2 id="child-modal-title">초대</h2>
-              <p id="child-modal-description">초대링크 들어갈 부분</p>
-              {/* <p>{newGroupData && newGroupData.uuid}</p> */}
+            <Box
+              sx={{
+                padding: "5px",
+                paddingTop: "10px",
+              }}
+            >
+              <KakaoInvitation clubInfo={clubData?.clubDetail.clubInfo} />
             </Box>
           </Sheet>
         </Modal>

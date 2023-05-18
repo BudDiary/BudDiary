@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { EditContent, DeleteButton } from "./Diaries.styles";
 import {
   EditContainer,
@@ -8,30 +8,42 @@ import { UserInfo, EditTitle } from "./DiaryComment.style";
 import { DeleteContent, CommentBox } from "./DiaryComment.style";
 import { Divider } from "@mui/material";
 import { Comment } from "../../types/group";
+import { getClubDetailApi } from "../../apis/clubApi";
 import { deleteCommentApi } from "../../apis/commentApi";
 import close from "../../assets/modal/close.png";
-import useMember from "../../hooks/memberHook";
+import { Club, Info } from "../../types/group";
+
 interface CommentDeleteProps {
   isOpen: boolean;
   onClose: () => void;
   comment: Comment;
   diaryId: number;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 export default function DeleteComment({
   comment,
   diaryId,
+  clubInfo,
   onClose,
+  setClubData,
 }: CommentDeleteProps) {
-  const { memberData } = useMember();
+  const handleDeleteComment = async () => {
+    try {
+      await deleteCommentApi(diaryId, comment.id);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [commentState, setCommentState] = useState(comment.text);
   const closeCommentModal = () => {
     onClose();
   };
 
-  const handleDeleteComment = () => {
-    deleteCommentApi(diaryId, comment.id);
-    onClose();
-  };
   return (
     <EditContainer>
       <ModalTopNavContainer
@@ -92,7 +104,7 @@ export default function DeleteComment({
           <h3>{new Date(comment.writeDate).toLocaleString()}</h3>
         </CommentBox>
       </UserInfo>
-      <Divider style={{ border: "solid 1px #BFDBFE" }} />
+      <Divider style={{ border: "solid 2px #BFDBFE" }} />
       <EditContent>
         <div style={{ textAlign: "center", marginBlock: "3px" }}>
           <EditTitle>댓글 삭제하기</EditTitle>

@@ -35,6 +35,7 @@ import {
   updateProfilePicAction,
 } from "../../store/modules/member";
 import useMember from "../../hooks/memberHook";
+import ModalWindow from "../common/ModalWindow";
 
 interface Props {
   closeModal: any;
@@ -42,6 +43,7 @@ interface Props {
 
 export default function ProfileEditModal({ closeModal }: Props) {
   const { memberData } = useMember();
+  const [modalOpen, setModalOpen] = useState(false);
   const [fileURL, setFileURL] = useState<string>("");
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
@@ -64,8 +66,10 @@ export default function ProfileEditModal({ closeModal }: Props) {
   };
   const closeProfileModal = () => {
     closeModal();
-  };
-
+  }
+  const updateSurvey = () => {
+    setModalOpen(true);
+  }
   const updateIntro = async () => {
     const response = await patchIntroApi(intro);
     dispatch(updateIntroAction(response));
@@ -84,6 +88,8 @@ export default function ProfileEditModal({ closeModal }: Props) {
   };
   return (
     <>
+      {modalOpen && <ModalWindow page={3} setModalOpen={setModalOpen} />}
+
       <BackgroundContainer>gg</BackgroundContainer>
       <ModalContainer>
         <ModalTopNavContainer>
@@ -95,56 +101,44 @@ export default function ProfileEditModal({ closeModal }: Props) {
         </ModalTopNavContainer>
         {/* <div className="w-[200px] h-[200px]"></div> */}
         <ModalContentContainer>
-          <ProfileContainer>
-            <ProfilePicBox
-              src={fileURL ? fileURL : "base_profile.jpg"}
-            ></ProfilePicBox>
-          </ProfileContainer>
-          <ProfileEditButtonsContainer>
-            <div>
-              <SignupPicInput>
-                <label htmlFor="img">+ 프로필 사진 업로드</label>
-              </SignupPicInput>
-              <ImgInput
-                type="file"
-                id="img"
-                accept="image/*"
-                required
-                ref={imgUploadInput}
-                onChange={onImageChange}
-              ></ImgInput>
-              <ResetButton onClick={onImageRemove}>기본이미지</ResetButton>
-            </div>
-            <EditSubmitButton onClick={updateProfilePic}>
-              프로필 사진 변경하기
-            </EditSubmitButton>
-          </ProfileEditButtonsContainer>
-          <EditInputContainer>
-            <SignupInfoInput
-              type="text"
-              placeholder={memberData.nickname}
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-            ></SignupInfoInput>
-            <EditSubmitButton onClick={updateNickname}>
-              닉네임 수정
-            </EditSubmitButton>
-          </EditInputContainer>
-          <EditInputContainer>
-            <SignupInfoInput
-              type="text"
-              placeholder="소개글"
-              value={intro}
-              onChange={(e) => setIntro(e.target.value)}
-            ></SignupInfoInput>
-            <EditSubmitButton onClick={updateIntro}>
-              소개글 수정
-            </EditSubmitButton>
-          </EditInputContainer>
-          <SurveyAgainButton>
-            <SurveyLink to="/survey">설문 다시하기</SurveyLink>
-          </SurveyAgainButton>
-        </ModalContentContainer>
+        <ProfileContainer>
+          <ProfilePicBox src={
+            fileURL
+            ? fileURL
+            : "base_profile.jpg"
+          }>
+          </ProfilePicBox>
+        </ProfileContainer>
+        <ProfileEditButtonsContainer>
+          <div>
+          <SignupPicInput>
+          <label htmlFor="img">+ 프로필 사진 업로드</label>
+          </SignupPicInput>
+            <ImgInput
+          type="file"
+          id="img"
+          accept="image/*"
+          required
+          ref={imgUploadInput}
+          onChange={onImageChange}
+        ></ImgInput>
+        <ResetButton onClick={onImageRemove}>
+          기본이미지
+        </ResetButton>
+        </div>
+        <ResetButton onClick={updateProfilePic}>프사바꾸기</ResetButton>
+        </ProfileEditButtonsContainer>
+        <EditInputContainer>
+          <SignupInfoInput type="text" placeholder={memberData.nickname} value={nickname} onChange={(e) => setNickname(e.target.value)}></SignupInfoInput>
+          <EditSubmitButton onClick={updateNickname}>닉네임 수정</EditSubmitButton>
+        </EditInputContainer>
+        <EditInputContainer>
+          <SignupInfoInput type="text" placeholder="소개글" value={intro} onChange={(e) => setIntro(e.target.value)}></SignupInfoInput>
+          <EditSubmitButton onClick={updateIntro}>소개글 수정</EditSubmitButton>
+        </EditInputContainer>
+      <SurveyAgainButton onClick={updateSurvey}>설문 다시하기</SurveyAgainButton>
+      {/* <SurveyAgainButton><SurveyLink to='/survey'>설문 다시하기</SurveyLink></SurveyAgainButton> */}
+      </ModalContentContainer>
       </ModalContainer>
     </>
   );

@@ -29,7 +29,7 @@ const GroupDetailPage = () => {
   const handleToggleModal = () => {
     setShowModal((prevState) => !prevState);
   };
-  // const TempCode = "8f3fcf5c-ed97-43b5-9ebb-821c2f9ad117";
+
   useEffect(() => {
     const currentUrl: string = window.location.href;
     const code = currentUrl.split(`/group/`)[1];
@@ -42,7 +42,7 @@ const GroupDetailPage = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [clubData]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,7 +73,11 @@ const GroupDetailPage = () => {
       <PageContainer>
         <DetailPageContainer>
           <DiariesContainer>
-            <Diaries diaryList={clubData?.clubDetail.diaryList} />
+            <Diaries
+              setClubData={setClubData}
+              diaryList={clubData?.clubDetail.diaryList}
+              clubInfo={clubData?.clubDetail.clubInfo}
+            />
           </DiariesContainer>
           {window.innerWidth > 640 ? (
             <GroupInfoContainer style={{ position: "relative" }}>

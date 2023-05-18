@@ -76,11 +76,15 @@ export const GroupModal = styled.div`
 // 초대하기 모달
 
 export const InvitationContainer = styled.div`
-  ${tw`bg-white h-[55%] w-[50%] flex flex-col border border-bud-blue`}
+  ${tw`bg-white h-[65%] w-[50%] flex flex-col border border-bud-blue`}
   position: fixed;
   top: 50%;
   left: 50%;
+  z-index: 99;
   transform: translate(-50%, -50%);
+  @media (max-width: 640px) {
+    ${tw`bg-white h-[100%] w-[100%] flex  border border-bud-blue`}
+  }
 `;
 
 // 상단바 디자인

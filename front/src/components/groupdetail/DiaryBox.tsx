@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import {
   DiaryDetail,
   DiaryHeader,
@@ -22,7 +22,7 @@ import { Divider } from "@mui/material";
 import useMember from "../../hooks/memberHook";
 import EmojiCount from "./emoji/EmojiCount";
 import EmojiPicker from "./emoji/EmojiPicker";
-import { Diary, Image } from "../../types/group";
+import { Diary, Image, Info, Club } from "../../types/group";
 import DiaryDelete from "./DiaryDelete";
 import excited from "../../assets/excited.png";
 import happy from "../../assets/happy.png";
@@ -35,14 +35,20 @@ SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 interface DiaryBoxProps {
   diaryList?: Diary[];
+  clubInfo?: Info;
   imgList?: Image[];
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 
 interface SelectedEmojis {
   [diaryId: number]: string[] | undefined;
 }
 
-export default function DiaryBox({ diaryList }: DiaryBoxProps) {
+export default function DiaryBox({
+  diaryList,
+  clubInfo,
+  setClubData,
+}: DiaryBoxProps) {
   const navigate = useNavigate();
   const [diaryData, setDiaryData] = useState<Diary[]>([]);
   const [feelingRateData, setFeelingRateData] = useState<{
@@ -142,6 +148,8 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                           isOpen={false}
                           diary={diary}
                           diaryId={diary.diaryId}
+                          clubInfo={clubInfo}
+                          setClubData={setClubData}
                           onClose={handleCloseModal}
                         />
                       )}
@@ -225,6 +233,8 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                           handleSelectEmoji(emoji, diary.diaryId)
                         }
                         diaryId={diary.diaryId}
+                        clubInfo={clubInfo}
+                        setClubData={setClubData}
                       />
                     </div>
                   )}
@@ -233,6 +243,8 @@ export default function DiaryBox({ diaryList }: DiaryBoxProps) {
                   key={diary.diaryId}
                   diaryId={diary.diaryId}
                   commentList={diary.commentList}
+                  clubInfo={clubInfo}
+                  setClubData={setClubData}
                 />
               </DiaryDetail>
             ))}

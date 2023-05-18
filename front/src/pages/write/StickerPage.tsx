@@ -17,49 +17,17 @@ interface Props {
   setStage: React.Dispatch<React.SetStateAction<number>>;
   content: string;
   pics: any;
+  // pics: File[] | null;
   groups: any;
   personal: boolean;
 }
 
-type stickerDtoList = {
-  id: any;
-  xCoordinates: number;
-  yCoordinates: number;
+type usedSticker = {
+  stickerUrl: any;
+  xCoordinate: number;
+  yCoordinate: number;
 };
 
-const points: stickerDtoList[] = [];
-
-interact(".sticker-item").draggable({
-  onstart: (event: any) => {
-    const itemElement = event.target;
-    const itemRect = itemElement.getBoundingClientRect();
-    const initialX = itemRect.left;
-    const initialY = itemRect.top;
-    itemElement.setAttribute("data-initial-x", initialX);
-    itemElement.setAttribute("data-initial-y", initialY);
-  },
-  onend: (event: any) => {
-    const target = event.target;
-    const startX = Number(target.getAttribute("data-initial-x"));
-    const startY = Number(target.getAttribute("data-initial-y"));
-    const movedX = Number(target.getAttribute("data-x"));
-    const movedY = Number(target.getAttribute("data-y"));
-    const finalX = startX + movedX;
-    const finalY = startY + movedY;
-
-    // 사진 좌표 저장해서 append 하는 코드 짜기
-
-    const temp: stickerDtoList = {
-      id: target.src,
-      xCoordinates: finalX,
-      yCoordinates: finalY,
-    };
-    points.push(temp);
-    console.log(target);
-    console.log(points);
-  },
-});
-console.log(points);
 export default function StickerPage({
   setStage,
   content,
@@ -67,8 +35,40 @@ export default function StickerPage({
   groups,
   personal,
 }: Props) {
+  // const points: stickerDtoList[] = [];
+  const [sendStickerList, setSendStickerList] = useState<usedSticker[]>([]);
+  interact(".sticker-item").draggable({
+    onstart: (event: any) => {
+      const itemElement = event.target;
+      const itemRect = itemElement.getBoundingClientRect();
+      const initialX = itemRect.left;
+      const initialY = itemRect.top;
+      itemElement.setAttribute("data-initial-x", initialX);
+      itemElement.setAttribute("data-initial-y", initialY);
+    },
+    onend: (event: any) => {
+      const target = event.target;
+      const startX = Number(target.getAttribute("data-initial-x"));
+      const startY = Number(target.getAttribute("data-initial-y"));
+      const movedX = Number(target.getAttribute("data-x"));
+      const movedY = Number(target.getAttribute("data-y"));
+      const finalX = startX + movedX;
+      const finalY = startY + movedY;
+
+      // 사진 좌표 저장해서 append 하는 코드 짜기
+
+      const temp: usedSticker = {
+        stickerUrl: target.src,
+        xCoordinate: finalX,
+        yCoordinate: finalY,
+      };
+
+      setSendStickerList([...sendStickerList, temp]);
+    },
+  });
+
   const navigate = useNavigate();
-  const contentBoxRef = useRef<HTMLInputElement | null>(null);
+  // const contentBoxRef = useRef<HTMLInputElement | null>(null);
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
@@ -81,7 +81,7 @@ export default function StickerPage({
   const username = memberData.username;
   const [data, setData] = useState<{
     text: string;
-    fileList: any;
+    fileList: File[] | null;
     clubList: any;
     isPersonal: boolean;
     memberUsername: string;
@@ -109,26 +109,43 @@ export default function StickerPage({
   }, [sentiment]);
   // const nickname = memberData.nickname;
   const sendData = async () => {
-    Promise.all([
+    await Promise.all([
       postSentimentApi({ content: content }),
       postKeywordApi({ userId: username, content: content }),
-    ]).then(([result, kewordSend]) => {
-      setSentiment(result);
-      setSentiment((prevSentiment) => {
-        setData((prevData) => ({
-          ...prevData,
-          negativeRate: prevSentiment.negative,
-          positiveRate: prevSentiment.positive,
-          stickerDtoList: { points },
-        }));
-        return prevSentiment;
+    ])
+      .then(async ([result, kewordSend]) => {
+        await setSentiment(result);
+        let stickerData: usedSticker[] = [];
+        if (sendStickerList.length > 0) {
+          stickerData = [...sendStickerList];
+          console.log(stickerData, "this is stickerData");
+        }
+
+        const updatedData = {
+          ...data,
+          negativeRate: result.negative,
+          positiveRate: result.positive,
+          stickerDtoList: stickerData,
+        };
+
+        console.log("보내는데이터", updatedData);
+        return updatedData;
+      })
+      .then((updatedData) => {
+        console.log(updatedData, "진짜 보낼데이터터");
+
+        postTodayDiaryApi(updatedData)
+          .then(() => {
+            if (updatedData.clubList.length === 0) {
+              navigate("/mypage");
+            } else {
+              navigate("/group");
+            }
+          })
+          .catch((error) => {
+            console.log("Error:", error);
+          });
       });
-      postTodayDiaryApi(data)
-        .then
-        // navigate('/group')
-        ();
-      console.log(data, "this is data");
-    });
   };
 
   return (

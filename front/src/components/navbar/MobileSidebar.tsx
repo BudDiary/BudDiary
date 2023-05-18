@@ -74,7 +74,7 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
                   />
                 </SideMyPage>
               </SideUserInfo>
-              <Divider style={{ border: "solid 1px #BFDBFE" }} />
+              <Divider style={{ border: "solid 2px #BFDBFE" }} />
               <SideBarMenuSelect>
                 <SideBarMenuItem onClick={onClose} to="/group">
                   그룹일기
@@ -106,8 +106,8 @@ export default function MobileSidebar({ onClose }: SideBarProps) {
                 </div>
                 <p>공유해보세요.</p>
               </h3>
-              <LoginButton>
-                <img src={kakao} alt="로그인" onClick={handleUser} />
+              <LoginButton onClick={handleUser}>
+                <img src={kakao} alt="로그인" />
                 으로 로그인하기
               </LoginButton>
             </SideNotice>
