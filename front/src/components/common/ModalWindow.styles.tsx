@@ -45,12 +45,8 @@ export const EditContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 15;
-  min-height: 400px;
-  ${tw`bg-white h-[55%] w-[320px] border-2`}
-  @media screen and (max-width: 640px) {
-    ${tw`bg-white h-[65%] w-[320px] sm:w-[60%] border-2`}
-  }
+  z-index: 30;
+  ${tw`bg-white h-[430px] w-[320px] border-2`}
 `;
 
 // 그룹 정보 모달

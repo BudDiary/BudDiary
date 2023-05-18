@@ -18,6 +18,7 @@ export const GroupButton = styled.button`
   bottom: 25px;
   right: 15px;
   font-size: 15px;
+  z-index: 30;
 `;
 
 export const DeleteButton = styled.button`
@@ -215,9 +216,13 @@ export const DiaryImage = styled.img`
 
 export const DiaryText = styled.div`
   ${tw`font-hassam text-xl`}
-  display: "flex",
-  justifyContent: "flex-start",
-  margin: 0,
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const EditContent = styled.div`
