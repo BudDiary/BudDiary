@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.diary.dto.DiaryPostRequest;
+import twozerotwo.buddiary.domain.diary.dto.NewStickerDto;
 import twozerotwo.buddiary.domain.diary.dto.SimpleDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.StickerToDiaryDto;
 import twozerotwo.buddiary.domain.diary.dto.UsedStickerDto;
@@ -84,7 +85,7 @@ public class DiaryController {
 
 	//---------------------------------------다이어리에 스티커 추가------------------------------------------
 	@PatchMapping("/stickers")
-	public ResponseEntity addStickerToDiary(@RequestBody @Valid StickerToDiaryDto request, HttpServletRequest servlet) {
+	public ResponseEntity addStickerToDiary(@RequestBody @Valid NewStickerDto request, HttpServletRequest servlet) {
 		List<UsedStickerDto> usedStickers = diaryService.addStickerToDiary(request, servlet);
 		return new ResponseEntity<>(Map.of("usedStickers", usedStickers), HttpStatus.OK);
 

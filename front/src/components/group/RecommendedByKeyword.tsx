@@ -20,6 +20,8 @@ import {
   ApplyButton,
 } from "./Recommended.styles";
 import { postUserInfoApi } from "../../apis/userApi";
+import Swal from "sweetalert2";
+import { postLiveDoubleInviteApi } from "../../apis/noticeApi";
 
 interface Recommendation {
   userId: string;
@@ -97,6 +99,10 @@ export default function RecommendedByKeyword() {
       }
     }
   };
+  const handleInviteDouble = (userId: string) => {
+    postLiveDoubleInviteApi(userId);
+  };
+;
 
   return (
     <>
@@ -163,7 +169,7 @@ export default function RecommendedByKeyword() {
                       >
                         {el.keywords.length >= 3
                           ? el.keywords.slice(0, 3).join(", ")
-                          : el.keywords.slice(0, el.keywords.length)}
+                          : el.keywords.slice(0, el.keywords.length).join(", ")}
                       </Typography>
 
                       {el.agerange !== null && (
@@ -173,7 +179,10 @@ export default function RecommendedByKeyword() {
                       )}
                     </CardContent>
                     <CardActions>
-                      <ApplyButton>그룹일기 신청하기</ApplyButton>
+                      <ApplyButton 
+                        onClick={() => handleInviteDouble(el.userId)}
+                        >
+                        그룹일기 신청하기</ApplyButton>
                     </CardActions>
                   </Card>
                 </SwiperSlide>

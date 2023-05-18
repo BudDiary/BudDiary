@@ -16,17 +16,26 @@ export const DescriptionBox = styled.textarea`
 
 export const SendInvitation = styled.div`
   ${tw`flex px-6`}
+  @media (max-width: 640px) {
+    ${tw`flex flex-col`}
+  }
 `;
 export const LeftInvitation = styled.div`
   ${tw`w-1/2`}
+  @media (max-width: 640px) {
+    ${tw`w-[100%] m-auto `}
+  }
   p {
-    ${tw`py-1`}
+    ${tw`py-1 mt-[5%]`}
     font-size: 5px;
   }
 `;
 export const InvitationExample = styled.div`
-  ${tw`h-[110%] border-2 border-bud-blue p-2 my-2 mx-6`}
+  ${tw`h-[100%] border-2 border-bud-blue p-2 mt-6 mx-4`}
   border-radius : 15px
+  @media (max-width: 640px) {
+    ${tw` mb-4`}
+  }
 `;
 
 export const DescriptionContent = styled.p`

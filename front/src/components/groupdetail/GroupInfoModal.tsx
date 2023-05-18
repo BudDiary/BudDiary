@@ -23,17 +23,18 @@ export default function GroupInfoModal({
 }: GroupInfoProps) {
   const { memberData } = useMember();
   const username = memberData.username;
-  const [showModal, setShowModal] = useState(false);
+  const [showInvitationModal, setShowInvitationModal] = useState(false);
 
   const closeCommentModal = () => {
     onClose();
   };
-  const handleToggleModal = () => {
-    setShowModal((prevState) => !prevState);
+
+  const handleToggleInvitationModal = () => {
+    setShowInvitationModal((prevState) => !prevState);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseInvitationModal = () => {
+    setShowInvitationModal(false);
   };
 
   const clubType = clubInfo?.clubType;
@@ -97,7 +98,9 @@ export default function GroupInfoModal({
           }}
         >
           <ClubList>멤버 {memberList?.length}</ClubList>
-          <BasicButton onClick={handleToggleModal}>초대하기</BasicButton>
+          <BasicButton onClick={handleToggleInvitationModal}>
+            초대하기
+          </BasicButton>
         </div>
       ) : null}
       <Divider style={{ border: "solid 2px #BFDBFE" }} />
@@ -119,17 +122,18 @@ export default function GroupInfoModal({
                   alt=""
                   style={{ border: "none", height: "20px", width: "20px" }}
                 />
-              ) : (
-                ""
-              )}
+              ) : null}
               <p>{member.username === username ? "  me" : ""}</p>
             </div>
           </div>
         ))}
       </MemberList>
-      {showModal && (
-        <InvitationModal clubInfo={clubInfo} onClose={handleCloseModal} />
-      )}
+      {showInvitationModal ? (
+        <InvitationModal
+          clubInfo={clubInfo}
+          onClose={handleCloseInvitationModal}
+        />
+      ) : null}
     </GroupModal>
   );
 }

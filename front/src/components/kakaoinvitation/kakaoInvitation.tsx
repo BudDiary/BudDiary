@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  InvitationContainer,
-  ModalTopNavContainer,
-  ModalTopContent,
-} from "../common/ModalWindow.styles";
+
 import {
   DescriptionBox,
   SendInvitation,
@@ -28,7 +24,8 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
   const [isCopied, setIsCopied] = useState(false);
   const [description, setDescription] = useState(defaultDescription);
   const currentUrl = window.location.href;
-  const address = `http://localhost:3000/group/approve/${clubInfo?.clubUuid}`;
+
+  const address = `${process.env.REACT_APP_KAKAO_INVITE_URL}group/approve/${clubInfo?.clubUuid}`;
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -42,14 +39,18 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
   }, []);
 
   function copyCurrentUrlToClipboard() {
-    navigator.clipboard
-      .writeText(currentUrl)
-      .then(() => {
-        setIsCopied(true);
-      })
-      .catch((err) => {
-        console.error("Failed to copy current URL:", err);
-      });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(address)
+        .then(() => {
+          setIsCopied(true);
+        })
+        .catch((err) => {
+          console.error("Failed to copy current URL:", err);
+        });
+    } else {
+      console.error("Clipboard writeText API is not supported.");
+    }
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -77,35 +78,45 @@ export function KakaoInvitation({ clubInfo }: GroupInfoProps) {
           </div>
         </InvitationExample>
       </LeftInvitation>
-      <RightInvitation>
-        <h2>주소 복사하기</h2>
-        <span>
-          <p>{address}</p>
-          <CopyButton onClick={copyCurrentUrlToClipboard}>
-            {isCopied ? "copied" : "copy"}
-          </CopyButton>
-        </span>
-        <h2>카카오톡으로 공유하기</h2>
-        <h4>초대메세지를 적어주세요 (50자 제한)</h4>
-        <DescriptionBox
-          value={description}
-          onChange={handleDescriptionChange}
-          maxLength={50}
-          style={
-            isDescriptionExceeded ? { border: "1px solid red" } : undefined
-          }
-        />
-        {isDescriptionExceeded && (
-          <p style={{ color: "red", fontSize: "5px" }}>50자가 넘었습니다.</p>
-        )}
-        <KakaoContainer>
+      {window.innerWidth > 640 ? (
+        <RightInvitation>
+          <h2>주소 복사하기</h2>
+          <span>
+            <p>{address}</p>
+            <CopyButton onClick={copyCurrentUrlToClipboard}>
+              {isCopied ? "copied" : "copy"}
+            </CopyButton>
+          </span>
+          <h2>카카오톡으로 공유하기</h2>
+          <h4>초대메세지를 적어주세요 (50자 제한)</h4>
+          <DescriptionBox
+            value={description}
+            onChange={handleDescriptionChange}
+            maxLength={50}
+            style={
+              isDescriptionExceeded ? { border: "1px solid red" } : undefined
+            }
+          />
+          {isDescriptionExceeded && (
+            <p style={{ color: "red", fontSize: "5px" }}>50자가 넘었습니다.</p>
+          )}
+          <KakaoContainer style={{ marginTop: "20px" }}>
+            <KakaoShare
+              clubInfo={clubInfo}
+              description={description}
+              address={address}
+            />
+          </KakaoContainer>
+        </RightInvitation>
+      ) : (
+        <KakaoContainer style={{ marginTop: "20px" }}>
           <KakaoShare
             clubInfo={clubInfo}
             description={description}
             address={address}
           />
         </KakaoContainer>
-      </RightInvitation>
+      )}
     </SendInvitation>
   );
 }
