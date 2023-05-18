@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import tw from "twin.macro";
 
 export const PickerContainer = styled.div`
   position: absolute;
@@ -9,6 +10,8 @@ export const PickerContainer = styled.div`
   background-color: white;
   border: 1px solid #bfdbfe;
   z-index: 1;
+  @media (max-width: 640px) {
+  }
 `;
 
 export const EmojiButton = styled.button<{ selected?: boolean }>`
