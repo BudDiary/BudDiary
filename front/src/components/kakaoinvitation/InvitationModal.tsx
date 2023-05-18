@@ -116,27 +116,39 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
             </div>
           </InvitationExample>
         </LeftInvitation>
-        <RightInvitation>
-          <h2>주소 복사하기</h2>
-          <span>
-            <p>{currentUrl}</p>
-            <CopyButton onClick={copyCurrentUrlToClipboard}>
-              {isCopied ? "copied" : "copy"}
-            </CopyButton>
-          </span>
-          <h2>카카오톡으로 공유하기</h2>
-          <h4>초대메세지를 적어주세요 (50자 제한)</h4>
-          <DescriptionBox
-            value={description}
-            onChange={handleDescriptionChange}
-            maxLength={50}
-            style={
-              isDescriptionExceeded ? { border: "1px solid red" } : undefined
-            }
-          />
-          {isDescriptionExceeded && (
-            <p style={{ color: "red", fontSize: "5px" }}>50자가 넘었습니다.</p>
-          )}
+        {window.innerWidth > 640 ? (
+          <RightInvitation>
+            <h2>주소 복사하기</h2>
+            <span>
+              <p>{address}</p>
+              <CopyButton onClick={copyCurrentUrlToClipboard}>
+                {isCopied ? "copied" : "copy"}
+              </CopyButton>
+            </span>
+            <h2 style={{ marginTop: "10%" }}>카카오톡으로 공유하기</h2>
+            <h4>초대메세지를 적어주세요 (50자 제한)</h4>
+            <DescriptionBox
+              value={description}
+              onChange={handleDescriptionChange}
+              maxLength={50}
+              style={
+                isDescriptionExceeded ? { border: "1px solid red" } : undefined
+              }
+            />
+            {isDescriptionExceeded && (
+              <p style={{ color: "red", fontSize: "5px" }}>
+                50자가 넘었습니다.
+              </p>
+            )}
+            <KakaoContainer>
+              <KakaoShare
+                clubInfo={clubInfo}
+                description={description}
+                address={address}
+              />
+            </KakaoContainer>
+          </RightInvitation>
+        ) : (
           <KakaoContainer>
             <KakaoShare
               clubInfo={clubInfo}
@@ -144,7 +156,7 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
               address={address}
             />
           </KakaoContainer>
-        </RightInvitation>
+        )}
       </SendInvitation>
     </InvitationContainer>
   );

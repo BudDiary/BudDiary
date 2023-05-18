@@ -43,20 +43,30 @@ export default function AlarmSSE(props: Props) {
       text: "새로운 랜덤일기가 시작되었어요!🎉",
     });
   };
-
+  const goToClub = () => {
+    navigate(`/group/${clubUuid}`);
+    deleteSSEAlarmsApi(id);
+  };
   return (
     <OneAlarmContainer id="my-component">
       <NickNameSection>
         {nickname}님의
-        {type === "DOUBLE_INVITE" ? " 랜덤일기 " : ` ${clubName} 그룹일기 `}
-        초대:
+        {type === "DOUBLE_INVITE"
+          ? " 랜덤일기 초대:"
+          : ` ${clubName} 그룹일기 새글:`}
       </NickNameSection>
       <ButtonsContainer>
-        <AcceptInvitationButton onClick={handleAcceptAlarm}>
-          수락하기
-        </AcceptInvitationButton>
+        {type === "DOUBLE_INVITE" ? (
+          <AcceptInvitationButton onClick={handleAcceptAlarm}>
+            수락하기
+          </AcceptInvitationButton>
+        ) : (
+          <AcceptInvitationButton onClick={goToClub}>
+            보러가기
+          </AcceptInvitationButton>
+        )}
         <DeclineInvitationButton onClick={handleDeleteAlarm}>
-          거절하기
+          {type === "DOUBLE_INVITE" ? " 거절하기" : "읽음"}
         </DeclineInvitationButton>
       </ButtonsContainer>
     </OneAlarmContainer>
