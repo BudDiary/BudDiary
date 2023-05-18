@@ -73,9 +73,16 @@ public class DiaryService {
 			.build();
 		Diary savedDiary = diaryRepository.save(diary);
 		// 이미지 리스트 만들고
-		makeDiaryImage(savedDiary, request.getFileList());
+		List<MultipartFile> fileList = request.getFileList();
+		if (fileList != null && fileList.size() > 0) {
+			makeDiaryImage(savedDiary, fileList);
+		}
 		// 스티커 리스트 만들고
-		makeStickerList(savedDiary, request.getStickerDtoList());
+		List<StickerDto> stickerDtoList = request.getStickerDtoList();
+		if (stickerDtoList != null && !stickerDtoList.isEmpty()) {
+			makeStickerList(savedDiary, stickerDtoList);
+		}
+
 
 	}
 
@@ -88,16 +95,13 @@ public class DiaryService {
 	@Transactional
 	public void makeDiaryImage(Diary diary, List<MultipartFile> fileList) throws IOException {
 		List<DiaryImage> imgList = diary.getDiaryImages();
-
-		if (fileList.size() > 0) {
-			for (MultipartFile file : fileList) {
-				String imgUrl = s3Uploader.upload(file, "Diary");
-				DiaryImage diaryImage = DiaryImage.builder()
-					.diary(diary)
-					.imgUrl(imgUrl)
-					.build();
-				imgList.add(diaryImage);
-			}
+		for (MultipartFile file : fileList) {
+			String imgUrl = s3Uploader.upload(file, "Diary");
+			DiaryImage diaryImage = DiaryImage.builder()
+				.diary(diary)
+				.imgUrl(imgUrl)
+				.build();
+			imgList.add(diaryImage);
 		}
 	}
 
@@ -106,31 +110,27 @@ public class DiaryService {
 		List<UsedSticker> usedStickerList = diary.getUsedStickers();
 		// List<UnusedSticker> memberStickers = member.getStickers();
 		Member member = diary.getWriter();
-
-		if (stickerDtoList != null && !stickerDtoList.isEmpty()) {
-			for (StickerDto stickerDto : stickerDtoList) {
-				/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
-				Boolean stickerOwned = false;
-				for (UnusedSticker ownedSticker : member.getStickers()) {
-					if (ownedSticker.getSticker().getId().equals(stickerDto.getStickerId())) {
-						stickerOwned = true;
-						break;
-					}
+		for (StickerDto stickerDto : stickerDtoList) {
+			/// TODO: 2023-05-02 소유 여부 확인 맴버 메소드로 보내기
+			Boolean stickerOwned = false;
+			for (UnusedSticker ownedSticker : member.getStickers()) {
+				if (ownedSticker.getSticker().getId().equals(stickerDto.getStickerId())) {
+					stickerOwned = true;
+					break;
 				}
-				if (!stickerOwned) {
-					throw new BadRequestException("스티커를 보유하고 있지 않습니다.");
-				}
-				Sticker sticker = stickerService.returnStickerById(stickerDto.getStickerId());
-
-				UsedSticker usedSticker = UsedSticker.builder()
-					.diary(diary)
-					.xCoordinate(stickerDto.getXCoordinate())
-					.yCoordinate(stickerDto.getYCoordinate())
-					.sticker(sticker)
-					.build();
-				// 스티커 하나 줄이기
-				usedStickerList.add(usedSticker);
 			}
+			if (!stickerOwned) {
+				throw new BadRequestException("스티커를 보유하고 있지 않습니다.");
+			}
+			Sticker sticker = stickerService.returnStickerById(stickerDto.getStickerId());
+			UsedSticker usedSticker = UsedSticker.builder()
+				.diary(diary)
+				.xCoordinate(stickerDto.getXCoordinate())
+				.yCoordinate(stickerDto.getYCoordinate())
+				.sticker(sticker)
+				.build();
+			// 스티커 하나 줄이기
+			usedStickerList.add(usedSticker);
 		}
 	}
 
@@ -147,9 +147,16 @@ public class DiaryService {
 			.build();
 		Diary savedDiary = diaryRepository.save(diary);
 		// 이미지 첨부
-		makeDiaryImage(savedDiary, request.getFileList());
+		List<MultipartFile> fileList = request.getFileList();
+
+		if (fileList != null && fileList.size() > 0) {
+			makeDiaryImage(savedDiary, fileList);
+		}
 		// 스티커 리스트 만들고
-		makeStickerList(savedDiary, request.getStickerDtoList());
+		List<StickerDto> stickerDtoList = request.getStickerDtoList();
+		if (stickerDtoList != null && !stickerDtoList.isEmpty()) {
+			makeStickerList(savedDiary, stickerDtoList);
+		}
 
 	}
 
@@ -246,7 +253,6 @@ public class DiaryService {
 		if (!unusedSticker.getMember().equals(member)) {
 			throw new BadRequestException("요청자와 소유자가 다릅니다.");
 		}
-
 		UsedSticker usedSticker = UsedSticker.builder()
 			.diary(diary)
 			.xCoordinate(request.getXCoordinate())
@@ -282,7 +288,6 @@ public class DiaryService {
 		}
 		// member point 추가
 		return commentDtos;
-
 	}
 
 	public List<DiaryImageDto> returnImgDtoList(Diary diary) {
