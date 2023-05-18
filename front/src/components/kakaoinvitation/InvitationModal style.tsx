@@ -15,7 +15,7 @@ export const DescriptionBox = styled.textarea`
 `;
 
 export const SendInvitation = styled.div`
-  ${tw`flex px-6 items-center m-auto`}
+  ${tw`flex px-6 items-center my-3`}
   height: 80%;
 
   @media (max-width: 640px) {
@@ -23,7 +23,7 @@ export const SendInvitation = styled.div`
   }
 `;
 export const LeftInvitation = styled.div`
-  ${tw`w-1/2 flex justify-center items-center  `}
+  ${tw`w-1/2 flex justify-center items-center `}
   @media (max-width: 640px) {
     ${tw`w-[100%] h-[85%] mt-10`}
     min-height: 380px;
@@ -34,13 +34,13 @@ export const LeftInvitation = styled.div`
   }
 `;
 export const InvitationExample = styled.div`
-  ${tw`h-[100%] border-2 border-bud-blue p-2 my-6 mx-4`}
+  ${tw`h-[100%] border-2 border-bud-blue p-2 my-4 mx-2`}
   border-radius : 10px;
   min-height: 300px;
 
   @media (max-width: 640px) {
     ${tw` h-[100%]`}
-    min-height: 250px;
+    min-height: 200px;
   }
 `;
 
@@ -54,7 +54,7 @@ export const DescriptionContent = styled.p`
 `;
 
 export const RightInvitation = styled.div`
-  ${tw`w-1/2  items-start text-start`}
+  ${tw`w-1/2  items-start text-start mx-3`}
   h2 {
     ${tw`font-berry mb-5`}
     font-size: 1.3rem
@@ -74,13 +74,16 @@ export const RightInvitation = styled.div`
       }
     }
   }
-  @media screen and (max-width: 640px) {
-    ${tw`mt-6`}
+  @media screen and (max-width: 768px) {
+    h2 {
+      ${tw`font-berry mb-5`}
+      font-size: 1.0rem
+    }
   }
 `;
 
 export const JoinButton = styled.button`
-  ${tw`bg-gray-200 text-bud-black py-2 px-2 `}
+  ${tw`bg-gray-200 text-bud-black py-1 px-2 `}
   width: 80%;
   font-weight: 600;
   font-size: 3px;
