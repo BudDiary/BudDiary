@@ -72,7 +72,7 @@ export default function DiaryComment({
     if (error || commentText === "") {
       return;
     }
-    console.log("댓글 요청", commentText, diaryId);
+
     setHeight("35px");
 
     try {

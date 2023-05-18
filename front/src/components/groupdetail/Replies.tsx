@@ -52,7 +52,6 @@ export default function Replies({
       const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
       setClubData(data);
       setReplyText("");
-      console.log(response);
     } catch (error) {
       console.error(error);
     }

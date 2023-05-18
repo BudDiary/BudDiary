@@ -20,7 +20,6 @@ const EmojiPicker = ({
   clubInfo,
   setClubData,
 }: Props) => {
-  // console.log("이모티콘", reactionList);
   const { memberData } = useMember();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

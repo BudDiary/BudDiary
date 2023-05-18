@@ -37,7 +37,6 @@ const GroupDetailPage = () => {
       try {
         const data = await getClubDetailApi(code);
         setClubData(data);
-        console.log(data, "this is clubdetaildata");
       } catch (error) {
         console.error(error);
       }
@@ -63,7 +62,7 @@ const GroupDetailPage = () => {
     color: "black",
     fontWeight: "bold",
 
-    "@media (min-width: 768px)": {
+    "@media (minWidth: 768px)": {
       fontSize: "1rem",
     },
   };
