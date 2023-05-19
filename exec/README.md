@@ -172,7 +172,7 @@ Status: 결과물
     2. docker credential 설정
         ![Untitled](./images/docker_credeential.PNG)
             
-3. ****Global Tool Configuration/****Node 18.12.1설정
+3. Global Tool Configuration Node 18.12.1설정
     
     ![Untitled](./images/Untitled%2014.png)
     
