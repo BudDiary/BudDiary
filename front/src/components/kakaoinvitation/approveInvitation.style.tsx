@@ -77,7 +77,7 @@ export const WelcomeText = styled.div`
 `;
 export const WarningText = styled.div`
   ${tw`font-berry my-2 flex justify-center`}
-  font-size : 1.5rem
+  font-size : 1.2rem
 `;
 
 export const VisitButton = styled.button`
