@@ -139,8 +139,9 @@ def recommend_by_survey(info: keywordSimilar):
 async def analyze_sentiment(content: diaryContnet):
     headers = {
         'Content-Type': 'application/json',
-        'X-NCP-APIGW-API-KEY-ID': 'vrdjgx8oxa', 
-        'X-NCP-APIGW-API-KEY': 'T6W3dtfPEqKkPwr8vDbDdpU6GdNS62bce6NtVLo6',
+        # 네이버 클로바 고유키를 입력하세요.
+        'X-NCP-APIGW-API-KEY-ID': '', 
+        'X-NCP-APIGW-API-KEY': '',
     }
     
     data = {
