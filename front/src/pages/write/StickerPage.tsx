@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { ContentBox, StickerListTitle } from "./WritePage.styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/modules";
 import navimg from "../../assets/subnav/WirteDiary.jpg";
 import interact from "interactjs";
@@ -14,6 +14,8 @@ import {
 } from "../../apis/diaryApi";
 import { useNavigate } from "react-router-dom";
 import { postLiveNewDiaryApi } from "../../apis/noticeApi";
+import { getMyStickersApi } from "../../apis/stickerApi";
+import { getStickerList } from "../../store/modules/member";
 
 interface Props {
   setStage: React.Dispatch<React.SetStateAction<number>>;
@@ -39,40 +41,19 @@ export default function StickerPage({
   const navigate = useNavigate();
   // 보낼 스티커 리스트 담는 useState
   const [sendStickerList, setSendStickerList] = useState<usedSticker[]>([]);
-  // 드래그 후 sendSticker
-  // interact(".sticker-item").draggable({
-  //   onstart: (event: any) => {
-  //     const itemElement = event.target;
-  //     const itemRect = itemElement.getBoundingClientRect();
-  //     const initialX = itemRect.left;
-  //     const initialY = itemRect.top;
-  //     itemElement.setAttribute("data-initial-x", initialX);
-  //     itemElement.setAttribute("data-initial-y", initialY);
-  //   },
-  //   onend: (event: any) => {
-  //     const target = event.target;
-  //     const startX = Number(target.getAttribute("data-initial-x"));
-  //     const startY = Number(target.getAttribute("data-initial-y"));
-  //     const movedX = Number(target.getAttribute("data-x"));
-  //     const movedY = Number(target.getAttribute("data-y"));
-  //     const finalX = startX + movedX;
-  //     const finalY = startY + movedY;
-  //     // 사진 좌표 저장해서 append
-  //     const temp: usedSticker = {
-  //       stickerUrl: target.src,
-  //       xCoordinate: finalX,
-  //       yCoordinate: finalY,
-  //     };
-  //     setSendStickerList([...sendStickerList, temp]);
-  //   },
-  // });
+  const myStickers = useSelector((state: RootState) => state.member.memberData.sticker);
+
   // 드래그 시작될 때 실행
+  const dispatch = useDispatch();
+
   const dragItem = useRef();
   const dragStart = (e: any, position: any) => {
     dragItem.current = position;
     e.target.classList.add("grabbing");
     console.log(dragItem.current, "드래그 시작할때");
   };
+
+
   // 드랍 (커서 뗐을 때)
   const drop = (e: any) => {
     e.target.classList.remove("grabbing");
@@ -90,9 +71,8 @@ export default function StickerPage({
   const { memberData } = useMember();
   const username = memberData.username;
   // 내가 소유한 스티커들. 리덕스에서 가져옴
-  const myStickers = useSelector(
-    (state: RootState) => state.member.memberData.sticker
-  );
+
+  
   // 내 감정들
   const [sentiment, setSentiment] = useState<{
     negative: number;
@@ -175,15 +155,16 @@ export default function StickerPage({
       //   console.log(pair[0] + ", " + pair[1], "하이잉이이이이");
       // }
       postTodayDiaryApi(formData)
-        .then(() => {
+        .then(async () => {
           if (groups.length === 0) {
             navigate("/mypage");
           } else {
-            console.log(groups[0], "여기로 알람 보내줘");
+            console.log(groups, "여기로 알람 보내줘");
             // 일기 작성이 잘 되었다면
             // 구성원 모두한테 알람 보내기
-            console.log(groups.length, 'this is group length')
             postLiveNewDiaryApi(groups);
+            const sticker = await getMyStickersApi();
+            dispatch(getStickerList(sticker));
             navigate(`/group/${groups[0]}`);
           }
         })

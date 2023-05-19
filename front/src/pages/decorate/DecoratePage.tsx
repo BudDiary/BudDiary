@@ -5,12 +5,14 @@ import {
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import { StickerListTitle, ContentBox } from "../write/WritePage.styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/modules";
 import { useNavigate } from "react-router-dom";
 import { patchDiaryStickerApi } from "../../apis/diaryApi";
 import interact from "interactjs";
 import navimg from "../../assets/subnav/Decorate.jpg";
+import { getStickerList } from "../../store/modules/member";
+import { getMyStickersApi } from "../../apis/stickerApi";
 
 interface Props {
   stickerId: number;
@@ -28,6 +30,8 @@ export default function DecoratePage() {
   const navigate = useNavigate();
   const [diaryContent, setDiaryContent] = useState<string>();
   const [usedStickers, setUsedStickers] = useState<Props[]>([]);
+  const dispatch = useDispatch();
+
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
@@ -97,13 +101,22 @@ export default function DecoratePage() {
     fetchData();
   }, []);
 
-  const sendData = () => {
+  const sendData = async () => {
     const finalData = {
       stickerDtoList: sendStickerList,
       diaryId: window.location.href.split(`/decorate/`)[1],
     };
     patchDiaryStickerApi(finalData);
-    window.location.reload();
+    // 다이어리에 스티커 붙이기
+    // const response = await patchDiaryStickerApi(finalData);
+
+    // 내 남은 스티커 갱신
+    const sticker = await getMyStickersApi();
+    dispatch(getStickerList(sticker))
+
+    // console.log(response, 'remain sticker')
+    
+    navigate(-1)
     // 여기에서 데이터 payload 만들고 api 호출
   };
   return (
@@ -134,15 +147,20 @@ export default function DecoratePage() {
         ))}
         <StickerListTitle>보유중인 스티커</StickerListTitle>
         <div className="grid grid-cols-6 h-[160px]">
-          {myStickers?.map((sticker, idx) => (
-            <img
-              src={sticker.sticker.imageUrl}
-              className="sticker-item my-auto hover:cursor-pointer"
-              draggable
-              onDragStart={(e) => dragStart(e, idx)}
-              onDragEnd={drop}
-            />
-          ))}
+        {myStickers && myStickers.length > 1 && (
+  <div className="flex justify-evenly">
+    {myStickers.map((sticker, idx) => (
+      <img
+        key={idx}
+        src={sticker.sticker.imageUrl}
+        className="sticker-item my-auto hover:cursor-pointer"
+        draggable
+        onDragStart={(e) => dragStart(e, idx)}
+        onDragEnd={drop}
+      />
+    ))}
+  </div>
+)}
         </div>
         <ContentBox className="drop-container text-2xl font-hassam">
           {diaryContent}
