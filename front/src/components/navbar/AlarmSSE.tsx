@@ -13,7 +13,7 @@ import { deleteSSEAlarmsApi } from "../../apis/noticeApi";
 import { postDoubleClubApi } from "../../apis/clubApi";
 import Swal from "sweetalert2";
 
-interface Props {
+interface Alarm {
   id: number;
   clubName: string | null;
   clubUuid: string | null;
@@ -22,41 +22,63 @@ interface Props {
   username: string;
 }
 
+interface Props {
+  alarm: Alarm;
+  onDeleteAlarm: (alarmId: number) => void;
+}
+
+
 export default function AlarmSSE(props: Props) {
   const navigate = useNavigate();
-  const { id, clubName, clubUuid, nickname, type, username } = props;
+  const { alarm, onDeleteAlarm } = props;
   const handleDeleteAlarm = async () => {
-    const delRes = await deleteSSEAlarmsApi(id);
-    console.log(delRes, 'this is delRes')
-
-    if (delRes === 204) {
-      Swal.fire({
-        text: "랜덤일기 신청을 거절했습니다.",
-      });
+    try {
+      await deleteSSEAlarmsApi(alarm.id);
+      onDeleteAlarm(alarm.id);
+    } catch (error) {
+      console.error(error);
     }
   };
+
+  
   const handleAcceptAlarm = async () => {
-    const response = await postDoubleClubApi(username);
-    if (response) {
-      deleteSSEAlarmsApi(id);
+    try {
+      const response = await postDoubleClubApi(alarm.username);
+      console.log(response, '수락 확인')
+      if (response) {
+        await deleteSSEAlarmsApi(alarm.id);
+        handleReadAlarm()
+      }
+      navigate(`/group/${response.uuid}`);
+      Swal.fire({
+        text: '새로운 랜덤일기가 시작되었어요!🎉',
+      });
+    } catch (error) {
+      // await deleteSSEAlarmsApi(alarm.id);
+      handleReadAlarm()
+
+      console.error(error);
     }
-    navigate(`/group/${response.uuid}`);
-    Swal.fire({
-      text: "새로운 랜덤일기가 시작되었어요!🎉",
-    });
   };
   const goToClub = () => {
-    navigate(`/group/${clubUuid}`);
-    deleteSSEAlarmsApi(id);
+    navigate(`/group/${alarm.clubUuid}`);
+    handleDeleteAlarm(); // Update: Call handleDeleteAlarm instead of deleteSSEAlarmsApi directly
   };
+
+  const handleReadAlarm = () => {
+    handleDeleteAlarm(); // Update: Call handleDeleteAlarm instead of deleteSSEAlarmsApi directly
+  };
+
   return (
     <OneAlarmContainer id="my-component">
       <NickNameSection>
-        {nickname}님의
-        {type === "DOUBLE_INVITE" ? " 랜덤일기 초대:" : ` ${clubName} 새글:`}
+        {alarm.nickname}님의
+        {alarm.type === 'DOUBLE_INVITE'
+          ? ' 랜덤일기 초대:'
+          : ` ${alarm.clubName} 그룹일기 새글:`}
       </NickNameSection>
       <ButtonsContainer>
-        {type === "DOUBLE_INVITE" ? (
+        {alarm.type === 'DOUBLE_INVITE' ? (
           <AcceptInvitationButton onClick={handleAcceptAlarm}>
             수락하기
           </AcceptInvitationButton>
@@ -65,8 +87,8 @@ export default function AlarmSSE(props: Props) {
             보러가기
           </AcceptInvitationButton>
         )}
-        <DeclineInvitationButton onClick={handleDeleteAlarm}>
-          {type === "DOUBLE_INVITE" ? " 거절하기" : "읽음"}
+        <DeclineInvitationButton onClick={handleReadAlarm}>
+          {alarm.type === 'DOUBLE_INVITE' ? ' 거절하기' : '읽음'}
         </DeclineInvitationButton>
       </ButtonsContainer>
     </OneAlarmContainer>

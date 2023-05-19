@@ -13,7 +13,6 @@ import {
   DescriptionContent,
   KakaoContainer,
   JoinButton,
-  CopyButton,
 } from "./InvitationModal style";
 import { EditTitle } from "../groupdetail/DiaryComment.style";
 import { KakaoShare } from "./KakaoShare";
@@ -28,7 +27,6 @@ interface GroupInfoProps {
 export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
   const defaultDescription = ` ${clubInfo?.clubName}에 당신을 초대합니다.`;
   const [isDescriptionExceeded, setIsDescriptionExceeded] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
   const [description, setDescription] = useState(defaultDescription);
   const currentUrl = window.location.href;
   const address = `${process.env.REACT_APP_KAKAO_INVITE_URL}group/approve/${clubInfo?.clubUuid}`;
@@ -44,21 +42,6 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
       document.body.removeChild(script);
     };
   }, []);
-
-  function copyCurrentUrlToClipboard() {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(address)
-        .then(() => {
-          setIsCopied(true);
-        })
-        .catch((err) => {
-          console.error("Failed to copy current URL:", err);
-        });
-    } else {
-      console.error("Clipboard writeText API is not supported.");
-    }
-  }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value = e.target.value;
@@ -112,25 +95,34 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
             <img
               src={clubInfo?.thumbnailUrl ?? ""}
               alt="다이어리 썸네일"
-              style={{ width: "100%", height: "50%" }}
+              style={{
+                width: "100%",
+                height: "40%",
+                maxHeight: "230px",
+                borderRadius: "10px",
+              }}
             />
             <p style={{ fontWeight: "800" }}>{clubInfo?.clubName}</p>
             <DescriptionContent>{description || "\u00A0"}</DescriptionContent>
             <div style={{ textAlign: "center" }}>
               <JoinButton>Buddiary 참여하기</JoinButton>
             </div>
+            {window.innerWidth > 640 ? null : (
+              <KakaoContainer style={{ marginTop: "30px" }}>
+                <KakaoShare
+                  clubInfo={clubInfo}
+                  description={description}
+                  address={address}
+                />
+              </KakaoContainer>
+            )}
           </InvitationExample>
         </LeftInvitation>
         {window.innerWidth > 640 ? (
           <RightInvitation>
-            <h2>주소 복사하기</h2>
-            <span>
-              <p>{address}</p>
-              <CopyButton onClick={copyCurrentUrlToClipboard}>
-                {isCopied ? "copied" : "copy"}
-              </CopyButton>
-            </span>
             <h2 style={{ marginTop: "10%" }}>카카오톡으로 공유하기</h2>
+            <h4>- 당신의 스토리를 친구들과 공유해보세요</h4>
+            <h4>- 누구든지 Buddiary의 서비스를 함께 이용할 수 있습니다.</h4>
             <h4>초대메세지를 적어주세요 (50자 제한)</h4>
             <DescriptionBox
               value={description}
@@ -153,15 +145,7 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
               />
             </KakaoContainer>
           </RightInvitation>
-        ) : (
-          <KakaoContainer>
-            <KakaoShare
-              clubInfo={clubInfo}
-              description={description}
-              address={address}
-            />
-          </KakaoContainer>
-        )}
+        ) : null}
       </SendInvitation>
     </InvitationContainer>
   );

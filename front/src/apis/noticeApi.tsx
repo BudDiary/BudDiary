@@ -21,10 +21,10 @@ const deleteSSEAlarmsApi = (payload: number) => {
     })
     .catch((err) => {
       console.log(err, "deleteSSEAlarmsAPI 오류");
-      Swal.fire({
-        icon: "error",
-        text: "deleteSSEAlarmsAPI 오류",
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   text: "deleteSSEAlarmsAPI 오류",
+      // });
     });
 };
 
@@ -37,6 +37,10 @@ const postLiveDoubleInviteApi = (payload: string) => {
     )
     .then((res) => {
       console.log(res.data, "친구하자");
+      Swal.fire({
+        icon: "success",
+        text: "교환 일기 신청 완료!",
+      });
       return res.data;
     })
     .catch((err) => {

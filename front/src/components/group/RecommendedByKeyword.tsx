@@ -78,7 +78,6 @@ export default function RecommendedByKeyword() {
         postUserInfoApi({ member_id: recommendList[i].userId }).then(
           (result) => {
             if (result.data) {
-              console.log(result.data, "this is result data22");
               let newdata: RecommendUserInfo = {
                 nickname: result.data.nickname,
                 gender: result.data.gender,
@@ -102,8 +101,6 @@ export default function RecommendedByKeyword() {
   const handleInviteDouble = (userId: string) => {
     postLiveDoubleInviteApi(userId);
   };
-;
-
   return (
     <>
       <TitleSection>일기 내용을 기반으로 한 추천 리스트 입니다.</TitleSection>
@@ -179,10 +176,11 @@ export default function RecommendedByKeyword() {
                       )}
                     </CardContent>
                     <CardActions>
-                      <ApplyButton 
+                      <ApplyButton
                         onClick={() => handleInviteDouble(el.userId)}
-                        >
-                        그룹일기 신청하기</ApplyButton>
+                      >
+                        그룹일기 신청하기
+                      </ApplyButton>
                     </CardActions>
                   </Card>
                 </SwiperSlide>

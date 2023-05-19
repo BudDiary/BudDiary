@@ -16,7 +16,7 @@ export const GroupList = styled.div`
   }
 
   p {
-    ${tw`font-berry mb-4`}
+    ${tw`font-berry `}
   }
 
   div {
@@ -28,7 +28,7 @@ export const GroupList = styled.div`
 export const MemberList = styled.div`
   overflow-y: auto;
   max-height: 300px;
-  ${tw`flex flex-col gap-2`}
+  ${tw`flex flex-col`}
   ::-webkit-scrollbar {
     display: none;
   }
@@ -36,9 +36,7 @@ export const MemberList = styled.div`
     ${tw`flex items-center justify-start gap-6 font-berry`}
 
     img {
-      ${tw`rounded-full border-2 border-bud-blue`}
-      height: 35px;
-      width: 35px;
+      ${tw`rounded-full border-2 border-bud-blue h-[35px] w-[35px] mr-4 ml-2`}
     }
 
     p {
@@ -52,5 +50,13 @@ export const ClubList = styled.span`
 `;
 
 export const MemberListInfo = styled.span`
-  ${tw`flex items-center`}
+  ${tw`flex items-end`}
+
+  img {
+    margin-right: 5px; // 오른쪽에 5px 간격 추가
+  }
+
+  p {
+    margin-left: 5px; // 왼쪽에 5px 간격 추가
+  }
 `;
