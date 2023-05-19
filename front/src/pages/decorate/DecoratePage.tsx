@@ -5,12 +5,14 @@ import {
   SubNavContainer,
 } from "../../components/common/Page.styles";
 import { StickerListTitle, ContentBox } from "../write/WritePage.styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/modules";
 import { useNavigate } from "react-router-dom";
 import { patchDiaryStickerApi } from "../../apis/diaryApi";
 import interact from "interactjs";
 import navimg from "../../assets/subnav/Decorate.jpg";
+import { getStickerList } from "../../store/modules/member";
+import { getMyStickersApi } from "../../apis/stickerApi";
 
 interface Props {
   stickerId: number;
@@ -28,40 +30,61 @@ export default function DecoratePage() {
   const navigate = useNavigate();
   const [diaryContent, setDiaryContent] = useState<string>();
   const [usedStickers, setUsedStickers] = useState<Props[]>([]);
+  const dispatch = useDispatch();
+
   const myStickers = useSelector(
     (state: RootState) => state.member.memberData.sticker
   );
   const [sendStickerList, setSendStickerList] = useState<usedSticker[]>([]);
-  interact(".sticker-item").draggable({
-    onstart: (event: any) => {
-      const itemElement = event.target;
-      const itemRect = itemElement.getBoundingClientRect();
-      const initialX = itemRect.left;
-      const initialY = itemRect.top;
-      itemElement.setAttribute("data-initial-x", initialX);
-      itemElement.setAttribute("data-initial-y", initialY);
-    },
-    onend: (event: any) => {
-      const target = event.target;
-      const startX = Number(target.getAttribute("data-initial-x"));
-      const startY = Number(target.getAttribute("data-initial-y"));
-      const movedX = Number(target.getAttribute("data-x"));
-      const movedY = Number(target.getAttribute("data-y"));
-      const finalX = startX + movedX;
-      const finalY = startY + movedY;
+  // interact(".sticker-item").draggable({
+  //   onstart: (event: any) => {
+  //     const itemElement = event.target;
+  //     const itemRect = itemElement.getBoundingClientRect();
+  //     const initialX = itemRect.left;
+  //     const initialY = itemRect.top;
+  //     itemElement.setAttribute("data-initial-x", initialX);
+  //     itemElement.setAttribute("data-initial-y", initialY);
+  //   },
+  //   onend: (event: any) => {
+  //     const target = event.target;
+  //     const startX = Number(target.getAttribute("data-initial-x"));
+  //     const startY = Number(target.getAttribute("data-initial-y"));
+  //     const movedX = Number(target.getAttribute("data-x"));
+  //     const movedY = Number(target.getAttribute("data-y"));
+  //     const finalX = startX + movedX;
+  //     const finalY = startY + movedY;
 
-      // 사진 좌표 저장해서 append 하는 코드 짜기
+  //     // 사진 좌표 저장해서 append 하는 코드 짜기
 
-      const temp: usedSticker = {
-        stickerUrl: target.src,
-        xCoordinate: finalX,
-        yCoordinate: finalY,
-      };
+  //     const temp: usedSticker = {
+  //       stickerUrl: target.src,
+  //       xCoordinate: finalX,
+  //       yCoordinate: finalY,
+  //     };
 
-      setSendStickerList([...sendStickerList, temp]);
-    },
-  });
-
+  //     setSendStickerList([...sendStickerList, temp]);
+  //   },
+  // });
+  // 드래그 시작될 때 실행
+  const dragItem = useRef();
+  const dragStart = (e: any, position: any) => {
+    dragItem.current = position;
+    e.target.classList.add("grabbing");
+    console.log(dragItem.current, "드래그 시작할때");
+  };
+  // 드랍 (커서 뗐을 때)
+  const drop = (e: any) => {
+    e.target.classList.remove("grabbing");
+    console.log(e, "????");
+    console.log(e.screenX);
+    console.log(e.screenY);
+    const temp: usedSticker = {
+      stickerUrl: e.target.src,
+      xCoordinate: e.screenX,
+      yCoordinate: e.screenY,
+    };
+    setSendStickerList([...sendStickerList, temp]);
+  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -78,12 +101,22 @@ export default function DecoratePage() {
     fetchData();
   }, []);
 
-  const sendData = () => {
+  const sendData = async () => {
     const finalData = {
       stickerDtoList: sendStickerList,
       diaryId: window.location.href.split(`/decorate/`)[1],
     };
     patchDiaryStickerApi(finalData);
+    // 다이어리에 스티커 붙이기
+    // const response = await patchDiaryStickerApi(finalData);
+
+    // 내 남은 스티커 갱신
+    const sticker = await getMyStickersApi();
+    dispatch(getStickerList(sticker))
+
+    // console.log(response, 'remain sticker')
+    
+    navigate(-1)
     // 여기에서 데이터 payload 만들고 api 호출
   };
   return (
@@ -101,15 +134,33 @@ export default function DecoratePage() {
             className="absolute w-[192px]"
           />
         ))}
-
+        {sendStickerList.map((sticker, index) => (
+          <img
+            key={index}
+            src={sticker.stickerUrl}
+            style={{
+              left: sticker.xCoordinate,
+              top: sticker.yCoordinate,
+            }}
+            className="absolute w-[192px]"
+          />
+        ))}
         <StickerListTitle>보유중인 스티커</StickerListTitle>
         <div className="grid grid-cols-6 h-[160px]">
-          {myStickers?.map((sticker) => (
-            <img
-              src={sticker.sticker.imageUrl}
-              className="sticker-item my-auto"
-            />
-          ))}
+        {myStickers && myStickers.length > 1 && (
+  <div className="flex justify-evenly">
+    {myStickers.map((sticker, idx) => (
+      <img
+        key={idx}
+        src={sticker.sticker.imageUrl}
+        className="sticker-item my-auto hover:cursor-pointer"
+        draggable
+        onDragStart={(e) => dragStart(e, idx)}
+        onDragEnd={drop}
+      />
+    ))}
+  </div>
+)}
         </div>
         <ContentBox className="drop-container text-2xl font-hassam">
           {diaryContent}

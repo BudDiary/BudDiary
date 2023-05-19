@@ -82,11 +82,15 @@ export default function GroupInfoModal({
           }}
         ></div>
       </ModalTopNavContainer>
-
       <img
         src={clubInfo?.thumbnailUrl ?? ""}
         alt="그룹 섬네일"
-        style={{ marginBlock: "10px", height: "65px", width: "100%" }}
+        style={{
+          marginBlock: "10px",
+          height: "30%",
+          width: "100%",
+          paddingInline: "10px",
+        }}
       />
       <p>{clubInfo?.clubName}</p>
       {clubType !== "DOUBLE" && clubType === "PLURAL" ? (
@@ -112,7 +116,7 @@ export default function GroupInfoModal({
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "start",
               }}
             >
               {member.nickname}

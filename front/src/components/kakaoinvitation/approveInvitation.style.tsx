@@ -39,6 +39,15 @@ export const WelcomeContainer = styled.div`
     height: 40vh;
     border-radius: 0 15px 0 15px;
   }
+  @media (max-width: 640px) {
+    ${tw``}
+    img {
+      ${tw`m-auto border-4 border-bud-blue`}
+      width: 80vw;
+      height: 40vh;
+      border-radius: 0 15px 0 15px;
+    }
+  }
 `;
 
 export const JoinNotice = styled.div`
@@ -63,11 +72,12 @@ export const JoinGreenText = styled.span<{ delay: number }>`
 
 export const WelcomeText = styled.div`
   ${tw`font-berry my-2`}
-  font-size : 1rem
+  font-size : 0.8rem
+  @media (max-width: 640px) {
 `;
 export const WarningText = styled.div`
   ${tw`font-berry my-2 flex justify-center`}
-  font-size : 1.5rem
+  font-size : 1.2rem
 `;
 
 export const VisitButton = styled.button`

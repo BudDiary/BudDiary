@@ -20,7 +20,8 @@ export const SideBarContainer = styled.div`
   top: 0;
   right: 0;
   z-index: 99;
-  ${tw`bg-white w-[45%] h-[75%] mt-10 border-t-2 border-r-0 border-l-4 border-b-2 border-bud-blue`}
+  min-width: 350px
+  ${tw`bg-white w-[200px] h-[420px] mt-10 border-t-2 border-r-0 border-l-4 border-b-2 border-bud-blue`}
   border-radius: 0 0 0 20px;
 `;
 
@@ -85,5 +86,9 @@ export const LoginButton = styled.button`
   img {
     ${tw`mx-1 w-[20px] h-[20px]`}
     border-radius: 15%;
+  }
+  @media (max-width: 640px) {
+    ${tw` px-2 py-1`}
+    font-size: 0.5rem;
   }
 `;

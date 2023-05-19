@@ -23,24 +23,31 @@ export const SendInvitation = styled.div`
   }
 `;
 export const LeftInvitation = styled.div`
-  ${tw`w-1/2 flex justify-center items-center  `}
+  ${tw`w-1/2 flex justify-center items-center mr-2 `}
   @media (max-width: 640px) {
-    ${tw`w-[100%] h-[85%] mt-10`}
-    min-height: 380px;
+    ${tw``}
+    max-height: 350px;
   }
   p {
-    ${tw`py-1 mt-[5%]`}
+    ${tw`py-1`}
     font-size: 5px;
+  }
+  @media (max-width: 640px) {
+    ${tw`pt-8`}
   }
 `;
 export const InvitationExample = styled.div`
-  ${tw`h-[100%] border-2 border-bud-blue p-2 my-6 mx-4`}
-  border-radius : 10px;
-  min-height: 300px;
+  ${tw`h-[100%] border-2 border-bud-blue py-3 px-2`}
+  top: 50%;
+  border-radius: 10px;
+  max-height: 340px;
 
   @media (max-width: 640px) {
     ${tw` h-[100%]`}
-    min-height: 250px;
+    min-height: 360px;
+    max-height: 360px;
+    min-width: 300px;
+    max-width: 300px;
   }
 `;
 
@@ -54,7 +61,7 @@ export const DescriptionContent = styled.p`
 `;
 
 export const RightInvitation = styled.div`
-  ${tw`w-1/2  items-start text-start`}
+  ${tw`w-1/2  items-start text-start ml-2`}
   h2 {
     ${tw`font-berry mb-5`}
     font-size: 1.3rem
@@ -80,7 +87,7 @@ export const RightInvitation = styled.div`
 `;
 
 export const JoinButton = styled.button`
-  ${tw`bg-gray-200 text-bud-black py-2 px-2 `}
+  ${tw`bg-gray-200 text-bud-black py-1 px-2 `}
   width: 80%;
   font-weight: 600;
   font-size: 3px;

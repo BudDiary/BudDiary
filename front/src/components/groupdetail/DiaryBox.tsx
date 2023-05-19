@@ -164,7 +164,7 @@ export default function DiaryBox({
                     </h2>
                     <h3>{new Date(diary.writeDate).toLocaleString()}</h3>
                   </div>
-                  <img
+                  {/* <img
                     src={getFeelingRate(diary.negativeRate, diary.positiveRate)}
                     alt=""
                     style={{
@@ -172,7 +172,7 @@ export default function DiaryBox({
                       maxHeight: "50px",
                       marginLeft: "auto",
                     }}
-                  />
+                  /> */}
                 </DiaryHeader>
                 <Divider
                   style={{ border: "solid 2px #BFDBFE", marginBlock: "10px" }}

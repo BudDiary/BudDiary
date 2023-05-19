@@ -13,7 +13,6 @@ import {
   DescriptionContent,
   KakaoContainer,
   JoinButton,
-  CopyButton,
 } from "./InvitationModal style";
 import { EditTitle } from "../groupdetail/DiaryComment.style";
 import { KakaoShare } from "./KakaoShare";
@@ -28,7 +27,6 @@ interface GroupInfoProps {
 export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
   const defaultDescription = ` ${clubInfo?.clubName}에 당신을 초대합니다.`;
   const [isDescriptionExceeded, setIsDescriptionExceeded] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
   const [description, setDescription] = useState(defaultDescription);
   const currentUrl = window.location.href;
   const address = `${process.env.REACT_APP_KAKAO_INVITE_URL}group/approve/${clubInfo?.clubUuid}`;
@@ -97,7 +95,12 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
             <img
               src={clubInfo?.thumbnailUrl ?? ""}
               alt="다이어리 썸네일"
-              style={{ width: "100%", height: "50%" }}
+              style={{
+                width: "100%",
+                height: "40%",
+                maxHeight: "230px",
+                borderRadius: "10px",
+              }}
             />
             <p style={{ fontWeight: "800" }}>{clubInfo?.clubName}</p>
             <DescriptionContent>{description || "\u00A0"}</DescriptionContent>
@@ -105,7 +108,7 @@ export function InvitationModal({ clubInfo, onClose }: GroupInfoProps) {
               <JoinButton>Buddiary 참여하기</JoinButton>
             </div>
             {window.innerWidth > 640 ? null : (
-              <KakaoContainer>
+              <KakaoContainer style={{ marginTop: "30px" }}>
                 <KakaoShare
                   clubInfo={clubInfo}
                   description={description}
