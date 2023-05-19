@@ -652,7 +652,7 @@ Status: 결과물
     
 - application.yml
     
-    ```groovy
+    ```yaml
     spring:
       profiles:
         group:
@@ -715,7 +715,7 @@ Status: 결과물
     
 - application-jwt.yml
     
-    ```groovy
+    ```yaml
     jwt:
       token:
         secret: 
@@ -729,7 +729,7 @@ Status: 결과물
     
 - application-oauth.yml
     
-    ```groovy
+    ```yaml
     spring:
       security:
         oauth2:
