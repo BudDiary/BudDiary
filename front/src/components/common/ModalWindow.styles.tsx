@@ -19,7 +19,8 @@ export const ModalContainer = styled.div`
 `;
 // 모달창 위에있는 상단바
 export const ModalTopNavContainer = styled.div`
-  ${tw`bg-bud-blue h-[42px] flex justify-between`}
+  justify-content: center;
+  ${tw`bg-bud-blue h-[42px] flex justify-between px-4`}
 `;
 
 // 모달창 나가기버튼
@@ -41,8 +42,56 @@ export const SaveModalButton = styled.button`
 
 export const EditContainer = styled.div`
   position: fixed;
-  top: 15%;
-  left: 20%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  ${tw`bg-white h-[430px] w-[320px] border-2`}
+`;
+
+// 그룹 정보 모달
+
+export const GroupModal = styled.div`
+  ${tw`bg-white h-[440px] w-[350px] sm:w-[60%] border-2 border-bud-green `}
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 15;
-  ${tw`bg-white h-[55%] w-[320px] sm:w-[60%] border-2`}
+  border-radius: 10px;
+
+  p {
+    ${tw`font-berry my-3`}
+    text-align: center;
+  }
+  div {
+    ${tw`px-2 my-1`}
+  }
+`;
+
+// 초대하기 모달
+
+export const InvitationContainer = styled.div`
+  ${tw`bg-white w-[50%] h-[60%] flex flex-col border-2 border-bud-blue`}
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 99;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  @media (max-width: 640px) {
+    ${tw`bg-white h-[450px] w-[350px]  px-2 m-auto`}
+  }
+
+  @media (min-width: 640px) {
+    min-height: 430px;
+    min-width: 600px;
+    max-width: 700px;
+  }
+`;
+
+// 상단바 디자인
+
+export const ModalTopContent = styled.div`
+  ${tw`flex justify-center items-center`}
 `;

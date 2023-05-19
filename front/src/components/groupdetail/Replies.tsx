@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { BasicButton } from "./Diaries.styles";
 import ReplyEdit from "./ReplyEdit";
 import DeleteReply from "./ReplyDelete";
@@ -7,34 +7,51 @@ import {
   InputSet,
   InputBox,
   CommentWrapper,
+  ExpansionButton,
+  CommentError,
+  ReplyBox,
 } from "./DiaryComment.style";
-import { CreateReply } from "./groupdetailapis/groupdetailapis";
+import { getClubDetailApi } from "../../apis/clubApi";
+import { postReplyApi } from "../../apis/replyAPI";
 import { EditButton, DeleteButton } from "../common/Button.styles";
-import { userdummy } from "../mypage/userdummy";
-
+import useMember from "../../hooks/memberHook";
+import {
+  handleReplyBlur,
+  handleCheckReply,
+  handleCommentChange,
+} from "./GroupDetailFunction";
 import { timeAgo } from "./GroupDetailFunction";
-import { Reply } from "../../types/group";
+import { Reply, Info, Club } from "../../types/group";
 interface RepliesProps {
   replies: Reply[];
   commentId: number;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 
-export default function Replies({ replies, commentId }: RepliesProps) {
+export default function Replies({
+  replies,
+  commentId,
+  clubInfo,
+  setClubData,
+}: RepliesProps) {
+  const { memberData } = useMember();
   const [replyText, setReplyText] = useState("");
   const [showReply, setShowReply] = useState(false);
+  const [height, setHeight] = useState("35px");
+  const [checkReply, setCheckReply] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   // 대댓글 작성
   const handleReplySubmit = async () => {
-    console.log("답글 요청", replyText, commentId, userdummy.username);
+    if (!replyText || error) {
+      return;
+    }
     try {
-      const response = await CreateReply(
-        replyText,
-        commentId,
-        userdummy.username
-      );
-      // console.log(response);
+      const response = await postReplyApi(commentId, replyText);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
       setReplyText("");
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -65,63 +82,42 @@ export default function Replies({ replies, commentId }: RepliesProps) {
     : "▼ 답글 입력";
   return (
     <CommentWrapper>
-      <button
-        onClick={() => setShowReply(!showReply)}
-        style={{
-          fontSize: "12px",
-          fontWeight: "700",
-          marginBlock: "10px",
-          color: "#ABC4FF",
-        }}
-      >
+      <ExpansionButton onClick={() => setShowReply(!showReply)}>
         {replyButtonText}
-      </button>
+      </ExpansionButton>
       {showReply && (
-        <div style={{ width: "160%" }}>
+        <div>
           {replies.map((reply) => (
             <UserInfo key={reply.id}>
               <div>
                 <img src={reply.writer.profilePath ?? ""} alt="프로필" />
               </div>
-              <div>
-                <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <h2 style={{ fontWeight: "bold" }}>
-                    {reply.writer.nickname}
-                  </h2>
-                  <h3
-                    style={{
-                      marginLeft: "0.5rem",
-                      color: "gray",
-                      fontSize: "0.75rem",
-                    }}
-                  >
+              <ReplyBox>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    width: "100%",
+                  }}
+                >
+                  <h2>{reply.writer.nickname}</h2>
+                  <h3 style={{ marginInline: "8px" }}>
                     {timeAgo(reply.writeDate)}
                   </h3>
-                  {replyUpdate && selectedReplyId === reply.id && (
-                    <ReplyEdit
-                      key={reply.id}
-                      isOpen={false}
-                      reply={reply}
-                      onClose={handleCloseModal}
-                    />
-                  )}
+
                   {replyDelete && selectedReplyId === reply.id && (
                     <DeleteReply
                       key={reply.id}
                       isOpen={false}
+                      commentId={commentId}
+                      clubInfo={clubInfo}
+                      setClubData={setClubData}
                       reply={reply}
                       onClose={handleCloseModal}
                     />
                   )}
-                  {userdummy.nickname === reply.writer.nickname && (
-                    <EditButton
-                      style={{ fontSize: "12px" }}
-                      onClick={() => showUpdateModal(reply.id)}
-                    >
-                      수정
-                    </EditButton>
-                  )}
-                  {userdummy.nickname === reply.writer.nickname && (
+
+                  {memberData.username === reply.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showDeleteModal(reply.id)}
@@ -130,22 +126,27 @@ export default function Replies({ replies, commentId }: RepliesProps) {
                     </DeleteButton>
                   )}
                 </div>
-                <p>{reply.text}</p>
-              </div>
+                <div style={{ width: "100%" }}>
+                  <p>{reply.text}</p>
+                </div>
+              </ReplyBox>
             </UserInfo>
           ))}
           <InputSet>
             <InputBox
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
+              key={replyText}
+              defaultValue={replyText}
+              onChange={(e) => {
+                handleCommentChange(e, setHeight);
+                handleCheckReply(e, setCheckReply, setError);
+              }}
+              onBlur={(e) => handleReplyBlur(e, setReplyText)}
+              style={{ height }}
             />
-            <BasicButton
-              onClick={handleReplySubmit}
-              style={{ fontSize: "12px" }}
-            >
-              댓글달기
-            </BasicButton>
+
+            <BasicButton onClick={handleReplySubmit}>댓글달기</BasicButton>
           </InputSet>
+          {error && <CommentError>{error}</CommentError>}
         </div>
       )}
     </CommentWrapper>

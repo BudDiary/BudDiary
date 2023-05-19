@@ -1,5 +1,6 @@
 package twozerotwo.buddiary.domain.reply.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import twozerotwo.buddiary.domain.reply.dto.ReplyRequest;
 import twozerotwo.buddiary.domain.reply.dto.ReplyResponse;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.NotFoundException;
+import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.persistence.entity.Comment;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.entity.Reply;
@@ -25,12 +27,13 @@ public class ReplyService {
 	private static final Long ADD_REPLY_POINT = 5L;
 	private final ReplyRepository replyRepository;
 	private final CommentRepository commentRepository;
+	private final AuthenticationUtil authenticationUtil;
 	private final ClubService clubService;
 	private final CommentService commentService;
 
 	@Transactional
-	public ReplyResponse createReply(ReplyRequest request) {
-		Member member = clubService.returnMemberByUsername(request.getUsername());
+	public ReplyResponse createReply(ReplyRequest request, HttpServletRequest servlet) {
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		Comment comment = commentService.returnCommentById(request.getCommentId());
 		Reply reply = Reply.builder()
 			.text(request.getText())
@@ -50,8 +53,8 @@ public class ReplyService {
 	}
 
 	@Transactional
-	public void deleteReply(String username, Long commentId, Long replyId) {
-		Member member = clubService.returnMemberByUsername(username);
+	public void deleteReply(HttpServletRequest servlet, Long commentId, Long replyId) {
+		Member member = authenticationUtil.getMemberEntityFromRequest(servlet);
 		Comment comment = commentService.returnCommentById(commentId);
 		Reply reply = returnReplyById(replyId);
 		if (!reply.getWriter().equals(member)) {
@@ -60,7 +63,8 @@ public class ReplyService {
 		if (!reply.getComment().equals(comment)) {
 			throw new BadRequestException(commentId + "번의 댓글의 대댓글이 아닙니다.");
 		}
-		replyRepository.delete(reply);
+		replyRepository.deleteById(reply.getId());
+
 	}
 
 	public Reply returnReplyById(Long replyId) {

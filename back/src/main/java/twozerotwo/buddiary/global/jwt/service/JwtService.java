@@ -1,6 +1,5 @@
 package twozerotwo.buddiary.global.jwt.service;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -10,7 +9,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,10 +21,8 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.oauth.dto.SocialType;
 import twozerotwo.buddiary.persistence.entity.Member;
 import twozerotwo.buddiary.persistence.repository.MemberRepository;
@@ -101,6 +97,9 @@ public class JwtService {
 		log.info("profile mode is : {}", envName);
 		if (envName.equals("local")) {
 			cookie.setDomain("localhost");
+		} else {
+			log.info(" 쿠키 배포 설정으로 던집니다.");
+			cookie.setDomain("alb.buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
@@ -113,24 +112,17 @@ public class JwtService {
 	public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
 		response.setStatus(HttpServletResponse.SC_OK);
 		Cookie cookie = new Cookie(REFRESH_TOKEN_SUBJECT, "" + refreshToken);
-		if (envName == "local") {
-
-			cookie.setDomain("local");
+		if (envName.equals("local")) {
+			cookie.setDomain("localhost");
+		} else {
+			log.info(" 쿠키 배포 설정으로 던집니다.");
+			cookie.setDomain("alb.buddiary.site");
 		}
 		cookie.setPath("/");
 		cookie.setMaxAge(1209600000);
 		cookie.setHttpOnly(true);
 		response.addCookie(cookie);
 
-	}
-
-	/**
-	 * RefreshToken DB 저장(업데이트)
-	 */
-	public void updateRefreshToken(String email, String refreshToken) {
-		memberRepository.findByUsername(email)
-			.ifPresentOrElse(member -> member.updateRefreshToken(refreshToken),
-				() -> new NotFoundException("일치하는 회원이 없습니다."));
 	}
 
 	public boolean isTokenValid(String token) {
@@ -238,8 +230,7 @@ public class JwtService {
 			Optional<String> socialType = Optional.ofNullable(
 				JWT.require(Algorithm.HMAC512(secretKey)).build() // 반환된 빌더로 JWT verifier 생성
 					.verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
-					.getClaim(SOCIAL_TYPE)
-					.asString());
+					.getClaim(SOCIAL_TYPE).asString());
 			return socialType;
 		} catch (Exception e) {
 			log.error("액세스 토큰이 유효하지 않습니다.");
@@ -248,11 +239,13 @@ public class JwtService {
 	}
 
 	public Authentication getAuthentication(String accessToken) {
+		log.info("디비에서 정보를 가져옵니다.");
 		String socialId = extractSocialId(accessToken).orElse(null);
 		String socialType = extractSocialType(accessToken).orElse(null);
 		SocialType extractSocialType = SocialType.of(socialType);
+		log.info("socialType {}", socialType);
+		log.info("socialId {}", socialId);
 		Member member = memberRepository.findBySocialTypeAndSocialId(extractSocialType, socialId).orElse(null);
-		log.info(member.getUsername());
 		if (member == null) {
 			log.error("맴버 정보가 없습니다. 빈값을 return 합니다.");
 			return new UsernamePasswordAuthenticationToken(null, "", null);

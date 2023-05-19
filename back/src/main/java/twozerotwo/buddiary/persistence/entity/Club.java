@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import twozerotwo.buddiary.domain.club.dto.ClubInfo;
 import twozerotwo.buddiary.persistence.enums.ClubType;
 import twozerotwo.buddiary.persistence.enums.ClubTypeConverter;
@@ -24,6 +25,7 @@ import twozerotwo.buddiary.persistence.enums.ClubTypeConverter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Slf4j
 public class Club {
 	@Id
 	@Column(name = "CLUB_ID")
@@ -51,6 +53,8 @@ public class Club {
 			.clubUuid(this.uuid)
 			.thumbnailUrl(this.thumbnailPath)
 			.clubName(this.name)
+			.clubType(this.type)
+			.captainUsername(this.captainUsername)
 			.build();
 	}
 
@@ -59,10 +63,19 @@ public class Club {
 			.clubUuid(this.uuid)
 			.thumbnailUrl(clubImgUrl)
 			.clubName(this.name)
+			.clubType(this.type)
+			.captainUsername(this.captainUsername)
 			.build();
 	}
 
 	public void deleteMember(Member member) {
 		this.getClubMembers().remove(member);
+	}
+
+	public boolean isMaxClubMembersSize() {
+		if (this.clubMembers.size() < this.maximumMember + 1) {
+			return false;
+		}
+		return true;
 	}
 }

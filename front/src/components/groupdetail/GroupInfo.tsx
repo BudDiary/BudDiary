@@ -1,42 +1,86 @@
-import React from "react";
-import { GroupList, MemberList } from "./GroupInfo.styles";
+import React, { useState } from "react";
+import {
+  GroupList,
+  MemberList,
+  ClubList,
+  MemberListInfo,
+} from "./GroupInfo.styles";
 import { BasicButton } from "./Diaries.styles";
-// import groupData from "./groupInfo.json";
+import useMember from "../../hooks/memberHook";
+import { Divider } from "@mui/material";
 import { Member, Info } from "../../types/group";
+import crown from "../../assets/group/crown.png";
+import { InvitationModal } from "../kakaoinvitation/InvitationModal";
+
 interface GroupInfoProps {
-  myclubList?: Info;
+  clubInfo?: Info;
   memberList?: Member[];
   style?: React.CSSProperties;
 }
 
 export default function GroupInfo({
-  myclubList,
+  clubInfo,
   memberList,
   style,
 }: GroupInfoProps) {
-  return (
-    <GroupList style={style}>
-      <img src={myclubList?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
-      <p style={{ fontWeight: "bold" }}>{myclubList?.clubName}</p>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
-        <span style={{ fontWeight: "bold" }}>멤버 {memberList?.length}</span>
-        <BasicButton>초대하기</BasicButton>
-      </div>
+  const { memberData } = useMember();
+  const [showModal, setShowModal] = useState(false);
+  const username = memberData.username;
+  const clubType = clubInfo?.clubType;
 
-      <MemberList>
-        {memberList?.map((member) => (
-          <div key={member.id}>
-            <img src={member.profilePath ?? ""} alt="프로필" />
-            <p style={{ fontWeight: "bold" }}>{member.nickname}</p>
+  const handleToggleModal = () => {
+    setShowModal((prevState) => !prevState);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <GroupList style={style}>
+        <p>{clubInfo?.clubName}</p>
+        <img src={clubInfo?.thumbnailUrl ?? ""} alt="그룹 섬네일" />
+        {clubType !== "DOUBLE" && clubType === "PLURAL" ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <ClubList>멤버 {memberList?.length}</ClubList>
+            <BasicButton onClick={handleToggleModal}>초대하기</BasicButton>
           </div>
-        ))}
-      </MemberList>
-    </GroupList>
+        ) : null}
+        <Divider style={{ border: "solid 1px #BFDBFE", width: "100%" }} />
+        <MemberList>
+          {memberList?.map((member) => (
+            <div key={member.id}>
+              <img src={member.profilePath ?? ""} alt="프로필" />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "start",
+                }}
+              >
+                {member.nickname}
+                {member.username === clubInfo?.captainUsername ? (
+                  <img
+                    src={crown}
+                    alt=""
+                    style={{ border: "none", height: "20px", width: "20px" }}
+                  />
+                ) : null}
+                <p>{member.username === username ? "  me" : ""}</p>
+              </div>
+            </div>
+          ))}
+        </MemberList>
+      </GroupList>
+      {showModal && (
+        <InvitationModal clubInfo={clubInfo} onClose={handleCloseModal} />
+      )}
+    </>
   );
 }

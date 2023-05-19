@@ -1,6 +1,7 @@
 package twozerotwo.buddiary.global.util;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,7 @@ public class AuthenticationUtil {
 	 * @param request
 	 * @return
 	 */
+	@Transactional
 	public MemberDto getMemberDtoFromRequest(HttpServletRequest request) {
 		String accessToken = jwtService.extractAccessToken(request)
 			.orElseThrow(() -> new BadRequestException("쿠키의 accessToken 이 비정상입니다."));
@@ -44,6 +46,7 @@ public class AuthenticationUtil {
 	 * @param request
 	 * @return
 	 */
+	@Transactional
 	public Member getMemberEntityFromRequest(HttpServletRequest request) {
 		String accessToken = jwtService.extractAccessToken(request)
 			.orElseThrow(() -> new BadRequestException("쿠키의 accessToken 이 비정상입니다."));

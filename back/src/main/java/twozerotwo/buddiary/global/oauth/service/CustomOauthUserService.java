@@ -65,6 +65,8 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 		log.info("oauth 를 통해 얻어온 getNickname 정보 : {}", extractAttributes.getOauth2UserInfo().getNickname());
 		log.info("oauth 를 통해 얻어온 getId 정보 : {}", extractAttributes.getOauth2UserInfo().getId());
 		log.info("oauth 를 통해 얻어온 getImageUrl 정보 : {}", extractAttributes.getOauth2UserInfo().getImageUrl());
+		log.info("oauth 를 통해 얻어온 getImageUrl 정보 : {}", extractAttributes.getOauth2UserInfo().getAgeRange());
+		log.info("oauth 를 통해 얻어온 getImageUrl 정보 : {}", extractAttributes.getOauth2UserInfo().getGender());
 		// 시큐리티 컨텍스트 저장을위한 UserDetail 생성
 		return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
 			attributes, extractAttributes.getNameAttributeKey(), createdUser.getUsername(), createdUser.getRole(),
@@ -72,10 +74,8 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 	}
 
 	private SocialType getSocialType(String registrationId) {
-		log.info("registrationId : {}", registrationId);
 		//registrationId is a unique identifier for the ClientRegistration.
 		if (KAKAO.equals(registrationId)) {
-			log.info("카카오 분기처리 성공");
 			return SocialType.KAKAO;
 		}
 		return null;
@@ -87,11 +87,8 @@ public class CustomOauthUserService implements OAuth2UserService<OAuth2UserReque
 	 */
 	private Member getUser(OAuthAttributes attributes, SocialType socialType) {
 		// log.info("유저가 없으면 저장하고 있으면 던져준다", attributes.getOauth2UserInfo().getNickname());
-		log.info("getUser 소셜타입 {}", socialType);
-		String socialId = attributes.getOauth2UserInfo().getId();
-		log.info("getUser 유저 정보 {}", socialId);
-		Member findUser = memberRepository.findBySocialTypeAndSocialId(socialType, socialId
-		).orElse(null);
+		String email = attributes.getOauth2UserInfo().getEmail();
+		Member findUser = memberRepository.findBySocialTypeAndUsername(socialType, email).orElse(null);
 
 		if (findUser == null) {
 			// 없으면 저장한다.

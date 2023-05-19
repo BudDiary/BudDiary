@@ -1,38 +1,47 @@
 import { api } from "./axiosConfig";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
-// 스티커 등록
-const postReactionApi = ( payload: any ) => {
-    return api.post(`api/diaries/reactions`, payload,  { withCredentials: true })
+type ActionType = "LIKED" | "SURPRISED" | "SAD" | "ANGRY" | "BEST";
+
+// 리액션 등록
+const postReactionApi = (diaryId: number, actionType: ActionType) => {
+  const data = {
+    diaryId,
+    actionType,
+  };
+
+  return api
+    .post(`api/diaries/reactions`, data, { withCredentials: true })
     .then((res) => {
-        console.log(res)
-        return res.data;
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          text: 'postReactionApi 오류가 발생했어요.'
-        })
-        console.log(err)
-        return err;
-      });
-}
+      return res;
+    })
 
-// 모든 스티커 조회
-const deleteReactionApi = (diarynumber: number, reactionnumber: number) => {
-    return api.delete(`api/diaries/${diarynumber}/reactions/${reactionnumber}`, { withCredentials: true })
+    .catch((err) => {
+      Swal.fire({
+        icon: "error",
+        text: "postReactionApi 오류가 발생했어요.",
+      });
+
+      return err;
+    });
+};
+
+// 리액션 삭제
+const deleteReactionApi = (diaryId: number, actionId: number) => {
+  return api
+    .delete(`/api/diaries/${diaryId}/reactions/${actionId}`, {
+      withCredentials: true,
+    })
     .then((res) => {
-      console.log(res)
-      return res.data;
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          text: 'deleteReactionApi 오류가 발생했어요.'
-        })
-        return err;
+      return res;
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "error",
+        text: "deleteReactionApi 오류가 발생했어요.",
       });
-}
+      return err;
+    });
+};
 
-
-export { postReactionApi, deleteReactionApi};
+export { postReactionApi, deleteReactionApi };

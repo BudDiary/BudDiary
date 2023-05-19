@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 const boxStyle = `
   border: 1px solid black;
   min-width: 200px;
@@ -14,6 +14,7 @@ const boxStyle = `
 export const UploadImageBox = styled.div`
   ${boxStyle}
   margin-top: 5%;
-  margin-bottom: 10%;
+  margin-bottom: 5%;
   margin-right: 5%;
+  margin-left: 5%;
 `;

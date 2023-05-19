@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,9 +42,10 @@ public class StickerController {
 
 	//---------------------------------------------------스티커 구매----------------------------------------------------
 	@PostMapping("/{stickerId}")
-	public ResponseEntity buySticker(@PathVariable Long stickerId, @RequestBody StickerBuyRequest request) {
-		stickerService.buySticker(stickerId, request);
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity buySticker(@PathVariable Long stickerId, @RequestBody StickerBuyRequest request,
+		HttpServletRequest servlet) {
+		Long leftPoint = stickerService.buySticker(stickerId, request, servlet);
+		return new ResponseEntity<>(Map.of("leftPoint", leftPoint), HttpStatus.OK);
 	}
 
 	//---------------------------------------------------모든 스티커 조회----------------------------------------------------
@@ -54,8 +57,8 @@ public class StickerController {
 
 	//---------------------------------------------------나의 스티커 조회----------------------------------------------------
 	@GetMapping("/mine")
-	public ResponseEntity getMineSticker(@RequestParam String username) {
-		List<UnusedSticker> myStickerList = stickerService.getMineSticker(username);
+	public ResponseEntity getMineSticker(HttpServletRequest servlet) {
+		List<UnusedSticker> myStickerList = stickerService.getMineSticker(servlet);
 		return new ResponseEntity<>(Map.of("myStickerList", myStickerList), HttpStatus.OK);
 	}
 }

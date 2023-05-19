@@ -23,6 +23,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import twozerotwo.buddiary.domain.comment.dto.CommentDto;
+import twozerotwo.buddiary.domain.reply.dto.ReplyDto;
 
 @Entity
 @Builder
@@ -36,11 +38,11 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member writer;
-	@JsonProperty("diaryId")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonProperty("diaryId")
 	@JoinColumn(name = "DIARY_ID")
 	private Diary diary;
 
@@ -54,4 +56,19 @@ public class Comment {
 	@Column(nullable = false)
 	@Size(min = 1, max = 200, message = "댓글은 1자 이상 200자 이하여야 합니다.")
 	private String text;
+
+	public CommentDto toDto() {
+		List<Reply> replyList = this.getReplies();
+		List<ReplyDto> replyDtos = new ArrayList<>();
+		for (Reply reply : replyList) {
+			replyDtos.add(reply.toDto());
+		}
+
+		return CommentDto.builder()
+			.id(this.id)
+			.text(this.text)
+			.writer(this.writer.toWriterDto())
+			.writeDate(this.writeDate)
+			.replies(replyDtos).build();
+	}
 }

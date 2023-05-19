@@ -16,6 +16,7 @@ import twozerotwo.buddiary.domain.member.dto.MemberDto;
 import twozerotwo.buddiary.domain.member.dto.MemberSignUpRequest;
 import twozerotwo.buddiary.global.advice.exception.BadRequestException;
 import twozerotwo.buddiary.global.advice.exception.ConflictException;
+import twozerotwo.buddiary.global.advice.exception.NotFoundException;
 import twozerotwo.buddiary.global.util.AuthenticationUtil;
 import twozerotwo.buddiary.infra.amazons3.uploader.S3Uploader;
 import twozerotwo.buddiary.persistence.entity.Member;
@@ -65,9 +66,12 @@ public class MemberService {
 
 	@Transactional
 	public Optional<String> updateIntro(String intro, HttpServletRequest request) {
-		if (!(intro.length() <= 200)) {
+		if (intro == null) {
+			throw new BadRequestException(" intro 가 null 입니다.");
+		} else if (!(intro.length() <= 200)) {
 			throw new BadRequestException("소개 의 길이는 200 자 이하입니다.");
 		}
+
 		Member targetMember = authenticationUtil.getMemberEntityFromRequest(request);
 		String updatedIntro = targetMember.updateIntro(intro);
 		return Optional.of(updatedIntro);
@@ -87,5 +91,11 @@ public class MemberService {
 			return Optional.of(updatedFile);
 		}
 
+	}
+
+	public MemberDto findMemberUsername(String username) {
+		Member member = memberRepository.findByUsername(username)
+			.orElseThrow(() -> new NotFoundException("유저가 존재하지 않습니다."));
+		return member.toDto();
 	}
 }

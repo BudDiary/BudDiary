@@ -8,6 +8,9 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class HttpCookieOAuth2AuthorizationRequestRepository
 	implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 	public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
@@ -16,6 +19,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
 
 	@Override
 	public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+		log.info("loadAuthorizationRequest 여기를 들어옵니다.");
 		return CookieUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
 			.map(cookie -> CookieUtils.deserialize(cookie, OAuth2AuthorizationRequest.class))
 			.orElse(null);

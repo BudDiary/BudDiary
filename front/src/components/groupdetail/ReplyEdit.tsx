@@ -1,14 +1,23 @@
 import React, { useState } from "react";
-import { BiLeftArrowCircle } from "react-icons/bi";
-import { BasicButton } from "./Diaries.styles";
+import { BasicButton, EditContent } from "./Diaries.styles";
 import {
-  ModalContainer,
+  EditContainer,
   ModalTopNavContainer,
 } from "../common/ModalWindow.styles";
 import { UserInfo } from "./DiaryComment.style";
-import { timeAgo } from "./GroupDetailFunction";
-import { InputBox, InputSet } from "./DiaryComment.style";
-import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
+import close from "../../assets/modal/close.png";
+import {
+  EditContentBox,
+  InputSet,
+  CommentBox,
+  CommentError,
+  EditTitle,
+} from "./DiaryComment.style";
+import {
+  handleCommentChange,
+  handleCommentBlur,
+  handleCheckComment,
+} from "./GroupDetailFunction";
 import { Reply } from "../../types/group";
 import { Divider } from "@mui/material";
 interface ReplyEditProps {
@@ -19,82 +28,84 @@ interface ReplyEditProps {
 
 export default function ReplyEdit({ reply, onClose }: ReplyEditProps) {
   const [commentState, setCommentState] = useState(reply.text);
-  const [height, setHeight] = useState("35px");
+  const [checkComment, setCheckComment] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const closeCommentModal = () => {
     onClose();
   };
 
   return (
-    <ModalContainer>
-      <ModalTopNavContainer
-        style={{
-          display: "flex",
-          alignItems: "center",
-          padding: "15px",
-        }}
-      >
-        <BiLeftArrowCircle onClick={closeCommentModal} />
-        <div>답글 수정하기</div>
-        <div></div>
+    <EditContainer>
+      <ModalTopNavContainer>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src={close}
+            alt=""
+            onClick={closeCommentModal}
+            style={{
+              height: "25px",
+              width: "25px",
+              border: "none",
+              marginLeft: "10px",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <EditTitle>답글 수정하기</EditTitle>
+        </div>
+        <div
+          style={{
+            height: "25px",
+            width: "25px",
+            border: "none",
+            marginRight: "10px",
+          }}
+        ></div>
       </ModalTopNavContainer>
-
       <UserInfo style={{ padding: "20px" }}>
         <div>
           <img src={reply.writer.profilePath ?? ""} alt="프로필" />
         </div>
-        <div
-          style={{
-            width: "55%",
-          }}
-        >
+        <CommentBox>
           <div
             style={{
               display: "flex",
               alignItems: "baseline",
             }}
           >
-            <h2 style={{ fontWeight: "bold" }}>{reply.writer.nickname}</h2>
-            <h3
-              style={{
-                marginLeft: "0.5rem",
-                color: "gray",
-                fontSize: "0.75rem",
-              }}
-            >
-              {timeAgo(reply.writeDate)}
-            </h3>
+            <h2>{reply.writer.nickname}</h2>
           </div>
-        </div>
+          <h3>{new Date(reply.writeDate).toLocaleString()}</h3>
+        </CommentBox>
       </UserInfo>
-      <div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginBottom: "20px",
-          }}
-        >
-          <p
-            style={{
-              marginBlock: "10px",
-            }}
-          >
-            답글 수정하기
-          </p>
-          <Divider style={{ border: "solid 2px #BFDBFE", width: "90%" }} />
-        </div>
+      <Divider style={{ border: "solid 1px #BFDBFE" }} />
+      <EditContent>
+        <EditTitle>답글 수정하기</EditTitle>
         <InputSet>
-          <InputBox
+          <EditContentBox
             key={commentState}
             defaultValue={commentState}
-            onChange={(e) => handleCommentChange(e, setHeight)}
+            onChange={(e) => {
+              handleCheckComment(e, setCheckComment, setError);
+            }}
             onBlur={(e) => handleCommentBlur(e, setCommentState)}
-            style={{ height }}
           />
           <BasicButton style={{ fontSize: "12px" }}>댓글달기</BasicButton>
         </InputSet>
-      </div>
-    </ModalContainer>
+        {error && <CommentError>{error}</CommentError>}
+      </EditContent>
+    </EditContainer>
   );
 }

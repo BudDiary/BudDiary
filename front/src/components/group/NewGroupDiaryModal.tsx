@@ -1,71 +1,127 @@
-import React, { useState, useEffect } from 'react'
-import Button from '@mui/joy/Button';
-import {BiArrowBack} from 'react-icons/bi'
-import Modal from '@mui/joy/Modal';
-import ModalClose from '@mui/joy/ModalClose';
-import Typography from '@mui/joy/Typography';
-import Sheet from '@mui/joy/Sheet';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import { Box } from '@mui/material';
-import { StyledBox } from '../group/NewGroupDiaryModal.styles'
-import Paper from '@mui/material/Paper';
+import React, { useState, useEffect } from "react";
+import Button from "@mui/joy/Button";
+import { BiArrowBack } from "react-icons/bi";
+import Modal from "@mui/joy/Modal";
+import ModalClose from "@mui/joy/ModalClose";
+import Typography from "@mui/joy/Typography";
+import Sheet from "@mui/joy/Sheet";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import { Box } from "@mui/material";
+import { StyledBox } from "../group/NewGroupDiaryModal.styles";
+import Paper from "@mui/material/Paper";
 
-import { GiCancel } from "react-icons/gi"
-import { CloseModalButton, ModalTitle, ModalTopNavContainer, SaveModalButton } from '../common/ModalWindow.styles';
-import AddGroupPicture from './AddGroupPicture';
-import GroupPicture from './GroupPicture';
-import ModalWindow from '../common/ModalWindow';
-import { postPluralClubApi } from '../../apis/clubApi';
-import useMember from '../../hooks/memberHook';
-
-
+import { GiCancel } from "react-icons/gi";
+import {
+  CloseModalButton,
+  ModalTitle,
+  ModalTopNavContainer,
+  SaveModalButton,
+} from "../common/ModalWindow.styles";
+import AddGroupPicture from "./AddGroupPicture";
+import GroupPicture from "./GroupPicture";
+import ModalWindow from "../common/ModalWindow";
+import { postPluralClubApi, getClubDetailApi } from "../../apis/clubApi";
+import useMember from "../../hooks/memberHook";
+import { KakaoInvitation } from "../kakaoinvitation/kakaoInvitation";
+import { Club } from "../../types/group";
+import { useNavigate } from "react-router-dom";
 interface Props {
   closeModal: any;
 }
 
+interface FormData {
+  clubname: string;
+  thumbnail: File | null;
+  captainUsername: string;
+}
 
 export default function NewGroupDiaryModal({ closeModal }: Props) {
-  const {memberData, isLoggedIn} = useMember();
-  const username = memberData.username
-  const [image, setImage] = useState<string | null>(null);
-  
+  const navigate = useNavigate();
+
+  const handleGroupClick = (clubUuid: string) => {
+    navigate(`/group/${clubUuid}`);
+  };
+
+  const { memberData } = useMember();
+  const [open, setOpen] = React.useState(false);
+  const [initial, setInitial] = useState(true);
+  const username = memberData.username;
+  const [image, setImage] = useState<File | null>(null);
+
+  const [formData, setFormData] = useState<FormData>({
+    clubname: "",
+    thumbnail: null,
+    captainUsername: "",
+  });
+  const [newGroupData, setNewGroupData] = useState<{ uuid: string } | null>(
+    null
+  );
+  const [clubData, setClubData] = useState<Club | null>(null);
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files && event.target.files[0];
+    setFormData({
+      ...formData,
+      thumbnail: file,
+    });
+  };
+
   const closeDiaryModal = () => {
     closeModal();
   };
-  const [clubName, setClubName] = useState('');
+  const [clubName, setClubName] = useState("");
 
   const handleClear = () => {
-    setClubName('');
-  }
+    setClubName("");
+  };
 
   const submitMakeClub = async (event: any) => {
-    
-
-    /** 서버통신 */
     const formData = new FormData();
 
-    if (image && clubName && username) {
+    if (initial && image && clubName && username) {
       formData.append("thumbnail", image);
-      formData.append('captainUsername', username);
-      formData.append('clubName', clubName);
+      formData.append("captainUsername", username);
+      formData.append("clubName", clubName);
+
+      postPluralClubApi(formData)
+        .then((result) => {
+          if (!result.error) {
+            setInitial(false);
+            setNewGroupData(result);
+            setOpen(true);
+          } else {
+            console.error(result.error);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       // 폼 객체 key 와 value 값을 순회.
-      let entries = formData.entries();
-      for (const pair of entries) {
-          console.log(pair[0]+ ', ' + pair[1]); 
-      }
-      // const response  = await makeClubApi(formData)
-      // if (response === true) {
-      //   console.log('여기에서 설문 띄워주시면 됩니다~~~')
-      // } else {
-      //   console.log('실패여')
+      // let entries = formData.entries();
+      // for (const pair of entries) {
+      //   console.log(pair[0] + ", " + pair[1]);
       // }
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (newGroupData) {
+          const data = await getClubDetailApi(newGroupData.uuid);
+          setClubData(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [newGroupData]);
 
   function ChildModal() {
-    const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
       setOpen(true);
     };
@@ -74,54 +130,66 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
     };
 
     const handleClose2 = () => {
-      handleClose();
-      closeDiaryModal(); // close parent modal
+      // handleClose();
+      // closeDiaryModal(); // close parent modal
+      if (newGroupData) {
+        console.log(newGroupData, "this is newgroupdata");
+        handleGroupClick(newGroupData.uuid);
+      }
     };
-
 
     return (
       <React.Fragment>
-        <Button onClick={(event) => {
-          event.preventDefault();
-          handleOpen()
-          submitMakeClub(event)
-          }}> 다음 </Button>
+        <Button
+          onClick={(event) => {
+            event.preventDefault();
+            submitMakeClub(event);
+            handleOpen();
+          }}
+        >
+          다음
+        </Button>
         <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="child-modal-title"
           aria-describedby="child-modal-description"
-          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-        >
-                  <Sheet
-          variant="outlined"
           sx={{
-            minHeight: 300,
-            minWidth: 500,
-            maxWidth: 500,
-            borderRadius: 'md',
-            // p: 5,
-            boxShadow: 'lg',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-
+        >
+          <Sheet
+            variant="outlined"
+            sx={{
+              minHeight: "50%",
+              width: 600,
+              borderRadius: "md",
+              // p: 5,
+              boxShadow: "lg",
+            }}
           >
-          <ModalTopNavContainer>
-          <CloseModalButton onClick={handleClose}>
-            <BiArrowBack />
-            </CloseModalButton>
-          <ModalTitle>초대 신청</ModalTitle>
-            <Button onClick={handleClose2}>완료</Button>
-          </ModalTopNavContainer>
-          <Box>
-            <h2 id="child-modal-title">초대</h2>
-            <p id="child-modal-description">초대링크 들어갈 부분</p>
-          </Box>
+            <ModalTopNavContainer>
+              <CloseModalButton onClick={handleClose}>
+                <BiArrowBack />
+              </CloseModalButton>
+              <ModalTitle>초대 신청</ModalTitle>
+              <Button onClick={handleClose2}>완료</Button>
+            </ModalTopNavContainer>
+            <Box
+              sx={{
+                padding: "5px",
+                paddingTop: "10px",
+              }}
+            >
+              <KakaoInvitation clubInfo={clubData?.clubDetail.clubInfo} />
+            </Box>
           </Sheet>
         </Modal>
       </React.Fragment>
     );
   }
-
 
   return (
     <React.Fragment>
@@ -130,26 +198,26 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
         aria-describedby="modal-desc"
         open={true}
         onClose={() => closeDiaryModal()}
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         <Sheet
           variant="outlined"
           sx={{
             minHeight: 300,
-            minWidth: 500,
+            minWidth: 360,
             maxWidth: 500,
-            borderRadius: 'md',
+            borderRadius: "md",
             // p: 5,
-            boxShadow: 'lg',
+            boxShadow: "lg",
           }}
-          >
+        >
           <ModalTopNavContainer>
-          <CloseModalButton onClick={closeDiaryModal}>
-            <BiArrowBack />
+            <CloseModalButton onClick={closeDiaryModal}>
+              <BiArrowBack />
             </CloseModalButton>
-          <ModalTitle>새 교환일기</ModalTitle>
+            <ModalTitle>새로운 교환일기 만들기</ModalTitle>
 
-          {/* <ModalClose
+            {/* <ModalClose
             variant="outlined"
             sx={{
               top: 'calc(-1/4 * var(--IconButton-size))',
@@ -159,8 +227,8 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
               bgcolor: 'background.body',
             }}
           /> */}
-          <ChildModal/>
-          {/* <SaveModalButton onClick={createInvite} >다음</SaveModalButton> */}
+            <ChildModal />
+            {/* <SaveModalButton onClick={createInvite} >다음</SaveModalButton> */}
           </ModalTopNavContainer>
           <Typography
             component="h2"
@@ -174,30 +242,28 @@ export default function NewGroupDiaryModal({ closeModal }: Props) {
           >
             방 이름
           </Typography>
-          <StyledBox marginLeft={3}>
-          
-          <TextField
-      value={clubName}
-      onChange={(e:any) => setClubName(e.target.value)}
-      InputProps={{
-        endAdornment: clubName && (
-          <IconButton onClick={handleClear}>
-            <GiCancel color="lightcoral" size={20}/>
-          </IconButton>
-        ),
-      }}
-      label="그룹일기"
-      variant="outlined"
-      />
-      </StyledBox>
-      <Box m={2}>
-      <Paper elevation={6}>
-      <AddGroupPicture setImage={setImage} />
-    <br />
-      <GroupPicture image={image} />
-      </Paper>
-
-    </Box>
+          <StyledBox>
+            <TextField
+              className="w-full"
+              value={clubName}
+              onChange={(e: any) => setClubName(e.target.value)}
+              InputProps={{
+                endAdornment: clubName && (
+                  <IconButton onClick={handleClear}>
+                    <GiCancel color="lightcoral" size={20} />
+                  </IconButton>
+                ),
+              }}
+              label="그룹일기"
+              variant="outlined"
+            />
+          </StyledBox>
+          <Box m={2}>
+            <Paper elevation={6}>
+              <GroupPicture image={image} />
+              <AddGroupPicture setImage={setImage} />
+            </Paper>
+          </Box>
         </Sheet>
       </Modal>
     </React.Fragment>

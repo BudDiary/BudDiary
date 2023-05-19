@@ -7,7 +7,6 @@ import normal from "../../assets/normal.png";
 import sad from "../../assets/sad.png";
 
 interface ImageSectionProps {
-  Image: string;
   run: string;
 }
 
@@ -36,9 +35,9 @@ export const SectionContainer = styled.div`
   }
 `;
 
-export const ImageSection = styled.div<ImageSectionProps>`
-  background-image: url(${(props) => props.Image});
-  ${tw`bg-contain bg-no-repeat bg-left rounded-md`}
+/* background-image: url(${(props) => props.Image}); */
+export const ImageSection = styled.div<running>`
+  ${tw`rounded-md flex`}
   width: 50%;
   height: 80%;
   min-height: calc(220px + 40%);
@@ -69,6 +68,29 @@ export const ImageSection = styled.div<ImageSectionProps>`
       opacity: 1;
       transform: translateY(0px);
     }
+  }
+`;
+
+export const FirstImageBox = styled.div`
+  ${tw``}
+  width:45%;
+  height: 100%;
+
+  @media screen and (max-width: 640px) {
+    width: 80%;
+    height: 100%;
+    overflow: hidden;
+    ${tw`bg-center`}
+  }
+`;
+
+export const SecondImageBox = styled.div`
+  ${tw`ml-2`}
+  width:50%;
+  height: 50%;
+
+  @media screen and (max-width: 640px) {
+    display: none;
   }
 `;
 
@@ -164,6 +186,23 @@ export const WordSection = styled.div<running>`
 
   @media screen and (max-width: 640px) {
     display: none;
+  }
+
+  animation-name: showEmoji;
+  animation-duration: 4s;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes showEmoji {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 
@@ -402,7 +441,7 @@ export const Crying = styled.div<running>`
   }
 `;
 
-export const WordsSection = styled.div`
+export const WordsSection = styled.div<running>`
   ${tw`absolute text-center w-full z-20 text-3xl flex left-1/2`}
   transform:translateX(-50%);
   padding-top: min(320px);
@@ -410,6 +449,23 @@ export const WordsSection = styled.div`
   min-height: 90%;
   @media screen and (min-width: 640px) {
     display: none;
+  }
+
+  animation-name: showEmoji;
+  animation-duration: 4s;
+  animation-fill-mode: both;
+  animation-play-state: ${(props) => props.run};
+
+  @keyframes showEmoji {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 
@@ -430,11 +486,11 @@ export const SExcited = styled.div<running>`
       ${tw`bg-bottom`}
     }
     14.25% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translate(0px,0px);
     }
     28.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(400%);
     }
     43% {
@@ -481,11 +537,11 @@ export const SHappy = styled.div<running>`
       transform : translateX(-100%);
     }
     28.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-100%);
     }
     43% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(300%);
     }
     55.25% {
@@ -532,11 +588,11 @@ export const SNormal = styled.div<running>`
       transform : translateX(-200%);
     }
     43% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-200%);
     }
     55.25% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(200%);
     }
     69.5% {
@@ -583,11 +639,11 @@ export const SSad = styled.div<running>`
       transform : translateX(-300%);
     }
     55.25% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-300%);
     }
     69.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(100%);
     }
     83.75% {
@@ -634,11 +690,11 @@ export const SCrying = styled.div<running>`
       transform : translateX(-400%);
     }
     69.5% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(-400%);
     }
     83.75% {
-      ${tw`bg-top`}
+      ${tw`bg-center`}
       transform : translateX(0%);
     }
     100% {
@@ -649,9 +705,9 @@ export const SCrying = styled.div<running>`
 `;
 
 export const UnderLine = styled.p<timer>`
-  ${tw`absolute border border-bud-green`}
+  ${tw`absolute border-bud-green`}
   height: 2px;
-  width: 100%;
+  width: 0%;
 
   animation-name: BunderLine;
   animation-delay: ${(props) => props.time};
@@ -663,12 +719,24 @@ export const UnderLine = styled.p<timer>`
   @keyframes BunderLine {
     0% {
       ${tw`border`}
+    }
+    1% {
+      ${tw`border-2`}
       width: 0%;
     }
     100% {
       width: 100%;
+      ${tw`border-2`}
     }
   }
+`;
+
+export const ImgMargin = styled.div`
+  ${tw`h-[50%]`}
+`;
+
+export const ImgBox = styled.div`
+  ${tw`h-[50%]`}
 `;
 
 // @media screen and (max-width: 640px) {

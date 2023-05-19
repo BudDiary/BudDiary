@@ -1,14 +1,15 @@
-import React from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import MyGroup from './MyGroup';
-import MyRandom from './MyRandom';
-import 'swiper/swiper-bundle.css';
-import { width } from '@mui/system';
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import MyGroup from "./MyGroup";
+import MyRandom from "./MyRandom";
+import "swiper/swiper-bundle.css";
+import { width } from "@mui/system";
+import { Container } from "./MyTab.styles";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -29,7 +30,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 2 }}>
-          <Typography component="div" >{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -39,7 +40,7 @@ function TabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -51,28 +52,34 @@ export default function MyTab() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example"  sx={{
-    '& .MuiTabs-indicator': {
-      backgroundColor: '',
-    },
-    '& .MuiTab-root': {
-      backgroundColor: 'white',
-      color: 'black',
-    },
-  }}>
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          
-        </Tabs>
+    <Container>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            sx={{
+              "& .MuiTabs-indicator": {
+                backgroundColor: "",
+              },
+              "& .MuiTab-root": {
+                backgroundColor: "white",
+                color: "black",
+              },
+            }}
+          >
+            <Tab label="그룹 일기" {...a11yProps(0)} />
+            <Tab label="1:1 일기" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <MyGroup />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <MyRandom />
+        </TabPanel>
       </Box>
-      <TabPanel value={value} index={0}>
-        <MyGroup/>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <MyRandom/>
-      </TabPanel>
-    </Box>
+    </Container>
   );
 }

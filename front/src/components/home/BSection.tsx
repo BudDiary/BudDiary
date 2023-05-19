@@ -15,6 +15,8 @@ import {
   SNormal,
   SectionContainer,
   ImageSection,
+  FirstImageBox,
+  SecondImageBox,
   TextSection,
   WordSection,
   FirstDetail,
@@ -24,8 +26,11 @@ import {
   WordsSection,
   UnderLine,
   SecondBox,
+  ImgMargin,
+  ImgBox,
 } from "./BSection.styles";
 import img from "./assets/Testimg916.jpg";
+import img2 from "./assets/senti.jpg";
 
 export default function BSection() {
   const [ref, inView] = useInView({ threshold: 0.9 });
@@ -34,14 +39,28 @@ export default function BSection() {
   useEffect(() => {
     if (inView) {
       setRun("running");
-      console.log(inView);
     } else {
     }
   }, [inView]);
   return (
     <Container ref={ref}>
       <SectionContainer>
-        <ImageSection Image={img} run={run}></ImageSection>
+        <ImageSection run={run}>
+          <FirstImageBox>
+            <ImgBox>
+              {/* 첫번쨰 */}
+              <img src={img} alt="" />
+            </ImgBox>
+            <ImgMargin></ImgMargin>
+          </FirstImageBox>
+          <SecondImageBox>
+            <ImgMargin></ImgMargin>
+            <ImgBox>
+              {/* 두번째 */}
+              <img src={img2} alt="" />
+            </ImgBox>
+          </SecondImageBox>
+        </ImageSection>
         <TextContainer>
           <TextSection>
             <FirstDetail run={run}>일기 분석을 통해</FirstDetail>
@@ -86,7 +105,7 @@ export default function BSection() {
           </WordSection>
         </TextContainer>
       </SectionContainer>
-      <WordsSection>
+      <WordsSection run={run}>
         <SExcited run={run} />
         <SHappy run={run} />
         <SNormal run={run} />

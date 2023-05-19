@@ -37,7 +37,8 @@ import twozerotwo.buddiary.persistence.repository.MemberRepository;
  * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
  * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
  */
-@EnableWebSecurity(debug = true)
+// @EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -87,8 +88,11 @@ public class SecurityConfig {
 			//== URL별 권한 관리 옵션 ==//
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+			// ELB  health 체크를위한  api 오픈
+			.antMatchers("/actuator/health", "/actuator/info").permitAll()
+			.antMatchers(HttpMethod.GET, "/api/members/**").hasRole("USER")
 			.antMatchers(HttpMethod.PATCH, "/api/members/**").hasRole("USER")
-			.antMatchers(HttpMethod.GET, "/api/members/signup/jwt-test/**").hasRole("USER")
+			.antMatchers(HttpMethod.GET, "/api/members/jwt-test").hasRole("USER")
 			.antMatchers(HttpMethod.POST, "/api/members/signup/**").hasRole("GUEST")
 			.anyRequest()
 			.permitAll()// 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
@@ -96,7 +100,7 @@ public class SecurityConfig {
 			//== 소셜 로그인 설정 ==//
 			.oauth2Login()
 			.authorizationEndpoint().baseUri("/oauth2/authorize")
-			.authorizationRequestRepository(cookieAuthorizationRequestRepository())
+			// .authorizationRequestRepository(cookieAuthorizationRequestRepository())
 			.and()
 			.redirectionEndpoint()
 			// .baseUri("/login/oauth2/code/kakao/code*")
@@ -120,7 +124,11 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.addAllowedOriginPattern("http://localhost:8000");
 		corsConfiguration.addAllowedOriginPattern("http://localhost:3000");
+		corsConfiguration.addAllowedOriginPattern("http://www.buddiary.site");
+		corsConfiguration.addAllowedOriginPattern("http://ec2-3-36-102-176.ap-northeast-2.compute.amazonaws.com");
+		corsConfiguration.addAllowedOriginPattern("http://ec2-3-35-197-93.ap-northeast-2.compute.amazonaws.com");
 		corsConfiguration.addAllowedHeader("*");
 		// corsConfiguration.addAllowedOrigin("http://localhost:3000");
 		// corsConfiguration.addAllowedOrigin("http://localhost:8080");
@@ -131,10 +139,10 @@ public class SecurityConfig {
 		return source;
 	}
 
-	@Bean
-	public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
-		return new HttpCookieOAuth2AuthorizationRequestRepository();
-	}
+	// @Bean
+	// public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+	// 	return new HttpCookieOAuth2AuthorizationRequestRepository();
+	// }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

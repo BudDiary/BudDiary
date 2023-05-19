@@ -1,62 +1,97 @@
-import React from "react";
-
+import React, { useMemo, Dispatch, SetStateAction } from "react";
 import { PickerContainer, EmojiButton } from "./Emoji.style";
-import {
-  sendEmojiReaction,
-  cancelReaction,
-} from "../groupdetailapis/groupdetailapis";
-import { userdummy } from "../../mypage/userdummy";
-
+import { postReactionApi, deleteReactionApi } from "../../../apis/reactionApi";
+import { Reaction, ActionType } from "../../../types/group";
+import useMember from "../../../hooks/memberHook";
+import { Info, Club } from "../../../types/group";
+import { getClubDetailApi } from "../../../apis/clubApi";
 type Props = {
-  onSelect: (emoji: string) => void;
-  selectedEmojis: string[];
+  onSelect: (emoji: string, diaryId: number) => void;
   diaryId: number;
+  reactionList: Reaction[];
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 };
 
-const EmojiPicker = ({ onSelect, selectedEmojis, diaryId }: Props) => {
-  const emojiActionTypes: { [key: string]: string } = {
+const EmojiPicker = ({
+  onSelect,
+  diaryId,
+  reactionList,
+  clubInfo,
+  setClubData,
+}: Props) => {
+  const { memberData } = useMember();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const emojiActionTypes: { [key: string]: ActionType } = {
     "😀": "LIKED",
     "👍": "BEST",
     "😡": "ANGRY",
     "😢": "SAD",
-    "😲": "SUPRISED",
+    "😲": "SURPRISED",
   };
+
   const emojis = ["😀", "👍", "😡", "😢", "😲"];
 
-  const handleSelectEmoji = (emoji: string) => {
+  const handleCancelEmoji = async (emoji: string, diaryId: number) => {
     const actionType = emojiActionTypes[emoji];
-    if (actionType) {
-      sendEmojiReaction(diaryId, userdummy.nickname, actionType);
+    const emojiReaction = reactionList.find(
+      (reaction) =>
+        memberData.username === reaction.username &&
+        actionType === reaction.actionType
+    );
+    if (emojiReaction) {
+      const actionId = emojiReaction.id;
+      await deleteReactionApi(diaryId, actionId).then(() => {
+        onSelect("", diaryId);
+      });
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
     }
-    onSelect(emoji);
   };
 
-  const handleCancelEmoji = (emoji: string) => {
-    const actionType = emojiActionTypes[emoji];
-    if (actionType) {
-      const actionId = selectedEmojis.indexOf(emoji);
-      cancelReaction(diaryId, userdummy.nickname, actionId);
-    }
-    const updatedEmojis = selectedEmojis.filter(
-      (selectedEmoji) => selectedEmoji !== emoji
+  const emojiData = useMemo(() => {
+    return emojis.map((emoji) => {
+      const actionType = emojiActionTypes[emoji];
+      const emojiReaction = reactionList.find(
+        (reaction) =>
+          memberData.username === reaction.username &&
+          actionType === reaction.actionType
+      );
+      return {
+        emoji,
+        selected: Boolean(emojiReaction),
+      };
+    });
+  }, [emojis, emojiActionTypes, reactionList, memberData]);
+
+  const handleEmojiClick = async (emoji: string) => {
+    const actionType: ActionType = emojiActionTypes[emoji];
+    const emojiReaction = reactionList.find(
+      (reaction) =>
+        memberData.username === reaction.username &&
+        actionType === reaction.actionType
     );
-    onSelect(updatedEmojis.length ? updatedEmojis[0] : "");
+    if (emojiReaction) {
+      await handleCancelEmoji(emoji, diaryId);
+    } else {
+      await postReactionApi(diaryId, actionType).then(() => {
+        onSelect(emoji, diaryId);
+      });
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
+      setClubData(data);
+    }
   };
+
   return (
     <PickerContainer style={{ display: "flex", flexWrap: "wrap" }}>
-      {emojis.map((emoji) => (
+      {emojiData.map((emojiData) => (
         <EmojiButton
-          key={emoji}
-          onClick={() => {
-            if (selectedEmojis.includes(emoji)) {
-              handleCancelEmoji(emoji);
-            } else {
-              handleSelectEmoji(emoji);
-            }
-          }}
-          selected={selectedEmojis.includes(emoji)}
+          key={emojiData.emoji}
+          onClick={() => handleEmojiClick(emojiData.emoji)}
+          selected={emojiData.selected}
         >
-          {emoji}
+          {emojiData.emoji}
         </EmojiButton>
       ))}
     </PickerContainer>

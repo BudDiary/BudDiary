@@ -1,3 +1,5 @@
+export type ActionType = "LIKED" | "BEST" | "ANGRY" | "SAD" | "SURPRISED";
+
 export interface Writer {
   id: number;
   username: string;
@@ -11,7 +13,9 @@ export interface Image {
 }
 
 export interface Reaction {
-  type: string;
+  id: number;
+  username: string;
+  actionType: string;
 }
 
 export interface Reply {
@@ -52,12 +56,14 @@ export interface Info {
   clubUuid: string;
   thumbnailUrl: string | null;
   clubName: string;
+  captainUsername: string | null;
+  clubType: string;
 }
 
 export interface ClubDetail {
   diaryList: Diary[];
   memberList: Member[];
-  myclubList: Info;
+  clubInfo: Info;
 }
 
 export interface Club {

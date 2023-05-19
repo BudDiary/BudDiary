@@ -21,16 +21,24 @@ import {
   ImageContainer,
 } from "./DSection.styles";
 import { SectionContainer } from "./DSection.styles";
+import dimg1 from "./assets/DSectionimg916.jpg";
+import dimg2 from "./assets/DSectionimg2.jpg";
+import dimg3 from "./assets/DSectionimg3.jpg";
+import dimg4 from "./assets/DSectionimg4.jpg";
+import dimg5 from "./assets/DSectionimg5.jpg";
+import { useNavigate } from "react-router-dom";
 
 export default function DSection() {
+  const navigate = useNavigate();
   const [ref, inView] = useInView({ threshold: 0.9 });
   const [run, setRun] = useState<string>("paused");
   const [text, setText] = useState<string>("의");
+  const [selectImg, setselectImg] = useState<string>(dimg1);
 
   useEffect(() => {
     if (inView) {
       setRun("running");
-      console.log(inView);
+
       setTimeout(() => {
         setText("와");
       }, 6500);
@@ -38,8 +46,33 @@ export default function DSection() {
     }
   }, [inView]);
 
+  const images = [dimg1, dimg2, dimg3, dimg4, dimg5];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const changeImage = () => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setselectImg(images[currentImageIndex]);
+    };
+
+    const interval = setInterval(changeImage, 8000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [currentImageIndex]);
+
+  const handleButtonClick = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setselectImg(images[currentImageIndex]);
+  };
+
+  const handleRedirect = () => {
+    navigate("/write");
+  };
+
   return (
-    <SectionContainer ref={ref}>
+    <SectionContainer run={run} image={selectImg} ref={ref}>
       <ContentSection>
         <TextContainer>
           <FirstSection>
@@ -85,7 +118,7 @@ export default function DSection() {
               </AppearText>
             </FirstBox>
           </ThirdSection>
-          <ButtonSection>
+          <ButtonSection onClick={handleRedirect}>
             <ButtonTextBox run={run}></ButtonTextBox>
             <ButtonSubBox run={run}></ButtonSubBox>
             <ButtonSSubBox run={run}></ButtonSSubBox>
@@ -95,7 +128,7 @@ export default function DSection() {
             </ButtonArrowBox>
           </ButtonSection>
         </TextContainer>
-        <ImageContainer />
+        <ImageContainer image={selectImg} onClick={handleButtonClick} />
       </ContentSection>
     </SectionContainer>
   );

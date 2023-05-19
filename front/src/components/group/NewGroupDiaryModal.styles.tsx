@@ -1,13 +1,8 @@
-import { Box } from '@mui/material';
-import styled from 'styled-components';
+import { Box } from "@mui/material";
+import styled from "styled-components";
+import tw from "twin.macro";
 
 export const StyledBox = styled(Box)`
-  width: 100px;
-  /* height: 100px; */
-
-  
-  @media (min-width: 600px) {
-    width: 300px;
-    /* height: 200px; */
-  }
+  ${tw`mx-4 border`}
+  width: 94%;
 `;

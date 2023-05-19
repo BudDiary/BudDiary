@@ -28,5 +28,9 @@ public class DiaryPostRequest {
 	@NotNull
 	private Boolean isPersonal;
 	private List<StickerDto> stickerDtoList;
-	private String memberUsername;
+	@NotNull
+	private Float positiveRate;
+	@NotNull
+	private Float negativeRate;
+
 }

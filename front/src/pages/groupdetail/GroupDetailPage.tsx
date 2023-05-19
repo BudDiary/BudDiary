@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   PageContainer,
-  SubNavContainer,
+  DetailSubNavContainer,
 } from "../../components/common/Page.styles";
 import {
   DetailPageContainer,
@@ -9,81 +9,101 @@ import {
   GroupInfoContainer,
 } from "./GroupDetailPage.styles";
 import GroupInfo from "../../components/groupdetail/GroupInfo";
+import GroupInfoModal from "../../components/groupdetail/GroupInfoModal";
 import Diaries from "../../components/groupdetail/Diaries";
-import { GetClubData } from "../../components/groupdetail/groupdetailapis/groupdetailapis";
+import { getClubDetailApi } from "../../apis/clubApi";
 import { Club } from "../../types/group";
-const clubDetailJson = require("../../components/groupdetail/clubDetail.json");
+import { GroupButton } from "../../components/groupdetail/Diaries.styles";
 
 const GroupDetailPage = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  const [groupDetail, setGroupDetail] = useState<Club | null>(null);
+  const [scrollY, setScrollY] = useState(100);
   const [clubData, setClubData] = useState<Club | null>(null);
+  // console.log(clubData);
+  // 그룹정보 모달
+  const [showModal, setShowModal] = useState(false);
 
-  const clubId = "club_key";
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleToggleModal = () => {
+    setShowModal((prevState) => !prevState);
+  };
 
   useEffect(() => {
+    const currentUrl: string = window.location.href;
+    const code = currentUrl.split(`/group/`)[1];
     async function fetchData() {
       try {
-        const data = await GetClubData(clubId);
+        const data = await getClubDetailApi(code);
         setClubData(data);
       } catch (error) {
         console.error(error);
       }
     }
-
     fetchData();
-    console.log(clubData);
-  }, [clubId]);
-
-  useEffect(() => {
-    const Club = clubDetailJson as Club;
-    setGroupDetail(Club);
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const newY = Math.max(window.scrollY, 120);
+      setScrollY(newY);
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const subNavStyle = {
-    backgroundImage: `url(${groupDetail?.clubDetail.myclubList.thumbnailUrl})`,
+    backgroundImage: `url(${clubData?.clubDetail.clubInfo.thumbnailUrl})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: "black",
     fontWeight: "bold",
+
+    "@media (minWidth: 768px)": {
+      fontSize: "1rem",
+    },
   };
 
   return (
     <>
-      {groupDetail?.clubDetail.myclubList.clubName && (
-        <SubNavContainer style={subNavStyle}>
-          {groupDetail?.clubDetail.myclubList.clubName}
-        </SubNavContainer>
+      {clubData?.clubDetail.clubInfo.clubName && (
+        <DetailSubNavContainer style={subNavStyle}>
+          {clubData?.clubDetail.clubInfo.clubName}
+        </DetailSubNavContainer>
       )}
       <PageContainer>
         <DetailPageContainer>
           <DiariesContainer>
-            <Diaries />
-          </DiariesContainer>
-          <GroupInfoContainer style={{ position: "relative" }}>
-            <div></div>
-            <GroupInfo
-              myclubList={groupDetail?.clubDetail.myclubList}
-              memberList={groupDetail?.clubDetail.memberList}
-              style={{ position: "absolute", top: `${scrollY - 20}px` }}
+            <Diaries
+              setClubData={setClubData}
+              diaryList={clubData?.clubDetail.diaryList}
+              clubInfo={clubData?.clubDetail.clubInfo}
             />
-          </GroupInfoContainer>
+          </DiariesContainer>
+          {window.innerWidth > 768 ? (
+            <GroupInfoContainer style={{ position: "relative" }}>
+              <GroupInfo
+                clubInfo={clubData?.clubDetail.clubInfo}
+                memberList={clubData?.clubDetail.memberList}
+                style={{ position: "absolute", top: `${scrollY - 100}px` }}
+              />
+            </GroupInfoContainer>
+          ) : (
+            <GroupButton onClick={handleToggleModal}>Group</GroupButton>
+          )}
         </DetailPageContainer>
       </PageContainer>
+      {showModal && (
+        <GroupInfoModal
+          clubInfo={clubData?.clubDetail.clubInfo}
+          memberList={clubData?.clubDetail.memberList}
+          onClose={handleCloseModal}
+        />
+      )}
     </>
   );
 };
-
 export default GroupDetailPage;

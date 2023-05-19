@@ -1,34 +1,50 @@
-import React, { useState } from "react";
-import { BasicButton } from "./Diaries.styles";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import Replies from "./Replies";
 import CommentEdit from "./CommentEdit";
 import DeleteComment from "./DeleteComment";
+import { BasicButton } from "./Diaries.styles";
+import { ClubList } from "./GroupInfo.styles";
 import {
   InputBox,
   UserInfo,
   InputSet,
   CommentWrapper,
+  CommentBox,
+  ExpansionButton,
+  CommentError,
 } from "./DiaryComment.style";
-import { CreateComment } from "./groupdetailapis/groupdetailapis";
-import { handleCommentChange, handleCommentBlur } from "./GroupDetailFunction";
+import { postCommentApi } from "../../apis/commentApi";
+import { getClubDetailApi } from "../../apis/clubApi";
+import {
+  handleCommentChange,
+  handleCommentBlur,
+  handleCheckComment,
+} from "./GroupDetailFunction";
 import { EditButton, DeleteButton } from "../common/Button.styles";
-
-import { userdummy } from "../mypage/userdummy";
-import EmojiPicker from "./emoji/EmojiPicker";
-import EmojiCount from "./emoji/EmojiCount";
+import useMember from "../../hooks/memberHook";
 import { timeAgo } from "./GroupDetailFunction";
 import { Divider } from "@mui/material";
-import { Comment } from "../../types/group";
+import { Comment, Info, Club } from "../../types/group";
 
 interface CommentProps {
   commentList: Comment[];
   diaryId: number;
+  clubInfo?: Info;
+  setClubData: Dispatch<SetStateAction<Club | null>>;
 }
 
-export default function DiaryComment({ commentList, diaryId }: CommentProps) {
+export default function DiaryComment({
+  commentList,
+  diaryId,
+  clubInfo,
+  setClubData,
+}: CommentProps) {
+  const { memberData } = useMember();
   const [commentText, setCommentText] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
   const [height, setHeight] = useState("35px");
+  const [checkComment, setCheckComment] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   // 댓글 수정 & 삭제 모달
   const [commentUpdate, setCommentUpdate] = useState(false);
@@ -52,73 +68,28 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
     setCommentDelete(false);
   };
 
-  // 댓글 작성
-
   const handleCommentSubmit = async () => {
-    console.log("댓글 요청", commentText, diaryId, userdummy.username);
+    if (error || commentText === "") {
+      return;
+    }
+
     setHeight("35px");
+
     try {
-      const response = await CreateComment(
-        commentText,
-        diaryId,
-        userdummy.username
-      );
+      const response = await postCommentApi(diaryId, commentText);
+      const data = await getClubDetailApi(clubInfo?.clubUuid ?? "");
       setCommentText("");
-      console.log(response);
+      setClubData(data);
+
+      // 댓글을 업데이트한 후에 getClubDetailApi를 직접 호출합니다.
     } catch (error) {
       console.error(error);
     }
   };
 
-  // 이모티콘 추가 제거
-
-  const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
-  const [showEmojiPopup, setShowEmojiPopup] = useState(false);
-
-  const handleSelectEmoji = (emoji: string) => {
-    if (selectedEmojis.includes(emoji)) {
-      setSelectedEmojis(selectedEmojis.filter((e) => e !== emoji));
-    } else {
-      setSelectedEmojis([...selectedEmojis, emoji]);
-    }
-  };
-
-  // const filteredComments = CommentList.filter(
-  //   (comment) => comment.diaryId === diaryId
-  // );
-
   return (
     <CommentWrapper>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "baseline",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            position: "relative",
-          }}
-        >
-          <EmojiCount emojis={selectedEmojis} />
-          <BasicButton onClick={() => setShowEmojiPopup((prev) => !prev)}>
-            +😀
-          </BasicButton>
-        </div>
-        {showEmojiPopup && (
-          <EmojiPicker
-            onSelect={handleSelectEmoji}
-            selectedEmojis={selectedEmojis}
-            diaryId={diaryId}
-          />
-        )}
-      </div>
-
-      <p style={{ fontWeight: "bold" }}>댓글 {commentList.length}</p>
+      <ClubList>댓글 {commentList.length}</ClubList>
       {commentList
         .slice(0, showAllComments ? commentList.length : 2)
         .map((comment) => (
@@ -126,56 +97,50 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
             <div>
               <img src={comment.writer.profilePath ?? ""} alt="프로필" />
             </div>
-            <div
-              style={{
-                width: "55%",
-              }}
-            >
+            <CommentBox>
               <div
                 style={{
                   display: "flex",
                   alignItems: "baseline",
+                  marginBlock: "10px",
+                  marginBottom: "10px",
                 }}
               >
-                <h2 style={{ fontWeight: "bold" }}>
-                  {comment.writer.nickname}
-                </h2>
-                <h3
-                  style={{
-                    marginLeft: "0.5rem",
-                    color: "gray",
-                    fontSize: "0.75rem",
-                  }}
-                >
+                <h2>{comment.writer.nickname}</h2>
+                <h3 style={{ marginInline: "8px" }}>
                   {timeAgo(comment.writeDate)}
                 </h3>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
-                  {commentUpdate && selectedCommentId === comment.id && (
+                  {/* {commentUpdate && selectedCommentId === comment.id && (
                     <CommentEdit
                       key={comment.id}
                       comment={comment}
+                      diaryId={diaryId}
                       isOpen={false}
                       onClose={handleCloseModal}
                     />
-                  )}
+                  )} */}
                   {commentDelete && selectedCommentId === comment.id && (
                     <DeleteComment
                       key={comment.id}
+                      clubInfo={clubInfo}
                       comment={comment}
+                      diaryId={diaryId}
+                      setClubData={setClubData}
                       isOpen={false}
                       onClose={handleCloseModal}
                     />
                   )}
-                  {/* {userdummy.nickname}은 나중에 users.user_id 등으로 교체할 것 */}
-                  {userdummy.nickname === comment.writer.nickname && (
+                  {/* 
+                  {memberData.username === comment.writer.username && (
                     <EditButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showUpdateModal(comment.id)}
                     >
                       수정
                     </EditButton>
-                  )}
-                  {userdummy.nickname === comment.writer.nickname && (
+                  )} */}
+                  {memberData.username === comment.writer.username && (
                     <DeleteButton
                       style={{ fontSize: "12px" }}
                       onClick={() => showDeleteModal(comment.id)}
@@ -185,43 +150,43 @@ export default function DiaryComment({ commentList, diaryId }: CommentProps) {
                   )}
                 </div>
               </div>
-              <p>{comment.text}</p>
+
+              <div>
+                <p>{comment.text}</p>
+              </div>
               <Replies
                 key={comment.id}
                 commentId={comment.id}
+                clubInfo={clubInfo}
+                setClubData={setClubData}
                 replies={comment.replies}
               />
-            </div>
+            </CommentBox>
           </UserInfo>
         ))}
-      <Divider />
+
+      <Divider style={{ border: "solid 1px #BFDBFE", marginTop: "10px" }} />
       {commentList.length > 2 && (
         <div style={{ textAlign: "center" }}>
-          <button
-            style={{
-              fontSize: "12px",
-              fontWeight: "700",
-              marginBlock: "10px",
-              color: "#ABC4FF",
-            }}
-            onClick={() => setShowAllComments((prev) => !prev)}
-          >
+          <ExpansionButton onClick={() => setShowAllComments((prev) => !prev)}>
             {showAllComments ? "▲ 닫기" : "▼ 전체 댓글 보기"}
-          </button>
+          </ExpansionButton>
         </div>
       )}
       <InputSet>
         <InputBox
           key={commentText}
           defaultValue={commentText}
-          onChange={(e) => handleCommentChange(e, setHeight)}
+          onChange={(e) => {
+            handleCommentChange(e, setHeight);
+            handleCheckComment(e, setCheckComment, setError);
+          }}
           onBlur={(e) => handleCommentBlur(e, setCommentText)}
           style={{ height }}
         />
-        <BasicButton onClick={handleCommentSubmit} style={{ fontSize: "12px" }}>
-          댓글달기
-        </BasicButton>
+        <BasicButton onClick={handleCommentSubmit}>댓글달기</BasicButton>
       </InputSet>
+      {error && <CommentError>{error}</CommentError>}
     </CommentWrapper>
   );
 }
