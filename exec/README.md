@@ -72,7 +72,7 @@ Status: 결과물
 
 # 인프라 구성
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled.png)
+![Untitled](./images/Untitled.png)
 
 ## EC2 m6i.large 6개
 
@@ -85,50 +85,50 @@ Status: 결과물
 
 - 리스너를 3개를 구분지어 api, event, ml 로 구성 했습니다.
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%201.png)
+    ![Untitled](./images/Untitled%201.png)
     
 - 80 에 대한 룰을 다음과 같이 정의해 경로기반 리스너  라우팅을 진행했습니다.
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%202.png)
+    ![Untitled](./images/Untitled%202.png)
     
 
 각 리스너 그룹의 구성은 다음과 같습니다
 
 - eventGroup
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%203.png)
+    ![Untitled](./images/Untitled%203.png)
     
 - apiBackENd
     - 쿠키를 활용한 jwt 인증 인가를 진행하기 때문에 stickey 옵션을 활성화 했습니다.
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%204.png)
+    ![Untitled](./images/Untitled%204.png)
     
 - fastGroup
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%205.png)
+    ![Untitled](./images/Untitled%205.png)
     
 
 ## aws S3 구성
 
 - 버킷 생성
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%206.png)
+    ![Untitled](./images/Untitled%206.png)
     
 - 객체 소유권 ACL 활성화 설정
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%207.png)
+    ![Untitled](./images/Untitled%207.png)
     
 - 퍼블릭 엑세스 차단 설정 해제
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%208.png)
+    ![Untitled](./images/Untitled%208.png)
     
 - IAM 계정 생성 > IAM 콘솔에서 사용자를 추가
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%209.png)
+    ![Untitled](./images/Untitled%209.png)
     
 - Amazon S3 Full Access 권한 부여
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2010.png)
+    ![Untitled](./images/Untitled%2010.png)
     
 - IAM > 보안 자격 증명에서 엑세스 키를 발급하여 .yml 설정 파일에 추가
     
@@ -160,19 +160,19 @@ Status: 결과물
 1. ssh 설정
     1. 발급받은  pem키, 서버  설정
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2011.png)
+    ![Untitled](./images/Untitled%2011.png)
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2012.png)
+    ![Untitled](./images/Untitled%2012.png)
     
 2. credentail 설정
     1. userNameWithPassword
         1. gitlab id  password 등록
             
-            ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2013.png)
+            ![Untitled](./images/Untitled%2013.png)
             
 3. ****Global Tool Configuration/****Node 18.12.1설정
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2014.png)
+    ![Untitled](./images/Untitled%2014.png)
     
 
 ### 젠킨스 아이템 설정
@@ -180,26 +180,26 @@ Status: 결과물
 젠킨스 파이프라인은SCM 을 활용 했으며 gitlab repository 안 jenkins  에 존재합니다.
 각각 프론트는 `front.jenkinsfile`, ml 서버는 `fast.jenkins`  벡엔드는 `back.jenkinsfile` 로 존재합니다 세개의 젠킨스 아이템이 존재하며 각각 프론트, 벡엔드 를 담당합니다. 
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2015.png)
+![Untitled](./images/Untitled%2015.png)
 
 두 아이탬 모두 파이프라인 scm 설정은 동일하게 진행하면 자동으로 git lab 에 있는 파이프라인 스크립틀 읽어오는 형태로 구성 했습니다.
 
 1. 파이프 라인 설정
     1. 빌드 트리거 설정
         
-        ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2016.png)
+        ![Untitled](./images/Untitled%2016.png)
         
     2. **pipeline scm**, **RepositoryURL**, **Branches to build(SCM 읽어올 브랜치)
     , Script Path(scm 파일경로) 설정**
         
-        ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2017.png)
+        ![Untitled](./images/Untitled%2017.png)
         
 
 ### Backend Pipeline 구성
 
 - jenkins 파일
     
-    ```json
+    ```groovy
     pipeline {
         agent any
     
@@ -268,7 +268,7 @@ Status: 결과물
 
 - jenkins 파일
     
-    ```json
+    ```groovy
     pipeline {
         agent any
         environment {
@@ -324,7 +324,7 @@ Status: 결과물
 
 - jenkins 파일
     
-    ```json
+    ```groovy
     pipeline {
         agent any
         stages {
@@ -515,9 +515,9 @@ Status: 결과물
     vim 50-server.cnf
     ```
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2018.png)
+    ![Untitled](./images/Untitled%2018.png)
     
-    ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20d4a22028bdaf482389a598f141718db9/Untitled%2019.png)
+    ![Untitled](./images/Untitled%2019.png)
     
 - 주석 해제 후 mysql 재시작
     
