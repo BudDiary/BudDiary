@@ -40,32 +40,52 @@ export default function StickerPage({
   // 보낼 스티커 리스트 담는 useState
   const [sendStickerList, setSendStickerList] = useState<usedSticker[]>([]);
   // 드래그 후 sendSticker
-  interact(".sticker-item").draggable({
-    onstart: (event: any) => {
-      const itemElement = event.target;
-      const itemRect = itemElement.getBoundingClientRect();
-      const initialX = itemRect.left;
-      const initialY = itemRect.top;
-      itemElement.setAttribute("data-initial-x", initialX);
-      itemElement.setAttribute("data-initial-y", initialY);
-    },
-    onend: (event: any) => {
-      const target = event.target;
-      const startX = Number(target.getAttribute("data-initial-x"));
-      const startY = Number(target.getAttribute("data-initial-y"));
-      const movedX = Number(target.getAttribute("data-x"));
-      const movedY = Number(target.getAttribute("data-y"));
-      const finalX = startX + movedX;
-      const finalY = startY + movedY;
-      // 사진 좌표 저장해서 append
-      const temp: usedSticker = {
-        stickerUrl: target.src,
-        xCoordinate: finalX,
-        yCoordinate: finalY,
-      };
-      setSendStickerList([...sendStickerList, temp]);
-    },
-  });
+  // interact(".sticker-item").draggable({
+  //   onstart: (event: any) => {
+  //     const itemElement = event.target;
+  //     const itemRect = itemElement.getBoundingClientRect();
+  //     const initialX = itemRect.left;
+  //     const initialY = itemRect.top;
+  //     itemElement.setAttribute("data-initial-x", initialX);
+  //     itemElement.setAttribute("data-initial-y", initialY);
+  //   },
+  //   onend: (event: any) => {
+  //     const target = event.target;
+  //     const startX = Number(target.getAttribute("data-initial-x"));
+  //     const startY = Number(target.getAttribute("data-initial-y"));
+  //     const movedX = Number(target.getAttribute("data-x"));
+  //     const movedY = Number(target.getAttribute("data-y"));
+  //     const finalX = startX + movedX;
+  //     const finalY = startY + movedY;
+  //     // 사진 좌표 저장해서 append
+  //     const temp: usedSticker = {
+  //       stickerUrl: target.src,
+  //       xCoordinate: finalX,
+  //       yCoordinate: finalY,
+  //     };
+  //     setSendStickerList([...sendStickerList, temp]);
+  //   },
+  // });
+  // 드래그 시작될 때 실행
+  const dragItem = useRef();
+  const dragStart = (e: any, position: any) => {
+    dragItem.current = position;
+    e.target.classList.add("grabbing");
+    console.log(dragItem.current, "드래그 시작할때");
+  };
+  // 드랍 (커서 뗐을 때)
+  const drop = (e: any) => {
+    e.target.classList.remove("grabbing");
+    console.log(e, "????");
+    console.log(e.screenX);
+    console.log(e.screenY);
+    const temp: usedSticker = {
+      stickerUrl: e.target.src,
+      xCoordinate: e.screenX,
+      yCoordinate: e.screenY,
+    };
+    setSendStickerList([...sendStickerList, temp]);
+  };
   // 내 아이디
   const { memberData } = useMember();
   const username = memberData.username;
@@ -117,7 +137,7 @@ export default function StickerPage({
     ]).then(async ([result]) => {
       await setSentiment(result);
       // -------------------------------------------------------------------------------------------------------------
-      // 여기만 수정하면된다;;;;;;
+      // 폼데이터에 넣어서 axios
       const formData = new FormData();
       formData.append("text", content);
       // 여러 개의 파일 추가
@@ -126,21 +146,18 @@ export default function StickerPage({
       formData.append("isPersonal", String(personal));
       // let stickerData: usedSticker[] = [];
       if (sendStickerList.length > 0) {
-        // stickerData = [...sendStickerList];
-        console.log(sendStickerList, "this is stickerData");
-        // formData.append("stickerDtoList", JSON.stringify(stickerData));
-        for (let i = 0; i < pics.length; i++) {
+        for (let i = 0; i < sendStickerList.length; i++) {
           console.log(sendStickerList[i].stickerUrl);
           formData.append(
-            `fileList[${i}].stickerUrl`,
-            sendStickerList[i].stickerUrl
+            `stickerDtoList[${i}].stickerUrl`,
+            String(sendStickerList[i].stickerUrl)
           );
           formData.append(
-            `fileList[${i}].xCoordinate`,
+            `stickerDtoList[${i}].xCoordinate`,
             String(sendStickerList[i].xCoordinate)
           );
           formData.append(
-            `fileList[${i}].yCoordinate`,
+            `stickerDtoList[${i}].yCoordinate`,
             String(sendStickerList[i].yCoordinate)
           );
         }
@@ -153,20 +170,20 @@ export default function StickerPage({
         }
       }
 
-      let entries = formData.entries();
-      for (const pair of entries) {
-        console.log(pair[0] + ", " + pair[1], "하이잉이이이이");
-      }
+      // let entries = formData.entries();
+      // for (const pair of entries) {
+      //   console.log(pair[0] + ", " + pair[1], "하이잉이이이이");
+      // }
       postTodayDiaryApi(formData)
         .then(() => {
           if (groups.length === 0) {
             navigate("/mypage");
           } else {
-            console.log(groups[0], "여기로 알람 보내줘");
+            console.log(groups, "여기로 알람 보내줘");
             // 일기 작성이 잘 되었다면
             // 구성원 모두한테 알람 보내기
             postLiveNewDiaryApi(groups);
-            navigate(`/group/${groups[0]}`);
+            navigate("/group");
           }
         })
         .catch((error) => {
@@ -211,10 +228,11 @@ export default function StickerPage({
   };
 
   return (
-    <PageContainer>
-      <StickerListTitle>보유중인 스티커</StickerListTitle>
-      {/* <StickerListContainer></StickerListContainer> */}
-      {/* {myStickers && myStickers?.length > 0 && (
+    <div className="relative">
+      <PageContainer>
+        <StickerListTitle>보유중인 스티커</StickerListTitle>
+        {/* <StickerListContainer></StickerListContainer> */}
+        {/* {myStickers && myStickers?.length > 0 && (
         <div className="flex overflow-x-scroll">
           <Swiper
             spaceBetween={50}
@@ -235,34 +253,49 @@ export default function StickerPage({
           </Swiper>
         </div>
       )} */}
-      <div className="grid grid-cols-6 h-[160px]">
-        {myStickers &&
-          myStickers.length > 0 &&
-          myStickers.map((sticker) => (
-            <img
-              src={sticker.sticker.imageUrl}
-              // alt={String(sticker.sticker.stickerId)}
-              className="sticker-item my-auto"
-            />
-          ))}
-      </div>
-      <ContentBox className="drop-container text-2xl font-hassam">
-        {content}
-      </ContentBox>
-      <div className="flex justify-evenly">
-        <button
-          className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"
-          onClick={() => setStage(0)}
-        >
-          이전
-        </button>
-        <button
-          className="bg-bud-green text-white w-[120px] h-[45px] rounded-md"
-          onClick={sendData}
-        >
-          완료
-        </button>
-      </div>
-    </PageContainer>
+        {sendStickerList.map((sticker, index) => (
+          <img
+            key={index}
+            src={sticker.stickerUrl}
+            style={{
+              left: sticker.xCoordinate,
+              top: sticker.xCoordinate,
+            }}
+            className="absolute w-[141.46px]"
+          />
+        ))}
+        <div className="grid grid-cols-6 h-[160px]">
+          {myStickers &&
+            myStickers.length > 0 &&
+            myStickers.map((sticker, idx) => (
+              <img
+                src={sticker.sticker.imageUrl}
+                // alt={String(sticker.sticker.stickerId)}
+                className="sticker-item my-auto hover:cursor-pointer"
+                draggable
+                onDragStart={(e) => dragStart(e, idx)}
+                onDragEnd={drop}
+              />
+            ))}
+        </div>
+        <ContentBox className="drop-container text-2xl font-hassam">
+          {content}
+        </ContentBox>
+        <div className="flex justify-evenly">
+          <button
+            className="bg-gray-300 text-white w-[120px] h-[45px] rounded-md"
+            onClick={() => setStage(0)}
+          >
+            이전
+          </button>
+          <button
+            className="bg-bud-green text-white w-[120px] h-[45px] rounded-md"
+            onClick={sendData}
+          >
+            완료
+          </button>
+        </div>
+      </PageContainer>
+    </div>
   );
 }
